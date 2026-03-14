@@ -27,7 +27,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: var(--font-main); overflow: hidden; height: 100vh; display: flex; transition: 0.4s ease; }
 
-        /* --- INTRO (APPLE STYLE - TIADA ANIMASI PUSING) --- */
+        /* --- INTRO --- */
         #intro-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; display: flex; justify-content: center; align-items: center; background: var(--bg-color); transition: 0.8s var(--ease-apple); }
         #intro-page.hidden { opacity: 0; visibility: hidden; transform: scale(1.05); }
         .intro-container { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; animation: appleFadeIn 1s var(--ease-apple) forwards 0.2s; }
@@ -75,7 +75,7 @@
         .btn-circular-add { padding: 0; width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
         .header-actions { display: flex; gap: 12px; align-items: center; }
 
-        /* --- APPLE MODAL (SUCCESS POPUP) --- */
+        /* --- APPLE MODAL --- */
         .apple-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; visibility: hidden; transition: 0.4s var(--ease-apple); }
         .apple-modal-overlay.show { opacity: 1; visibility: visible; }
         .apple-modal { background: var(--card-bg); border: 1px solid var(--border-color); padding: 40px; border-radius: 24px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); transform: scale(0.9) translateY(20px); transition: 0.4s var(--ease-apple); max-width: 400px; width: 90%; }
@@ -209,21 +209,28 @@
                         <div>
                             <div class="card">
                                 <h2 class="section-title">Client & Invoice Details</h2>
+                                <div class="form-group" style="margin-bottom: 20px;"><label>Issuing Company</label><select class="form-control" disabled><option>Omnyzo Agency</option></select></div>
+                                
                                 <div class="form-grid">
                                     <div class="form-group" style="grid-column: span 2;"><label>Customer / Company Name</label><input type="text" id="invCustomer" class="form-control" placeholder="e.g. Syarikat Contoh Sdn Bhd" required></div>
                                     <div class="form-group"><label>PIC Name (Attn:)</label><input type="text" id="invPIC" class="form-control" placeholder="e.g. Faiz Shamsul" required></div>
                                     <div class="form-group"><label>PIC Phone</label><input type="text" id="invPhone" class="form-control" placeholder="e.g. +6012-3456789"></div>
                                     <div class="form-group"><label>PIC Email</label><input type="email" id="invEmail" class="form-control" placeholder="e.g. faiz@example.com"></div>
                                     <div class="form-group" style="grid-column: span 2;"><label>Client Address</label><input type="text" id="invAddress" class="form-control" placeholder="e.g. No. 1, Jalan Contoh..."></div>
+                                    
                                     <hr class="section-divider">
+
                                     <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" value="INV-0003" required></div>
                                     <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" onchange="calculateDueDate()" required></div>
                                     <div class="form-group">
                                         <label>Credit Terms (Days)</label>
                                         <select id="invTermsDays" class="form-control" onchange="calculateDueDate()">
-                                            <option value="0">Due on Receipt</option>
+                                            <option value="0">Due on Receipt (0 days)</option>
+                                            <option value="7">7 Days</option>
                                             <option value="14">14 Days</option>
                                             <option value="30" selected>30 Days</option>
+                                            <option value="45">45 Days</option>
+                                            <option value="60">60 Days</option>
                                         </select>
                                     </div>
                                     <div class="form-group"><label>Due Date</label><input type="date" id="invDueDate" class="form-control" readonly style="opacity: 0.7; cursor: default;"></div>
@@ -236,6 +243,12 @@
                                 <div id="invoiceItemsContainer"></div>
                             </div>
 
+                            <div class="card">
+                                <h2 class="section-title">Additional Info</h2>
+                                <div class="form-group" style="margin-bottom: 20px;"><label>Notes</label><textarea id="invNotes" class="form-control" placeholder="Any relevant information not covered..."></textarea></div>
+                                <div class="form-group"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control" placeholder="Late fees, payment methods, delivery schedule..."></textarea></div>
+                            </div>
+                            
                             <button type="submit" class="btn btn-primary" id="saveInvoiceBtn" style="width:100%; padding: 18px; font-size: 16px;">Create & Send</button>
                         </div>
                         
@@ -269,7 +282,7 @@
     </template>
 
     <script>
-        // SATU URL UNTUK SEMUA BENDA (PDF & DASHBOARD)
+        // MASUKKAN URL WEB APP KAU KAT SINI
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx4e-9iEJ0Rd16_AlmjjpqfMwB57c3GtVVo59cspVIj8ZrnHbpHfIjIQo13Rp7fbUFB/exec';
         
         // Notification Sound (Ting!)
@@ -319,7 +332,7 @@
         }
 
         function showSuccessModal(pdfUrl) {
-            successSound.play().catch(e => console.log("Sound played automatically"));
+            successSound.play().catch(e => console.log("Sound blocked by browser"));
             document.getElementById('downloadPdfBtn').href = pdfUrl;
             document.getElementById('success-modal').classList.add('show');
         }
@@ -400,6 +413,8 @@
                 invoiceNo: document.getElementById('invNo').value,
                 invoiceDate: document.getElementById('invDate').value,
                 dueDate: document.getElementById('invDueDate').value,
+                notes: document.getElementById('invNotes').value,
+                terms: document.getElementById('invTerms').value,
                 items: itemsArray,
                 subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''),
                 discount: document.getElementById('sumDiscount').value,
@@ -413,9 +428,10 @@
             .then(result => {
                 btn.innerText = "Create & Send"; btn.disabled = false;
                 if(result.status === 'success') {
-                    showSuccessModal(result.pdfUrl); // KELUARKAN APPLE NOTIFICATION POPUP
+                    showSuccessModal(result.pdfUrl);
                 } else {
-                    alert("Ada masalah dari server Google. Sila periksa fail skrip.");
+                    // ALERT BARU: Tunjuk masalah sebenar
+                    alert("Ralat dari Google Server:\n" + (result.message || "Unknown Error. Check Google Apps Script."));
                 }
             })
             .catch(err => {
