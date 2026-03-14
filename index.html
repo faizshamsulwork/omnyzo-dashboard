@@ -7,97 +7,153 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg-color: #0b0c10; --sidebar-bg: #15161c; --accent-pink: #e14e65; --border-color: #f1f1f4; }
-        [data-theme="light"] { --bg-color: #f5f5f7; --sidebar-bg: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { background-color: var(--bg-color); font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100vh; display: flex; }
+        body { background-color: var(--bg-color); font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100vh; display: flex; color: #fff; }
+        
         #intro-page { position: fixed; inset: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; background: #000; transition: 1s ease; }
         .sidebar { width: 280px; background: var(--sidebar-bg); border-right: 1px solid rgba(255,255,255,0.05); padding: 40px 24px; display: flex; flex-direction: column; }
         .nav-item { padding: 16px; border-radius: 14px; color: #86868b; font-weight: 700; margin-bottom: 8px; cursor: pointer; text-transform: uppercase; font-size: 13px; }
         .nav-item.active { background: rgba(255,255,255,0.1); color: #fff; }
+
         .main-content { flex: 1; padding: 40px 60px; overflow-y: auto; background: #f8f9fb; color: #1d1d1f; }
         .view-section { display: none; }
         .view-section.active-view { display: block; }
+
+        /* FORM DETAIL (FOLLOWING SCREENSHOT) */
         .invoice-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; align-items: start; }
-        .card { background: #fff; border-radius: 24px; padding: 35px; border: 1px solid var(--border-color); margin-bottom: 25px; }
+        .card { background: #fff; border-radius: 24px; padding: 35px; border: 1px solid var(--border-color); margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .form-control { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid #eef0f2; background: #fbfbfd; font-size: 15px; }
+        .form-control { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid #eef0f2; background: #fbfbfd; font-size: 15px; color: #1d1d1f; }
+        
+        /* SUMMARY BOX */
         .summary-card { background: #151b2d; color: #fff; border-radius: 24px; padding: 40px; position: sticky; top: 0; }
-        .btn-pink { background: #e14e65; color: #fff; padding: 18px; border-radius: 14px; border: none; font-weight: 700; font-size: 16px; cursor: pointer; width: 100%; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 15px; color: #a1aab2; align-items: center; }
+        .total-amount { font-size: 32px; font-weight: 800; color: #fff; }
+
+        .btn-pink { background: #e14e65; color: #fff; padding: 18px; border-radius: 14px; border: none; font-weight: 700; width: 100%; cursor: pointer; }
         .item-row { display: grid; grid-template-columns: 2.5fr 0.8fr 1.2fr 1.2fr auto; gap: 15px; margin-bottom: 15px; align-items: center; }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 2000; }
-        .modal-overlay.show { display: flex; }
-        .modal { background: #fff; width: 400px; padding: 45px; border-radius: 35px; text-align: center; }
+        
+        /* DASHBOARD */
+        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: #fff; padding: 25px; border-radius: 24px; border: 1px solid #f1f1f4; }
     </style>
 </head>
 <body data-theme="dark">
     <div id="intro-page"><div style="text-align:center;"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" width="320" style="filter:invert(1);"><br><button onclick="launchApp()" style="background:#fff; color:#000; padding:20px 60px; border-radius:40px; font-weight:700; border:none; cursor:pointer; margin-top:40px;">ENTER OS</button></div></div>
-    <div id="success-modal" class="modal-overlay"><div class="modal"><h2>SUCCESS</h2><p style="margin:20px 0;">Invoice created.</p><a id="downloadPdfBtn" href="#" target="_blank" class="btn-pink" style="display:block; text-decoration:none;">DOWNLOAD PDF</a><button onclick="closeSuccessModal()" style="margin-top:20px; background:none; border:none; cursor:pointer; font-weight:700;">DONE</button></div></div>
+
     <aside class="sidebar"><div style="margin-bottom:50px; filter:invert(1);"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" width="40"></div><nav><div class="nav-item active" onclick="switchView('dashboard-view', this)">Dashboard</div><div class="nav-item" onclick="switchView('new-invoice-view', this)">Invoices</div></nav></aside>
+
     <main class="main-content">
         <div id="dashboard-view" class="view-section active-view">
             <h1>Overview</h1>
-            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; margin:30px 0;">
-                <div class="card"><div style="color:#86868b; font-size:12px; font-weight:800;">REVENUE</div><div id="dash-revenue" style="font-size:28px; font-weight:800; color:#e14e65;">RM 0.00</div></div>
-                <div class="card"><div style="color:#86868b; font-size:12px; font-weight:800;">INVOICES</div><div id="dash-outstanding" style="font-size:28px; font-weight:800;">0</div></div>
-                <div class="card"><div style="color:#86868b; font-size:12px; font-weight:800;">CLIENTS</div><div id="dash-clients" style="font-size:28px; font-weight:800;">0</div></div>
+            <div class="dash-grid">
+                <div class="stat-card"><div style="color:#86868b; font-size:12px; font-weight:800;">REVENUE</div><div id="dash-revenue" style="font-size:28px; font-weight:800; color:#e14e65;">RM 0.00</div></div>
+                <div class="stat-card"><div style="color:#86868b; font-size:12px; font-weight:800;">INVOICES</div><div id="dash-outstanding" style="font-size:28px; font-weight:800; color:#1d1d1f;">0</div></div>
+                <div class="stat-card"><div style="color:#86868b; font-size:12px; font-weight:800;">CLIENTS</div><div id="dash-clients" style="font-size:28px; font-weight:800; color:#1d1d1f;">0</div></div>
             </div>
         </div>
+
         <div id="new-invoice-view" class="view-section">
             <h1 style="margin-bottom:30px;">New Invoice</h1>
-            <form id="invoiceForm"><div class="invoice-container">
-                <div class="left-col">
-                    <div class="card">
-                        <h3>Invoice Details</h3>
-                        <div class="form-grid">
-                            <div class="form-group" style="grid-column: span 2;"><label>Customer Name</label><input type="text" id="invCustomer" class="form-control" required></div>
-                            <div class="form-group"><label>PIC Name</label><input type="text" id="invPIC" class="form-control" required></div>
-                            <div class="form-group"><label>PIC Phone</label><input type="text" id="invPhone" class="form-control"></div>
-                            <div class="form-group"><label>PIC Email</label><input type="email" id="invEmail" class="form-control"></div>
-                            <div class="form-group" style="grid-column: span 2;"><label>Address</label><input type="text" id="invAddress" class="form-control"></div>
-                            <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" readonly></div>
-                            <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" required onchange="calculateDueDate()"></div>
-                            <div class="form-group"><label>Due Date</label><input type="date" id="invDueDate" class="form-control" required></div>
+            <form id="invoiceForm">
+                <div class="invoice-container">
+                    <div class="left-col">
+                        <div class="card">
+                            <h3>Invoice Details</h3>
+                            <div class="form-group" style="margin-bottom:20px;"><label style="font-weight:600;">Issuing Company</label><select class="form-control" disabled><option>Omnyzo Agency</option></select></div>
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;"><label style="font-weight:600;">Customer</label><input type="text" id="invCustomer" class="form-control" placeholder="Select customer..." required></div>
+                                <div class="form-group"><label style="font-weight:600;">Invoice No.</label><input type="text" id="invNo" class="form-control" readonly></div>
+                                <div class="form-group"><label style="font-weight:600;">PIC Name</label><input type="text" id="invPIC" class="form-control" required></div>
+                                <div class="form-group"><label style="font-weight:600;">PIC Phone</label><input type="text" id="invPhone" class="form-control"></div>
+                                <div class="form-group"><label style="font-weight:600;">PIC Email</label><input type="email" id="invEmail" class="form-control"></div>
+                                <div class="form-group" style="grid-column: span 2;"><label style="font-weight:600;">Client Address</label><input type="text" id="invAddress" class="form-control"></div>
+                                <div class="form-group"><label style="font-weight:600;">Invoice Date</label><input type="date" id="invDate" class="form-control" required onchange="calculateDueDate()"></div>
+                                <div class="form-group"><label style="font-weight:600;">Due Date</label><input type="date" id="invDueDate" class="form-control" required></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:20px;"><h3>Items</h3><button type="button" onclick="addInvoiceItem()">+ Add Item</button></div>
+                            <div id="invoiceItemsContainer"></div>
+                        </div>
+                        <div class="card">
+                            <h3>Additional Info</h3>
+                            <div class="form-group" style="margin-bottom:20px;"><label>Notes</label><textarea id="invNotes" class="form-control" rows="3" placeholder="Notes..."></textarea></div>
+                            <div class="form-group"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control" rows="3">1. Payment is due within 30 days.</textarea></div>
+                        </div>
+                        <button type="submit" id="saveInvoiceBtn" class="btn-pink">Create & Send</button>
+                    </div>
+
+                    <div class="right-col">
+                        <div class="summary-card">
+                            <h2>Summary</h2>
+                            <div class="summary-row" style="margin-top:30px;"><span>Subtotal</span><span id="sumSubtotal">RM 0.00</span></div>
+                            <div class="summary-row"><span>Discount (RM)</span><input type="number" id="sumDiscount" class="form-control" style="width:80px; background:rgba(255,255,255,0.1); border:none; color:#fff;" value="0" oninput="calculateInvoiceTotal()"></div>
+                            <div class="summary-row"><span>Tax (%)</span><input type="number" id="sumTaxPercent" class="form-control" style="width:80px; background:rgba(255,255,255,0.1); border:none; color:#fff;" value="0" oninput="calculateInvoiceTotal()"></div>
+                            <div class="summary-row"><span>Tax Amount</span><span id="sumTaxAmount">RM 0.00</span></div>
+                            <hr style="opacity:0.1; margin:25px 0;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-end;"><h3>Total</h3><h2 id="sumGrandTotal" class="total-amount">RM 0.00</h2></div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:20px;"><h3>Items</h3><button type="button" onclick="addInvoiceItem()">+ Add Item</button></div>
-                        <div id="invoiceItemsContainer"></div>
-                    </div>
-                    <div class="card"><h3>Additional Info</h3>
-                        <textarea id="invTerms" class="form-control" rows="3" placeholder="Terms & Conditions"></textarea>
-                    </div>
-                    <button type="submit" id="saveInvoiceBtn" class="btn-pink">Create & Send</button>
                 </div>
-                <div class="right-col"><div class="summary-card">
-                    <h2 style="margin-bottom:30px;">Summary</h2>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><span>Subtotal</span><span id="sumSubtotal">RM 0.00</span></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><span>Tax Amount</span><span id="sumTaxAmount">RM 0.00</span></div>
-                    <hr style="opacity:0.1; margin:20px 0;">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-end;"><h3>Total</h3><h2 id="sumGrandTotal">RM 0.00</h2></div>
-                </div></div>
-            </div></form>
+            </form>
         </div>
     </main>
+
     <template id="invoiceItemTemplate">
-        <div class="item-row"><input type="text" class="form-control item-desc" required placeholder="Item"><input type="number" class="form-control item-qty" value="1" oninput="updateRowTotal(this)"><input type="number" class="form-control item-price" value="0" oninput="updateRowTotal(this)"><div class="item-total" style="font-weight:700;">0.00</div><button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();">🗑️</button></div>
+        <div class="item-row">
+            <input type="text" class="form-control item-desc" required placeholder="Item description">
+            <input type="number" class="form-control item-qty" value="1" oninput="updateRowTotal(this)">
+            <input type="number" class="form-control item-price" value="0" oninput="updateRowTotal(this)">
+            <div class="item-total" style="font-weight:700;">0.00</div>
+            <button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();" style="background:none; border:none; color:#ff3b30; cursor:pointer;">🗑️</button>
+        </div>
     </template>
+
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwjGOmilyVJbI39FFLfnVQ4LgF3xd7k96i8FCwvl6DX_mqbAypkPDstFZaORAzi9J1y/exec';
-        const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        
         function launchApp() { document.getElementById('intro-page').style.opacity = '0'; setTimeout(() => { document.getElementById('intro-page').style.display = 'none'; document.getElementById('invDate').valueAsDate = new Date(); calculateDueDate(); addInvoiceItem(); fetchDashboardData(); }, 800); }
         function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); document.getElementById(viewId).classList.add('active-view'); nav.classList.add('active'); if(viewId === 'dashboard-view') fetchDashboardData(); }
         function addInvoiceItem() { document.getElementById('invoiceItemsContainer').appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true)); }
         function updateRowTotal(input) { const row = input.closest('.item-row'); row.querySelector('.item-total').innerText = (row.querySelector('.item-qty').value * row.querySelector('.item-price').value).toFixed(2); calculateInvoiceTotal(); }
-        function calculateInvoiceTotal() { let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += parseFloat(t.innerText)); document.getElementById('sumSubtotal').innerText = 'RM ' + sub.toFixed(2); document.getElementById('sumGrandTotal').innerText = 'RM ' + sub.toFixed(2); }
+        
+        function calculateInvoiceTotal() {
+            let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += parseFloat(t.innerText));
+            const disc = parseFloat(document.getElementById('sumDiscount').value) || 0;
+            const taxP = parseFloat(document.getElementById('sumTaxPercent').value) || 0;
+            const taxA = (sub - disc) * (taxP / 100);
+            document.getElementById('sumSubtotal').innerText = 'RM ' + sub.toFixed(2);
+            document.getElementById('sumTaxAmount').innerText = 'RM ' + taxA.toFixed(2);
+            document.getElementById('sumGrandTotal').innerText = 'RM ' + (sub - disc + taxA).toFixed(2);
+        }
+
         function calculateDueDate() { const d = new Date(document.getElementById('invDate').value); d.setDate(d.getDate() + 30); document.getElementById('invDueDate').valueAsDate = d; }
-        function fetchDashboardData() { fetch(SCRIPT_URL).then(res => res.json()).then(data => { if(data.status === 'success') { let rev = 0; data.invoices.forEach(i => rev += parseFloat(i.amount) || 0); document.getElementById('dash-revenue').innerText = 'RM ' + rev.toLocaleString(); document.getElementById('dash-outstanding').innerText = data.invoices.length; document.getElementById('dash-clients').innerText = [...new Set(data.invoices.map(i => i.client))].length; if(data.nextInvoiceNo) document.getElementById('invNo').value = data.nextInvoiceNo; } }); }
-        function showSuccessModal(pdfUrl) { successSound.play(); document.getElementById('downloadPdfBtn').href = pdfUrl; document.getElementById('success-modal').classList.add('show'); }
-        function closeSuccessModal() { document.getElementById('success-modal').classList.remove('show'); document.getElementById('invoiceForm').reset(); switchView('dashboard-view', document.querySelector('.nav-item')); }
+        
+        function fetchDashboardData() {
+            fetch(SCRIPT_URL).then(res => res.json()).then(data => {
+                if(data.status === 'success') {
+                    let rev = 0; data.invoices.forEach(i => rev += parseFloat(i.amount) || 0);
+                    document.getElementById('dash-revenue').innerText = 'RM ' + rev.toLocaleString();
+                    document.getElementById('dash-outstanding').innerText = data.invoices.length;
+                    document.getElementById('dash-clients').innerText = [...new Set(data.invoices.map(i => i.client))].length;
+                    if(data.nextInvoiceNo) document.getElementById('invNo').value = data.nextInvoiceNo;
+                }
+            });
+        }
+
         document.getElementById('invoiceForm').addEventListener('submit', function(e) {
-            e.preventDefault(); const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "SAYUR..."; btn.disabled = true;
+            e.preventDefault(); const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "Processing..."; btn.disabled = true;
             const items = Array.from(document.querySelectorAll('.item-row')).map(r => ({ desc: r.querySelector('.item-desc').value, qty: r.querySelector('.item-qty').value, price: r.querySelector('.item-price').value, total: r.querySelector('.item-total').innerText }));
-            const payload = { type: "invoice", client: document.getElementById('invCustomer').value, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, items: items, subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''), taxAmount: '0.00', grandTotal: document.getElementById('sumGrandTotal').innerText.replace('RM ', '') };
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = "Create & Send"; btn.disabled = false; if(res.status === 'success') showSuccessModal(res.pdfUrl); });
+            const payload = {
+                type: "invoice", client: document.getElementById('invCustomer').value, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value,
+                invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value,
+                items: items, subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''), taxAmount: document.getElementById('sumTaxAmount').innerText.replace('RM ', ''), grandTotal: document.getElementById('sumGrandTotal').innerText.replace('RM ', '')
+            };
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => {
+                btn.innerText = "Create & Send"; btn.disabled = false;
+                if(res.status === 'success') window.open(res.pdfUrl, '_blank');
+            });
         });
     </script>
 </body>
