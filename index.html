@@ -13,7 +13,7 @@
             --card-bg: #0a0a12;
             --text-main: #f1f5f9;
             --text-muted: #8493a8;
-            --accent-primary: #f43f5e; /* Red/Pink from screenshot */
+            --accent-primary: #f43f5e;
             --accent-glow: 0 0 25px rgba(244, 63, 94, 0.4);
             --border-color: #1a1a2e;
             --input-bg: #0f1016;
@@ -35,7 +35,7 @@
             --accent-primary: #e14e65; 
             --accent-glow: 0 4px 14px rgba(225, 78, 101, 0.2);
             --border-color: #e2e8f0;
-            --input-bg: #f8fafc;
+            --input-bg: #f1f5f9;
             --glass-bg: rgba(255, 255, 255, 0.7);
             --glass-border: rgba(0, 0, 0, 0.05);
         }
@@ -109,35 +109,51 @@
         .form-control:disabled, .form-control[readonly] { opacity: 0.7; cursor: not-allowed; }
         textarea.form-control { resize: vertical; min-height: 100px; }
 
-        /* --- DASHBOARD SPECIFIC --- */
+        /* --- DASHBOARD & CASHFLOW COMMON --- */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 40px; }
         .stat-card { background-color: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border-color); }
         .stat-title { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; font-weight: 500; }
         .stat-value { font-size: 28px; font-weight: 700; color: var(--text-main); }
+        
+        /* --- DASHBOARD SPECIFIC --- */
         .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
         .qa-btn { padding: 20px; text-align: left; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; cursor: pointer; transition: 0.2s; color: var(--text-main); font-weight: 600;}
         .qa-btn:hover { border-color: var(--accent-primary); transform: translateY(-3px); }
 
-        /* --- NEW INVOICE SPECIFIC (REPLICA) --- */
+        /* --- NEW INVOICE SPECIFIC (LOCKED) --- */
         .invoice-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start; }
-        
         .summary-card { background-color: #0f172a; color: white; padding: 30px; border-radius: 20px; position: sticky; top: 30px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1);}
         .summary-title { font-size: 20px; font-weight: 600; margin-bottom: 30px; color: white; }
         .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 14px; color: #cbd5e1; }
         .summary-input { width: 80px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; text-align: center; padding: 6px; border-radius: 20px; outline: none; }
         .summary-total { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 24px; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; font-size: 20px; font-weight: 700; color: white; }
-
         .items-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;}
-        .items-header h2 { font-size: 18px; font-weight: 600; }
-        
         .item-row { display: grid; grid-template-columns: 3fr 1fr 1.5fr 1.5fr auto; gap: 15px; margin-bottom: 15px; align-items: center; }
         .item-header-row { display: grid; grid-template-columns: 3fr 1fr 1.5fr 1.5fr auto; gap: 15px; margin-bottom: 10px; color: var(--text-muted); font-size: 13px; font-weight: 500; }
-        
         .btn-icon { background: none; border: none; color: var(--danger-color); cursor: pointer; padding: 8px; border-radius: 8px; transition: 0.2s; }
         .btn-icon:hover { background: rgba(239, 68, 68, 0.1); }
-
         .invoice-footer-actions { display: flex; gap: 15px; margin-top: 20px; }
         .invoice-footer-actions .btn { flex: 1; padding: 16px; font-size: 15px; border-radius: 12px;}
+
+        /* --- NEW CASHFLOW SPECIFIC --- */
+        .filter-group { display: flex; gap: 10px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 10px; margin-bottom: 24px; }
+        .filter-group::-webkit-scrollbar { height: 4px; }
+        .filter-group::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        .pill { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 20px; color: var(--text-muted); font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .pill:hover { border-color: var(--text-main); color: var(--text-main); }
+        .pill.active { background-color: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+        .pill-wrapper { background: var(--input-bg); padding: 6px; border-radius: 24px; display: inline-flex; gap: 4px; margin-bottom: 24px; border: 1px solid var(--border-color);}
+        .pill-inner { padding: 8px 16px; border-radius: 18px; color: var(--text-muted); font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; border: none; background: transparent; }
+        .pill-inner.active { background: var(--card-bg); color: var(--text-main); box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .dot-green { width: 8px; height: 8px; background-color: var(--success-color); border-radius: 50%; }
+        .dot-red { width: 8px; height: 8px; background-color: var(--danger-color); border-radius: 50%; }
+
+        .cf-table-container { background-color: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-color); overflow: hidden; }
+        .cf-table-header { padding: 24px; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 16px; }
+        .cf-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .cf-table th, .cf-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+        .cf-table th { color: var(--text-muted); font-weight: 500; font-size: 13px; }
+        .cf-table td { color: var(--text-main); }
 
     </style>
 </head>
@@ -161,7 +177,7 @@
                 <a class="nav-item" onclick="switchView('new-invoice-view', this)">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y1="13"></line><line x1="16" y1="17" x2="8" y1="17"></line></svg> New Invoice
                 </a>
-                <a class="nav-item" onclick="switchView('cashflow-view', this)">
+                <a class="nav-item" onclick="switchView('cashflow-dashboard-view', this)">
                     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> Cashflow
                 </a>
             </nav>
@@ -207,7 +223,7 @@
                         <span style="font-size: 24px; display: block; margin-bottom: 10px; color: var(--accent-primary);">📄</span>
                         Create Invoice
                     </button>
-                    <button class="qa-btn" onclick="switchView('cashflow-view', document.querySelectorAll('.nav-item')[2])">
+                    <button class="qa-btn" onclick="switchView('add-cashflow-view')">
                         <span style="font-size: 24px; display: block; margin-bottom: 10px; color: var(--success-color);">💸</span>
                         Record Cashflow
                     </button>
@@ -231,15 +247,12 @@
 
                 <form id="invoiceForm">
                     <div class="invoice-layout">
-                        
                         <div>
                             <div class="card">
                                 <h2 class="section-title">Invoice Details</h2>
                                 <div class="form-group" style="margin-bottom: 20px;">
                                     <label>Issuing Company</label>
-                                    <select class="form-control" disabled>
-                                        <option>Omnyzo Agency</option>
-                                    </select>
+                                    <select class="form-control" disabled><option>Omnyzo Agency</option></select>
                                     <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">Select which business entity is issuing this invoice.</p>
                                 </div>
                                 <div class="form-grid">
@@ -247,18 +260,9 @@
                                         <label style="display:flex; justify-content:space-between;">Customer <span style="color:var(--accent-primary); cursor:pointer;">+ Add New Customer</span></label>
                                         <input type="text" id="invCustomer" class="form-control" placeholder="Select customer..." required>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Invoice No.</label>
-                                        <input type="text" id="invNo" class="form-control" value="INV-0002" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Invoice Date</label>
-                                        <input type="date" id="invDate" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Due Date</label>
-                                        <input type="date" id="invDueDate" class="form-control" required>
-                                    </div>
+                                    <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" value="INV-0002" required></div>
+                                    <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" required></div>
+                                    <div class="form-group"><label>Due Date</label><input type="date" id="invDueDate" class="form-control" required></div>
                                 </div>
                             </div>
 
@@ -267,29 +271,16 @@
                                     <h2 style="margin:0;">Items</h2>
                                     <button type="button" class="btn btn-light" onclick="addInvoiceItem()">+ Add Item</button>
                                 </div>
-                                
                                 <div class="item-header-row">
-                                    <div>Description</div>
-                                    <div>Qty</div>
-                                    <div>Price (RM)</div>
-                                    <div>Total (RM)</div>
-                                    <div></div>
+                                    <div>Description</div><div>Qty</div><div>Price (RM)</div><div>Total (RM)</div><div></div>
                                 </div>
-
-                                <div id="invoiceItemsContainer">
-                                    </div>
+                                <div id="invoiceItemsContainer"></div>
                             </div>
 
                             <div class="card">
                                 <h2 class="section-title">Additional Info</h2>
-                                <div class="form-group">
-                                    <label>Notes</label>
-                                    <textarea id="invNotes" class="form-control" placeholder="Notes - any relevant information not covered, e.g. delivery terms"></textarea>
-                                </div>
-                                <div class="form-group" style="margin-top: 20px;">
-                                    <label>Terms & Conditions</label>
-                                    <textarea id="invTerms" class="form-control" placeholder="Terms and conditions - late fees, payment methods, delivery schedule"></textarea>
-                                </div>
+                                <div class="form-group"><label>Notes</label><textarea id="invNotes" class="form-control" placeholder="Notes - any relevant information not covered, e.g. delivery terms"></textarea></div>
+                                <div class="form-group" style="margin-top: 20px;"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control" placeholder="Terms and conditions - late fees, payment methods, delivery schedule"></textarea></div>
                             </div>
 
                             <div class="invoice-footer-actions">
@@ -302,36 +293,99 @@
                         <div>
                             <div class="summary-card">
                                 <h2 class="summary-title">Summary</h2>
-                                <div class="summary-row">
-                                    <span>Subtotal</span>
-                                    <span id="sumSubtotal">RM 0.00</span>
-                                </div>
-                                <div class="summary-row">
-                                    <span>Discount (RM)</span>
-                                    <input type="number" id="sumDiscount" class="summary-input" value="0" min="0" step="0.01" oninput="calculateInvoiceTotal()">
-                                </div>
-                                <div class="summary-row">
-                                    <span>Tax (%)</span>
-                                    <input type="number" id="sumTaxPercent" class="summary-input" value="0" min="0" max="100" oninput="calculateInvoiceTotal()">
-                                </div>
-                                <div class="summary-row">
-                                    <span>Tax Amount</span>
-                                    <span id="sumTaxAmount">RM 0.00</span>
-                                </div>
-                                <div class="summary-total">
-                                    <span>Total</span>
-                                    <span id="sumGrandTotal">RM 0.00</span>
-                                </div>
+                                <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">RM 0.00</span></div>
+                                <div class="summary-row"><span>Discount (RM)</span><input type="number" id="sumDiscount" class="summary-input" value="0" min="0" step="0.01" oninput="calculateInvoiceTotal()"></div>
+                                <div class="summary-row"><span>Tax (%)</span><input type="number" id="sumTaxPercent" class="summary-input" value="0" min="0" max="100" oninput="calculateInvoiceTotal()"></div>
+                                <div class="summary-row"><span>Tax Amount</span><span id="sumTaxAmount">RM 0.00</span></div>
+                                <div class="summary-total"><span>Total</span><span id="sumGrandTotal">RM 0.00</span></div>
                             </div>
                         </div>
-
                     </div>
                 </form>
             </div>
 
-            <div id="cashflow-view" class="view-section">
+            <div id="cashflow-dashboard-view" class="view-section">
                 <header>
-                    <div><h1>Cashflow</h1><p>Record business income and expenses.</p></div>
+                    <div>
+                        <h1>Cashflow</h1>
+                        <p>Track business income and expenses.</p>
+                    </div>
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <button class="btn btn-outline" style="border-radius: 10px; padding: 10px 18px; font-weight: 500;">
+                            <svg viewBox="0 0 24 24" width="16" stroke="currentColor" fill="none" stroke-width="2" style="margin-bottom: -2px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            All Time
+                        </button>
+                        <button type="button" class="btn btn-primary" style="padding: 0; width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center;" onclick="switchView('add-cashflow-view')">
+                            <svg viewBox="0 0 24 24" width="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Net Balance</div>
+                        <div class="stat-value" style="color: var(--success-color);">+ RM 0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Total Income</div>
+                        <div class="stat-value" style="color: var(--success-color);">+ RM 0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Total Expenses</div>
+                        <div class="stat-value" style="color: var(--danger-color);">- RM 0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Transactions</div>
+                        <div class="stat-value" style="color: var(--accent-primary);">0</div>
+                    </div>
+                </div>
+
+                <div class="pill-wrapper">
+                    <button class="pill-inner active">All</button>
+                    <button class="pill-inner"><span class="dot-green"></span> Money In</button>
+                    <button class="pill-inner"><span class="dot-red"></span> Money Out</button>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="pill active">All Categories</div>
+                    <div class="pill">Sales / Revenue</div>
+                    <div class="pill">Service Income</div>
+                    <div class="pill">Consultation Fee</div>
+                    <div class="pill">Commission</div>
+                    <div class="pill">Interest Income</div>
+                    <div class="pill">Capital Injection</div>
+                    <div class="pill">Invoice Payment</div>
+                    <div class="pill">Refund</div>
+                </div>
+
+                <div class="cf-table-container">
+                    <div class="cf-table-header">Transaction History</div>
+                    <table class="cf-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Merchant</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="5" style="padding: 40px; text-align: center; color: var(--text-muted);">No transactions found. Click the + button to add one.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="add-cashflow-view" class="view-section">
+                <header>
+                    <div>
+                        <h1>
+                            <button class="btn-outline" style="border:none; padding:8px; border-radius:50%; margin-right:10px;" onclick="switchView('cashflow-dashboard-view')">←</button>
+                            Add Cashflow
+                        </h1>
+                        <p style="margin-left: 55px;">Record a new transaction.</p>
+                    </div>
                 </header>
                 <div class="card" style="max-width: 700px;">
                     <form id="cashflowForm">
@@ -377,16 +431,14 @@
                 document.getElementById('intro-page').style.display = 'none';
                 document.getElementById('app-container').classList.add('visible');
                 
-                // Set default dates
                 const today = new Date();
                 document.getElementById('invDate').valueAsDate = today;
                 document.getElementById('cfDate').valueAsDate = today;
                 
                 const nextMonth = new Date();
-                nextMonth.setDate(today.getDate() + 7); // Default due date 7 days later
+                nextMonth.setDate(today.getDate() + 7);
                 document.getElementById('invDueDate').valueAsDate = nextMonth;
 
-                // Add one empty item row by default
                 addInvoiceItem();
             }, 800);
         }
@@ -418,7 +470,7 @@
             }
         }
 
-        // --- 3. DYNAMIC INVOICE ITEMS & CALCULATIONS ---
+        // --- 3. INVOICE LOGIC (LOCKED) ---
         function addInvoiceItem() {
             const container = document.getElementById('invoiceItemsContainer');
             const template = document.getElementById('invoiceItemTemplate').content;
@@ -428,7 +480,7 @@
 
         function removeInvoiceItem(btn) {
             const container = document.getElementById('invoiceItemsContainer');
-            if(container.children.length > 1) { // keep at least 1 row
+            if(container.children.length > 1) {
                 btn.closest('.item-row').remove();
                 calculateInvoiceTotal();
             } else {
@@ -447,31 +499,24 @@
         function calculateInvoiceTotal() {
             const rows = document.querySelectorAll('.item-row');
             let subtotal = 0;
-            
-            // Sum Subtotal
-            rows.forEach(row => {
-                subtotal += parseFloat(row.querySelector('.item-total').value) || 0;
-            });
+            rows.forEach(row => { subtotal += parseFloat(row.querySelector('.item-total').value) || 0; });
 
-            // Get Modifiers
             const discount = parseFloat(document.getElementById('sumDiscount').value) || 0;
             const taxPercent = parseFloat(document.getElementById('sumTaxPercent').value) || 0;
 
-            // Calculations
             const afterDiscount = Math.max(0, subtotal - discount);
             const taxAmount = afterDiscount * (taxPercent / 100);
             const grandTotal = afterDiscount + taxAmount;
 
-            // Update UI
             document.getElementById('sumSubtotal').innerText = 'RM ' + subtotal.toFixed(2);
             document.getElementById('sumTaxAmount').innerText = 'RM ' + taxAmount.toFixed(2);
             document.getElementById('sumGrandTotal').innerText = 'RM ' + grandTotal.toFixed(2);
         }
 
-        // --- 4. GOOGLE SHEETS AUTOMATION (FETCH API) ---
+        // --- 4. GOOGLE SHEETS AUTOMATION ---
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtaG9jrFHxYIycOl0ijuGR4wwy0EmWBeB7YJXpbu0jiIFks7FTNgdnpq8_DScC1tas/exec';
 
-        // Submit Invoice Form
+        // Submit Invoice
         document.getElementById('invoiceForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('saveInvoiceBtn');
@@ -479,7 +524,7 @@
             btn.innerText = "Sending..."; btn.disabled = true;
 
             const data = {
-                type: "invoice", // Routes to "Invoices" tab in Apps Script
+                type: "invoice",
                 client: document.getElementById('invCustomer').value,
                 project: "Inv No: " + document.getElementById('invNo').value + " | " + document.getElementById('invNotes').value.substring(0,20),
                 amount: document.getElementById('sumGrandTotal').innerText.replace('RM ', ''),
@@ -500,7 +545,7 @@
             });
         });
 
-        // Submit Cashflow Form
+        // Submit Cashflow
         document.getElementById('cashflowForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('saveCashflowBtn');
@@ -508,7 +553,7 @@
             btn.innerText = "Saving..."; btn.disabled = true;
 
             const data = {
-                type: "cashflow", // Routes to "Cashflow" tab in Apps Script
+                type: "cashflow",
                 date: document.getElementById('cfDate').value,
                 merchant: document.getElementById('cfMerchant').value,
                 category: document.getElementById('cfCategory').value,
@@ -522,11 +567,13 @@
                 btn.innerText = "Save Transaction"; btn.disabled = false;
                 msg.innerText = "Transaction saved to Sheets!"; msg.style.display = "block";
                 this.reset(); document.getElementById('cfDate').valueAsDate = new Date();
+                setTimeout(() => { msg.style.display = "none"; switchView('cashflow-dashboard-view'); }, 2000);
             })
             .catch(err => {
                 btn.innerText = "Save Transaction"; btn.disabled = false;
                 msg.innerText = "Saved to Google Sheets!"; msg.style.display = "block";
                 this.reset();
+                setTimeout(() => { msg.style.display = "none"; switchView('cashflow-dashboard-view'); }, 2000);
             });
         });
     </script>
