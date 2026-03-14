@@ -28,12 +28,29 @@
         body { background-color: var(--bg-color); color: var(--text-main); font-family: var(--font-main); overflow: hidden; height: 100vh; display: flex; transition: 0.4s ease; }
 
         /* --- INTRO --- */
-        #intro-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; display: flex; justify-content: center; align-items: center; background: linear-gradient(-45deg, #050509, #1a0b14, #0f0514, #050509); background-size: 400% 400%; animation: gradientBG 15s ease infinite; transition: 1s var(--ease-apple); }
+        #intro-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; display: flex; justify-content: center; align-items: center; background: linear-gradient(-45deg, #050509, #1a0b14, #0f0514, #050509); background-size: 400% 400%; animation: gradientBG 15s ease infinite; transition: 1s var(--ease-apple); perspective: 1000px; }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         #intro-page.hidden { opacity: 0; visibility: hidden; }
-        .glass-card { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 60px 80px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); transform: translateY(30px); opacity: 0; animation: appleFadeIn 1.2s var(--ease-apple) forwards 0.3s; }
+        
+        @keyframes rotate-3d {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 60px 80px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); transform: translateY(30px); opacity: 0; animation: appleFadeIn 1.2s var(--ease-apple) forwards 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         @keyframes appleFadeIn { to { transform: translateY(0); opacity: 1; } }
-        .intro-title { font-size: 56px; font-weight: 600; color: #fff; margin-bottom: 10px; letter-spacing: -1px; }
+        
+        .intro-title { margin-bottom: 20px; letter-spacing: -1px; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; }
+        
+        #introLogoGraphic {
+            height: 100px; 
+            width: auto;
+            filter: invert(1); 
+            animation: rotate-3d 20s infinite linear; 
+            backface-visibility: hidden; 
+            transform-style: preserve-3d; 
+        }
+        
         .intro-subtitle { color: rgba(255,255,255,0.6); font-size: 18px; margin-bottom: 50px; }
         .btn-start { background: #fff; color: #000; padding: 18px 45px; border-radius: 30px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: 0.3s var(--ease-apple); font-family: var(--font-main); }
         .btn-start:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,255,255,0.3); }
@@ -44,7 +61,6 @@
         
         .sidebar { width: 270px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); padding: 30px 20px; display: flex; flex-direction: column; transition: 0.4s ease; }
         
-        /* LOGO HANDLING */
         .logo { font-size: 20px; font-weight: 700; color: var(--text-main); margin-bottom: 50px; display: flex; align-items: center; gap: 12px; padding-left: 10px; letter-spacing: 0.5px;}
         #logoGraphic { height: 32px; width: auto; filter: invert(1); transition: filter 0.3s ease; }
         [data-theme="light"] #logoGraphic { filter: none; }
@@ -130,7 +146,9 @@
 
     <div id="intro-page">
         <div class="glass-card">
-            <h1 class="intro-title">Omnyzo.</h1>
+            <h1 class="intro-title">
+                <img id="introLogoGraphic" src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" alt="Omnyzo Logo">
+            </h1>
             <p class="intro-subtitle">Command Centre & Operations OS</p>
             <button class="btn-start" onclick="launchApp()">Start OS</button>
         </div>
@@ -139,7 +157,7 @@
     <div id="app-container">
         <aside class="sidebar">
             <div class="logo">
-                <img id="logoGraphic" src="YOUR_GITHUB_LOGO_LINK_HERE" alt="Omnyzo Logo" onerror="this.style.display='none'">
+                <img id="logoGraphic" src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" alt="Omnyzo Logo">
                 <span>Omnyzo</span>
             </div>
             <nav>
@@ -286,11 +304,11 @@
                                 <div class="form-group" style="margin-bottom: 20px;"><label>Issuing Company</label><select class="form-control" disabled><option>Omnyzo Agency</option></select></div>
                                 
                                 <div class="form-grid">
-                                    <div class="form-group" style="grid-column: span 2;"><label>Customer / Company Name</label><input type="text" id="invCustomer" class="form-control" placeholder="e.g. Cagamas Berhad" required></div>
-                                    <div class="form-group"><label>PIC Name (Attn:)</label><input type="text" id="invPIC" class="form-control" placeholder="e.g. James Lim" required></div>
-                                    <div class="form-group"><label>PIC Phone</label><input type="text" id="invPhone" class="form-control" placeholder="e.g. +6010-705 3530"></div>
-                                    <div class="form-group"><label>PIC Email</label><input type="email" id="invEmail" class="form-control" placeholder="e.g. james.lim@cagamas.com.my"></div>
-                                    <div class="form-group" style="grid-column: span 2;"><label>Client Address</label><input type="text" id="invAddress" class="form-control" placeholder="Full address..."></div>
+                                    <div class="form-group" style="grid-column: span 2;"><label>Customer / Company Name</label><input type="text" id="invCustomer" class="form-control" placeholder="e.g. Syarikat Contoh Sdn Bhd" required></div>
+                                    <div class="form-group"><label>PIC Name (Attn:)</label><input type="text" id="invPIC" class="form-control" placeholder="e.g. Faiz Shamsul" required></div>
+                                    <div class="form-group"><label>PIC Phone</label><input type="text" id="invPhone" class="form-control" placeholder="e.g. +6012-3456789"></div>
+                                    <div class="form-group"><label>PIC Email</label><input type="email" id="invEmail" class="form-control" placeholder="e.g. faiz@example.com"></div>
+                                    <div class="form-group" style="grid-column: span 2;"><label>Client Address</label><input type="text" id="invAddress" class="form-control" placeholder="e.g. No. 1, Jalan Contoh..."></div>
                                     
                                     <hr class="section-divider">
 
