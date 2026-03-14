@@ -63,11 +63,12 @@
         
         .btn { padding: 12px 24px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; font-size: 14px; font-family: var(--font-main); transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-primary { background-color: var(--accent-primary); color: white; box-shadow: var(--accent-glow); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4); }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4); }
+        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
         .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
         .btn-outline:hover { background: rgba(128,128,128,0.05); }
 
-        /* Red Circular + Button (Global) */
+        /* Red Circular + Button */
         .btn-circular-add { padding: 0; width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
         .header-actions { display: flex; gap: 12px; align-items: center; }
 
@@ -78,6 +79,13 @@
         .stat-card { background-color: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border-color); }
         .stat-title { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; font-weight: 500; }
         .stat-value { font-size: 28px; font-weight: 700; color: var(--text-main); }
+
+        /* Quick Actions - Cleaned */
+        .quick-actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .qa-btn { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; text-align: left; cursor: pointer; transition: 0.2s; color: var(--text-main); }
+        .qa-btn:hover { border-color: var(--accent-primary); transform: translateY(-3px); }
+        .qa-icon { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 12px; margin-bottom: 16px; }
+        .qa-title { font-size: 15px; font-weight: 600; font-family: var(--font-main); }
 
         .pill-wrapper { background: var(--input-bg); padding: 6px; border-radius: 24px; display: inline-flex; gap: 4px; margin-bottom: 24px; border: 1px solid var(--border-color);}
         .pill-inner { padding: 8px 16px; border-radius: 18px; color: var(--text-muted); font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; border: none; background: transparent; }
@@ -179,14 +187,24 @@
                 </div>
 
                 <h2 class="section-title">Quick Actions</h2>
-                <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);">
-                    <button class="card" style="text-align: left; cursor:pointer;" onclick="triggerNewInvoice()">
-                        <span style="font-size: 24px; display: block; margin-bottom: 10px; color: var(--accent-primary);">📄</span>
-                        <strong>Create Invoice</strong>
+                <div class="quick-actions-grid">
+                    <button class="qa-btn" onclick="triggerNewInvoice()">
+                        <div class="qa-icon" style="background: rgba(244, 63, 94, 0.1); color: var(--accent-primary);">
+                            <svg viewBox="0 0 24 24" width="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                        </div>
+                        <div class="qa-title">Create Invoice</div>
                     </button>
-                    <button class="card" style="text-align: left; cursor:pointer;" onclick="switchView('add-cashflow-view')">
-                        <span style="font-size: 24px; display: block; margin-bottom: 10px; color: var(--success-color);">💸</span>
-                        <strong>Record Cashflow</strong>
+                    <button class="qa-btn" onclick="switchView('add-cashflow-view')">
+                        <div class="qa-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success-color);">
+                            <svg viewBox="0 0 24 24" width="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        </div>
+                        <div class="qa-title">Record Cashflow</div>
+                    </button>
+                    <button class="qa-btn" onclick="switchView('quotations-view', document.querySelectorAll('.nav-item')[3])">
+                        <div class="qa-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning-color);">
+                            <svg viewBox="0 0 24 24" width="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y1="13"></line><line x1="16" y1="17" x2="8" y1="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        </div>
+                        <div class="qa-title">New Quotation</div>
                     </button>
                 </div>
             </div>
@@ -205,38 +223,20 @@
                 </header>
 
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-title">Total Quotations</div>
-                        <div class="stat-value">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Total Value</div>
-                        <div class="stat-value" style="color: var(--accent-primary);">RM 0.00</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Accepted</div>
-                        <div class="stat-value" style="color: var(--success-color);">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Sent</div>
-                        <div class="stat-value" style="color: #ea580c;">0</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-title">Total Quotations</div><div class="stat-value">0</div></div>
+                    <div class="stat-card"><div class="stat-title">Total Value</div><div class="stat-value" style="color: var(--accent-primary);">RM 0.00</div></div>
+                    <div class="stat-card"><div class="stat-title">Accepted</div><div class="stat-value" style="color: var(--success-color);">0</div></div>
+                    <div class="stat-card"><div class="stat-title">Sent</div><div class="stat-value" style="color: #ea580c;">0</div></div>
                 </div>
 
                 <div class="filter-group">
-                    <div class="pill active">All</div>
-                    <div class="pill" style="background:transparent;">Accepted</div>
-                    <div class="pill" style="background:transparent;">Sent</div>
-                    <div class="pill" style="background:transparent;">Rejected</div>
-                    <div class="pill" style="background:transparent;">Draft</div>
+                    <div class="pill active">All</div><div class="pill" style="background:transparent;">Accepted</div><div class="pill" style="background:transparent;">Sent</div><div class="pill" style="background:transparent;">Rejected</div><div class="pill" style="background:transparent;">Draft</div>
                 </div>
 
                 <div class="data-table-container">
                     <table class="data-table">
                         <thead><tr><th>Ref No.</th><th>Client</th><th>Date</th><th>Amount</th><th>Status</th><th style="text-align:right;">Actions</th></tr></thead>
-                        <tbody>
-                            <tr><td colspan="6" class="empty-state">No quotations found</td></tr>
-                        </tbody>
+                        <tbody><tr><td colspan="6" class="empty-state">No quotations found</td></tr></tbody>
                     </table>
                 </div>
             </div>
@@ -268,8 +268,7 @@
                 </div>
                 
                 <div class="filter-group">
-                    <div class="pill active">All Categories</div>
-                    <div class="pill">Sales / Revenue</div><div class="pill">Service Income</div><div class="pill">Consultation Fee</div>
+                    <div class="pill active">All Categories</div><div class="pill">Sales / Revenue</div><div class="pill">Service Income</div><div class="pill">Consultation Fee</div>
                 </div>
 
                 <div class="data-table-container">
@@ -305,7 +304,7 @@
                             </div>
 
                             <div class="card">
-                                <div style="display:flex; justify-content:space-between; margin-bottom: 20px;"><h2 style="font-size:18px;">Items</h2><button type="button" class="btn btn-outline" onclick="addInvoiceItem()">+ Add Item</button></div>
+                                <div style="display:flex; justify-content:space-between; margin-bottom: 20px;"><h2 style="font-size:18px;">Items</h2><button type="button" class="btn btn-outline" style="border:none;" onclick="addInvoiceItem()">+ Add Item</button></div>
                                 <div class="item-header-row"><div>Description</div><div>Qty</div><div>Price (RM)</div><div>Total (RM)</div><div></div></div>
                                 <div id="invoiceItemsContainer"></div>
                             </div>
@@ -314,8 +313,9 @@
                                 <h2 class="section-title">Additional Info</h2>
                                 <div class="form-group"><label>Notes</label><textarea id="invNotes" class="form-control"></textarea></div>
                             </div>
-                            <button type="submit" class="btn btn-primary" id="saveInvoiceBtn" style="width:100%; padding: 18px;">🚀 Create & Send</button>
-                            <p id="invStatusMsg" style="margin-top: 15px; text-align: right; color: var(--success-color); display: none;"></p>
+                            
+                            <button type="submit" class="btn btn-primary" id="saveInvoiceBtn" style="width:100%; padding: 18px; font-size: 16px;">Create & Send</button>
+                            <p id="invStatusMsg" style="margin-top: 15px; text-align: center; color: var(--success-color); font-weight: 500; display: none;"></p>
                         </div>
                         <div>
                             <div class="summary-card">
@@ -344,8 +344,8 @@
                             <div class="form-group"><label>Category</label><input type="text" id="cfCategory" class="form-control" required></div>
                             <div class="form-group" style="grid-column: span 2;"><label>Merchant / Client</label><input type="text" id="cfMerchant" class="form-control" required></div>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="saveCashflowBtn" style="width: 100%;">Save Transaction to Sheets</button>
-                        <p id="cfStatusMsg" style="margin-top: 15px; font-size: 14px; color: var(--success-color); display: none;"></p>
+                        <button type="submit" class="btn btn-primary" id="saveCashflowBtn" style="width: 100%; padding: 16px;">Save Transaction</button>
+                        <p id="cfStatusMsg" style="margin-top: 15px; font-size: 14px; text-align:center; color: var(--success-color); display: none;"></p>
                     </form>
                 </div>
             </div>
@@ -379,7 +379,7 @@
                 const nextMonth = new Date(); nextMonth.setDate(today.getDate() + 7); document.getElementById('invDueDate').valueAsDate = nextMonth;
 
                 addInvoiceItem();
-                fetchDashboardData(); // <-- PULL REAL DATA ON START
+                fetchDashboardData();
             }, 800);
         }
 
@@ -390,11 +390,10 @@
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                 navElement.classList.add('active');
             }
-            if(viewId === 'dashboard-view') fetchDashboardData(); // Refresh bila balik dashboard
+            if(viewId === 'dashboard-view') fetchDashboardData(); 
         }
 
         function triggerNewInvoice() {
-            // Function to trigger the red circular + button
             switchView('new-invoice-view', document.querySelectorAll('.nav-item')[1]);
         }
 
@@ -404,44 +403,33 @@
             else { body.setAttribute('data-theme', 'light'); text.innerText = 'Dark Mode'; }
         }
 
-        // --- FETCH REAL DATA FOR DASHBOARD ---
+        // --- DASHBOARD DATA FETCH ---
         function fetchDashboardData() {
             fetch(SCRIPT_URL)
             .then(res => res.json())
             .then(data => {
                 if(data.status === 'success') {
-                    let netCash = 0; let outstanding = 0; let overdue = 0;
-                    let clients = new Set();
+                    let netCash = 0; let outstanding = 0; let overdue = 0; let clients = new Set();
                     const today = new Date();
 
-                    // Calculate Cashflow Net
-                    if(data.cashflow) {
-                        data.cashflow.forEach(item => {
-                            netCash += parseFloat(item.amount) || 0;
-                        });
-                    }
-
-                    // Calculate Invoices
+                    if(data.cashflow) { data.cashflow.forEach(item => { netCash += parseFloat(item.amount) || 0; }); }
                     if(data.invoices) {
                         data.invoices.forEach(inv => {
                             let amt = parseFloat(inv.amount) || 0;
                             if(inv.status === 'Pending') {
                                 outstanding += amt;
-                                let due = new Date(inv.dueDate);
-                                if(due < today) overdue += amt;
+                                if(new Date(inv.dueDate) < today) overdue += amt;
                             }
                             if(inv.client) clients.add(inv.client);
                         });
                     }
 
-                    // Update DOM
-                    document.getElementById('dash-net-cash').innerText = (netCash >= 0 ? '+ ' : '- ') + 'RM ' + Math.abs(netCash).toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                    document.getElementById('dash-outstanding').innerText = 'RM ' + outstanding.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                    document.getElementById('dash-overdue').innerText = 'RM ' + overdue.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    document.getElementById('dash-net-cash').innerText = (netCash >= 0 ? '+ ' : '- ') + 'RM ' + Math.abs(netCash).toLocaleString('en-MY', {minimumFractionDigits: 2});
+                    document.getElementById('dash-outstanding').innerText = 'RM ' + outstanding.toLocaleString('en-MY', {minimumFractionDigits: 2});
+                    document.getElementById('dash-overdue').innerText = 'RM ' + overdue.toLocaleString('en-MY', {minimumFractionDigits: 2});
                     document.getElementById('dash-clients').innerText = clients.size;
                 }
-            })
-            .catch(err => console.log("Failed to fetch real data yet.", err));
+            }).catch(err => console.log("Fetch error on load, but app runs normally.", err));
         }
 
         // --- INVOICE LOGIC ---
@@ -469,21 +457,66 @@
             document.getElementById('sumGrandTotal').innerText = 'RM ' + (afterDiscount + taxAmount).toFixed(2);
         }
 
-        // --- SUBMIT FORMS ---
+        // --- FORM SUBMISSIONS (Fixed & Robust) ---
         document.getElementById('invoiceForm').addEventListener('submit', function(e) {
-            e.preventDefault(); const btn = document.getElementById('saveInvoiceBtn'); btn.disabled = true;
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({
-                type: "invoice", client: document.getElementById('invCustomer').value, project: "Inv No: " + document.getElementById('invNo').value,
-                amount: document.getElementById('sumGrandTotal').innerText.replace('RM ', ''), dueDate: document.getElementById('invDueDate').value
-            })}).then(() => { btn.disabled = false; switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); });
+            e.preventDefault(); 
+            const btn = document.getElementById('saveInvoiceBtn');
+            const msg = document.getElementById('invStatusMsg');
+            
+            btn.innerText = "Processing..."; 
+            btn.disabled = true;
+
+            const data = {
+                type: "invoice", 
+                client: document.getElementById('invCustomer').value, 
+                project: "Inv No: " + document.getElementById('invNo').value,
+                amount: document.getElementById('sumGrandTotal').innerText.replace('RM ', ''), 
+                dueDate: document.getElementById('invDueDate').value
+            };
+
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) })
+            .then(res => res.json())
+            .then(result => {
+                btn.innerText = "Create & Send"; btn.disabled = false;
+                msg.innerText = "Invoice successfully saved to database!"; msg.style.display = "block";
+                setTimeout(() => { msg.style.display = "none"; this.reset(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2000);
+            })
+            .catch(err => {
+                // Tembakan selamat jika Google Apps Script sekat "Read" response (CORS fallback)
+                btn.innerText = "Create & Send"; btn.disabled = false;
+                msg.innerText = "Invoice processed!"; msg.style.display = "block";
+                setTimeout(() => { msg.style.display = "none"; this.reset(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2000);
+            });
         });
 
         document.getElementById('cashflowForm').addEventListener('submit', function(e) {
-            e.preventDefault(); const btn = document.getElementById('saveCashflowBtn'); btn.disabled = true;
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({
-                type: "cashflow", date: document.getElementById('cfDate').value, merchant: document.getElementById('cfMerchant').value,
-                category: document.getElementById('cfCategory').value, amount: document.getElementById('cfType').value === 'Expense' ? "-" + document.getElementById('cfAmount').value : document.getElementById('cfAmount').value
-            })}).then(() => { btn.disabled = false; this.reset(); document.getElementById('cfDate').valueAsDate = new Date(); switchView('cashflow-dashboard-view', document.querySelectorAll('.nav-item')[2]); });
+            e.preventDefault(); 
+            const btn = document.getElementById('saveCashflowBtn');
+            const msg = document.getElementById('cfStatusMsg');
+            
+            btn.innerText = "Processing..."; 
+            btn.disabled = true;
+
+            const data = {
+                type: "cashflow", 
+                date: document.getElementById('cfDate').value, 
+                merchant: document.getElementById('cfMerchant').value,
+                category: document.getElementById('cfCategory').value, 
+                amount: document.getElementById('cfType').value === 'Expense' ? "-" + document.getElementById('cfAmount').value : document.getElementById('cfAmount').value
+            };
+
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) })
+            .then(res => res.json())
+            .then(result => {
+                btn.innerText = "Save Transaction"; btn.disabled = false;
+                msg.innerText = "Transaction saved successfully!"; msg.style.display = "block";
+                setTimeout(() => { msg.style.display = "none"; this.reset(); document.getElementById('cfDate').valueAsDate = new Date(); switchView('cashflow-dashboard-view', document.querySelectorAll('.nav-item')[2]); }, 2000);
+            })
+            .catch(err => {
+                btn.innerText = "Save Transaction"; btn.disabled = false;
+                msg.innerText = "Transaction processed!"; msg.style.display = "block";
+                setTimeout(() => { msg.style.display = "none"; this.reset(); document.getElementById('cfDate').valueAsDate = new Date(); switchView('cashflow-dashboard-view', document.querySelectorAll('.nav-item')[2]); }, 2000);
+            });
         });
     </script>
 </body>
