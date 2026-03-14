@@ -80,7 +80,7 @@
         .stat-title { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; font-weight: 500; }
         .stat-value { font-size: 28px; font-weight: 700; color: var(--text-main); }
 
-        /* Quick Actions - Cleaned */
+        /* Quick Actions */
         .quick-actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .qa-btn { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; text-align: left; cursor: pointer; transition: 0.2s; color: var(--text-main); }
         .qa-btn:hover { border-color: var(--accent-primary); transform: translateY(-3px); }
@@ -109,7 +109,7 @@
         .form-control:disabled, .form-control[readonly] { opacity: 0.7; cursor: not-allowed; }
         textarea.form-control { resize: vertical; min-height: 100px; }
 
-        /* --- NEW INVOICE SPECIFIC (LOCKED) --- */
+        /* --- NEW INVOICE SPECIFIC --- */
         .invoice-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start; }
         .summary-card { background-color: #0f172a; color: white; padding: 30px; border-radius: 20px; position: sticky; top: 30px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1);}
         .summary-title { font-size: 20px; font-weight: 600; margin-bottom: 30px; color: white; }
@@ -296,10 +296,25 @@
                                 <h2 class="section-title">Invoice Details</h2>
                                 <div class="form-group" style="margin-bottom: 20px;"><label>Issuing Company</label><select class="form-control" disabled><option>Omnyzo Agency</option></select></div>
                                 <div class="form-grid">
-                                    <div class="form-group"><label>Customer</label><input type="text" id="invCustomer" class="form-control" required></div>
+                                    <div class="form-group" style="grid-column: span 2;"><label>Customer</label><input type="text" id="invCustomer" class="form-control" required></div>
                                     <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" value="INV-0002" required></div>
-                                    <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" required></div>
-                                    <div class="form-group"><label>Due Date</label><input type="date" id="invDueDate" class="form-control" required></div>
+                                    <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" onchange="calculateDueDate()" required></div>
+                                    
+                                    <div class="form-group">
+                                        <label>Credit Terms (Days)</label>
+                                        <select id="invTermsDays" class="form-control" onchange="calculateDueDate()">
+                                            <option value="0">Due on Receipt (0 days)</option>
+                                            <option value="7">7 Days</option>
+                                            <option value="14">14 Days</option>
+                                            <option value="30" selected>30 Days</option>
+                                            <option value="45">45 Days</option>
+                                            <option value="60">60 Days</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Due Date</label>
+                                        <input type="date" id="invDueDate" class="form-control" readonly style="opacity: 0.7; cursor: default;">
+                                    </div>
                                 </div>
                             </div>
 
@@ -376,11 +391,25 @@
                 
                 const today = new Date();
                 document.getElementById('invDate').valueAsDate = today; document.getElementById('cfDate').valueAsDate = today;
-                const nextMonth = new Date(); nextMonth.setDate(today.getDate() + 7); document.getElementById('invDueDate').valueAsDate = nextMonth;
+                
+                // Initialize Due Date based on default terms
+                calculateDueDate();
 
                 addInvoiceItem();
                 fetchDashboardData();
             }, 800);
+        }
+
+        // --- CALCULATION FOR DUE DATE ---
+        function calculateDueDate() {
+            const dateInput = document.getElementById('invDate').value;
+            const terms = parseInt(document.getElementById('invTermsDays').value) || 0;
+            
+            if (dateInput) {
+                const date = new Date(dateInput);
+                date.setDate(date.getDate() + terms);
+                document.getElementById('invDueDate').valueAsDate = date;
+            }
         }
 
         function switchView(viewId, navElement = null) {
@@ -457,7 +486,7 @@
             document.getElementById('sumGrandTotal').innerText = 'RM ' + (afterDiscount + taxAmount).toFixed(2);
         }
 
-        // --- FORM SUBMISSIONS (Fixed & Robust) ---
+        // --- FORM SUBMISSIONS ---
         document.getElementById('invoiceForm').addEventListener('submit', function(e) {
             e.preventDefault(); 
             const btn = document.getElementById('saveInvoiceBtn');
@@ -479,13 +508,12 @@
             .then(result => {
                 btn.innerText = "Create & Send"; btn.disabled = false;
                 msg.innerText = "Invoice successfully saved to database!"; msg.style.display = "block";
-                setTimeout(() => { msg.style.display = "none"; this.reset(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2000);
+                setTimeout(() => { msg.style.display = "none"; this.reset(); calculateDueDate(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2000);
             })
             .catch(err => {
-                // Tembakan selamat jika Google Apps Script sekat "Read" response (CORS fallback)
                 btn.innerText = "Create & Send"; btn.disabled = false;
                 msg.innerText = "Invoice processed!"; msg.style.display = "block";
-                setTimeout(() => { msg.style.display = "none"; this.reset(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2000);
+                setTimeout(() => { msg.style.display = "none"; this.reset(); calculateDueDate(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2000);
             });
         });
 
