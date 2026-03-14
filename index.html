@@ -168,7 +168,6 @@
         </aside>
 
         <main class="main-content">
-            
             <div id="dashboard-view" class="view-section active-view">
                 <header>
                     <div><h1>Dashboard</h1><p>Welcome back. Here is your real-time agency overview.</p></div>
@@ -181,7 +180,7 @@
 
                 <div class="stats-grid">
                     <div class="stat-card"><div class="stat-title">Total Revenue</div><div class="stat-value" id="dash-net-cash" style="color: var(--success-color);">Loading...</div></div>
-                    <div class="stat-card"><div class="stat-title">Total Invoices Generated</div><div class="stat-value" id="dash-outstanding" style="color: var(--warning-color);">Loading...</div></div>
+                    <div class="stat-card"><div class="stat-title">Total Invoices</div><div class="stat-value" id="dash-outstanding" style="color: var(--warning-color);">Loading...</div></div>
                     <div class="stat-card"><div class="stat-title">Total Active Clients</div><div class="stat-value" id="dash-clients">...</div></div>
                 </div>
 
@@ -201,7 +200,6 @@
                             <button class="btn-outline" style="border:none; padding:8px; border-radius:50%; margin-right:10px;" onclick="switchView('dashboard-view', document.querySelectorAll('.nav-item')[0])">←</button>
                             New Invoice
                         </h1>
-                        <p style="margin-left: 55px;">Create and issue a new invoice.</p>
                     </div>
                 </header>
                 <form id="invoiceForm">
@@ -209,83 +207,58 @@
                         <div>
                             <div class="card">
                                 <h2 class="section-title">Client & Invoice Details</h2>
-                                <div class="form-group" style="margin-bottom: 20px;"><label>Issuing Company</label><select class="form-control" disabled><option>Omnyzo Agency</option></select></div>
-                                
                                 <div class="form-grid">
-                                    <div class="form-group" style="grid-column: span 2;"><label>Customer / Company Name</label><input type="text" id="invCustomer" class="form-control" placeholder="e.g. Syarikat Contoh Sdn Bhd" required></div>
-                                    <div class="form-group"><label>PIC Name (Attn:)</label><input type="text" id="invPIC" class="form-control" placeholder="e.g. Faiz Shamsul" required></div>
-                                    <div class="form-group"><label>PIC Phone</label><input type="text" id="invPhone" class="form-control" placeholder="e.g. +6012-3456789"></div>
-                                    <div class="form-group"><label>PIC Email</label><input type="email" id="invEmail" class="form-control" placeholder="e.g. faiz@example.com"></div>
-                                    <div class="form-group" style="grid-column: span 2;"><label>Client Address</label><input type="text" id="invAddress" class="form-control" placeholder="e.g. No. 1, Jalan Contoh..."></div>
-                                    
+                                    <div class="form-group" style="grid-column: span 2;"><label>Customer / Company Name</label><input type="text" id="invCustomer" class="form-control" required></div>
+                                    <div class="form-group"><label>PIC Name</label><input type="text" id="invPIC" class="form-control" required></div>
+                                    <div class="form-group"><label>PIC Phone</label><input type="text" id="invPhone" class="form-control"></div>
+                                    <div class="form-group"><label>PIC Email</label><input type="email" id="invEmail" class="form-control"></div>
+                                    <div class="form-group" style="grid-column: span 2;"><label>Client Address</label><input type="text" id="invAddress" class="form-control"></div>
                                     <hr class="section-divider">
-
                                     <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" value="OMN-INV-001" required></div>
                                     <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" onchange="calculateDueDate()" required></div>
-                                    <div class="form-group">
-                                        <label>Credit Terms (Days)</label>
-                                        <select id="invTermsDays" class="form-control" onchange="calculateDueDate()">
-                                            <option value="0">Due on Receipt (0 days)</option>
-                                            <option value="7">7 Days</option>
-                                            <option value="14">14 Days</option>
-                                            <option value="30" selected>30 Days</option>
-                                            <option value="45">45 Days</option>
-                                            <option value="60">60 Days</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group"><label>Due Date</label><input type="date" id="invDueDate" class="form-control" readonly style="opacity: 0.7; cursor: default;"></div>
+                                    <div class="form-group"><label>Credit Terms</label><select id="invTermsDays" class="form-control" onchange="calculateDueDate()"><option value="0">Due on Receipt</option><option value="30" selected>30 Days</option></select></div>
+                                    <div class="form-group"><label>Due Date</label><input type="date" id="invDueDate" class="form-control" readonly></div>
                                 </div>
                             </div>
-
                             <div class="card">
-                                <div style="display:flex; justify-content:space-between; margin-bottom: 20px;"><h2 style="font-size:18px;">Items</h2><button type="button" class="btn btn-outline" style="border:none;" onclick="addInvoiceItem()">+ Add Item</button></div>
-                                <div class="item-header-row"><div>Description</div><div>Qty</div><div>Price (RM)</div><div>Total (RM)</div><div></div></div>
+                                <div style="display:flex; justify-content:space-between; margin-bottom: 20px;"><h2 style="font-size:18px;">Items</h2><button type="button" class="btn btn-outline" onclick="addInvoiceItem()">+ Add Item</button></div>
+                                <div class="item-header-row"><div>Description</div><div>Qty</div><div>Price</div><div>Total</div><div></div></div>
                                 <div id="invoiceItemsContainer"></div>
                             </div>
-
                             <div class="card">
                                 <h2 class="section-title">Additional Info</h2>
-                                <div class="form-group" style="margin-bottom: 20px;"><label>Notes</label><textarea id="invNotes" class="form-control" placeholder="Any relevant information not covered..."></textarea></div>
-                                <div class="form-group"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control" placeholder="Late fees, payment methods, delivery schedule..."></textarea></div>
+                                <div class="form-group" style="margin-bottom: 20px;"><label>Notes</label><textarea id="invNotes" class="form-control"></textarea></div>
+                                <div class="form-group"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control"></textarea></div>
                             </div>
-                            
-                            <button type="submit" class="btn btn-primary" id="saveInvoiceBtn" style="width:100%; padding: 18px; font-size: 16px;">Create & Send</button>
+                            <button type="submit" class="btn btn-primary" id="saveInvoiceBtn" style="width:100%; padding: 18px;">Create & Send</button>
                         </div>
-                        
                         <div>
                             <div class="summary-card">
                                 <h2 class="summary-title">Summary</h2>
                                 <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">RM 0.00</span></div>
-                                <div class="summary-row"><span>Discount (RM)</span><input type="number" id="sumDiscount" class="summary-input" value="0" oninput="calculateInvoiceTotal()"></div>
+                                <div class="summary-row"><span>Discount</span><input type="number" id="sumDiscount" class="summary-input" value="0" oninput="calculateInvoiceTotal()"></div>
                                 <div class="summary-row"><span>Tax (%)</span><input type="number" id="sumTaxPercent" class="summary-input" value="0" oninput="calculateInvoiceTotal()"></div>
-                                <div class="summary-row"><span>Tax Amount</span><span id="sumTaxAmount">RM 0.00</span></div>
                                 <div class="summary-total"><span>Total</span><span id="sumGrandTotal">RM 0.00</span></div>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-
         </main>
     </div>
 
     <template id="invoiceItemTemplate">
         <div class="item-row">
             <input type="text" class="form-control item-desc" required>
-            <input type="number" class="form-control item-qty" value="1" min="1" required oninput="updateRowTotal(this)">
-            <input type="number" class="form-control item-price" value="0.00" min="0" step="0.01" required oninput="updateRowTotal(this)">
-            <input type="text" class="form-control item-total" value="0.00" readonly style="background:transparent; border:none; padding-left:0; font-weight:600;">
-            <button type="button" class="btn-icon" onclick="removeInvoiceItem(this)">
-                <svg viewBox="0 0 24 24" width="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-            </button>
+            <input type="number" class="form-control item-qty" value="1" oninput="updateRowTotal(this)">
+            <input type="number" class="form-control item-price" value="0" oninput="updateRowTotal(this)">
+            <input type="text" class="form-control item-total" value="0.00" readonly style="background:transparent; border:none;">
+            <button type="button" class="btn-icon" onclick="removeInvoiceItem(this)"><svg viewBox="0 0 24 24" width="20" stroke="currentColor"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path></svg></button>
         </div>
     </template>
 
     <script>
-        // HOSA WEB APP URL ILE IDE
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNRGFP0KGANv0My-MSJjyGWGEjh4nebvHN46TF2k2xpkMoN1JNA-xQcBZQLmwB1lMC/exec';
-        
-        // Notification Sound
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwjGOmilyVJbI39FFLfnVQ4LgF3xd7k96i8FCwvl6DX_mqbAypkPDstFZaORAzi9J1y/exec';
         const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
 
         function launchApp() {
@@ -293,10 +266,7 @@
             setTimeout(() => {
                 document.getElementById('intro-page').style.display = 'none';
                 document.getElementById('app-container').classList.add('visible');
-                
-                const today = new Date();
-                document.getElementById('invDate').valueAsDate = today;
-                
+                document.getElementById('invDate').valueAsDate = new Date();
                 calculateDueDate();
                 addInvoiceItem();
                 fetchDashboardData();
@@ -304,13 +274,9 @@
         }
 
         function calculateDueDate() {
-            const dateInput = document.getElementById('invDate').value;
-            const terms = parseInt(document.getElementById('invTermsDays').value) || 0;
-            if (dateInput) {
-                const date = new Date(dateInput);
-                date.setDate(date.getDate() + terms);
-                document.getElementById('invDueDate').valueAsDate = date;
-            }
+            const date = new Date(document.getElementById('invDate').value);
+            date.setDate(date.getDate() + parseInt(document.getElementById('invTermsDays').value));
+            document.getElementById('invDueDate').valueAsDate = date;
         }
 
         function switchView(viewId, navElement = null) {
@@ -320,19 +286,54 @@
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                 navElement.classList.add('active');
             }
-            if(viewId === 'dashboard-view') fetchDashboardData(); 
+            if(viewId === 'dashboard-view') fetchDashboardData();
         }
 
         function triggerNewInvoice() { switchView('new-invoice-view', document.querySelectorAll('.nav-item')[1]); }
 
         function toggleTheme() {
-            const body = document.body; const text = document.getElementById('themeText');
-            if (body.getAttribute('data-theme') === 'light') { body.removeAttribute('data-theme'); text.innerText = 'Light Mode'; } 
-            else { body.setAttribute('data-theme', 'light'); text.innerText = 'Dark Mode'; }
+            const body = document.body;
+            body.getAttribute('data-theme') === 'light' ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'light');
+        }
+
+        function fetchDashboardData() {
+            fetch(SCRIPT_URL).then(res => res.json()).then(data => {
+                if(data.status === 'success') {
+                    let totalVal = 0; let clients = new Set();
+                    data.invoices.forEach(inv => {
+                        totalVal += parseFloat(inv.amount) || 0;
+                        if(inv.client) clients.add(inv.client);
+                    });
+                    document.getElementById('dash-net-cash').innerText = 'RM ' + totalVal.toLocaleString();
+                    document.getElementById('dash-outstanding').innerText = data.invoices.length;
+                    document.getElementById('dash-clients').innerText = clients.size;
+                }
+            });
+        }
+
+        function addInvoiceItem() {
+            const container = document.getElementById('invoiceItemsContainer');
+            container.appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true));
+        }
+
+        function removeInvoiceItem(btn) { btn.closest('.item-row').remove(); calculateInvoiceTotal(); }
+
+        function updateRowTotal(input) {
+            const row = input.closest('.item-row');
+            row.querySelector('.item-total').value = (row.querySelector('.item-qty').value * row.querySelector('.item-price').value).toFixed(2);
+            calculateInvoiceTotal();
+        }
+
+        function calculateInvoiceTotal() {
+            let subtotal = 0;
+            document.querySelectorAll('.item-row').forEach(row => subtotal += parseFloat(row.querySelector('.item-total').value) || 0);
+            const total = (subtotal - (parseFloat(document.getElementById('sumDiscount').value) || 0)) * (1 + (parseFloat(document.getElementById('sumTaxPercent').value) || 0)/100);
+            document.getElementById('sumSubtotal').innerText = 'RM ' + subtotal.toFixed(2);
+            document.getElementById('sumGrandTotal').innerText = 'RM ' + total.toFixed(2);
         }
 
         function showSuccessModal(pdfUrl) {
-            successSound.play().catch(e => console.log("Sound blocked by browser"));
+            successSound.play();
             document.getElementById('downloadPdfBtn').href = pdfUrl;
             document.getElementById('success-modal').classList.add('show');
         }
@@ -340,72 +341,24 @@
         function closeSuccessModal() {
             document.getElementById('success-modal').classList.remove('show');
             document.getElementById('invoiceForm').reset();
-            calculateDueDate();
             switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]);
         }
 
-        function fetchDashboardData() {
-            fetch(SCRIPT_URL)
-            .then(res => res.json())
-            .then(data => {
-                if(data.status === 'success') {
-                    let totalInv = 0; let clients = new Set(); let totalValue = 0;
-                    if(data.invoices) {
-                        data.invoices.forEach(inv => {
-                            totalInv++;
-                            totalValue += parseFloat(inv.amount) || 0;
-                            if(inv.client) clients.add(inv.client);
-                        });
-                    }
-                    document.getElementById('dash-net-cash').innerText = 'RM ' + totalValue.toLocaleString('en-MY', {minimumFractionDigits: 2});
-                    document.getElementById('dash-outstanding').innerText = totalInv;
-                    document.getElementById('dash-clients').innerText = clients.size;
-                }
-            }).catch(err => console.log("Gagal ambil data dashboard.", err));
-        }
-
-        function addInvoiceItem() {
-            const container = document.getElementById('invoiceItemsContainer');
-            container.appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true));
-            calculateInvoiceTotal();
-        }
-        function removeInvoiceItem(btn) {
-            if(document.getElementById('invoiceItemsContainer').children.length > 1) { btn.closest('.item-row').remove(); calculateInvoiceTotal(); }
-        }
-        function updateRowTotal(input) {
-            const row = input.closest('.item-row');
-            row.querySelector('.item-total').value = ((parseFloat(row.querySelector('.item-qty').value) || 0) * (parseFloat(row.querySelector('.item-price').value) || 0)).toFixed(2);
-            calculateInvoiceTotal();
-        }
-        function calculateInvoiceTotal() {
-            let subtotal = 0;
-            document.querySelectorAll('.item-row').forEach(row => { subtotal += parseFloat(row.querySelector('.item-total').value) || 0; });
-            const afterDiscount = Math.max(0, subtotal - (parseFloat(document.getElementById('sumDiscount').value) || 0));
-            const taxAmount = afterDiscount * ((parseFloat(document.getElementById('sumTaxPercent').value) || 0) / 100);
-            
-            document.getElementById('sumSubtotal').innerText = 'RM ' + subtotal.toFixed(2);
-            document.getElementById('sumTaxAmount').innerText = 'RM ' + taxAmount.toFixed(2);
-            document.getElementById('sumGrandTotal').innerText = 'RM ' + (afterDiscount + taxAmount).toFixed(2);
-        }
-
         document.getElementById('invoiceForm').addEventListener('submit', function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
             const btn = document.getElementById('saveInvoiceBtn');
-            btn.innerText = "Generating PDF..."; btn.disabled = true;
+            btn.innerText = "Generating..."; btn.disabled = true;
 
-            let itemsArray = [];
-            document.querySelectorAll('.item-row').forEach(row => {
-                itemsArray.push({
-                    desc: row.querySelector('.item-desc').value,
-                    qty: row.querySelector('.item-qty').value,
-                    price: row.querySelector('.item-price').value,
-                    total: row.querySelector('.item-total').value
-                });
-            });
+            const items = Array.from(document.querySelectorAll('.item-row')).map(row => ({
+                desc: row.querySelector('.item-desc').value,
+                qty: row.querySelector('.item-qty').value,
+                price: row.querySelector('.item-price').value,
+                total: row.querySelector('.item-total').value
+            }));
 
-            const data = {
-                type: "invoice", 
-                client: document.getElementById('invCustomer').value, 
+            const payload = {
+                type: "invoice",
+                client: document.getElementById('invCustomer').value,
                 pic: document.getElementById('invPIC').value,
                 phone: document.getElementById('invPhone').value,
                 email: document.getElementById('invEmail').value,
@@ -415,28 +368,20 @@
                 dueDate: document.getElementById('invDueDate').value,
                 notes: document.getElementById('invNotes').value,
                 terms: document.getElementById('invTerms').value,
-                items: itemsArray,
+                items: items,
                 subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''),
                 discount: document.getElementById('sumDiscount').value,
                 taxPercent: document.getElementById('sumTaxPercent').value,
-                taxAmount: document.getElementById('sumTaxAmount').innerText.replace('RM ', ''),
                 grandTotal: document.getElementById('sumGrandTotal').innerText.replace('RM ', '')
             };
 
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) })
-            .then(res => res.json())
-            .then(result => {
-                btn.innerText = "Create & Send"; btn.disabled = false;
-                if(result.status === 'success') {
-                    showSuccessModal(result.pdfUrl);
-                } else {
-                    alert("Ralat dari Google Server:\n" + (result.message || "Unknown Error"));
-                }
-            })
-            .catch(err => {
-                btn.innerText = "Create & Send"; btn.disabled = false;
-                alert("Sambungan terputus. Sila pastikan URL Web App kau betul.");
-            });
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+                .then(res => res.json())
+                .then(res => {
+                    btn.innerText = "Create & Send"; btn.disabled = false;
+                    if(res.status === 'success') showSuccessModal(res.pdfUrl);
+                    else alert(res.message);
+                });
         });
     </script>
 </body>
