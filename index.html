@@ -394,7 +394,8 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtaG9jrFHxYIycOl0ijuGR4wwy0EmWBeB7YJXpbu0jiIFks7FTNgdnpq8_DScC1tas/exec';
+        // GANTIKAN URL DENGAN WEB APP KAU KAT SINI:
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx4e-9iEJ0Rd16_AlmjjpqfMwB57c3GtVVo59cspVIj8ZrnHbpHfIjIQo13Rp7fbUFB/exec';
 
         function launchApp() {
             document.getElementById('intro-page').style.opacity = '0';
@@ -497,7 +498,18 @@
             e.preventDefault(); 
             const btn = document.getElementById('saveInvoiceBtn');
             const msg = document.getElementById('invStatusMsg');
-            btn.innerText = "Processing..."; btn.disabled = true;
+            btn.innerText = "Generating PDF..."; btn.disabled = true;
+
+            // Gather items
+            let itemsArray = [];
+            document.querySelectorAll('.item-row').forEach(row => {
+                itemsArray.push({
+                    desc: row.querySelector('.item-desc').value,
+                    qty: row.querySelector('.item-qty').value,
+                    price: row.querySelector('.item-price').value,
+                    total: row.querySelector('.item-total').value
+                });
+            });
 
             const data = {
                 type: "invoice", 
@@ -506,24 +518,30 @@
                 phone: document.getElementById('invPhone').value,
                 email: document.getElementById('invEmail').value,
                 address: document.getElementById('invAddress').value,
-                project: "Inv No: " + document.getElementById('invNo').value,
-                amount: document.getElementById('sumGrandTotal').innerText.replace('RM ', ''), 
+                invoiceNo: document.getElementById('invNo').value,
+                invoiceDate: document.getElementById('invDate').value,
                 dueDate: document.getElementById('invDueDate').value,
                 notes: document.getElementById('invNotes').value,
-                terms: document.getElementById('invTerms').value
+                terms: document.getElementById('invTerms').value,
+                items: itemsArray,
+                subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''),
+                discount: document.getElementById('sumDiscount').value,
+                taxPercent: document.getElementById('sumTaxPercent').value,
+                taxAmount: document.getElementById('sumTaxAmount').innerText.replace('RM ', ''),
+                grandTotal: document.getElementById('sumGrandTotal').innerText.replace('RM ', '')
             };
 
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) })
             .then(res => res.json())
             .then(result => {
                 btn.innerText = "Create & Send"; btn.disabled = false;
-                msg.innerText = "Invoice successfully saved to database!"; msg.style.display = "block";
-                setTimeout(() => { msg.style.display = "none"; this.reset(); calculateDueDate(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2000);
+                msg.innerText = "Invoice PDF generated successfully!"; msg.style.display = "block";
+                setTimeout(() => { msg.style.display = "none"; this.reset(); calculateDueDate(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2500);
             })
             .catch(err => {
                 btn.innerText = "Create & Send"; btn.disabled = false;
-                msg.innerText = "Invoice processed!"; msg.style.display = "block";
-                setTimeout(() => { msg.style.display = "none"; this.reset(); calculateDueDate(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2000);
+                msg.innerText = "Invoice PDF Processed!"; msg.style.display = "block";
+                setTimeout(() => { msg.style.display = "none"; this.reset(); calculateDueDate(); switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); }, 2500);
             });
         });
 
