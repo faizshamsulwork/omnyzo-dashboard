@@ -8,18 +8,13 @@
     <style>
         :root {
             /* DARK MODE (LOCKED) */
-            --bg-color: #0b0c10; --sidebar-bg: #121318;
-            --card-bg: #1a1b23; --input-bg: rgba(255,255,255,0.05);
-            --text-main: #ffffff; --text-muted: #86868b;
-            --border-color: rgba(255,255,255,0.08);
-            --accent-pink: #e14e65; --nav-hover: rgba(255,255,255,0.05);
-            --nav-active-bg: rgba(225, 78, 101, 0.15); --nav-active-text: #e14e65;
+            --bg-color: #0b0c10; --sidebar-bg: #121318; --card-bg: #1a1b23; --input-bg: rgba(255,255,255,0.05);
+            --text-main: #ffffff; --text-muted: #86868b; --border-color: rgba(255,255,255,0.08);
+            --accent-pink: #e14e65; --nav-hover: rgba(255,255,255,0.05); --nav-active-bg: rgba(225, 78, 101, 0.15); --nav-active-text: #e14e65;
         }
         [data-theme="light"] {
-            --bg-color: #f4f5f8; --sidebar-bg: #ffffff;
-            --card-bg: #ffffff; --input-bg: #fbfbfd;
-            --text-main: #1d1d1f; --text-muted: #86868b;
-            --border-color: #eef0f2; --nav-hover: #f5f5f7;
+            --bg-color: #f4f5f8; --sidebar-bg: #ffffff; --card-bg: #ffffff; --input-bg: #fbfbfd;
+            --text-main: #1d1d1f; --text-muted: #86868b; --border-color: #eef0f2; --nav-hover: #f5f5f7;
             --nav-active-bg: #fff0f2; --nav-active-text: #e14e65;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
@@ -36,7 +31,6 @@
         #app-container { display: flex; width: 100%; height: 100%; opacity: 0; transform: scale(0.98); transition: 1s cubic-bezier(0.25, 1, 0.5, 1); }
         #app-container.visible { opacity: 1; transform: scale(1); }
 
-        /* SIDEBAR */
         .sidebar { width: 280px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); padding: 30px 20px; display: flex; flex-direction: column; z-index: 10; transition: 0.4s ease;}
         .business-selector { border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 30px; cursor: pointer; }
         .business-selector small { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; }
@@ -53,11 +47,9 @@
         .header-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .header-title h1 { font-size: 34px; font-weight: 800; letter-spacing: -1px; }
 
-        /* SHARED CARD STYLES */
         .card { background: var(--card-bg); border-radius: 20px; padding: 30px; border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-bottom: 25px;}
         .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 25px; }
 
-        /* DASHBOARD REVISED (IMAGE 3) */
         .dash-top-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
         .card-red { background: linear-gradient(135deg, #f43f5e, #e11d48); color: #fff; border: none; box-shadow: 0 10px 30px rgba(225, 29, 72, 0.3); }
         .dash-val { font-size: 28px; font-weight: 800; margin-top: 10px; }
@@ -68,7 +60,6 @@
         .dash-bottom-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         .status-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-color); font-weight: 600; }
 
-        /* INVOICES LIST */
         .btn-add-pink { background: var(--accent-pink); color: #fff; width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 24px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 15px rgba(225, 78, 101, 0.4); transition: 0.3s; }
         .btn-add-pink:hover { transform: scale(1.1); }
         .filter-badges { display: flex; gap: 10px; margin-bottom: 25px; }
@@ -85,7 +76,6 @@
         .btn-pay { color: #10b981; border-color: #10b981; background: transparent; }
         .btn-pdf { color: var(--text-main); border-color: var(--border-color); background: transparent; }
 
-        /* CASHFLOW & CUSTOMERS CSS */
         .pill-filters { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;}
         .cf-header { display: grid; grid-template-columns: 1fr 1.5fr 1.5fr 2fr 1fr; padding: 15px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
         .cf-row { display: grid; grid-template-columns: 1fr 1.5fr 1.5fr 2fr 1fr; padding: 20px; font-size: 14px; font-weight: 600; border-bottom: 1px solid var(--border-color); align-items: center; }
@@ -93,7 +83,7 @@
         .cust-row { display: grid; grid-template-columns: 2fr 2fr 3fr 80px; padding: 20px; font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--border-color); align-items: center; }
         .cust-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(225, 78, 101, 0.1); color: var(--accent-pink); display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 14px; }
 
-        /* NEW INVOICE FORM */
+        /* FORMS */
         .invoice-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; align-items: start; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
@@ -109,7 +99,15 @@
         .btn-solid { background: var(--accent-pink); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
         .btn-solid:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(225, 78, 101, 0.3); }
 
-        /* APPLE MODAL & CUSTOMER MODAL */
+        /* TRANSACTION TOGGLE CSS */
+        .trans-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .trans-toggle button { padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .trans-toggle button.active-out { border-color: #e14e65; color: #e14e65; background: rgba(225,78,101,0.05); }
+        .trans-toggle button.active-in { border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.05); }
+        .upload-box { border: 2px dashed var(--border-color); border-radius: 12px; padding: 30px; text-align: center; color: var(--text-muted); cursor: pointer; transition: 0.3s; }
+        .upload-box:hover { border-color: var(--accent-pink); background: rgba(225,78,101,0.02); }
+
+        /* MODALS & NOTIFICATIONS */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: 0.4s; }
         .modal-overlay.show { display: flex; opacity: 1; }
         .modal { background: var(--card-bg); width: 420px; padding: 40px; border-radius: 28px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9) translateY(20px); transition: 0.4s; }
@@ -118,7 +116,6 @@
         .modal-customer h2 { margin-bottom: 20px; font-size: 24px; font-weight: 800; }
         .modal-close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
 
-        /* TOAST NOTIFICATION */
         #toast-notification {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
             background: rgba(16, 185, 129, 0.95); color: white; padding: 16px 30px; border-radius: 40px;
@@ -133,10 +130,7 @@
 
     <audio id="successSound" src="https://assets.mixkit.co/active_storage/sfx/2868/2868-preview.mp3" preload="auto"></audio>
 
-    <div id="toast-notification">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        <span id="toast-message">Action successful!</span>
-    </div>
+    <div id="toast-notification"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span id="toast-message">Action successful!</span></div>
 
     <div id="intro-page">
         <div class="intro-content">
@@ -217,7 +211,7 @@
                 <h3 style="font-size: 16px; margin-bottom: 15px;">Quick Actions</h3>
                 <div class="qa-grid">
                     <div class="qa-btn" onclick="switchView('new-invoice-view')"><div class="qa-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div><div><div style="font-weight:700; font-size:14px;">Create Invoice</div><div style="font-size:11px; color:var(--text-muted);">New invoice</div></div></div>
-                    <div class="qa-btn"><div class="qa-icon" style="color:#d97706; background:rgba(217,119,6,0.1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line></svg></div><div><div style="font-weight:700; font-size:14px;">Record Expense</div><div style="font-size:11px; color:var(--text-muted);">Track spending</div></div></div>
+                    <div class="qa-btn" onclick="switchView('record-transaction-view'); document.getElementById('transDate').valueAsDate = new Date();"><div class="qa-icon" style="color:#d97706; background:rgba(217,119,6,0.1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line></svg></div><div><div style="font-weight:700; font-size:14px;">Record Expense</div><div style="font-size:11px; color:var(--text-muted);">Track spending</div></div></div>
                     <div class="qa-btn" onclick="document.getElementById('customer-modal').classList.add('show')"><div class="qa-icon" style="color:#3b82f6; background:rgba(59,130,246,0.1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle></svg></div><div><div style="font-weight:700; font-size:14px;">Add Customer</div><div style="font-size:11px; color:var(--text-muted);">New client</div></div></div>
                 </div>
 
@@ -257,7 +251,7 @@
             <div id="cashflow-view" class="view-section">
                 <div class="header-title">
                     <div><h1 style="font-size: 34px;">Cashflow</h1><p>Track business income and expenses.</p></div>
-                    <button class="btn-add-pink">+</button>
+                    <button class="btn-add-pink" onclick="switchView('record-transaction-view'); document.getElementById('transDate').valueAsDate = new Date();">+</button>
                 </div>
                 <div class="dash-top-grid" style="grid-template-columns: repeat(3, 1fr);">
                     <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Net Balance</div><div class="dash-val" id="cf-net" style="color:#10b981;">+ RM 0.00</div></div>
@@ -273,10 +267,60 @@
                 </div>
             </div>
 
+            <div id="record-transaction-view" class="view-section">
+                <div class="header-title">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <button onclick="switchView('cashflow-view')" style="background:none; border:none; color:var(--text-main); font-size:24px; cursor:pointer;">←</button>
+                        <div><h1 style="font-size:34px;">Record Transaction</h1><p>Enter transaction details.</p></div>
+                    </div>
+                </div>
+                <form id="transactionForm">
+                    <div class="card" style="max-width: 600px; margin: 0 auto;">
+                        <h3 style="margin-bottom: 20px;">Transaction Details</h3>
+                        
+                        <label style="font-size:13px; font-weight:600; color:var(--text-main); margin-bottom:8px; display:block;">Transaction Type</label>
+                        <div class="trans-toggle">
+                            <button type="button" id="btn-out" class="active-out" onclick="setTransType('Out')">Money Out (Expense)</button>
+                            <button type="button" id="btn-in" onclick="setTransType('In')">Money In (Income)</button>
+                        </div>
+                        <input type="hidden" id="transType" value="Out">
+
+                        <div class="form-grid">
+                            <div class="form-group"><label>Date</label><input type="date" id="transDate" class="form-control" required></div>
+                            <div class="form-group"><label>Amount (RM)</label><input type="number" step="0.01" min="0" id="transAmount" class="form-control" required></div>
+                            <div class="form-group" style="grid-column: span 2;"><label>Paid To (Merchant)</label><input type="text" id="transMerchant" class="form-control" placeholder="E.g. TNB, Adobe, Stationaries Shop" required></div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>Category</label>
+                                <select id="transCategory" class="form-control" required>
+                                    <option value="Marketing (Ads)">Marketing (Ads)</option>
+                                    <option value="Software/Subscriptions">Software/Subscriptions</option>
+                                    <option value="Utilities">Utilities</option>
+                                    <option value="Payroll">Payroll</option>
+                                    <option value="Office Supplies">Office Supplies</option>
+                                    <option value="Miscellaneous">Miscellaneous</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;"><label>Description / Notes</label><input type="text" id="transDesc" class="form-control" placeholder="Additional details..."></div>
+                            
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>Receipt / Proof</label>
+                                <div class="upload-box" onclick="alert('File upload logic is kept simple. For now, keep saving your records!')">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:10px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                    <div style="font-weight:600; color:var(--text-main);">Click to upload or drag & drop</div>
+                                    <div style="font-size:12px; margin-top:5px;">(JPG, PNG, PDF up to 5MB)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="saveTransBtn" class="btn-solid" style="margin-top: 25px; padding: 18px;">Save Record</button>
+                    </div>
+                </form>
+            </div>
+
             <div id="customers-view" class="view-section">
                 <div class="header-title">
                     <div><h1 style="font-size: 34px;">Customers</h1><p>Manage your customer database.</p></div>
-                    <button class="btn-outline" style="background:var(--accent-pink); color:#fff; border:none;" onclick="document.getElementById('customer-modal').classList.add('show')">+ Add Customer</button>
+                    <button class="btn-outline" style="background:var(--accent-pink); color:#fff; border:none; padding:16px; border-radius:12px; cursor:pointer;" onclick="document.getElementById('customer-modal').classList.add('show')">+ Add Customer</button>
                 </div>
                 <div class="table-container">
                     <div style="padding: 25px; border-bottom: 1px solid var(--border-color);">
@@ -363,7 +407,6 @@
         const sound = document.getElementById('successSound');
         let appData = { customers: [] };
 
-        // SHOW TOAST NOTIFICATION FUNCTION
         function showToast(msg) {
             const t = document.getElementById('toast-notification');
             document.getElementById('toast-message').innerText = msg;
@@ -373,7 +416,7 @@
 
         function launchApp() { document.getElementById('intro-page').style.opacity = '0'; setTimeout(() => { document.getElementById('intro-page').style.display = 'none'; document.getElementById('app-container').classList.add('visible'); document.getElementById('invDate').valueAsDate = new Date(); calculateDueDate(); addInvoiceItem(); fetchAppData(); }, 1000); }
         function toggleTheme() { const b = document.body; b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); }
-        function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); if(nav) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); nav.classList.add('active'); } document.getElementById(viewId).classList.add('active-view'); if(viewId !== 'new-invoice-view') fetchAppData(); }
+        function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); if(nav) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); nav.classList.add('active'); } document.getElementById(viewId).classList.add('active-view'); if(viewId !== 'new-invoice-view' && viewId !== 'record-transaction-view') fetchAppData(); }
         
         function addInvoiceItem() { document.getElementById('invoiceItemsContainer').appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true)); }
         function updateRowTotal(input) { const row = input.closest('.item-row'); row.querySelector('.item-total').innerText = ((parseFloat(row.querySelector('.item-qty').value)||0) * (parseFloat(row.querySelector('.item-price').value)||0)).toFixed(2); calculateInvoiceTotal(); }
@@ -386,7 +429,6 @@
                     appData = data;
                     const fmt = (val) => 'RM ' + val.toLocaleString('en-MY', {minimumFractionDigits: 2});
                     
-                    // INVOICES & DASHBOARD
                     let totalAmt = 0, pendingAmt = 0, paidAmt = 0, pendingCount = 0, paidCount = 0, tblHTML = '';
                     data.invoices.forEach(inv => {
                         let amt = parseFloat(inv.amount) || 0; totalAmt += amt;
@@ -399,17 +441,14 @@
                         tblHTML += `<div class="tbl-row"><div style="color:var(--accent-pink);">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">RM ${amt.toFixed(2)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}">${inv.status}</span></div><div class="action-btns">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : ''}<a href="${inv.pdfLink}" target="_blank" class="action-btn btn-pdf">📄 PDF</a></div></div>`;
                     });
 
-                    // DASHBOARD
                     document.getElementById('dash-netcash').innerText = fmt(totalAmt);
                     document.getElementById('dash-outstanding-amt').innerText = fmt(pendingAmt);
                     document.getElementById('dash-paid-amt').innerText = fmt(paidAmt);
                     document.getElementById('stat-paid-amt').innerText = fmt(paidAmt);
                     document.getElementById('stat-pending-amt').innerText = fmt(pendingAmt);
-                    document.getElementById('this-month-income').innerText = fmt(paidAmt);
                     document.getElementById('count-paid').innerText = `${paidCount}`;
                     document.getElementById('count-pending').innerText = `${pendingCount}`;
 
-                    // INVOICES TAB
                     document.getElementById('inv-count-total').innerText = data.invoices.length;
                     document.getElementById('inv-amt-total').innerText = fmt(totalAmt);
                     document.getElementById('inv-count-paid-tbl').innerText = paidCount;
@@ -417,7 +456,6 @@
                     document.getElementById('invoiceListContainer').innerHTML = tblHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No invoices found.</div>';
                     if(data.nextInvoiceNo) document.getElementById('invNo').value = data.nextInvoiceNo;
 
-                    // CASHFLOW TAB
                     let cfIn = 0, cfOut = 0, cfHTML = '';
                     data.cashflow.forEach(c => {
                         let amt = parseFloat(c.amount)||0; if(c.type==='In') cfIn += amt; else cfOut += amt;
@@ -428,10 +466,11 @@
                     document.getElementById('cf-income').innerText = '+ ' + fmt(cfIn);
                     document.getElementById('cf-expense').innerText = '- ' + fmt(cfOut);
                     document.getElementById('cashflowListContainer').innerHTML = cfHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div>';
+                    
+                    document.getElementById('this-month-income').innerText = fmt(cfIn);
                     document.getElementById('this-month-expense').innerText = fmt(cfOut);
-                    document.getElementById('this-month-net').innerText = fmt(paidAmt - cfOut);
+                    document.getElementById('this-month-net').innerText = fmt(cfIn - cfOut);
 
-                    // CUSTOMERS TAB
                     let cHTML = ''; let custDrop = '<option value="">Select customer...</option>';
                     data.customers.forEach(c => {
                         custDrop += `<option value="${c.company}">${c.company}</option>`;
@@ -445,7 +484,6 @@
             });
         }
 
-        // AUTO-FILL CUSTOMER DI NEW INVOICE
         function autoFillCustomer() {
             let sel = document.getElementById('invCustomer').value;
             let c = appData.customers.find(x => x.company === sel);
@@ -459,34 +497,67 @@
 
         function markAsPaid(invNo) {
             if(!confirm(`Mark invoice ${invNo} as Paid?`)) return;
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); showToast(`Invoice ${invNo} marked as Paid!`); } });
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) })
+            .then(res => res.json())
+            .then(res => { 
+                if(res.status === 'success') { 
+                    showToast(`Invoice ${invNo} marked as Paid! Cashflow updated.`);
+                    fetchAppData(); 
+                } 
+            });
         }
 
-        // FUNGSI SIMPAN CUSTOMER YANG BERJAYA DENGAN TOAST NOTIFICATION
-        document.getElementById('customerForm').addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            const btn = document.getElementById('saveCustBtn'); 
-            const originalText = btn.innerText;
-            btn.innerText = "Saving..."; btn.disabled = true;
-            
-            const payload = { type: "customer", custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value };
-            
+        // TOGGLE RECORD TRANSACTION
+        function setTransType(type) {
+            document.getElementById('transType').value = type;
+            if(type === 'Out') {
+                document.getElementById('btn-out').className = 'active-out';
+                document.getElementById('btn-in').className = '';
+            } else {
+                document.getElementById('btn-out').className = '';
+                document.getElementById('btn-in').className = 'active-in';
+            }
+        }
+
+        // SAVE RECORD TRANSACTION
+        document.getElementById('transactionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('saveTransBtn'); 
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "Saving..."; btn.disabled = true;
+
+            const payload = {
+                type: "transaction",
+                date: document.getElementById('transDate').value,
+                amount: document.getElementById('transAmount').value,
+                merchant: document.getElementById('transMerchant').value,
+                category: document.getElementById('transCategory').value,
+                desc: document.getElementById('transDesc').value,
+                transType: document.getElementById('transType').value
+            };
+
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
             .then(res => res.json())
             .then(res => {
+                btn.innerHTML = originalText; btn.disabled = false;
+                if(res.status === 'success') {
+                    document.getElementById('transactionForm').reset();
+                    showToast("Transaction Recorded!");
+                    switchView('cashflow-view');
+                    fetchAppData();
+                }
+            });
+        });
+
+        document.getElementById('customerForm').addEventListener('submit', function(e) {
+            e.preventDefault(); const btn = document.getElementById('saveCustBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true;
+            const payload = { type: "customer", custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value };
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => {
                 btn.innerText = originalText; btn.disabled = false;
                 if(res.status === 'success') {
-                    document.getElementById('customer-modal').classList.remove('show');
-                    document.getElementById('customerForm').reset();
-                    showToast("Your Customer is Saved!"); // TOAST NOTIFICATION
-                    fetchAppData(); 
-                } else {
-                    alert("Error saving customer.");
+                    document.getElementById('customer-modal').classList.remove('show'); document.getElementById('customerForm').reset();
+                    showToast("Your Customer is Saved!"); fetchAppData(); 
                 }
-            })
-            .catch(err => {
-                btn.innerText = originalText; btn.disabled = false;
-                alert("Network error.");
             });
         });
 
