@@ -117,11 +117,26 @@
         .modal-customer { width: 600px; text-align: left; max-height: 90vh; overflow-y: auto; padding: 30px;}
         .modal-customer h2 { margin-bottom: 20px; font-size: 24px; font-weight: 800; }
         .modal-close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
+
+        /* TOAST NOTIFICATION */
+        #toast-notification {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: rgba(16, 185, 129, 0.95); color: white; padding: 16px 30px; border-radius: 40px;
+            font-weight: 700; font-size: 14px; z-index: 9999; backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0;
+            display: flex; align-items: center; gap: 10px;
+        }
+        #toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
 <body data-theme="dark">
 
     <audio id="successSound" src="https://assets.mixkit.co/active_storage/sfx/2868/2868-preview.mp3" preload="auto"></audio>
+
+    <div id="toast-notification">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span id="toast-message">Action successful!</span>
+    </div>
 
     <div id="intro-page">
         <div class="intro-content">
@@ -348,6 +363,14 @@
         const sound = document.getElementById('successSound');
         let appData = { customers: [] };
 
+        // SHOW TOAST NOTIFICATION FUNCTION
+        function showToast(msg) {
+            const t = document.getElementById('toast-notification');
+            document.getElementById('toast-message').innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3500);
+        }
+
         function launchApp() { document.getElementById('intro-page').style.opacity = '0'; setTimeout(() => { document.getElementById('intro-page').style.display = 'none'; document.getElementById('app-container').classList.add('visible'); document.getElementById('invDate').valueAsDate = new Date(); calculateDueDate(); addInvoiceItem(); fetchAppData(); }, 1000); }
         function toggleTheme() { const b = document.body; b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); }
         function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); if(nav) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); nav.classList.add('active'); } document.getElementById(viewId).classList.add('active-view'); if(viewId !== 'new-invoice-view') fetchAppData(); }
@@ -383,8 +406,8 @@
                     document.getElementById('stat-paid-amt').innerText = fmt(paidAmt);
                     document.getElementById('stat-pending-amt').innerText = fmt(pendingAmt);
                     document.getElementById('this-month-income').innerText = fmt(paidAmt);
-                    document.getElementById('count-paid').innerText = `${paidCount} invoices`;
-                    document.getElementById('count-pending').innerText = `${pendingCount} invoices`;
+                    document.getElementById('count-paid').innerText = `${paidCount}`;
+                    document.getElementById('count-pending').innerText = `${pendingCount}`;
 
                     // INVOICES TAB
                     document.getElementById('inv-count-total').innerText = data.invoices.length;
@@ -405,8 +428,6 @@
                     document.getElementById('cf-income').innerText = '+ ' + fmt(cfIn);
                     document.getElementById('cf-expense').innerText = '- ' + fmt(cfOut);
                     document.getElementById('cashflowListContainer').innerHTML = cfHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div>';
-                    
-                    // Dashboard Expense Sync
                     document.getElementById('this-month-expense').innerText = fmt(cfOut);
                     document.getElementById('this-month-net').innerText = fmt(paidAmt - cfOut);
 
@@ -419,6 +440,7 @@
                     });
                     document.getElementById('customerListContainer').innerHTML = cHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No customers found.</div>';
                     document.getElementById('invCustomer').innerHTML = custDrop;
+                    document.getElementById('dash-clients').innerText = data.customers.length;
                 }
             });
         }
@@ -437,20 +459,34 @@
 
         function markAsPaid(invNo) {
             if(!confirm(`Mark invoice ${invNo} as Paid?`)) return;
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) }).then(res => res.json()).then(res => { if(res.status === 'success') fetchAppData(); });
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); showToast(`Invoice ${invNo} marked as Paid!`); } });
         }
 
-        // FUNGSI SIMPAN CUSTOMER YANG BERJAYA
+        // FUNGSI SIMPAN CUSTOMER YANG BERJAYA DENGAN TOAST NOTIFICATION
         document.getElementById('customerForm').addEventListener('submit', function(e) {
-            e.preventDefault(); const btn = document.getElementById('saveCustBtn'); btn.innerText = "Saving..."; btn.disabled = true;
+            e.preventDefault(); 
+            const btn = document.getElementById('saveCustBtn'); 
+            const originalText = btn.innerText;
+            btn.innerText = "Saving..."; btn.disabled = true;
+            
             const payload = { type: "customer", custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value };
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => {
-                btn.innerText = "Save Customer"; btn.disabled = false;
+            
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+            .then(res => res.json())
+            .then(res => {
+                btn.innerText = originalText; btn.disabled = false;
                 if(res.status === 'success') {
                     document.getElementById('customer-modal').classList.remove('show');
                     document.getElementById('customerForm').reset();
-                    fetchAppData(); // REFRESH DATA SUPAYA MASUK DALAM DROPDOWN
+                    showToast("Your Customer is Saved!"); // TOAST NOTIFICATION
+                    fetchAppData(); 
+                } else {
+                    alert("Error saving customer.");
                 }
+            })
+            .catch(err => {
+                btn.innerText = originalText; btn.disabled = false;
+                alert("Network error.");
             });
         });
 
@@ -459,7 +495,6 @@
         document.getElementById('invoiceForm').addEventListener('submit', function(e) {
             e.preventDefault(); const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "Processing..."; btn.disabled = true;
             const items = Array.from(document.querySelectorAll('.item-row')).map(r => ({ desc: r.querySelector('.item-desc').value, qty: r.querySelector('.item-qty').value, price: r.querySelector('.item-price').value, total: r.querySelector('.item-total').innerText }));
-            // Dapatkan text client name dari select dropdown
             const clientName = document.getElementById('invCustomer').options[document.getElementById('invCustomer').selectedIndex].text;
 
             const payload = {
