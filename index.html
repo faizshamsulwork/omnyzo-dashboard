@@ -19,7 +19,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100vh; display: flex; transition: 0.4s ease; }
         
-        /* INTRO */
         #intro-page { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; transition: 1s cubic-bezier(0.25, 1, 0.5, 1); }
         .intro-content { text-align: center; animation: blurFadeIn 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         @keyframes blurFadeIn { 0% { opacity: 0; transform: scale(0.9); filter: blur(10px); } 100% { opacity: 1; transform: scale(1); filter: blur(0); } }
@@ -31,7 +30,6 @@
         #app-container { display: flex; width: 100%; height: 100%; opacity: 0; transform: scale(0.98); transition: 1s cubic-bezier(0.25, 1, 0.5, 1); }
         #app-container.visible { opacity: 1; transform: scale(1); }
 
-        /* SIDEBAR */
         .sidebar { width: 280px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); padding: 30px 20px; display: flex; flex-direction: column; z-index: 10; transition: 0.4s ease;}
         .business-selector { border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 30px; cursor: pointer; }
         .business-selector small { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; }
@@ -51,7 +49,6 @@
         .card { background: var(--card-bg); border-radius: 20px; padding: 30px; border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-bottom: 25px;}
         .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 25px; }
 
-        /* DASHBOARD */
         .dash-top-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
         .card-red { background: linear-gradient(135deg, #f43f5e, #e11d48); color: #fff; border: none; box-shadow: 0 10px 30px rgba(225, 29, 72, 0.3); }
         .dash-val { font-size: 28px; font-weight: 800; margin-top: 10px; }
@@ -62,7 +59,6 @@
         .dash-bottom-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         .status-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-color); font-weight: 600; }
 
-        /* INVOICES LIST */
         .btn-add-pink { background: var(--accent-pink); color: #fff; width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 24px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 15px rgba(225, 78, 101, 0.4); transition: 0.3s; }
         .btn-add-pink:hover { transform: scale(1.1); }
         .filter-badges { display: flex; gap: 10px; margin-bottom: 25px; }
@@ -79,7 +75,6 @@
         .btn-pay { color: #10b981; border-color: #10b981; background: transparent; }
         .btn-pdf { color: var(--text-main); border-color: var(--border-color); background: transparent; }
 
-        /* CASHFLOW & CUSTOMERS CSS */
         .pill-filters { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;}
         .cf-header { display: grid; grid-template-columns: 1fr 1.5fr 1.5fr 2fr 1fr 60px; padding: 15px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
         .cf-row { display: grid; grid-template-columns: 1fr 1.5fr 1.5fr 2fr 1fr 60px; padding: 20px; font-size: 14px; font-weight: 600; border-bottom: 1px solid var(--border-color); align-items: center; }
@@ -102,6 +97,8 @@
         .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; margin-bottom: 15px; align-items: center; }
         .btn-solid { background: var(--accent-pink); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
         .btn-solid:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(225, 78, 101, 0.3); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
+        .btn-outline:hover { background: var(--input-bg); }
 
         /* TRANSACTION UPLOAD BOX */
         .trans-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
@@ -128,13 +125,14 @@
             display: flex; align-items: center; gap: 10px;
         }
         #toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        #toast-notification.error { background: rgba(225, 78, 101, 0.95); box-shadow: 0 10px 30px rgba(225, 78, 101, 0.3); }
     </style>
 </head>
 <body data-theme="dark">
 
     <audio id="successSound" src="https://assets.mixkit.co/active_storage/sfx/2868/2868-preview.mp3" preload="auto"></audio>
 
-    <div id="toast-notification"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span id="toast-message">Action successful!</span></div>
+    <div id="toast-notification"><span id="toast-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span> <span id="toast-message">Action successful!</span></div>
 
     <div id="intro-page">
         <div class="intro-content">
@@ -153,6 +151,17 @@
             <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 15px;">Invoice generated securely to Google Drive.</p>
             <a id="downloadPdfBtn" href="#" target="_blank" class="btn-solid" style="text-decoration:none; display:flex; justify-content: center; margin-bottom: 15px;">View & Download PDF</a>
             <button onclick="closeSuccessModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-weight:700; width: 100%; padding: 10px;">Close</button>
+        </div>
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal">
+            <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 10px;" id="confirm-title">Confirm Action</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 14px;" id="confirm-message">Are you sure?</p>
+            <div style="display:flex; gap:15px;">
+                <button onclick="closeConfirmModal()" class="btn-outline" style="flex:1;">Cancel</button>
+                <button id="confirm-btn-yes" class="btn-solid" style="flex:1;">Proceed</button>
+            </div>
         </div>
     </div>
 
@@ -311,7 +320,7 @@
                                 <div class="upload-box" id="uploadBoxUI" onclick="document.getElementById('receiptFileInput').click()">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:10px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                                     <div style="font-weight:600; color:var(--text-main);" id="uploadFileName">Click to upload receipt</div>
-                                    <div style="font-size:12px; margin-top:5px; color:var(--text-muted);">(JPG, PNG, PDF up to 5MB)</div>
+                                    <div style="font-size:12px; margin-top:5px; color:var(--text-muted);">(JPG, PNG, PDF up to 15MB)</div>
                                 </div>
                             </div>
                         </div>
@@ -376,12 +385,23 @@
                                 <div class="item-header"><div>Description</div><div>Qty</div><div>Price (RM)</div><div>Total (RM)</div><div></div></div>
                                 <div id="invoiceItemsContainer"></div>
                             </div>
+                            
                             <div class="card">
                                 <h3>Additional Info</h3>
                                 <div class="form-group" style="margin-bottom:20px;"><label>Notes</label><textarea id="invNotes" class="form-control" rows="3"></textarea></div>
-                                <div class="form-group"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control" rows="3">1. Payment is due within 30 days.
-2. Please make payable to OMNYZO AGENCY.</textarea></div>
+                                
+                                <div class="form-group" style="margin-bottom:15px;">
+                                    <label>T&C Template <span style="color:var(--text-muted); font-weight:normal; font-size:11px;">(Auto-updates days)</span></label>
+                                    <select id="tcTemplate" class="form-control" onchange="updateTerms()">
+                                        <option value="standard">Template A (Standard)</option>
+                                        <option value="retainer">Template B (Monthly Retainer)</option>
+                                        <option value="deposit">Template C (50% Advance Deposit)</option>
+                                        <option value="rush">Template D (Rush Job / Strict)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control" rows="4"></textarea></div>
                             </div>
+
                             <button type="submit" id="saveInvoiceBtn" class="btn-solid" style="padding:20px; font-size:16px;">Create & Send PDF</button>
                         </div>
                         <div class="right-col">
@@ -408,14 +428,26 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwjGOmilyVJbI39FFLfnVQ4LgF3xd7k96i8FCwvl6DX_mqbAypkPDstFZaORAzi9J1y/exec';
         const sound = document.getElementById('successSound');
         let appData = { customers: [] };
-        let currentReceiptData = null; // UNTUK SIMPAN DATA RESIT
+        let currentReceiptData = null; 
+        let pendingConfirmAction = null;
 
-        function showToast(msg) {
+        function showToast(msg, isError=false) {
             const t = document.getElementById('toast-notification');
             document.getElementById('toast-message').innerText = msg;
+            if(isError) { t.classList.add('error'); document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`; }
+            else { t.classList.remove('error'); document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`; }
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 3500);
         }
+
+        function showConfirm(title, message, callback) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = message;
+            pendingConfirmAction = callback;
+            document.getElementById('confirm-modal').classList.add('show');
+        }
+        function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
+        document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
 
         function launchApp() { document.getElementById('intro-page').style.opacity = '0'; setTimeout(() => { document.getElementById('intro-page').style.display = 'none'; document.getElementById('app-container').classList.add('visible'); document.getElementById('invDate').valueAsDate = new Date(); calculateDueDate(); addInvoiceItem(); fetchAppData(); }, 1000); }
         function toggleTheme() { const b = document.body; b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); }
@@ -424,7 +456,33 @@
         function addInvoiceItem() { document.getElementById('invoiceItemsContainer').appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true)); }
         function updateRowTotal(input) { const row = input.closest('.item-row'); row.querySelector('.item-total').innerText = ((parseFloat(row.querySelector('.item-qty').value)||0) * (parseFloat(row.querySelector('.item-price').value)||0)).toFixed(2); calculateInvoiceTotal(); }
         function calculateInvoiceTotal() { let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += parseFloat(t.innerText)||0); const disc = parseFloat(document.getElementById('sumDiscount').value) || 0; const taxP = parseFloat(document.getElementById('sumTaxPercent').value) || 0; const subDisc = Math.max(0, sub - disc); const taxA = subDisc * (taxP / 100); document.getElementById('sumSubtotal').innerText = 'RM ' + sub.toFixed(2); document.getElementById('sumTaxAmount').innerText = 'RM ' + taxA.toFixed(2); document.getElementById('sumGrandTotal').innerText = 'RM ' + (subDisc + taxA).toFixed(2); }
-        function calculateDueDate() { const dateVal = document.getElementById('invDate').value; const term = parseInt(document.getElementById('invCreditTerm').value); if(dateVal) { const d = new Date(dateVal); d.setDate(d.getDate() + term); document.getElementById('invDueDate').valueAsDate = d; } }
+        
+        // AUTO-UPDATE DUE DATE & T&C
+        function calculateDueDate() { 
+            const dateVal = document.getElementById('invDate').value; 
+            const term = parseInt(document.getElementById('invCreditTerm').value); 
+            if(dateVal) { const d = new Date(dateVal); d.setDate(d.getDate() + term); document.getElementById('invDueDate').valueAsDate = d; } 
+            updateTerms(); // PANGGIL FUNGSI UPDATE T&C BILA HARI BERTUKAR
+        }
+
+        // FUNGSI SMART T&C SELECTOR
+        function updateTerms() {
+            const termDays = parseInt(document.getElementById('invCreditTerm').value);
+            const template = document.getElementById('tcTemplate').value;
+            const termText = termDays === 0 ? "immediately upon receipt" : `within ${termDays} days from invoice date`;
+            let text = "";
+
+            if (template === 'standard') {
+                text = `1. Agency Fee is payable ${termText}.\n2. The Agency reserves the right to suspend any Services in the event of delay in payment.\n3. Please indicate the invoice number as reference when transferring the funds.\n4. Payment advice should be sent to billings@omnyzo.com.`;
+            } else if (template === 'retainer') {
+                text = `1. Monthly Retainer Fee is payable ${termText}.\n2. Work for the subsequent month will commence upon full clearance of this invoice.\n3. Payment advice should be sent to billings@omnyzo.com.`;
+            } else if (template === 'deposit') {
+                text = `1. A 50% non-refundable advance deposit is required to commence work.\n2. The remaining balance is payable ${termText} of the final invoice.\n3. Payment advice should be sent to billings@omnyzo.com.`;
+            } else if (template === 'rush') {
+                text = `1. Rush Job Agency Fee is payable ${termText}.\n2. Late payments will incur a 5% penalty fee per week of delay.\n3. Payment advice should be sent to billings@omnyzo.com.`;
+            }
+            document.getElementById('invTerms').value = text;
+        }
 
         function fetchAppData() {
             fetch(SCRIPT_URL).then(res => res.json()).then(data => {
@@ -499,38 +557,37 @@
             }
         }
 
+        // TUKAR CONFIRM KEPADA MODAL UI
         function markAsPaid(invNo) {
-            if(!confirm(`Mark invoice ${invNo} as Paid?`)) return;
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) })
-            .then(res => res.json())
-            .then(res => { 
-                if(res.status === 'success') { 
-                    showToast(`Invoice ${invNo} marked as Paid! Cashflow updated.`);
-                    fetchAppData(); 
-                } 
+            showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid?`, function() {
+                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) })
+                .then(res => res.json())
+                .then(res => { 
+                    if(res.status === 'success') { 
+                        showToast(`Invoice ${invNo} marked as Paid!`);
+                        fetchAppData(); 
+                    } 
+                });
             });
         }
 
-        // FUNGSI AUTO-POSTCODE API Zippopotamus
         document.getElementById('custPostcode').addEventListener('input', function(e) {
             let pc = e.target.value.trim();
             if(pc.length === 5) {
-                fetch(`https://api.zippopotam.us/my/${pc}`)
-                .then(res => res.json())
-                .then(data => {
-                    if(data.places && data.places.length > 0) {
-                        document.getElementById('custCity').value = data.places[0]['place name'];
-                        document.getElementById('custState').value = data.places[0]['state'];
-                    }
+                fetch(`https://api.zippopotam.us/my/${pc}`).then(res => res.json()).then(data => {
+                    if(data.places && data.places.length > 0) { document.getElementById('custCity').value = data.places[0]['place name']; document.getElementById('custState').value = data.places[0]['state']; }
                 }).catch(err => console.log('Postcode API failed'));
             }
         });
 
-        // FUNGSI UPLOAD FAIL (Tukar ke Base64)
+        // UPLOAD 15MB LIMIT DAN GANTI ALERT JADI TOAST
         function handleFileSelect(input) {
             const file = input.files[0];
             if(!file) return;
-            if(file.size > 5 * 1024 * 1024) { alert("File too large. Max 5MB."); return; }
+            if(file.size > 15 * 1024 * 1024) { 
+                showToast("File too large. Max 15MB.", true); // TOAST ERROR
+                return; 
+            }
             
             document.getElementById('uploadFileName').innerText = "Selected: " + file.name;
             document.getElementById('uploadBoxUI').style.borderColor = "var(--accent-pink)";
