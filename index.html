@@ -25,7 +25,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100vh; display: flex; transition: 0.4s ease; }
         
-        /* APPLE INTRO */
         #intro-page { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; transition: 1s cubic-bezier(0.25, 1, 0.5, 1); }
         .intro-content { text-align: center; animation: blurFadeIn 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         @keyframes blurFadeIn { 0% { opacity: 0; transform: scale(0.9); filter: blur(10px); } 100% { opacity: 1; transform: scale(1); filter: blur(0); } }
@@ -47,12 +46,10 @@
         .nav-item:hover { background: var(--nav-hover); color: var(--text-main); }
         .nav-item.active { background: var(--nav-active-bg); color: var(--nav-active-text); font-weight: 700; }
 
-        /* MAIN CONTENT */
         .main-content { flex: 1; padding: 40px 50px; overflow-y: auto; }
         .view-section { display: none; animation: slideUpFade 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         .view-section.active-view { display: block; }
         @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         .header-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .header-title h1 { font-size: 34px; font-weight: 800; letter-spacing: -1px; }
 
@@ -60,11 +57,10 @@
         .card { background: var(--card-bg); border-radius: 20px; padding: 30px; border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-bottom: 25px;}
         .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 25px; }
 
-        /* DASHBOARD */
+        /* DASHBOARD REVISED (IMAGE 3) */
         .dash-top-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
         .card-red { background: linear-gradient(135deg, #f43f5e, #e11d48); color: #fff; border: none; box-shadow: 0 10px 30px rgba(225, 29, 72, 0.3); }
         .dash-val { font-size: 28px; font-weight: 800; margin-top: 10px; }
-        
         .qa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
         .qa-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 20px; border-radius: 16px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; color: var(--text-main); text-align: left; }
         .qa-btn:hover { border-color: var(--accent-pink); transform: translateY(-2px); }
@@ -72,7 +68,7 @@
         .dash-bottom-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         .status-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-color); font-weight: 600; }
 
-        /* INVOICES LIST (WITH ACTIONS) */
+        /* INVOICES LIST */
         .btn-add-pink { background: var(--accent-pink); color: #fff; width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 24px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 15px rgba(225, 78, 101, 0.4); transition: 0.3s; }
         .btn-add-pink:hover { transform: scale(1.1); }
         .filter-badges { display: flex; gap: 10px; margin-bottom: 25px; }
@@ -84,13 +80,18 @@
         .status-tag { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; display: inline-block; text-align: center; }
         .tag-pending { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
         .tag-paid { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-        
         .action-btns { display: flex; gap: 8px; justify-content: flex-end;}
         .action-btn { padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: none; border: 1px solid; display: inline-flex; align-items: center; gap: 5px; }
         .btn-pay { color: #10b981; border-color: #10b981; background: transparent; }
-        .btn-pay:hover { background: rgba(16,185,129,0.1); }
         .btn-pdf { color: var(--text-main); border-color: var(--border-color); background: transparent; }
-        .btn-pdf:hover { background: rgba(128,128,128,0.1); }
+
+        /* CASHFLOW & CUSTOMERS CSS */
+        .pill-filters { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;}
+        .cf-header { display: grid; grid-template-columns: 1fr 1.5fr 1.5fr 2fr 1fr; padding: 15px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
+        .cf-row { display: grid; grid-template-columns: 1fr 1.5fr 1.5fr 2fr 1fr; padding: 20px; font-size: 14px; font-weight: 600; border-bottom: 1px solid var(--border-color); align-items: center; }
+        .cust-header { display: grid; grid-template-columns: 2fr 2fr 3fr 80px; padding: 15px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
+        .cust-row { display: grid; grid-template-columns: 2fr 2fr 3fr 80px; padding: 20px; font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--border-color); align-items: center; }
+        .cust-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(225, 78, 101, 0.1); color: var(--accent-pink); display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 14px; }
 
         /* NEW INVOICE FORM */
         .invoice-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; align-items: start; }
@@ -105,7 +106,6 @@
         
         .item-header { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; font-size: 13px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; }
         .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; margin-bottom: 15px; align-items: center; }
-        
         .btn-solid { background: var(--accent-pink); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
         .btn-solid:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(225, 78, 101, 0.3); }
 
@@ -114,9 +114,7 @@
         .modal-overlay.show { display: flex; opacity: 1; }
         .modal { background: var(--card-bg); width: 420px; padding: 40px; border-radius: 28px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9) translateY(20px); transition: 0.4s; }
         .modal-overlay.show .modal { transform: scale(1) translateY(0); }
-        
-        /* Customer Modal specific */
-        .modal-customer { width: 600px; text-align: left; max-height: 90vh; overflow-y: auto; }
+        .modal-customer { width: 600px; text-align: left; max-height: 90vh; overflow-y: auto; padding: 30px;}
         .modal-customer h2 { margin-bottom: 20px; font-size: 24px; font-weight: 800; }
         .modal-close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
     </style>
@@ -136,7 +134,7 @@
     <div id="success-modal" class="modal-overlay">
         <div class="modal">
             <div style="width: 80px; height: 80px; background: rgba(16, 185, 129, 0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
             <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 10px;">Ready.</h2>
             <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 15px;">Invoice generated securely to Google Drive.</p>
@@ -150,7 +148,7 @@
             <button class="modal-close-btn" onclick="document.getElementById('customer-modal').classList.remove('show')">×</button>
             <h2>Add New Customer</h2>
             <form id="customerForm">
-                <div class="card" style="padding: 20px; margin-bottom: 15px;">
+                <div class="card" style="padding: 20px; margin-bottom: 15px; box-shadow:none;">
                     <h3 style="margin-bottom: 15px; font-size:16px;">Basic Information</h3>
                     <div class="form-grid">
                         <div class="form-group"><label>Customer Type</label><select id="custType" class="form-control"><option>Company</option><option>Individual</option></select></div>
@@ -162,7 +160,7 @@
                         <div class="form-group"><label>SSM Registration No.</label><input type="text" id="custSSM" class="form-control"></div>
                     </div>
                 </div>
-                <div class="card" style="padding: 20px; margin-bottom: 20px;">
+                <div class="card" style="padding: 20px; margin-bottom: 20px; box-shadow:none;">
                     <h3 style="margin-bottom: 15px; font-size:16px;">Billing Address</h3>
                     <div class="form-grid">
                         <div class="form-group" style="grid-column: span 2;"><label>Address *</label><input type="text" id="custAddress" class="form-control" required></div>
@@ -183,9 +181,9 @@
             <nav>
                 <div class="nav-item active" onclick="switchView('dashboard-view', this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg> Dashboard</div>
                 <div class="nav-item" onclick="switchView('invoices-view', this)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Invoices</div>
-                <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Cashflow</div>
+                <div class="nav-item" onclick="switchView('cashflow-view', this)"><svg viewBox="0 0 24 24"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Cashflow</div>
                 <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="15" x2="15" y2="15"></line></svg> Quotations</div>
-                <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Customers</div>
+                <div class="nav-item" onclick="switchView('customers-view', this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Customers</div>
                 <div class="nav-item" style="margin-top: 15px;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Settings</div>
             </nav>
             <button onclick="toggleTheme()" style="margin-top:auto; background:none; border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; font-weight:700; padding:12px; border-radius:12px;">🌓 Toggle Light/Dark</button>
@@ -196,15 +194,16 @@
                 <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 25px;">Good morning,<br>Omnyzo Agency</h1>
                 <div class="dash-top-grid">
                     <div class="card card-red"><div style="font-size:12px; font-weight:700; opacity:0.9;">Net Cash Flow</div><div class="dash-val" id="dash-netcash">RM 0.00</div><div style="font-size:11px; margin-top:8px;">This month</div></div>
-                    <div class="card"><div style="font-size:12px; font-weight:700; color:#d97706;">Outstanding</div><div class="dash-val" id="dash-outstanding-amt">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:#d97706;">View invoices ↗</div></div>
+                    <div class="card"><div style="font-size:12px; font-weight:700; color:#d97706;">Outstanding</div><div class="dash-val" id="dash-outstanding-amt">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:#d97706; cursor:pointer;" onclick="switchView('invoices-view', document.querySelectorAll('.nav-item')[1])">View invoices ↗</div></div>
                     <div class="card"><div style="font-size:12px; font-weight:700; color:#e14e65;">Overdue</div><div class="dash-val">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:var(--text-muted);">Needs attention</div></div>
                     <div class="card"><div style="font-size:12px; font-weight:700; color:#10b981;">Paid Invoices</div><div class="dash-val" id="dash-paid-amt">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:var(--text-muted);">This month</div></div>
                 </div>
 
                 <h3 style="font-size: 16px; margin-bottom: 15px;">Quick Actions</h3>
                 <div class="qa-grid">
-                    <div class="qa-btn" onclick="switchView('new-invoice-view')"><div class="qa-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg></div><div><div style="font-weight:700; font-size:14px;">Create Invoice</div><div style="font-size:11px; color:var(--text-muted);">New invoice</div></div></div>
-                    <div class="qa-btn"><div class="qa-icon" style="color:#d97706; background:rgba(217,119,6,0.1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div><div><div style="font-weight:700; font-size:14px;">Record Expense</div><div style="font-size:11px; color:var(--text-muted);">Track spending</div></div></div>
+                    <div class="qa-btn" onclick="switchView('new-invoice-view')"><div class="qa-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div><div><div style="font-weight:700; font-size:14px;">Create Invoice</div><div style="font-size:11px; color:var(--text-muted);">New invoice</div></div></div>
+                    <div class="qa-btn"><div class="qa-icon" style="color:#d97706; background:rgba(217,119,6,0.1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line></svg></div><div><div style="font-weight:700; font-size:14px;">Record Expense</div><div style="font-size:11px; color:var(--text-muted);">Track spending</div></div></div>
+                    <div class="qa-btn" onclick="document.getElementById('customer-modal').classList.add('show')"><div class="qa-icon" style="color:#3b82f6; background:rgba(59,130,246,0.1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle></svg></div><div><div style="font-weight:700; font-size:14px;">Add Customer</div><div style="font-size:11px; color:var(--text-muted);">New client</div></div></div>
                 </div>
 
                 <div class="dash-bottom-grid">
@@ -212,6 +211,12 @@
                         <div style="display:flex; justify-content:space-between; margin-bottom: 20px;"><h3 style="font-size:16px;">Invoice Status</h3></div>
                         <div class="status-row"><div style="display:flex; align-items:center; gap:10px;"><div style="width:16px;height:16px;border-radius:50%;border:2px solid #10b981;"></div><div>Paid <span style="font-size:11px; color:var(--text-muted); font-weight:500; display:block;" id="count-paid">0</span></div></div><div id="stat-paid-amt" style="color:#10b981;">RM 0.00</div></div>
                         <div class="status-row"><div style="display:flex; align-items:center; gap:10px;"><div style="width:16px;height:16px;border-radius:50%;border:2px solid #d97706;"></div><div>Pending <span style="font-size:11px; color:var(--text-muted); font-weight:500; display:block;" id="count-pending">0</span></div></div><div id="stat-pending-amt" style="color:#d97706;">RM 0.00</div></div>
+                    </div>
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 20px;"><h3 style="font-size:16px;">This Month</h3></div>
+                        <div style="background:rgba(16,185,129,0.1); padding:15px; border-radius:12px; display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700;"><span style="color:#10b981;">↘ Income</span><span id="this-month-income" style="color:#10b981;">RM 0.00</span></div>
+                        <div style="background:rgba(225,78,101,0.1); padding:15px; border-radius:12px; display:flex; justify-content:space-between; margin-bottom:20px; font-weight:700;"><span style="color:#e14e65;">↗ Expenses</span><span id="this-month-expense" style="color:#e14e65;">RM 0.00</span></div>
+                        <div style="display:flex; justify-content:space-between; border-top:1px solid var(--border-color); padding-top:15px; font-weight:800;"><span>Net</span><span id="this-month-net" style="color:#10b981;">RM 0.00</span></div>
                     </div>
                 </div>
             </div>
@@ -224,15 +229,46 @@
                 <div class="dash-top-grid">
                     <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Total Invoices</div><div class="dash-val" id="inv-count-total">0</div></div>
                     <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Total Amount</div><div class="dash-val" id="inv-amt-total" style="color:var(--accent-pink);">RM 0.00</div></div>
-                    <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Paid</div><div class="dash-val" id="inv-count-paid" style="color:#10b981;">0</div></div>
-                    <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Pending</div><div class="dash-val" id="inv-count-pending" style="color:#d97706;">0</div></div>
+                    <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Paid</div><div class="dash-val" id="inv-count-paid-tbl" style="color:#10b981;">0</div></div>
+                    <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Pending</div><div class="dash-val" id="inv-count-pending-tbl" style="color:#d97706;">0</div></div>
                 </div>
-                <div class="filter-badges">
-                    <div class="badge active">All</div><div class="badge">Paid</div><div class="badge">Pending</div>
-                </div>
+                <div class="filter-badges"><div class="badge active">All</div><div class="badge">Paid</div><div class="badge">Pending</div></div>
                 <div class="table-container">
                     <div class="tbl-header"><div>Invoice No.</div><div>Client</div><div>Date</div><div>Due Date</div><div>Amount</div><div>Status</div><div style="text-align:right;">Actions</div></div>
                     <div id="invoiceListContainer"></div>
+                </div>
+            </div>
+
+            <div id="cashflow-view" class="view-section">
+                <div class="header-title">
+                    <div><h1 style="font-size: 34px;">Cashflow</h1><p>Track business income and expenses.</p></div>
+                    <button class="btn-add-pink">+</button>
+                </div>
+                <div class="dash-top-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Net Balance</div><div class="dash-val" id="cf-net" style="color:#10b981;">+ RM 0.00</div></div>
+                    <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Total Income</div><div class="dash-val" id="cf-income" style="color:#10b981;">+ RM 0.00</div></div>
+                    <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Total Expenses</div><div class="dash-val" id="cf-expense" style="color:#e14e65;">- RM 0.00</div></div>
+                </div>
+                <div class="pill-filters">
+                    <div class="badge active">All</div><div class="badge" style="color:#10b981;">● Money In</div><div class="badge" style="color:#e14e65;">● Money Out</div>
+                </div>
+                <div class="table-container">
+                    <div class="cf-header"><div>Date</div><div>Merchant</div><div>Category</div><div>Description</div><div style="text-align:right;">Amount</div></div>
+                    <div id="cashflowListContainer"><div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div></div>
+                </div>
+            </div>
+
+            <div id="customers-view" class="view-section">
+                <div class="header-title">
+                    <div><h1 style="font-size: 34px;">Customers</h1><p>Manage your customer database.</p></div>
+                    <button class="btn-outline" style="background:var(--accent-pink); color:#fff; border:none;" onclick="document.getElementById('customer-modal').classList.add('show')">+ Add Customer</button>
+                </div>
+                <div class="table-container">
+                    <div style="padding: 25px; border-bottom: 1px solid var(--border-color);">
+                        <h3 style="font-size: 18px; font-weight: 700;">Customer List</h3>
+                    </div>
+                    <div class="cust-header"><div>Name</div><div>Contact</div><div>Address</div><div style="text-align:right;">Actions</div></div>
+                    <div id="customerListContainer"><div style="padding:20px; text-align:center; color:var(--text-muted);">No customers found.</div></div>
                 </div>
             </div>
 
@@ -248,9 +284,11 @@
                         <div class="left-col">
                             <div class="card">
                                 <h3>Invoice Details</h3>
-                                <div class="form-group" style="margin-bottom:20px;"><label>Issuing Company</label><select class="form-control" disabled><option>Omnyzo Agency</option></select></div>
                                 <div class="form-grid">
-                                    <div class="form-group" style="grid-column: span 2;"><label>Customer <span class="add-link" style="color:var(--accent-pink); float:right; cursor:pointer; font-size:11px;" onclick="document.getElementById('customer-modal').classList.add('show')">+ Add New Customer</span></label><input type="text" id="invCustomer" class="form-control" placeholder="Select customer..." required></div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label>Customer <span class="add-link" style="color:var(--accent-pink); float:right; cursor:pointer; font-size:11px;" onclick="document.getElementById('customer-modal').classList.add('show')">+ Add New Customer</span></label>
+                                        <select id="invCustomer" class="form-control" required onchange="autoFillCustomer()"><option value="">Select customer...</option></select>
+                                    </div>
                                     <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" readonly style="font-weight:700;"></div>
                                     <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" required onchange="calculateDueDate()"></div>
                                     <div class="form-group"><label>Credit Term</label>
@@ -263,22 +301,20 @@
                                     <div class="form-group"><label>Due Date (Auto)</label><input type="date" id="invDueDate" class="form-control" required readonly style="opacity:0.7;"></div>
                                 </div>
                                 <div style="margin-top:20px; padding-top:20px; border-top:1px dashed var(--border-color);">
-                                    <h4 style="font-size:12px; color:var(--text-muted); margin-bottom:15px; text-transform:uppercase;">Additional Client Details</h4>
+                                    <h4 style="font-size:12px; color:var(--text-muted); margin-bottom:15px; text-transform:uppercase;">Client Information</h4>
                                     <div class="form-grid">
-                                        <div class="form-group"><label>PIC Name (Attn:)</label><input type="text" id="invPIC" class="form-control" required></div>
+                                        <div class="form-group"><label>PIC Name</label><input type="text" id="invPIC" class="form-control" required></div>
                                         <div class="form-group"><label>Phone</label><input type="text" id="invPhone" class="form-control"></div>
                                         <div class="form-group"><label>Email</label><input type="email" id="invEmail" class="form-control"></div>
                                         <div class="form-group" style="grid-column: span 2;"><label>Full Address</label><input type="text" id="invAddress" class="form-control"></div>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="card">
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;"><h3>Items</h3><button type="button" onclick="addInvoiceItem()" style="background:#f4f4f5; border:none; padding:8px 16px; border-radius:8px; font-weight:600; color:#1d1d1f; cursor:pointer;">+ Add Item</button></div>
                                 <div class="item-header"><div>Description</div><div>Qty</div><div>Price (RM)</div><div>Total (RM)</div><div></div></div>
                                 <div id="invoiceItemsContainer"></div>
                             </div>
-
                             <div class="card">
                                 <h3>Additional Info</h3>
                                 <div class="form-group" style="margin-bottom:20px;"><label>Notes</label><textarea id="invNotes" class="form-control" rows="3"></textarea></div>
@@ -304,145 +340,116 @@
     </div>
 
     <template id="invoiceItemTemplate">
-        <div class="item-row">
-            <input type="text" class="form-control item-desc" required placeholder="Item description">
-            <input type="number" class="form-control item-qty" value="1" min="1" oninput="updateRowTotal(this)">
-            <input type="number" class="form-control item-price" value="0.00" step="0.01" oninput="updateRowTotal(this)">
-            <div class="item-total" style="font-weight:700; font-size: 14px;">0.00</div>
-            <button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();" style="background:none; border:none; color:var(--accent-pink); cursor:pointer;">🗑️</button>
-        </div>
+        <div class="item-row"><input type="text" class="form-control item-desc" required placeholder="Description"><input type="number" class="form-control item-qty" value="1" min="1" oninput="updateRowTotal(this)"><input type="number" class="form-control item-price" value="0.00" step="0.01" oninput="updateRowTotal(this)"><div class="item-total" style="font-weight:700; font-size: 14px;">0.00</div><button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();" style="background:none; border:none; color:var(--accent-pink); cursor:pointer;">🗑️</button></div>
     </template>
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwjGOmilyVJbI39FFLfnVQ4LgF3xd7k96i8FCwvl6DX_mqbAypkPDstFZaORAzi9J1y/exec';
         const sound = document.getElementById('successSound');
+        let appData = { customers: [] };
 
-        function launchApp() { 
-            document.getElementById('intro-page').style.opacity = '0'; 
-            setTimeout(() => { 
-                document.getElementById('intro-page').style.display = 'none'; 
-                document.getElementById('app-container').classList.add('visible');
-                document.getElementById('invDate').valueAsDate = new Date(); 
-                calculateDueDate(); addInvoiceItem(); fetchDashboardData(); 
-            }, 1000); 
-        }
-
-        function toggleTheme() { 
-            const b = document.body; 
-            b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); 
-        }
-
-        function switchView(viewId, nav) { 
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); 
-            if(nav) {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
-                nav.classList.add('active'); 
-            }
-            document.getElementById(viewId).classList.add('active-view'); 
-            if(viewId === 'dashboard-view' || viewId === 'invoices-view') fetchDashboardData(); 
-        }
-
+        function launchApp() { document.getElementById('intro-page').style.opacity = '0'; setTimeout(() => { document.getElementById('intro-page').style.display = 'none'; document.getElementById('app-container').classList.add('visible'); document.getElementById('invDate').valueAsDate = new Date(); calculateDueDate(); addInvoiceItem(); fetchAppData(); }, 1000); }
+        function toggleTheme() { const b = document.body; b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); }
+        function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); if(nav) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); nav.classList.add('active'); } document.getElementById(viewId).classList.add('active-view'); if(viewId !== 'new-invoice-view') fetchAppData(); }
+        
         function addInvoiceItem() { document.getElementById('invoiceItemsContainer').appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true)); }
         function updateRowTotal(input) { const row = input.closest('.item-row'); row.querySelector('.item-total').innerText = ((parseFloat(row.querySelector('.item-qty').value)||0) * (parseFloat(row.querySelector('.item-price').value)||0)).toFixed(2); calculateInvoiceTotal(); }
-        
-        function calculateInvoiceTotal() {
-            let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += parseFloat(t.innerText)||0);
-            const disc = parseFloat(document.getElementById('sumDiscount').value) || 0;
-            const taxP = parseFloat(document.getElementById('sumTaxPercent').value) || 0;
-            const subDisc = Math.max(0, sub - disc);
-            const taxA = subDisc * (taxP / 100);
-            document.getElementById('sumSubtotal').innerText = 'RM ' + sub.toFixed(2);
-            document.getElementById('sumTaxAmount').innerText = 'RM ' + taxA.toFixed(2);
-            document.getElementById('sumGrandTotal').innerText = 'RM ' + (subDisc + taxA).toFixed(2);
-        }
+        function calculateInvoiceTotal() { let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += parseFloat(t.innerText)||0); const disc = parseFloat(document.getElementById('sumDiscount').value) || 0; const taxP = parseFloat(document.getElementById('sumTaxPercent').value) || 0; const subDisc = Math.max(0, sub - disc); const taxA = subDisc * (taxP / 100); document.getElementById('sumSubtotal').innerText = 'RM ' + sub.toFixed(2); document.getElementById('sumTaxAmount').innerText = 'RM ' + taxA.toFixed(2); document.getElementById('sumGrandTotal').innerText = 'RM ' + (subDisc + taxA).toFixed(2); }
+        function calculateDueDate() { const dateVal = document.getElementById('invDate').value; const term = parseInt(document.getElementById('invCreditTerm').value); if(dateVal) { const d = new Date(dateVal); d.setDate(d.getDate() + term); document.getElementById('invDueDate').valueAsDate = d; } }
 
-        function calculateDueDate() {
-            const dateVal = document.getElementById('invDate').value;
-            const term = parseInt(document.getElementById('invCreditTerm').value);
-            if(dateVal) { const d = new Date(dateVal); d.setDate(d.getDate() + term); document.getElementById('invDueDate').valueAsDate = d; }
-        }
-
-        function fetchDashboardData() {
+        function fetchAppData() {
             fetch(SCRIPT_URL).then(res => res.json()).then(data => {
                 if(data.status === 'success') {
-                    let totalAmt = 0; let pendingAmt = 0; let paidAmt = 0;
-                    let pendingCount = 0; let paidCount = 0; let tblHTML = '';
-
+                    appData = data;
+                    const fmt = (val) => 'RM ' + val.toLocaleString('en-MY', {minimumFractionDigits: 2});
+                    
+                    // INVOICES & DASHBOARD
+                    let totalAmt = 0, pendingAmt = 0, paidAmt = 0, pendingCount = 0, paidCount = 0, tblHTML = '';
                     data.invoices.forEach(inv => {
-                        let amt = parseFloat(inv.amount) || 0;
-                        totalAmt += amt;
+                        let amt = parseFloat(inv.amount) || 0; totalAmt += amt;
                         if(inv.status === 'Pending') { pendingAmt += amt; pendingCount++; }
                         if(inv.status === 'Paid') { paidAmt += amt; paidCount++; }
                         
-                        let dateObj = new Date(inv.date); let dueObj = new Date(inv.dueDate);
-                        let dateStr = !isNaN(dateObj) ? dateObj.toLocaleDateString('en-GB') : inv.date;
-                        let dueStr = !isNaN(dueObj) ? dueObj.toLocaleDateString('en-GB') : inv.dueDate;
+                        let dStr = new Date(inv.date); dStr = !isNaN(dStr) ? dStr.toLocaleDateString('en-GB') : inv.date;
+                        let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? dueStr.toLocaleDateString('en-GB') : inv.dueDate;
 
-                        tblHTML += `<div class="tbl-row">
-                            <div style="color:var(--accent-pink);">${inv.invoiceNo}</div>
-                            <div style="font-weight:700;">${inv.client}</div>
-                            <div style="color:var(--text-muted);">${dateStr}</div>
-                            <div style="color:var(--text-muted);">${dueStr}</div>
-                            <div style="font-weight:800;">RM ${amt.toFixed(2)}</div>
-                            <div><span class="status-tag tag-${inv.status.toLowerCase()}">${inv.status}</span></div>
-                            <div class="action-btns">
-                                ${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : ''}
-                                <a href="${inv.pdfLink}" target="_blank" class="action-btn btn-pdf">📄 PDF</a>
-                            </div>
-                        </div>`;
+                        tblHTML += `<div class="tbl-row"><div style="color:var(--accent-pink);">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">RM ${amt.toFixed(2)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}">${inv.status}</span></div><div class="action-btns">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : ''}<a href="${inv.pdfLink}" target="_blank" class="action-btn btn-pdf">📄 PDF</a></div></div>`;
                     });
 
-                    const fmt = (val) => 'RM ' + val.toLocaleString('en-MY', {minimumFractionDigits: 2});
+                    // DASHBOARD
                     document.getElementById('dash-netcash').innerText = fmt(totalAmt);
                     document.getElementById('dash-outstanding-amt').innerText = fmt(pendingAmt);
                     document.getElementById('dash-paid-amt').innerText = fmt(paidAmt);
                     document.getElementById('stat-paid-amt').innerText = fmt(paidAmt);
                     document.getElementById('stat-pending-amt').innerText = fmt(pendingAmt);
-                    
-                    document.getElementById('dash-outstanding').innerText = pendingCount;
-                    document.getElementById('count-paid').innerText = `${paidCount}`;
-                    document.getElementById('count-pending').innerText = `${pendingCount}`;
-                    document.getElementById('dash-clients').innerText = [...new Set(data.invoices.map(i => i.client))].length;
+                    document.getElementById('this-month-income').innerText = fmt(paidAmt);
+                    document.getElementById('count-paid').innerText = `${paidCount} invoices`;
+                    document.getElementById('count-pending').innerText = `${pendingCount} invoices`;
 
+                    // INVOICES TAB
                     document.getElementById('inv-count-total').innerText = data.invoices.length;
                     document.getElementById('inv-amt-total').innerText = fmt(totalAmt);
-                    document.getElementById('inv-count-paid').innerText = paidCount;
-                    document.getElementById('inv-count-pending').innerText = pendingCount;
+                    document.getElementById('inv-count-paid-tbl').innerText = paidCount;
+                    document.getElementById('inv-count-pending-tbl').innerText = pendingCount;
                     document.getElementById('invoiceListContainer').innerHTML = tblHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No invoices found.</div>';
-
-                    // PAKSA NOMBOR INVOIS MASUK
                     if(data.nextInvoiceNo) document.getElementById('invNo').value = data.nextInvoiceNo;
+
+                    // CASHFLOW TAB
+                    let cfIn = 0, cfOut = 0, cfHTML = '';
+                    data.cashflow.forEach(c => {
+                        let amt = parseFloat(c.amount)||0; if(c.type==='In') cfIn += amt; else cfOut += amt;
+                        let dStr = new Date(c.date); dStr = !isNaN(dStr) ? dStr.toLocaleDateString('en-GB') : c.date;
+                        cfHTML += `<div class="cf-row"><div>${dStr}</div><div style="font-weight:700;">${c.merchant}</div><div style="color:var(--text-muted);">${c.category}</div><div>${c.description}</div><div style="text-align:right; color:${c.type==='In'?'#10b981':'#e14e65'}; font-weight:800;">${c.type==='In'?'+':'-'} RM ${amt.toFixed(2)}</div></div>`;
+                    });
+                    document.getElementById('cf-net').innerText = (cfIn - cfOut >= 0 ? '+ ' : '- ') + fmt(Math.abs(cfIn - cfOut));
+                    document.getElementById('cf-income').innerText = '+ ' + fmt(cfIn);
+                    document.getElementById('cf-expense').innerText = '- ' + fmt(cfOut);
+                    document.getElementById('cashflowListContainer').innerHTML = cfHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div>';
+                    
+                    // Dashboard Expense Sync
+                    document.getElementById('this-month-expense').innerText = fmt(cfOut);
+                    document.getElementById('this-month-net').innerText = fmt(paidAmt - cfOut);
+
+                    // CUSTOMERS TAB
+                    let cHTML = ''; let custDrop = '<option value="">Select customer...</option>';
+                    data.customers.forEach(c => {
+                        custDrop += `<option value="${c.company}">${c.company}</option>`;
+                        let initials = c.company.substring(0,2).toUpperCase();
+                        cHTML += `<div class="cust-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar">${initials}</div><div><div style="font-weight:700;">${c.company}</div><div style="color:var(--text-muted); font-size:12px;">${c.pic}</div></div></div><div style="color:var(--text-muted);">${c.email}<br>${c.phone}</div><div style="color:var(--text-muted);">${c.address}, ${c.city}</div><div style="text-align:right;"><button style="background:none; border:none; cursor:pointer;">✏️</button></div></div>`;
+                    });
+                    document.getElementById('customerListContainer').innerHTML = cHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No customers found.</div>';
+                    document.getElementById('invCustomer').innerHTML = custDrop;
                 }
             });
         }
 
-        // FUNGSI UPDATE STATUS KE PAID
-        function markAsPaid(invNo) {
-            if(!confirm(`Mark invoice ${invNo} as Paid?`)) return;
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) })
-            .then(res => res.json()).then(res => { if(res.status === 'success') fetchDashboardData(); });
+        // AUTO-FILL CUSTOMER DI NEW INVOICE
+        function autoFillCustomer() {
+            let sel = document.getElementById('invCustomer').value;
+            let c = appData.customers.find(x => x.company === sel);
+            if(c) {
+                document.getElementById('invPIC').value = c.pic;
+                document.getElementById('invPhone').value = c.phone;
+                document.getElementById('invEmail').value = c.email;
+                document.getElementById('invAddress').value = `${c.address}, ${c.postcode} ${c.city}, ${c.state}`;
+            }
         }
 
-        // FUNGSI SIMPAN CUSTOMER
+        function markAsPaid(invNo) {
+            if(!confirm(`Mark invoice ${invNo} as Paid?`)) return;
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) }).then(res => res.json()).then(res => { if(res.status === 'success') fetchAppData(); });
+        }
+
+        // FUNGSI SIMPAN CUSTOMER YANG BERJAYA
         document.getElementById('customerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('saveCustBtn'); btn.innerText = "Saving..."; btn.disabled = true;
-            const payload = {
-                type: "customer", custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value,
-                pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value,
-                tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value,
-                postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value
-            };
+            e.preventDefault(); const btn = document.getElementById('saveCustBtn'); btn.innerText = "Saving..."; btn.disabled = true;
+            const payload = { type: "customer", custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value };
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => {
                 btn.innerText = "Save Customer"; btn.disabled = false;
                 if(res.status === 'success') {
-                    document.getElementById('invCustomer').value = payload.company;
-                    document.getElementById('invPIC').value = payload.pic;
-                    document.getElementById('invPhone').value = payload.phone;
-                    document.getElementById('invEmail').value = payload.email;
-                    document.getElementById('invAddress').value = `${payload.address}, ${payload.postcode} ${payload.city}, ${payload.state}`;
                     document.getElementById('customer-modal').classList.remove('show');
                     document.getElementById('customerForm').reset();
+                    fetchAppData(); // REFRESH DATA SUPAYA MASUK DALAM DROPDOWN
                 }
             });
         });
@@ -450,21 +457,17 @@
         function closeSuccessModal() { document.getElementById('success-modal').classList.remove('show'); document.getElementById('invoiceForm').reset(); document.getElementById('invoiceItemsContainer').innerHTML = ""; addInvoiceItem(); calculateDueDate(); switchView('invoices-view', document.querySelectorAll('.nav-item')[1]); }
 
         document.getElementById('invoiceForm').addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "Processing..."; btn.disabled = true;
+            e.preventDefault(); const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "Processing..."; btn.disabled = true;
             const items = Array.from(document.querySelectorAll('.item-row')).map(r => ({ desc: r.querySelector('.item-desc').value, qty: r.querySelector('.item-qty').value, price: r.querySelector('.item-price').value, total: r.querySelector('.item-total').innerText }));
+            // Dapatkan text client name dari select dropdown
+            const clientName = document.getElementById('invCustomer').options[document.getElementById('invCustomer').selectedIndex].text;
+
             const payload = {
-                type: "invoice", client: document.getElementById('invCustomer').value, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value,
-                invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value,
-                items: items, subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''), taxAmount: document.getElementById('sumTaxAmount').innerText.replace('RM ', ''), grandTotal: document.getElementById('sumGrandTotal').innerText.replace('RM ', '')
+                type: "invoice", client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''), taxAmount: document.getElementById('sumTaxAmount').innerText.replace('RM ', ''), grandTotal: document.getElementById('sumGrandTotal').innerText.replace('RM ', '')
             };
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => {
                 btn.innerText = "Create & Send PDF"; btn.disabled = false;
-                if(res.status === 'success') {
-                    sound.play().catch(e => console.log("Sound skipped"));
-                    document.getElementById('downloadPdfBtn').href = res.pdfUrl;
-                    document.getElementById('success-modal').classList.add('show');
-                }
+                if(res.status === 'success') { sound.play().catch(e => console.log("Audio issue")); document.getElementById('downloadPdfBtn').href = res.pdfUrl; document.getElementById('success-modal').classList.add('show'); }
             });
         });
     </script>
