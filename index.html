@@ -102,7 +102,6 @@
         .trans-toggle button.active-out { border-color: #e14e65; color: #e14e65; background: rgba(225,78,101,0.05); }
         .trans-toggle button.active-in { border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.05); }
         
-        /* DRAG AND DROP UPLOAD BOX */
         .upload-box { border: 2px dashed var(--border-color); border-radius: 12px; padding: 30px; text-align: center; color: var(--text-muted); cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;}
         .upload-box:hover, .upload-box.dragover { border-color: var(--accent-pink); background: rgba(225,78,101,0.05); }
         .scan-overlay { position:absolute; inset:0; background:rgba(26,27,35,0.9); display:none; flex-direction:column; justify-content:center; align-items:center; z-index:5; color:var(--accent-pink);}
@@ -123,16 +122,16 @@
         .detail-top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         
         /* =========================================
-           LIVE HTML INVOICE VIEW (REFERENCE STYLE)
+           LIVE HTML INVOICE (B&W CORPORATE THEME)
            ========================================= */
         .html-invoice-bg { background: #f4f5f8; padding: 40px 20px; border-radius: 16px; overflow-y: auto; height: 75vh; border: 1px solid var(--border-color); display: flex; justify-content: center; }
         .live-invoice-wrapper { background: #fff; border-radius: 16px; overflow: hidden; width: 100%; max-width: 800px; height: fit-content; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eef0f2; color: #1d1d1f; font-family: 'Plus Jakarta Sans', sans-serif; display: flex; flex-direction: column; }
-        .li-header { background: #e14e65; color: #fff; padding: 40px; display: flex; justify-content: space-between; align-items: flex-start; }
-        .li-logo { width: 50px; height: 50px; background: #1a1b23; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
-        .li-logo svg { fill: #e14e65; width: 25px; height: 25px; }
-        .li-company { text-align: right; font-size: 11px; line-height: 1.6; }
-        .li-company h2 { font-size: 20px; font-weight: 800; margin-bottom: 5px; }
-        .li-title { text-align: center; color: #e14e65; font-size: 32px; font-weight: 800; letter-spacing: 2px; margin: 30px 0 10px; text-transform: uppercase; }
+        .li-header { background: #1d1d1f; color: #fff; padding: 40px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .li-logo { width: 50px; height: 50px; background: #ffffff; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .li-logo svg { fill: #1d1d1f; width: 25px; height: 25px; }
+        .li-company { text-align: right; font-size: 11px; line-height: 1.6; color: #eef0f2; }
+        .li-company h2 { font-size: 20px; font-weight: 800; margin-bottom: 5px; color: #fff; }
+        .li-title { text-align: center; color: #1d1d1f; font-size: 32px; font-weight: 800; letter-spacing: 2px; margin: 30px 0 10px; text-transform: uppercase; }
         .li-meta { display: flex; justify-content: space-between; padding: 0 40px 20px; font-size: 12px; }
         .li-meta-l table { border-collapse: collapse; }
         .li-meta-l td { padding-bottom: 8px; }
@@ -140,28 +139,38 @@
         .li-meta-r { text-align: right; }
         .li-meta-r p { margin-bottom: 4px; }
         .li-table { width: calc(100% - 80px); margin: 0 40px; border-collapse: collapse; }
-        .li-table th { background: #e14e65; color: #fff; text-align: left; padding: 12px 15px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .li-table th { background: #1d1d1f; color: #fff; text-align: left; padding: 12px 15px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
         .li-table th:nth-child(2), .li-table th:nth-child(3), .li-table th:nth-child(4) { text-align: center; }
         .li-table td { padding: 15px; font-size: 13px; border-bottom: 1px solid #eef0f2; }
         .li-table td:nth-child(2), .li-table td:nth-child(3), .li-table td:nth-child(4) { text-align: center; }
         .li-summary-container { display: flex; justify-content: flex-end; padding: 20px 40px; }
         .li-summary { width: 300px; }
         .li-summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; }
-        .li-summary-row.total { background: #e14e65; color: #fff; padding: 12px 20px; border-radius: 25px; font-weight: 800; font-size: 16px; margin-top: 5px; align-items: center; }
+        .li-summary-row.total { background: #1d1d1f; color: #fff; padding: 12px 20px; border-radius: 25px; font-weight: 800; font-size: 16px; margin-top: 5px; align-items: center; }
         .li-bottom { display: flex; gap: 40px; padding: 30px 40px; margin-top: 20px; border-top: 1px solid #eef0f2; }
         .li-box { flex: 1; }
         .li-box h4 { font-size: 11px; font-weight: 800; color: #1d1d1f; margin-bottom: 10px; text-transform: uppercase; }
         .li-box p { font-size: 11px; color: #86868b; line-height: 1.6; }
         .li-footer { text-align: center; padding: 30px; font-size: 10px; color: #a1a1aa; font-style: italic; background: #fbfbfd; }
 
-        /* MOBILE RESPONSIVE CSS */
+        /* =========================================
+           PRINT CSS (Akan potong ngam-ngam bila save as PDF)
+           ========================================= */
+        @media print {
+            body * { visibility: hidden; }
+            #invoice-detail-view, #invoice-detail-view * { visibility: visible; }
+            #invoice-detail-view { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; }
+            .detail-top-bar, .sidebar, .header-title, #toast-notification { display: none !important; }
+            .html-invoice-bg { height: 100%; border: none; padding: 0; margin: 0; overflow: visible; background: #fff; display: block;}
+            .live-invoice-wrapper { box-shadow: none; border: none; max-width: 100%; width: 100%; margin: 0; }
+        }
+
         @media (max-width: 768px) {
             body { flex-direction: column; }
             .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; flex-direction: row; padding: 10px; justify-content: space-around; align-items: center; border-top: 1px solid var(--border-color); border-right: none; border-radius: 20px 20px 0 0; }
             .business-selector, .nav-text, .sidebar > button { display: none; }
             .nav-item { margin: 0; padding: 10px; justify-content: center; flex: 1; }
             .nav-item svg { width: 24px; height: 24px; margin: 0 auto; }
-            
             .main-content { padding: 20px; padding-bottom: 100px; }
             .header-title { flex-direction: column; align-items: flex-start; gap: 15px; }
             .header-title .btn-add-pink { position: absolute; right: 20px; top: 25px; }
@@ -171,7 +180,6 @@
             .invoice-container { grid-template-columns: 1fr; }
             .form-grid { grid-template-columns: 1fr !important; }
             .form-group[style] { grid-column: span 1 !important; }
-            
             .detail-top-bar { flex-direction: column; gap: 15px; }
             .detail-top-bar > div:last-child { width: 100%; overflow-x: auto; padding-bottom: 5px; }
             .card { padding: 20px; }
@@ -343,7 +351,7 @@
                         </div>
                     </div>
                     <div style="display:flex; gap:10px;">
-                        <a id="btn-detail-print" href="#" target="_blank" class="btn-outline" style="padding:12px 20px; width:auto; display:flex; align-items:center; gap:8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Print / PDF</a>
+                        <button onclick="window.print()" class="btn-outline" style="padding:12px 20px; width:auto; display:flex; align-items:center; gap:8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Print / Save PDF</button>
                         <button onclick="copyDetailLink()" class="btn-outline" style="padding:12px 20px; width:auto; display:flex; align-items:center; gap:8px; color:#3b82f6; border-color:#3b82f6;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share</button>
                         <a id="btn-detail-email" href="#" class="btn-solid" style="padding:12px 20px; width:auto; display:flex; align-items:center; gap:8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Send Email</a>
                     </div>
@@ -402,7 +410,7 @@
                         </div>
                         <div class="li-footer">
                             This is a system-generated invoice and is valid without a signature.<br><br>
-                            <span style="font-weight:800; color:#e14e65; font-style:normal; letter-spacing:2px; font-size:9px;">POWERED BY OMNYZO ADMIN</span>
+                            <span style="font-weight:800; font-style:normal; letter-spacing:2px; font-size:9px;">POWERED BY OMNYZO ADMIN</span>
                         </div>
                     </div>
                 </div>
@@ -619,7 +627,7 @@
         }
 
         // =========================================
-        // VIEW LIVE HTML INVOICE (NO PDF/GOOGLE LOGIN)
+        // VIEW LIVE HTML INVOICE (B&W THEME)
         // =========================================
         function viewInvoiceDetail(invNo) {
             let inv = appData.invoices.find(i => i.invoiceNo === invNo);
@@ -629,7 +637,6 @@
             document.getElementById('detail-client').innerText = inv.client; 
             document.getElementById('detail-status').innerText = inv.status; 
             document.getElementById('detail-status').className = `status-tag tag-${inv.status.toLowerCase()}`; 
-            document.getElementById('btn-detail-print').href = inv.pdfLink; 
             currentPdfUrl = inv.pdfLink;
             
             const mailto = `mailto:?subject=Invoice ${inv.invoiceNo} from Omnyzo Agency&body=Hi ${inv.client},%0D%0A%0D%0AHere is the link to download your invoice PDF:%0D%0A${inv.pdfLink}%0D%0A%0D%0AThank you!`; 
@@ -642,7 +649,6 @@
             
             let data = inv.fullData;
             if(data) {
-                // Invois baru (ada data item dari V11)
                 document.getElementById('li-inv-date').innerText = dStr;
                 document.getElementById('li-inv-due').innerText = dueStr;
                 document.getElementById('li-client-name').innerText = data.client;
@@ -656,7 +662,6 @@
                 document.getElementById('li-total').innerText = "RM " + data.grandTotal;
                 document.getElementById('li-terms').innerText = data.terms || "-";
             } else {
-                // Fallback Invois Lama
                 document.getElementById('li-inv-date').innerText = dStr;
                 document.getElementById('li-inv-due').innerText = dueStr;
                 document.getElementById('li-client-name').innerText = inv.client;
@@ -683,7 +688,7 @@
                         if(inv.status === 'Pending') { pendingAmt += amt; pendingCount++; }
                         if(inv.status === 'Paid') { paidAmt += amt; paidCount++; }
                         let dStr = new Date(inv.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : inv.date;
-                        let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? dueStr.getDate()+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][dueStr.getMonth()]+" "+dueStr.getFullYear() : inv.dueDate;
+                        let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
 
                         tblHTML += `<div class="tbl-row"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">RM ${amt.toFixed(2)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}">${inv.status}</span></div><div class="action-btns">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : ''}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button></div></div>`;
                     });
@@ -704,6 +709,10 @@
                     document.getElementById('cashflowListContainer').innerHTML = cfHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div>';
                     document.getElementById('this-month-income').innerText = fmt(cfIn); document.getElementById('this-month-expense').innerText = fmt(cfOut); document.getElementById('this-month-net').innerText = fmt(cfIn - cfOut);
 
+                    // =========================================
+                    // BUG FIX: INGAT PILIHAN CUSTOMER
+                    // =========================================
+                    let currentCust = document.getElementById('invCustomer').value;
                     let cHTML = ''; let custDrop = '<option value="">Select customer...</option>';
                     data.customers.forEach(c => {
                         custDrop += `<option value="${c.company}">${c.company}</option>`; let initials = c.company.substring(0,2).toUpperCase();
@@ -711,7 +720,9 @@
                     });
                     document.getElementById('customerListContainer').innerHTML = cHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No customers found.</div>';
                     document.getElementById('invCustomer').innerHTML = custDrop;
+                    if(currentCust) document.getElementById('invCustomer').value = currentCust; // Masukkan balik pilihan Boss
                     
+                    let currentFree = document.getElementById('transMerchant').value;
                     let fHTML = ''; let freeDrop = '';
                     data.freelancers.forEach(f => {
                         freeDrop += `<option value="${f.name}">`; let initials = f.name.substring(0,2).toUpperCase();
@@ -719,6 +730,7 @@
                     });
                     document.getElementById('freelancerListContainer').innerHTML = fHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No freelancers found.</div>';
                     document.getElementById('merchantList').innerHTML = freeDrop;
+                    if(currentFree) document.getElementById('transMerchant').value = currentFree;
                 }
             });
         }
@@ -756,10 +768,8 @@
             let amtMatch = text.match(/(?:RM|MYR|TOTAL DUE|TOTAL|AMOUNT|AMT)[\s:.\-]*(?:RM)?\s*([0-9,]+(?:\.\d{2})?)/i);
             if(!amtMatch) amtMatch = text.match(/([0-9,]+\.\d{2})/);
             if(amtMatch) document.getElementById('transAmount').value = amtMatch[1].replace(/,/g, '');
-
             let dateMatch = text.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
             if(dateMatch) { let d = dateMatch[1]; let m = dateMatch[2]; let y = dateMatch[3]; if(y.length === 2) y = "20" + y; document.getElementById('transDate').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`; }
-
             let lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 2 && !l.match(/^[0-9]+$/));
             if(lines.length > 0) { let merchantName = lines[0]; if(merchantName.toLowerCase().includes("invoice")) merchantName = lines[1] || lines[0]; document.getElementById('transMerchant').value = merchantName.substring(0, 30); document.getElementById('transDesc').value = "Auto-filled by AI Scanner"; }
         }
@@ -776,9 +786,30 @@
         document.getElementById('freelancerForm').addEventListener('submit', function(e) { e.preventDefault(); const btn = document.getElementById('saveFreeBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; const payload = { type: "freelancer", name: document.getElementById('freeName').value, phone: document.getElementById('freePhone').value, email: document.getElementById('freeEmail').value, service: document.getElementById('freeService').value, bank: document.getElementById('freeBank').value }; fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('freelancer-modal').classList.remove('show'); document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; showToast("Freelancer Saved!"); fetchAppData(); } }); });
         function closeSuccessModal() { document.getElementById('success-modal').classList.remove('show'); document.getElementById('invoiceForm').reset(); document.getElementById('invoiceItemsContainer').innerHTML = ""; addInvoiceItem(); calculateDueDate(); switchView('invoices-view', document.querySelectorAll('.nav-item')[1]); }
 
+        // =========================================
+        // HURUF BESAR (TITLE CASE) FUNCTION
+        // =========================================
+        function toTitleCase(str) {
+            return str.toLowerCase().replace(/(?:^|\s)\w/g, function(match) { return match.toUpperCase(); });
+        }
+
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
             e.preventDefault(); const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "Processing..."; btn.disabled = true; 
-            const items = Array.from(document.querySelectorAll('.item-row')).map(r => ({ desc: r.querySelector('.item-desc').value, qty: r.querySelector('.item-qty').value, price: r.querySelector('.item-price').value, total: r.querySelector('.item-total').innerText })); const clientName = document.getElementById('invCustomer').options[document.getElementById('invCustomer').selectedIndex].text; 
+            
+            // LOOP ITEM DAN LETAK NOMBOR SERTA HURUF BESAR
+            const items = Array.from(document.querySelectorAll('.item-row')).map((r, index) => { 
+                let rawDesc = r.querySelector('.item-desc').value.trim();
+                let cleanDesc = toTitleCase(rawDesc);
+                let finalDesc = (index + 1) + ". " + cleanDesc;
+                return { 
+                    desc: finalDesc, 
+                    qty: r.querySelector('.item-qty').value, 
+                    price: r.querySelector('.item-price').value, 
+                    total: r.querySelector('.item-total').innerText 
+                }; 
+            }); 
+            
+            const clientName = document.getElementById('invCustomer').options[document.getElementById('invCustomer').selectedIndex].text; 
             const payload = { type: "invoice", client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''), taxAmount: document.getElementById('sumTaxAmount').innerText.replace('RM ', ''), grandTotal: document.getElementById('sumGrandTotal').innerText.replace('RM ', '') }; 
             
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
@@ -786,8 +817,6 @@
                 if(res.status === 'success') { 
                     sound.play().catch(e => console.log("Audio issue")); 
                     document.getElementById('invoiceForm').reset(); document.getElementById('invoiceItemsContainer').innerHTML = ""; addInvoiceItem(); calculateDueDate(); fetchAppData(); 
-                    
-                    // Terus tayang Invois HTML yg baru lepas create (sebab kita dah ada full payload data)
                     appData.invoices.unshift({invoiceNo: payload.invoiceNo, client: payload.client, status: "Pending", pdfLink: res.pdfUrl, fullData: payload});
                     viewInvoiceDetail(payload.invoiceNo);
                 } 
