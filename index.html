@@ -412,7 +412,7 @@
                         </div>
                         <div class="li-footer">
                             This is a system-generated invoice and is valid without a signature.<br><br>
-                            <span style="font-weight:800; font-style:normal; letter-spacing:2px; font-size:9px;">POWERED BY OMNYZO ADMIN</span>
+                            <span style="font-weight:800; font-style:normal; letter-spacing:2px; font-size:9px;">POWERED BY Omnyzo: Admin</span>
                         </div>
                     </div>
                 </div>
@@ -629,7 +629,7 @@
         }
 
         // =========================================
-        // VIEW LIVE HTML INVOICE (Corporate B&W)
+        // VIEW LIVE HTML INVOICE (BACA DARI LACI SHEET)
         // =========================================
         function viewInvoiceDetail(invNo) {
             let inv = appData.invoices.find(i => i.invoiceNo === invNo);
@@ -648,28 +648,39 @@
             let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
 
             document.getElementById('li-inv-no').innerText = inv.invoiceNo;
-            
-            let data = inv.fullData;
-            if(data) {
-                // Invois Baru (Tarik data dari Column H yg telah dilock)
-                document.getElementById('li-inv-date').innerText = dStr;
-                document.getElementById('li-inv-due').innerText = dueStr;
-                document.getElementById('li-client-name').innerText = data.client;
-                document.getElementById('li-client-address').innerHTML = (data.address || "-") + "<br>" + (data.phone || "") + "<br>" + (data.email || "");
-                
-                let itemsHtml = "";
-                if(data.items) { data.items.forEach(i => itemsHtml += `<tr><td>${i.desc}</td><td>${i.price}</td><td>${i.qty}</td><td>${i.total}</td></tr>`); }
+            document.getElementById('li-inv-date').innerText = dStr;
+            document.getElementById('li-inv-due').innerText = dueStr;
+            document.getElementById('li-client-name').innerText = inv.client;
+
+            let data = inv.fullData; 
+            let c = appData.customers.find(x => x.company === inv.client);
+            let cAddress = c ? `${c.address}, ${c.postcode} ${c.city}, ${c.state}<br>${c.phone}<br>${c.email}` : "-";
+            document.getElementById('li-client-address').innerHTML = (data && data.address) ? ((data.address || "-") + "<br>" + (data.phone || "") + "<br>" + (data.email || "")) : cAddress;
+
+            let itemsHtml = "";
+            let subtotal = 0;
+
+            if (inv.sheetItems && inv.sheetItems.length > 0) {
+                // V12: BACA DARI TAB "INVOICE ITEMS"
+                inv.sheetItems.forEach(i => {
+                    itemsHtml += `<tr><td>${i.desc}</td><td>${i.price}</td><td>${i.qty}</td><td>${i.total}</td></tr>`;
+                    subtotal += parseFloat(i.total);
+                });
+                document.getElementById('li-items').innerHTML = itemsHtml;
+                document.getElementById('li-sub').innerText = subtotal.toFixed(2);
+                document.getElementById('li-tax').innerText = "0.00";
+                document.getElementById('li-total').innerText = "RM " + inv.amount;
+                document.getElementById('li-terms').innerText = inv.tc || "Standard terms apply.";
+            } else if (data && data.items) {
+                // V11: BACA DARI JSON
+                data.items.forEach(i => itemsHtml += `<tr><td>${i.desc}</td><td>${i.price}</td><td>${i.qty}</td><td>${i.total}</td></tr>`);
                 document.getElementById('li-items').innerHTML = itemsHtml;
                 document.getElementById('li-sub').innerText = data.subtotal;
                 document.getElementById('li-tax').innerText = data.taxAmount;
                 document.getElementById('li-total').innerText = "RM " + data.grandTotal;
                 document.getElementById('li-terms').innerText = data.terms || "-";
             } else {
-                // Invois Lama (Placeholder)
-                document.getElementById('li-inv-date').innerText = dStr;
-                document.getElementById('li-inv-due').innerText = dueStr;
-                document.getElementById('li-client-name').innerText = inv.client;
-                document.getElementById('li-client-address').innerText = "-";
+                // V10: Fallback invois purba
                 document.getElementById('li-items').innerHTML = `<tr><td>Professional Services</td><td>${inv.amount}</td><td>1</td><td>${inv.amount}</td></tr>`;
                 document.getElementById('li-sub').innerText = inv.amount;
                 document.getElementById('li-tax').innerText = "0.00";
@@ -691,7 +702,6 @@
             const element = document.getElementById('invoiceCaptureArea');
             const invNo = document.getElementById('li-inv-no').innerText;
             
-            // Setting rahsia untuk capture clear & potong ngam-ngam
             const opt = {
                 margin:       0,
                 filename:     `Invoice_${invNo}.pdf`,
@@ -700,12 +710,10 @@
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
             
-            // Sembunyikan bayang-bayang masa capture
             element.style.boxShadow = 'none';
             element.style.border = 'none';
             
             html2pdf().set(opt).from(element).save().then(() => {
-                // Kembalikan bayang-bayang lepas siap
                 element.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)';
                 element.style.border = '1px solid #eef0f2';
                 btn.innerHTML = originalText;
@@ -826,7 +834,6 @@
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
             e.preventDefault(); const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "Processing..."; btn.disabled = true; 
             
-            // Item Descriptions (Title Case & Numbering)
             const items = Array.from(document.querySelectorAll('.item-row')).map((r, index) => { 
                 let rawDesc = r.querySelector('.item-desc').value.trim();
                 let finalDesc = (index + 1) + ". " + toTitleCase(rawDesc);
@@ -839,7 +846,6 @@
             }); 
             
             const clientName = document.getElementById('invCustomer').options[document.getElementById('invCustomer').selectedIndex].text; 
-            // Invois payload hantar ke Google Sheet
             const payload = { type: "invoice", client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''), taxAmount: document.getElementById('sumTaxAmount').innerText.replace('RM ', ''), grandTotal: document.getElementById('sumGrandTotal').innerText.replace('RM ', '') }; 
             
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
@@ -847,7 +853,13 @@
                 if(res.status === 'success') { 
                     sound.play().catch(e => console.log("Audio issue")); 
                     document.getElementById('invoiceForm').reset(); document.getElementById('invoiceItemsContainer').innerHTML = ""; addInvoiceItem(); calculateDueDate(); fetchAppData(); 
-                    appData.invoices.unshift({invoiceNo: payload.invoiceNo, client: payload.client, status: "Pending", pdfLink: res.pdfUrl, fullData: payload});
+                    
+                    // V12: Tolak data ke dalam memori secara 'live' supaya tak perlu tunggu refresh
+                    appData.invoices.unshift({
+                        invoiceNo: payload.invoiceNo, client: payload.client, status: "Pending", pdfLink: res.pdfUrl, tc: payload.terms,
+                        sheetItems: payload.items.map(i => ({ invNo: payload.invoiceNo, desc: i.desc, price: i.price, qty: i.qty, total: i.total })),
+                        fullData: payload
+                    });
                     viewInvoiceDetail(payload.invoiceNo);
                 } 
             }); 
