@@ -249,9 +249,9 @@
                 </div>
 
                 <div class="form-grid">
-                    <div class="form-group"><label>Payment Date</label><input type="date" id="payTransDate" class="form-control" required></div>
-                    <div class="form-group"><label>Payment Method</label><input type="text" id="payTransMethod" class="form-control" placeholder="e.g. Maybank, CIMB" required></div>
-                    <div class="form-group" style="grid-column: span 2;"><label>Ref ID / Trans. No</label><input type="text" id="payTransRef" class="form-control"></div>
+                    <div class="form-group"><label>Payment Date</label><input type="date" id="payTransDateModal" class="form-control" required></div>
+                    <div class="form-group"><label>Payment Method</label><input type="text" id="payTransMethodModal" class="form-control" placeholder="e.g. Maybank, CIMB" required></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>Ref ID / Trans. No</label><input type="text" id="payTransRefModal" class="form-control"></div>
                 </div>
                 <button type="submit" id="btnConfirmPayTrans" class="btn-solid" style="margin-top:25px;">Confirm Payment</button>
             </form>
@@ -614,7 +614,9 @@
     </template>
 
     <script>
+        // WEB APP URL LATEST TELAH DIKEMASKINI DI BAWAH:
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5WpkqLc2r5gCIGvxlMT_aJh3h0Xwjroul0qh-DaSgz6fgYHgB-icBeKbM_iTaCPI/exec';
+        
         const sound = document.getElementById('successSound');
         let appData = { invoices: [], customers: [], freelancers: [] };
         
@@ -733,13 +735,21 @@
         function launchApp() { 
             document.getElementById('startBtn').style.display = 'none';
             document.querySelector('.sync-text').style.display = 'block';
-            document.getElementById('invDate').valueAsDate = new Date(); 
-            document.getElementById('transPayDate').valueAsDate = new Date();
+            
+            // PASTIKAN ID INI WUJUD UNTUK ELAK ERROR KETIKA START
+            let invDateElem = document.getElementById('invDate');
+            if(invDateElem) invDateElem.valueAsDate = new Date(); 
+            
+            let transPayDateElem = document.getElementById('transPayDate');
+            if(transPayDateElem) transPayDateElem.valueAsDate = new Date();
+            
             calculateDueDate(); addInvoiceItem(); 
             fetchAppData().then(() => {
                 const intro = document.getElementById('intro-page');
                 intro.classList.add('zoom-out-exit'); 
                 setTimeout(() => { intro.style.display = 'none'; document.getElementById('app-container').classList.add('visible'); }, 800); 
+            }).catch(e => {
+                showToast("Connection Error. Please check your App Script Deployment.", true);
             });
         }
 
@@ -754,10 +764,12 @@
         // --- OCR 1 : INVOICE/RECEIPT DRAG & DROP ---
         const uploadBox = document.getElementById('uploadBoxUI');
         const fileInput = document.getElementById('receiptFileInput');
-        uploadBox.addEventListener('dragover', (e) => { e.preventDefault(); uploadBox.classList.add('dragover'); });
-        uploadBox.addEventListener('dragleave', (e) => { e.preventDefault(); uploadBox.classList.remove('dragover'); });
-        uploadBox.addEventListener('drop', (e) => { e.preventDefault(); uploadBox.classList.remove('dragover'); if (e.dataTransfer.files.length > 0) { fileInput.files = e.dataTransfer.files; handleFileSelect(fileInput); } });
-        fileInput.addEventListener('change', function() { handleFileSelect(this); });
+        if(uploadBox && fileInput) {
+            uploadBox.addEventListener('dragover', (e) => { e.preventDefault(); uploadBox.classList.add('dragover'); });
+            uploadBox.addEventListener('dragleave', (e) => { e.preventDefault(); uploadBox.classList.remove('dragover'); });
+            uploadBox.addEventListener('drop', (e) => { e.preventDefault(); uploadBox.classList.remove('dragover'); if (e.dataTransfer.files.length > 0) { fileInput.files = e.dataTransfer.files; handleFileSelect(fileInput); } });
+            fileInput.addEventListener('change', function() { handleFileSelect(this); });
+        }
 
         function handleFileSelect(input) {
             const file = input.files[0]; if(!file) return;
@@ -802,10 +814,12 @@
         const bankSlipUploadBox = document.getElementById('bankSlipUploadBoxUI');
         const bankSlipFileInput = document.getElementById('bankSlipFileInput');
 
-        bankSlipUploadBox.addEventListener('dragover', (e) => { e.preventDefault(); bankSlipUploadBox.classList.add('dragover'); });
-        bankSlipUploadBox.addEventListener('dragleave', (e) => { e.preventDefault(); bankSlipUploadBox.classList.remove('dragover'); });
-        bankSlipUploadBox.addEventListener('drop', (e) => { e.preventDefault(); bankSlipUploadBox.classList.remove('dragover'); if (e.dataTransfer.files.length > 0) { bankSlipFileInput.files = e.dataTransfer.files; handleBankSlipSelect(bankSlipFileInput); } });
-        bankSlipFileInput.addEventListener('change', function() { handleBankSlipSelect(this); });
+        if(bankSlipUploadBox && bankSlipFileInput) {
+            bankSlipUploadBox.addEventListener('dragover', (e) => { e.preventDefault(); bankSlipUploadBox.classList.add('dragover'); });
+            bankSlipUploadBox.addEventListener('dragleave', (e) => { e.preventDefault(); bankSlipUploadBox.classList.remove('dragover'); });
+            bankSlipUploadBox.addEventListener('drop', (e) => { e.preventDefault(); bankSlipUploadBox.classList.remove('dragover'); if (e.dataTransfer.files.length > 0) { bankSlipFileInput.files = e.dataTransfer.files; handleBankSlipSelect(bankSlipFileInput); } });
+            bankSlipFileInput.addEventListener('change', function() { handleBankSlipSelect(this); });
+        }
 
         function handleBankSlipSelect(input) {
             const file = input.files[0]; if(!file) return;
@@ -872,7 +886,7 @@
         // OCR 3: MODAL BAYAR CASHFLOW
         function openPayTransModal(rowIdx) {
             currentRowToPay = rowIdx;
-            document.getElementById('payTransDate').valueAsDate = new Date();
+            document.getElementById('payTransDateModal').valueAsDate = new Date();
             document.getElementById('pay-trans-modal').classList.add('show');
         }
 
@@ -889,9 +903,9 @@
                     document.getElementById('payTransScanStatus').style.display = "none";
                     if(res.status === 'success' && res.text) {
                         let dateMatch = res.text.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
-                        if(dateMatch) { let d = dateMatch[1], m = dateMatch[2], y = dateMatch[3]; if(y.length === 2) y = "20" + y; document.getElementById('payTransDate').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`; }
+                        if(dateMatch) { let d = dateMatch[1], m = dateMatch[2], y = dateMatch[3]; if(y.length === 2) y = "20" + y; document.getElementById('payTransDateModal').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`; }
                         let refMatch = res.text.match(/(?:REF|REFERENCE|TRANS|TRANSACTION|ID)[\s:.\-]*([A-Z0-9]+)/i);
-                        if(refMatch) document.getElementById('payTransRef').value = refMatch[1].trim();
+                        if(refMatch) document.getElementById('payTransRefModal').value = refMatch[1].trim();
                         showToast("Bank Slip Scanned! Form Auto-Filled.");
                     } else { showToast("File attached, but AI couldn't read text.", true); }
                 }).catch(err => { document.getElementById('payTransScanStatus').style.display = "none"; showToast("AI timeout, file attached.", true); });
@@ -903,7 +917,7 @@
             e.preventDefault(); const btn = document.getElementById('btnConfirmPayTrans'); const origText = btn.innerHTML; btn.innerHTML = "Processing..."; btn.disabled = true;
             const payload = {
                 type: "pay_transaction", rowIdx: currentRowToPay,
-                paymentDate: document.getElementById('payTransDate').value, paymentMethod: document.getElementById('payTransMethod').value, refId: document.getElementById('payTransRef').value
+                paymentDate: document.getElementById('payTransDateModal').value, paymentMethod: document.getElementById('payTransMethodModal').value, refId: document.getElementById('payTransRefModal').value
             };
             const file = document.getElementById('payTransReceipt').files[0];
             if (file) {
@@ -927,7 +941,7 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } });
         }
 
-        /* BAHAGIAN INVOIS & CUSTOMER KEKAL SAMA MACAM SEBELUM NI */
+        /* BAHAGIAN INVOIS & CUSTOMER */
         function autoFillCustomer() { let sel = document.getElementById('invCustomer').value; let c = appData.customers.find(x => x.company === sel); if(c) { document.getElementById('invPIC').value = c.pic; document.getElementById('invPhone').value = c.phone; document.getElementById('invEmail').value = c.email; document.getElementById('invAddress').value = `${c.address}, ${c.postcode} ${c.city}, ${c.state}`; } }
         document.getElementById('customerForm').addEventListener('submit', function(e) { e.preventDefault(); const btn = document.getElementById('saveCustBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; const payload = { type: "customer", custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value }; fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('customer-modal').classList.remove('show'); document.getElementById('customerForm').reset(); document.getElementById('custPhone').value = "+60"; showToast("Customer Saved!"); fetchAppData(); } }); });
         document.getElementById('freelancerForm').addEventListener('submit', function(e) { e.preventDefault(); const btn = document.getElementById('saveFreeBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; const payload = { type: "freelancer", name: document.getElementById('freeName').value, phone: document.getElementById('freePhone').value, email: document.getElementById('freeEmail').value, service: document.getElementById('freeService').value, bank: document.getElementById('freeBank').value }; fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('freelancer-modal').classList.remove('show'); document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; showToast("Freelancer Saved!"); fetchAppData(); } }); });
