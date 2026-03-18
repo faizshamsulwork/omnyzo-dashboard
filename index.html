@@ -110,8 +110,6 @@
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px; color: #a1aab2; align-items: center; }
         .summary-input { width: 80px; padding: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 20px; text-align: center; }
         .item-header { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; font-size: 13px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; min-width: 600px;}
-        
-        /* FIX: Align items to start so textarea expands naturally */
         .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; margin-bottom: 15px; align-items: start; min-width:600px;}
         
         .btn-solid { background: var(--accent-pink); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
@@ -141,7 +139,7 @@
         .detail-top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         
         /* =========================================
-           LIVE HTML INVOICE (CORPORATE ENTERPRISE)
+           LIVE HTML INVOICE (CORPORATE SAFE SPACE & FOOTER)
            ========================================= */
         .html-invoice-bg { background: #f4f5f8; padding: 40px 20px; border-radius: 16px; overflow-y: auto; height: 75vh; border: 1px solid var(--border-color); display: flex; justify-content: center; align-items: flex-start; }
         
@@ -166,7 +164,7 @@
         .li-meta-r { max-width: 280px; text-align: right; margin-left: auto; word-wrap: break-word; }
         .li-meta-r p { margin-bottom: 4px; line-height: 1.5; color: #86868b; }
         
-        /* TABLE ANTI-TERPOTONG & KEMAS */
+        /* TABLE ANTI-TERPOTONG */
         .li-table { width: calc(100% - 80px); margin: 0 40px; border-collapse: collapse; border: 1px solid #eef0f2; }
         .li-table th, .li-table td { border: 1px solid #eef0f2; padding: 12px 15px; font-size: 13px; }
         .li-table th { background: #1d1d1f; color: #fff; font-size: 11px; font-weight: 800; text-transform: uppercase; border-color: #333; }
@@ -186,7 +184,7 @@
         .li-box h4 { font-size: 11px; font-weight: 800; color: #1d1d1f; margin-bottom: 10px; text-transform: uppercase; }
         .li-box p { font-size: 11px; color: #86868b; line-height: 1.6; }
         
-        .li-footer { margin-top: auto; text-align: center; padding: 30px; font-size: 10px; color: #a1a1aa; font-style: italic; background: #fbfbfd; }
+        .li-footer { text-align: center; padding: 30px; font-size: 10px; color: #a1a1aa; font-style: italic; background: #fbfbfd; }
 
         /* LOADING OVERLAY */
         #invoiceLoadingOverlay {
@@ -390,83 +388,88 @@
                             <p style="font-size:12px; color:#86868b; margin-top:5px;">Please wait while we save to Google Drive</p>
                         </div>
 
-                        <div class="li-header">
-                            <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo Logo">
-                            <div class="li-company">
-                                <h2>Omnyzo Agency</h2>
-                                2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>
-                                billings@omnyzo.com<br>
-                                +6018-201 8001<br>
-                                Reg: (202503336982) (MA0340342-V)
+                        <div style="display: flex; flex-direction: column; min-height: 280mm;">
+                            <div class="li-header">
+                                <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo Logo">
+                                <div class="li-company">
+                                    <h2>Omnyzo Agency</h2>
+                                    2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>
+                                    billings@omnyzo.com<br>
+                                    +6018-201 8001<br>
+                                    Reg: (202503336982) (MA0340342-V)
+                                </div>
+                            </div>
+                            <div class="li-title">INVOICE</div>
+                            <div class="li-meta">
+                                <div class="li-meta-l">
+                                    <table>
+                                        <tr><td>Invoice No:</td><td id="li-inv-no"></td></tr>
+                                        <tr><td>Date:</td><td id="li-inv-date"></td></tr>
+                                        <tr><td>Due Date:</td><td id="li-inv-due"></td></tr>
+                                    </table>
+                                </div>
+                                <div class="li-meta-r">
+                                    <p style="font-weight:800; color:#1d1d1f; margin-bottom:10px;">TO:</p>
+                                    <h3 id="li-client-name" style="font-size:16px; font-weight:800; color:#1d1d1f; margin-bottom:5px;"></h3>
+                                    <p id="li-client-address"></p>
+                                </div>
+                            </div>
+                            <table class="li-table">
+                                <thead><tr><th>DESCRIPTION</th><th>PRICE (RM)</th><th>QTY</th><th>TOTAL (RM)</th></tr></thead>
+                                <tbody id="li-items"></tbody>
+                            </table>
+                            <div class="li-summary-container">
+                                <div class="li-summary">
+                                    <div class="li-summary-row"><span>Subtotal</span><span id="li-sub"></span></div>
+                                    <div class="li-summary-row" id="li-discount-row" style="display:none; color:#e14e65;"><span>Discount</span><span id="li-discount"></span></div>
+                                    <div class="li-summary-row"><span>Tax (<span id="li-tax-label">0.00</span>%)</span><span id="li-tax"></span></div>
+                                    <div class="li-summary-row total"><span>TOTAL</span><span id="li-total"></span></div>
+                                </div>
+                            </div>
+                            <div class="li-bottom">
+                                <div class="li-box">
+                                    <h4>PAYMENT METHOD</h4>
+                                    <div style="border:1px solid #eef0f2; padding:15px; border-radius:12px; font-size:11px; line-height:1.6;">
+                                        <table style="border-collapse: collapse; border: none; width:100%;">
+                                            <tr><td style="padding-right:15px; color:#86868b; border:none;">Payee Name</td><td style="font-weight:700; color:#1d1d1f; border:none;">: OMNYZO AGENCY</td></tr>
+                                            <tr><td style="padding-right:15px; color:#86868b; border:none;">Bank Name</td><td style="font-weight:700; color:#1d1d1f; border:none;">: MAYBANK BERHAD</td></tr>
+                                            <tr><td style="padding-right:15px; color:#86868b; border:none;">Bank Account</td><td style="font-weight:700; color:#1d1d1f; border:none;">: 5144-0481-2701</td></tr>
+                                            <tr><td style="padding-right:15px; color:#86868b; border:none;">Swift Code</td><td style="font-weight:700; color:#1d1d1f; border:none;">: MBBEMYKL</td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="li-box">
+                                    <h4>TERMS & CONDITIONS</h4>
+                                    <p id="li-terms" style="white-space: pre-line;"></p>
+                                </div>
+                            </div>
+                            
+                            <div style="flex-grow: 1;"></div> <div class="li-footer" style="padding-bottom: 20px;">
+                                This is a system-generated invoice and is valid without a signature.<br><br>
+                                <span style="font-weight:800; font-style:normal; letter-spacing:2px; font-size:9px;">POWERED BY Omnyzo: Admin</span>
                             </div>
                         </div>
-                        <div class="li-title">INVOICE</div>
-                        <div class="li-meta">
-                            <div class="li-meta-l">
-                                <table>
-                                    <tr><td>Invoice No:</td><td id="li-inv-no"></td></tr>
-                                    <tr><td>Date:</td><td id="li-inv-date"></td></tr>
-                                    <tr><td>Due Date:</td><td id="li-inv-due"></td></tr>
-                                </table>
-                            </div>
-                            <div class="li-meta-r">
-                                <p style="font-weight:800; color:#1d1d1f; margin-bottom:10px;">TO:</p>
-                                <h3 id="li-client-name" style="font-size:16px; font-weight:800; color:#1d1d1f; margin-bottom:5px;"></h3>
-                                <p id="li-client-address"></p>
-                            </div>
-                        </div>
-                        <table class="li-table">
-                            <thead><tr><th>DESCRIPTION</th><th>PRICE (RM)</th><th>QTY</th><th>TOTAL (RM)</th></tr></thead>
-                            <tbody id="li-items"></tbody>
-                        </table>
-                        <div class="li-summary-container">
-                            <div class="li-summary">
-                                <div class="li-summary-row"><span>Subtotal</span><span id="li-sub"></span></div>
-                                <div class="li-summary-row" id="li-discount-row" style="display:none; color:#e14e65;"><span>Discount</span><span id="li-discount"></span></div>
-                                <div class="li-summary-row"><span>Tax (<span id="li-tax-label">0.00</span>%)</span><span id="li-tax"></span></div>
-                                <div class="li-summary-row total"><span>TOTAL</span><span id="li-total"></span></div>
-                            </div>
-                        </div>
-                        <div class="li-bottom">
-                            <div class="li-box">
-                                <h4>PAYMENT METHOD</h4>
-                                <div style="border:1px solid #eef0f2; padding:15px; border-radius:12px; font-size:11px; line-height:1.6;">
-                                    <table style="border-collapse: collapse; border: none; width:100%;">
-                                        <tr><td style="padding-right:15px; color:#86868b; border:none;">Payee Name</td><td style="font-weight:700; color:#1d1d1f; border:none;">: OMNYZO AGENCY</td></tr>
-                                        <tr><td style="padding-right:15px; color:#86868b; border:none;">Bank Name</td><td style="font-weight:700; color:#1d1d1f; border:none;">: MAYBANK BERHAD</td></tr>
-                                        <tr><td style="padding-right:15px; color:#86868b; border:none;">Bank Account</td><td style="font-weight:700; color:#1d1d1f; border:none;">: 5144-0481-2701</td></tr>
-                                        <tr><td style="padding-right:15px; color:#86868b; border:none;">Swift Code</td><td style="font-weight:700; color:#1d1d1f; border:none;">: MBBEMYKL</td></tr>
+
+                        <div class="li-payment-advice-page" style="page-break-before: always; min-height: 280mm; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 40px; background: #fff;">
+                            <div class="li-payment-advice" style="border-top: 2px dashed #a1a1aa; padding: 40px;">
+                                <div style="text-align: center; color: #a1a1aa; margin-top: -52px; background: #fff; width: 40px; margin-left: auto; margin-right: auto; font-size: 16px;">✂️</div>
+                                <h3 style="font-size: 14px; font-weight: 800; color: #1d1d1f; margin-bottom: 15px; letter-spacing: 1px;">PAYMENT ADVICE</h3>
+                                <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                                    <div>
+                                        <p style="color: #86868b; margin-bottom: 5px;">To:</p>
+                                        <p style="font-weight: 800; color: #1d1d1f; margin-bottom: 3px;">Omnyzo Agency</p>
+                                        <p style="color: #86868b;">2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>56100 Kuala Lumpur</p>
+                                    </div>
+                                    <table style="border-collapse: collapse; text-align: left;">
+                                        <tr><td style="padding: 4px 15px 4px 0; color: #86868b;">Customer:</td><td style="font-weight: 700; color: #1d1d1f;" id="pa-client-name"></td></tr>
+                                        <tr><td style="padding: 4px 15px 4px 0; color: #86868b;">Invoice No:</td><td style="font-weight: 700; color: #1d1d1f;" id="pa-inv-no"></td></tr>
+                                        <tr><td style="padding: 4px 15px 4px 0; color: #86868b;">Due Date:</td><td style="font-weight: 700; color: #1d1d1f;" id="pa-due-date"></td></tr>
+                                        <tr><td style="padding: 4px 15px 4px 0; color: #86868b;">Amount Due:</td><td style="font-weight: 800; color: #1d1d1f; font-size: 14px;" id="pa-amount"></td></tr>
                                     </table>
                                 </div>
                             </div>
-                            <div class="li-box">
-                                <h4>TERMS & CONDITIONS</h4>
-                                <p id="li-terms" style="white-space: pre-line;"></p>
-                            </div>
                         </div>
-
-                        <div class="li-payment-advice" style="border-top: 2px dashed #a1a1aa; padding: 40px; page-break-before: always;">
-                            <div style="text-align: center; color: #a1a1aa; margin-top: -52px; background: #fff; width: 40px; margin-left: auto; margin-right: auto; font-size: 16px;">✂️</div>
-                            <h3 style="font-size: 14px; font-weight: 800; color: #1d1d1f; margin-bottom: 15px; letter-spacing: 1px;">PAYMENT ADVICE</h3>
-                            <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                                <div>
-                                    <p style="color: #86868b; margin-bottom: 5px;">To:</p>
-                                    <p style="font-weight: 800; color: #1d1d1f; margin-bottom: 3px;">Omnyzo Agency</p>
-                                    <p style="color: #86868b;">2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>56100 Kuala Lumpur</p>
-                                </div>
-                                <table style="border-collapse: collapse; text-align: left;">
-                                    <tr><td style="padding: 4px 15px 4px 0; color: #86868b;">Customer:</td><td style="font-weight: 700; color: #1d1d1f;" id="pa-client-name"></td></tr>
-                                    <tr><td style="padding: 4px 15px 4px 0; color: #86868b;">Invoice No:</td><td style="font-weight: 700; color: #1d1d1f;" id="pa-inv-no"></td></tr>
-                                    <tr><td style="padding: 4px 15px 4px 0; color: #86868b;">Due Date:</td><td style="font-weight: 700; color: #1d1d1f;" id="pa-due-date"></td></tr>
-                                    <tr><td style="padding: 4px 15px 4px 0; color: #86868b;">Amount Due:</td><td style="font-weight: 800; color: #1d1d1f; font-size: 14px;" id="pa-amount"></td></tr>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="li-footer">
-                            This is a system-generated invoice and is valid without a signature.<br><br>
-                            <span style="font-weight:800; font-style:normal; letter-spacing:2px; font-size:9px;">POWERED BY Omnyzo: Admin</span>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -626,7 +629,7 @@
                             <div class="summary-card">
                                 <h2 style="margin-bottom:30px; font-size: 22px; font-weight:700;">Summary</h2>
                                 <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">RM 0.00</span></div>
-                                <div class="summary-row"><span>Discount (RM)</span><input type="number" id="sumDiscount" class="summary-input" value="0" min="0" oninput="calculateInvoiceTotal()"></div>
+                                <div class="summary-row"><span>Discount (RM)</span><input type="text" id="sumDiscount" class="summary-input" value="0.00" oninput="formatInput(this); calculateInvoiceTotal()"></div>
                                 <div class="summary-row"><span>Tax (%)</span><input type="number" id="sumTaxPercent" class="summary-input" value="0" min="0" oninput="calculateInvoiceTotal()"></div>
                                 <div class="summary-row"><span>Tax Amount</span><span id="sumTaxAmount">RM 0.00</span></div>
                                 <div class="summary-total"><h3 style="font-size: 24px;">Total</h3><h2 id="sumGrandTotal" style="font-size: 28px; font-weight: 800;">RM 0.00</h2></div>
@@ -642,7 +645,7 @@
         <div class="item-row">
             <textarea class="form-control item-desc" required placeholder="Description (Press Enter for new line)" style="resize:vertical; min-height:48px; padding:12px; font-family:inherit;"></textarea>
             <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this)">
-            <input type="number" class="form-control item-price" placeholder="Price" step="0.01" oninput="updateRowTotal(this)">
+            <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this); updateRowTotal(this)">
             <div class="item-total" style="font-weight:700; font-size: 14px;">0.00</div>
             <button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();" style="background:none; border:none; color:var(--accent-pink); cursor:pointer;">🗑️</button>
         </div>
@@ -654,16 +657,25 @@
         let appData = { invoices: [], customers: [], freelancers: [] };
         let currentReceiptData = null; let pendingConfirmAction = null; let currentPdfUrl = "";
 
+        /* FIX 3: FUNGSI KOMA (THOUSANDS SEPARATOR) */
+        function unformatCurrency(val) { return parseFloat(val.toString().replace(/,/g, '')) || 0; }
+        function formatCurrency(val) { return parseFloat(val || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+        function formatInput(input) {
+            let val = input.value.replace(/,/g, '');
+            if (!isNaN(val) && val.length > 0 && !val.endsWith('.')) {
+                // Biarkan user menaip decimal tanpa kacau koma secara agresif
+            }
+        }
+
         function showToast(msg, isError=false) { const t = document.getElementById('toast-notification'); document.getElementById('toast-message').innerText = msg; if(isError) { t.classList.add('error'); document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`; } else { t.classList.remove('error'); document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`; } t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500); }
         function showConfirm(title, message, callback) { document.getElementById('confirm-title').innerText = title; document.getElementById('confirm-message').innerText = message; pendingConfirmAction = callback; document.getElementById('confirm-modal').classList.add('show'); }
         function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
         document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
 
-        // FETCH DATA DENGAN INSTANT UI UPDATE
         function fetchAppData() {
             return fetch(SCRIPT_URL).then(res => res.json()).then(data => {
                 if(data.status === 'success') {
-                    appData = data; const fmt = (val) => 'RM ' + parseFloat(val).toLocaleString('en-MY', {minimumFractionDigits: 2});
+                    appData = data; 
                     
                     let totalAmt = 0, pendingAmt = 0, paidAmt = 0, pendingCount = 0, paidCount = 0, tblHTML = '';
                     data.invoices.forEach(inv => {
@@ -673,12 +685,11 @@
                         let dStr = new Date(inv.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : inv.date;
                         let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
 
-                        // TAMBAHAN UNDO BUTTON DAN INSTANT UPDATE
-                        tblHTML += `<div class="tbl-row" id="row-${inv.invoiceNo}"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">${fmt(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}" id="tag-${inv.invoiceNo}">${inv.status}</span></div><div class="action-btns" id="btn-group-${inv.invoiceNo}">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : `<button onclick="revertToPending('${inv.invoiceNo}')" class="action-btn btn-undo">↩ Undo</button>`}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button></div></div>`;
+                        tblHTML += `<div class="tbl-row" id="row-${inv.invoiceNo}"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">RM ${formatCurrency(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}" id="tag-${inv.invoiceNo}">${inv.status}</span></div><div class="action-btns" id="btn-group-${inv.invoiceNo}">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : `<button onclick="revertToPending('${inv.invoiceNo}')" class="action-btn btn-undo">↩ Undo</button>`}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button></div></div>`;
                     });
 
-                    document.getElementById('dash-netcash').innerText = fmt(totalAmt); document.getElementById('dash-outstanding-amt').innerText = fmt(pendingAmt); document.getElementById('dash-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-pending-amt').innerText = fmt(pendingAmt); document.getElementById('count-paid').innerText = `${paidCount}`; document.getElementById('count-pending').innerText = `${pendingCount}`;
-                    document.getElementById('inv-count-total').innerText = data.invoices.length; document.getElementById('inv-amt-total').innerText = fmt(totalAmt); document.getElementById('inv-count-paid-tbl').innerText = paidCount; document.getElementById('inv-count-pending-tbl').innerText = pendingCount;
+                    document.getElementById('dash-netcash').innerText = 'RM ' + formatCurrency(totalAmt); document.getElementById('dash-outstanding-amt').innerText = 'RM ' + formatCurrency(pendingAmt); document.getElementById('dash-paid-amt').innerText = 'RM ' + formatCurrency(paidAmt); document.getElementById('stat-paid-amt').innerText = 'RM ' + formatCurrency(paidAmt); document.getElementById('stat-pending-amt').innerText = 'RM ' + formatCurrency(pendingAmt); document.getElementById('count-paid').innerText = `${paidCount}`; document.getElementById('count-pending').innerText = `${pendingCount}`;
+                    document.getElementById('inv-count-total').innerText = data.invoices.length; document.getElementById('inv-amt-total').innerText = 'RM ' + formatCurrency(totalAmt); document.getElementById('inv-count-paid-tbl').innerText = paidCount; document.getElementById('inv-count-pending-tbl').innerText = pendingCount;
                     document.getElementById('invoiceListContainer').innerHTML = tblHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No invoices found.</div>';
                     if(data.nextInvoiceNo) document.getElementById('invNo').value = data.nextInvoiceNo;
 
@@ -687,11 +698,11 @@
                         let amt = parseFloat(c.amount)||0; if(c.type==='In') cfIn += amt; else cfOut += amt;
                         let dStr = new Date(c.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : c.date;
                         let proofLink = c.receipt ? `<a href="${c.receipt}" target="_blank" style="text-decoration:none;">📎</a>` : '-';
-                        cfHTML += `<div class="cf-row"><div>${dStr}</div><div style="font-weight:700;">${c.merchant}</div><div style="color:var(--text-muted);">${c.category}</div><div>${c.description}</div><div style="text-align:right; color:${c.type==='In'?'#10b981':'#e14e65'}; font-weight:800;">${c.type==='In'?'+':'-'} ${fmt(amt)}</div><div style="text-align:center; font-size:18px;">${proofLink}</div></div>`;
+                        cfHTML += `<div class="cf-row"><div>${dStr}</div><div style="font-weight:700;">${c.merchant}</div><div style="color:var(--text-muted);">${c.category}</div><div>${c.description}</div><div style="text-align:right; color:${c.type==='In'?'#10b981':'#e14e65'}; font-weight:800;">${c.type==='In'?'+':'-'} RM ${formatCurrency(amt)}</div><div style="text-align:center; font-size:18px;">${proofLink}</div></div>`;
                     });
-                    document.getElementById('cf-net').innerText = (cfIn - cfOut >= 0 ? '+ ' : '- ') + fmt(Math.abs(cfIn - cfOut)); document.getElementById('cf-income').innerText = '+ ' + fmt(cfIn); document.getElementById('cf-expense').innerText = '- ' + fmt(cfOut);
+                    document.getElementById('cf-net').innerText = (cfIn - cfOut >= 0 ? '+ ' : '- ') + 'RM ' + formatCurrency(Math.abs(cfIn - cfOut)); document.getElementById('cf-income').innerText = '+ RM ' + formatCurrency(cfIn); document.getElementById('cf-expense').innerText = '- RM ' + formatCurrency(cfOut);
                     document.getElementById('cashflowListContainer').innerHTML = cfHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div>';
-                    document.getElementById('this-month-income').innerText = fmt(cfIn); document.getElementById('this-month-expense').innerText = fmt(cfOut); document.getElementById('this-month-net').innerText = fmt(cfIn - cfOut);
+                    document.getElementById('this-month-income').innerText = 'RM ' + formatCurrency(cfIn); document.getElementById('this-month-expense').innerText = 'RM ' + formatCurrency(cfOut); document.getElementById('this-month-net').innerText = 'RM ' + formatCurrency(cfIn - cfOut);
 
                     let currentCust = document.getElementById('invCustomer').value;
                     let cHTML = ''; let custDrop = '<option value="">Select customer...</option>';
@@ -733,7 +744,6 @@
             });
         }
 
-        // APPLE iOS TOGGLE
         function toggleTheme() { 
             const b = document.body; 
             const isLight = b.getAttribute('data-theme') === 'light';
@@ -745,25 +755,24 @@
         
         function addInvoiceItem() { document.getElementById('invoiceItemsContainer').appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true)); }
         
-        // PENGIRAAN MATEMATIK DENGAN TITIK PERPULUHAN KEKAL .00
         function updateRowTotal(input) { 
             const row = input.closest('.item-row'); 
-            let qStr = row.querySelector('.item-qty').value;
-            let pStr = row.querySelector('.item-price').value;
-            if(!pStr || parseFloat(pStr) === 0) { row.querySelector('.item-total').innerText = "0.00"; } 
-            else { row.querySelector('.item-total').innerText = ((parseFloat(qStr)||0) * (parseFloat(pStr)||0)).toFixed(2); }
+            let qStr = unformatCurrency(row.querySelector('.item-qty').value);
+            let pStr = unformatCurrency(row.querySelector('.item-price').value);
+            if(pStr === 0) { row.querySelector('.item-total').innerText = "0.00"; } 
+            else { row.querySelector('.item-total').innerText = formatCurrency(qStr * pStr); }
             calculateInvoiceTotal(); 
         }
         
         function calculateInvoiceTotal() { 
-            let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += parseFloat(t.innerText)||0); 
-            const disc = parseFloat(document.getElementById('sumDiscount').value) || 0; 
+            let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += unformatCurrency(t.innerText)); 
+            const disc = unformatCurrency(document.getElementById('sumDiscount').value); 
             const taxP = parseFloat(document.getElementById('sumTaxPercent').value) || 0; 
             const subDisc = Math.max(0, sub - disc); 
             const taxA = subDisc * (taxP / 100); 
-            document.getElementById('sumSubtotal').innerText = 'RM ' + sub.toFixed(2); 
-            document.getElementById('sumTaxAmount').innerText = 'RM ' + taxA.toFixed(2); 
-            document.getElementById('sumGrandTotal').innerText = 'RM ' + (subDisc + taxA).toFixed(2); 
+            document.getElementById('sumSubtotal').innerText = 'RM ' + formatCurrency(sub); 
+            document.getElementById('sumTaxAmount').innerText = 'RM ' + formatCurrency(taxA); 
+            document.getElementById('sumGrandTotal').innerText = 'RM ' + formatCurrency(subDisc + taxA); 
         }
         
         document.getElementById('invoiceItemsContainer').addEventListener('keydown', function(e) {
@@ -785,7 +794,6 @@
             document.getElementById('invTerms').value = text;
         }
 
-        // VIEW LIVE HTML INVOICE KORPORAT (TEXTAREA MULTILINE & HEADER)
         function viewInvoiceDetail(invNo) {
             let inv = appData.invoices.find(i => i.invoiceNo === invNo);
             if(!inv) return;
@@ -821,29 +829,29 @@
                     if (isHeader) {
                         itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`;
                     } else {
-                        itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${parseFloat(i.price).toFixed(2)}</td><td>${i.qty}</td><td>${parseFloat(i.total).toFixed(2)}</td></tr>`;
+                        itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${formatCurrency(i.price)}</td><td>${i.qty}</td><td>${formatCurrency(i.total)}</td></tr>`;
                         subtotal += parseFloat(i.total);
                     }
                 });
                 document.getElementById('li-items').innerHTML = itemsHtml;
-                document.getElementById('li-sub').innerText = subtotal.toFixed(2);
+                document.getElementById('li-sub').innerText = formatCurrency(subtotal);
                 
                 if(data && data.discount && parseFloat(data.discount) > 0) {
                     document.getElementById('li-discount-row').style.display = "flex";
-                    document.getElementById('li-discount').innerText = "- " + parseFloat(data.discount).toFixed(2);
+                    document.getElementById('li-discount').innerText = "- " + formatCurrency(data.discount);
                 } else {
                     document.getElementById('li-discount-row').style.display = "none";
                 }
 
                 document.getElementById('li-tax-label').innerText = data ? (data.taxPercent || "0.00") : "0.00";
-                document.getElementById('li-tax').innerText = data ? parseFloat(data.taxAmount || 0).toFixed(2) : "0.00";
-                document.getElementById('li-total').innerText = "RM " + parseFloat(inv.amount).toFixed(2);
+                document.getElementById('li-tax').innerText = data ? formatCurrency(data.taxAmount || 0) : "0.00";
+                document.getElementById('li-total').innerText = "RM " + formatCurrency(inv.amount);
                 document.getElementById('li-terms').innerText = inv.tc || "Standard terms apply.";
                 
                 document.getElementById('pa-inv-no').innerText = inv.invoiceNo;
                 document.getElementById('pa-client-name').innerText = inv.client;
                 document.getElementById('pa-due-date').innerText = dueStr;
-                document.getElementById('pa-amount').innerText = "RM " + parseFloat(inv.amount).toFixed(2);
+                document.getElementById('pa-amount').innerText = "RM " + formatCurrency(inv.amount);
 
             } else if (data && data.items) {
                 data.items.forEach(i => {
@@ -851,46 +859,47 @@
                     if (isHeader) {
                         itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`;
                     } else {
-                        itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${parseFloat(i.price).toFixed(2)}</td><td>${i.qty}</td><td>${parseFloat(i.total).toFixed(2)}</td></tr>`;
+                        itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${formatCurrency(i.price)}</td><td>${i.qty}</td><td>${formatCurrency(i.total)}</td></tr>`;
                     }
                 });
                 document.getElementById('li-items').innerHTML = itemsHtml;
-                document.getElementById('li-sub').innerText = parseFloat(data.subtotal).toFixed(2);
+                document.getElementById('li-sub').innerText = formatCurrency(data.subtotal);
                 
                 if(data.discount && parseFloat(data.discount) > 0) {
                     document.getElementById('li-discount-row').style.display = "flex";
-                    document.getElementById('li-discount').innerText = "- " + parseFloat(data.discount).toFixed(2);
+                    document.getElementById('li-discount').innerText = "- " + formatCurrency(data.discount);
                 } else {
                     document.getElementById('li-discount-row').style.display = "none";
                 }
 
                 document.getElementById('li-tax-label').innerText = data.taxPercent || "0.00";
-                document.getElementById('li-tax').innerText = parseFloat(data.taxAmount).toFixed(2);
-                document.getElementById('li-total').innerText = "RM " + parseFloat(data.grandTotal).toFixed(2);
+                document.getElementById('li-tax').innerText = formatCurrency(data.taxAmount);
+                document.getElementById('li-total').innerText = "RM " + formatCurrency(data.grandTotal);
                 document.getElementById('li-terms').innerText = data.terms || "-";
                 
                 document.getElementById('pa-inv-no').innerText = inv.invoiceNo;
                 document.getElementById('pa-client-name').innerText = inv.client;
                 document.getElementById('pa-due-date').innerText = dueStr;
-                document.getElementById('pa-amount').innerText = "RM " + parseFloat(data.grandTotal).toFixed(2);
+                document.getElementById('pa-amount').innerText = "RM " + formatCurrency(data.grandTotal);
 
             } else {
-                document.getElementById('li-items').innerHTML = `<tr><td style="white-space:pre-wrap;">Professional Services</td><td>${parseFloat(inv.amount).toFixed(2)}</td><td>1</td><td>${parseFloat(inv.amount).toFixed(2)}</td></tr>`;
-                document.getElementById('li-sub').innerText = parseFloat(inv.amount).toFixed(2);
+                document.getElementById('li-items').innerHTML = `<tr><td style="white-space:pre-wrap;">Professional Services</td><td>${formatCurrency(inv.amount)}</td><td>1</td><td>${formatCurrency(inv.amount)}</td></tr>`;
+                document.getElementById('li-sub').innerText = formatCurrency(inv.amount);
                 document.getElementById('li-discount-row').style.display = "none";
                 document.getElementById('li-tax-label').innerText = "0.00";
                 document.getElementById('li-tax').innerText = "0.00";
-                document.getElementById('li-total').innerText = "RM " + parseFloat(inv.amount).toFixed(2);
+                document.getElementById('li-total').innerText = "RM " + formatCurrency(inv.amount);
                 document.getElementById('li-terms').innerText = "Standard terms apply.";
                 
                 document.getElementById('pa-inv-no').innerText = inv.invoiceNo;
                 document.getElementById('pa-client-name').innerText = inv.client;
                 document.getElementById('pa-due-date').innerText = dueStr;
-                document.getElementById('pa-amount').innerText = "RM " + parseFloat(inv.amount).toFixed(2);
+                document.getElementById('pa-amount').innerText = "RM " + formatCurrency(inv.amount);
             }
             switchView('invoice-detail-view');
         }
 
+        // FIX 1: Margin selamat 0.2inci di bawah setiap page
         function downloadInvoicePDF() {
             const btn = document.querySelector('.btn-outline');
             const originalText = btn.innerHTML;
@@ -901,7 +910,7 @@
             const invNo = document.getElementById('li-inv-no').innerText;
             
             const opt = {
-                margin:       0,
+                margin:       [0, 0, 0.2, 0], 
                 filename:     `Invoice_${invNo}.pdf`,
                 image:        { type: 'jpeg', quality: 1 },
                 html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
@@ -921,11 +930,8 @@
 
         function copyDetailLink() { navigator.clipboard.writeText(currentPdfUrl); showToast("Google Drive PDF Link copied!"); }
 
-        // MENGUBAH STATUS SECARA INSTANT + BUTANG UNDO
         function markAsPaid(invNo) { 
             showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid?`, function() { 
-                
-                // INSTANT UI UPDATE (Tak payah tunggu backend)
                 document.getElementById(`tag-${invNo}`).innerText = "Paid";
                 document.getElementById(`tag-${invNo}`).className = "status-tag tag-paid";
                 document.getElementById(`btn-group-${invNo}`).innerHTML = `<button onclick="revertToPending('${invNo}')" class="action-btn btn-undo">↩ Undo</button><button onclick="viewInvoiceDetail('${invNo}')" class="action-btn btn-pdf">👁️ View</button>`;
@@ -937,8 +943,6 @@
 
         function revertToPending(invNo) {
             showConfirm("Revert to Pending", `Undo payment status for ${invNo} back to Pending?`, function() { 
-                
-                // INSTANT UI UPDATE
                 document.getElementById(`tag-${invNo}`).innerText = "Pending";
                 document.getElementById(`tag-${invNo}`).className = "status-tag tag-pending";
                 document.getElementById(`btn-group-${invNo}`).innerHTML = `<button onclick="markAsPaid('${invNo}')" class="action-btn btn-pay">✔ Paid</button><button onclick="viewInvoiceDetail('${invNo}')" class="action-btn btn-pdf">👁️ View</button>`;
@@ -1013,13 +1017,13 @@
                 const items = Array.from(document.querySelectorAll('.item-row')).map((r) => { 
                     let rawDesc = r.querySelector('.item-desc').value.trim();
                     let qtyVal = r.querySelector('.item-qty').value;
-                    let priceVal = r.querySelector('.item-price').value;
+                    let priceVal = unformatCurrency(r.querySelector('.item-price').value);
                     
-                    let isHeader = !priceVal || parseFloat(priceVal) === 0 || isNaN(parseFloat(priceVal));
+                    let isHeader = !priceVal || priceVal === 0 || isNaN(priceVal);
                     
                     let finalDesc;
                     if (isHeader) {
-                        finalDesc = rawDesc; // Jangan usik case untuk perenggan/nota panjang
+                        finalDesc = rawDesc;
                     } else {
                         finalDesc = itemCounter + ". " + toTitleCase(rawDesc);
                         itemCounter++;
@@ -1028,8 +1032,8 @@
                     return { 
                         desc: finalDesc, 
                         qty: isHeader ? "" : qtyVal, 
-                        price: isHeader ? "" : parseFloat(priceVal).toFixed(2), 
-                        total: isHeader ? "" : parseFloat(r.querySelector('.item-total').innerText).toFixed(2) 
+                        price: isHeader ? "" : priceVal.toFixed(2), 
+                        total: isHeader ? "" : unformatCurrency(r.querySelector('.item-total').innerText).toFixed(2) 
                     }; 
                 }); 
                 
@@ -1042,11 +1046,11 @@
                     terms: document.getElementById('invTerms').value, 
                     notes: document.getElementById('invNotes').value, 
                     items: items, 
-                    discount: parseFloat(document.getElementById('sumDiscount').value || 0).toFixed(2),
+                    discount: unformatCurrency(document.getElementById('sumDiscount').value).toFixed(2),
                     taxPercent: parseFloat(document.getElementById('sumTaxPercent').value || 0).toFixed(2),
-                    subtotal: parseFloat(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), 
-                    taxAmount: parseFloat(document.getElementById('sumTaxAmount').innerText.replace('RM ', '')).toFixed(2), 
-                    grandTotal: parseFloat(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2) 
+                    subtotal: unformatCurrency(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), 
+                    taxAmount: unformatCurrency(document.getElementById('sumTaxAmount').innerText.replace('RM ', '')).toFixed(2), 
+                    grandTotal: unformatCurrency(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2) 
                 }; 
                 
                 appData.invoices.unshift({
