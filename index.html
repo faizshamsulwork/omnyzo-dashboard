@@ -124,26 +124,27 @@
         .detail-top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         
         /* =========================================
-           LIVE HTML INVOICE (CORPORATE B&W + BORDERS)
+           LIVE HTML INVOICE (CORPORATE WHITE HEADER)
            ========================================= */
         .html-invoice-bg { background: #f4f5f8; padding: 40px 20px; border-radius: 16px; overflow-y: auto; height: 75vh; border: 1px solid var(--border-color); display: flex; justify-content: center; }
-        .live-invoice-wrapper { background: #fff; border-radius: 16px; overflow: hidden; width: 100%; max-width: 800px; height: fit-content; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eef0f2; color: #1d1d1f; font-family: 'Plus Jakarta Sans', sans-serif; display: flex; flex-direction: column; }
-        .li-header { background: #1d1d1f; color: #fff; padding: 40px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .live-invoice-wrapper { background: #fff; width: 100%; max-width: 800px; height: fit-content; box-shadow: 0 10px 30px rgba(0,0,0,0.05); color: #1d1d1f; font-family: 'Plus Jakarta Sans', sans-serif; display: flex; flex-direction: column; border: 1px solid #eef0f2; }
         
-        /* OMNYZO LOGO DARI GITHUB DENGAN INVERT EFFECT */
-        .li-logo-img { width: 55px; height: auto; filter: invert(1) brightness(100); }
+        /* White Header, Black Text, No Margins */
+        .li-header { background: #ffffff; color: #1d1d1f; padding: 40px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #1d1d1f; }
+        .li-logo-img { width: 120px; height: auto; } /* No invert */
         
-        .li-company { text-align: right; font-size: 11px; line-height: 1.6; color: #eef0f2; }
-        .li-company h2 { font-size: 20px; font-weight: 800; margin-bottom: 5px; color: #fff; }
+        .li-company { text-align: right; font-size: 11px; line-height: 1.6; color: #86868b; }
+        .li-company h2 { font-size: 20px; font-weight: 800; margin-bottom: 5px; color: #1d1d1f; text-transform: uppercase; letter-spacing: 1px;}
         .li-title { text-align: center; color: #1d1d1f; font-size: 32px; font-weight: 800; letter-spacing: 2px; margin: 30px 0 10px; text-transform: uppercase; }
         .li-meta { display: flex; justify-content: space-between; padding: 0 40px 20px; font-size: 12px; }
         .li-meta-l table { border-collapse: collapse; }
-        .li-meta-l td { padding-bottom: 8px; }
+        .li-meta-l td { padding-bottom: 8px; white-space: nowrap; } /* Invoice No Single Line */
         .li-meta-l td:first-child { font-weight: 800; padding-right: 15px; }
-        .li-meta-r { text-align: right; }
-        .li-meta-r p { margin-bottom: 4px; }
         
-        /* TABLE INVOICE STANDARD KORPORAT (ADA BORDER) */
+        /* Client Address Wrapping */
+        .li-meta-r { max-width: 250px; text-align: right; margin-left: auto; }
+        .li-meta-r p { margin-bottom: 4px; line-height: 1.5; color: #86868b; }
+        
         .li-table { width: calc(100% - 80px); margin: 0 40px; border-collapse: collapse; border: 1px solid #eef0f2; }
         .li-table th, .li-table td { border: 1px solid #eef0f2; padding: 12px 15px; font-size: 13px; }
         .li-table th { background: #1d1d1f; color: #fff; font-size: 11px; font-weight: 800; text-transform: uppercase; border-color: #333; }
@@ -152,10 +153,12 @@
         .li-table th:last-child, .li-table td:last-child { text-align: right; }
         .li-table td:last-child { font-weight: 700; }
         
+        /* Total Box Alignment */
         .li-summary-container { display: flex; justify-content: flex-end; padding: 20px 40px; }
-        .li-summary { width: 300px; }
+        .li-summary { width: 320px; }
         .li-summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; }
-        .li-summary-row.total { background: #1d1d1f; color: #fff; padding: 12px 20px; border-radius: 25px; font-weight: 800; font-size: 16px; margin-top: 5px; align-items: center; }
+        .li-summary-row.total { background: #1d1d1f; color: #fff; padding: 15px 20px; font-weight: 800; font-size: 16px; margin-top: 10px; align-items: center; border-radius: 8px; }
+        
         .li-bottom { display: flex; gap: 40px; padding: 30px 40px; margin-top: 20px; border-top: 1px solid #eef0f2; }
         .li-box { flex: 1; }
         .li-box h4 { font-size: 11px; font-weight: 800; color: #1d1d1f; margin-bottom: 10px; text-transform: uppercase; }
@@ -184,7 +187,7 @@
 
             .html-invoice-bg { padding: 20px 10px; }
             .li-header, .li-meta, .li-bottom { flex-direction: column; gap: 20px; text-align: left; }
-            .li-company, .li-meta-r { text-align: left; }
+            .li-company, .li-meta-r { text-align: left; max-width: 100%; }
             .li-table { width: 100%; margin: 0; display: block; overflow-x: auto; border:none;}
             .li-summary-container { justify-content: flex-start; padding: 20px; }
             .li-header { padding: 20px; }
@@ -203,16 +206,6 @@
             <img id="introLogoGraphic" src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png">
             <h1 class="intro-title">OMNYZO ADMIN</h1>
             <button class="btn-enter" onclick="launchApp()">START</button>
-        </div>
-    </div>
-
-    <div id="success-modal" class="modal-overlay">
-        <div class="modal">
-            <div style="width: 80px; height: 80px; background: rgba(16, 185, 129, 0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 10px;">Ready.</h2>
-            <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 15px;">Invoice generated securely to Google Drive.</p>
-            <a id="downloadPdfBtn" href="#" target="_blank" class="btn-solid" style="text-decoration:none; display:flex; justify-content: center; margin-bottom: 15px;">View PDF & Back</a>
-            <button onclick="closeSuccessModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-weight:700; width: 100%; padding: 10px;">Close</button>
         </div>
     </div>
 
@@ -407,7 +400,7 @@
                             </div>
                             <div class="li-box">
                                 <h4>TERMS & CONDITIONS</h4>
-                                <p id="li-terms"></p>
+                                <p id="li-terms" style="white-space: pre-line;"></p>
                             </div>
                         </div>
                         <div class="li-footer">
@@ -567,7 +560,7 @@
                                 </div>
                                 <div class="form-group"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control" rows="4"></textarea></div>
                             </div>
-                            <button type="submit" id="saveInvoiceBtn" class="btn-solid" style="padding:20px; font-size:16px;">Create & Send PDF</button>
+                            <button type="submit" id="saveInvoiceBtn" class="btn-solid" style="padding:20px; font-size:16px;">Create Invoice</button>
                         </div>
                         <div class="right-col">
                             <div class="summary-card">
@@ -661,30 +654,27 @@
             let subtotal = 0;
 
             if (inv.sheetItems && inv.sheetItems.length > 0) {
-                // V12: BACA DARI TAB "INVOICE ITEMS"
                 inv.sheetItems.forEach(i => {
-                    itemsHtml += `<tr><td>${i.desc}</td><td>${i.price}</td><td>${i.qty}</td><td>${i.total}</td></tr>`;
+                    itemsHtml += `<tr><td>${i.desc}</td><td>${parseFloat(i.price).toFixed(2)}</td><td>${i.qty}</td><td>${parseFloat(i.total).toFixed(2)}</td></tr>`;
                     subtotal += parseFloat(i.total);
                 });
                 document.getElementById('li-items').innerHTML = itemsHtml;
                 document.getElementById('li-sub').innerText = subtotal.toFixed(2);
                 document.getElementById('li-tax').innerText = "0.00";
-                document.getElementById('li-total').innerText = "RM " + inv.amount;
+                document.getElementById('li-total').innerText = "RM " + parseFloat(inv.amount).toFixed(2);
                 document.getElementById('li-terms').innerText = inv.tc || "Standard terms apply.";
             } else if (data && data.items) {
-                // V11: BACA DARI JSON
-                data.items.forEach(i => itemsHtml += `<tr><td>${i.desc}</td><td>${i.price}</td><td>${i.qty}</td><td>${i.total}</td></tr>`);
+                data.items.forEach(i => itemsHtml += `<tr><td>${i.desc}</td><td>${parseFloat(i.price).toFixed(2)}</td><td>${i.qty}</td><td>${parseFloat(i.total).toFixed(2)}</td></tr>`);
                 document.getElementById('li-items').innerHTML = itemsHtml;
-                document.getElementById('li-sub').innerText = data.subtotal;
-                document.getElementById('li-tax').innerText = data.taxAmount;
-                document.getElementById('li-total').innerText = "RM " + data.grandTotal;
+                document.getElementById('li-sub').innerText = parseFloat(data.subtotal).toFixed(2);
+                document.getElementById('li-tax').innerText = parseFloat(data.taxAmount).toFixed(2);
+                document.getElementById('li-total').innerText = "RM " + parseFloat(data.grandTotal).toFixed(2);
                 document.getElementById('li-terms').innerText = data.terms || "-";
             } else {
-                // V10: Fallback invois purba
-                document.getElementById('li-items').innerHTML = `<tr><td>Professional Services</td><td>${inv.amount}</td><td>1</td><td>${inv.amount}</td></tr>`;
-                document.getElementById('li-sub').innerText = inv.amount;
+                document.getElementById('li-items').innerHTML = `<tr><td>Professional Services</td><td>${parseFloat(inv.amount).toFixed(2)}</td><td>1</td><td>${parseFloat(inv.amount).toFixed(2)}</td></tr>`;
+                document.getElementById('li-sub').innerText = parseFloat(inv.amount).toFixed(2);
                 document.getElementById('li-tax').innerText = "0.00";
-                document.getElementById('li-total').innerText = "RM " + inv.amount;
+                document.getElementById('li-total').innerText = "RM " + parseFloat(inv.amount).toFixed(2);
                 document.getElementById('li-terms').innerText = "Standard terms apply.";
             }
             switchView('invoice-detail-view');
@@ -702,14 +692,16 @@
             const element = document.getElementById('invoiceCaptureArea');
             const invNo = document.getElementById('li-inv-no').innerText;
             
+            // Margin di-set kepada 0 inci untuk Full Width Header!
             const opt = {
                 margin:       0,
                 filename:     `Invoice_${invNo}.pdf`,
                 image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
             
+            // Sembunyikan border semasa tangkap gambar
             element.style.boxShadow = 'none';
             element.style.border = 'none';
             
@@ -831,8 +823,14 @@
 
         function toTitleCase(str) { return str.toLowerCase().replace(/(?:^|\s)\w/g, function(match) { return match.toUpperCase(); }); }
 
+        // =========================================
+        // ZERO-LAG CREATE INVOICE 
+        // =========================================
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
-            e.preventDefault(); const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "Processing..."; btn.disabled = true; 
+            e.preventDefault(); 
+            const btn = document.getElementById('saveInvoiceBtn'); 
+            btn.innerText = "Processing..."; 
+            btn.disabled = true; 
             
             const items = Array.from(document.querySelectorAll('.item-row')).map((r, index) => { 
                 let rawDesc = r.querySelector('.item-desc').value.trim();
@@ -840,28 +838,47 @@
                 return { 
                     desc: finalDesc, 
                     qty: r.querySelector('.item-qty').value, 
-                    price: r.querySelector('.item-price').value, 
-                    total: r.querySelector('.item-total').innerText 
+                    price: parseFloat(r.querySelector('.item-price').value).toFixed(2), 
+                    total: parseFloat(r.querySelector('.item-total').innerText).toFixed(2) 
                 }; 
             }); 
             
             const clientName = document.getElementById('invCustomer').options[document.getElementById('invCustomer').selectedIndex].text; 
-            const payload = { type: "invoice", client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, subtotal: document.getElementById('sumSubtotal').innerText.replace('RM ', ''), taxAmount: document.getElementById('sumTaxAmount').innerText.replace('RM ', ''), grandTotal: document.getElementById('sumGrandTotal').innerText.replace('RM ', '') }; 
+            const payload = { 
+                type: "invoice", client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, 
+                subtotal: parseFloat(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), 
+                taxAmount: parseFloat(document.getElementById('sumTaxAmount').innerText.replace('RM ', '')).toFixed(2), 
+                grandTotal: parseFloat(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2) 
+            }; 
             
+            // 1. TAYANG TERUS TANPA LAG
+            appData.invoices.unshift({
+                invoiceNo: payload.invoiceNo, client: payload.client, status: "Pending", pdfLink: "", tc: payload.terms,
+                sheetItems: payload.items.map(i => ({ invNo: payload.invoiceNo, desc: i.desc, price: i.price, qty: i.qty, total: i.total })),
+                fullData: payload
+            });
+            viewInvoiceDetail(payload.invoiceNo);
+            showToast("Generating official document in background...");
+            
+            // 2. HANTAR KE BACKEND SENYAP-SENYAP
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
-                btn.innerText = "Create & Send PDF"; btn.disabled = false; 
+                btn.innerText = "Create Invoice"; 
+                btn.disabled = false; 
                 if(res.status === 'success') { 
                     sound.play().catch(e => console.log("Audio issue")); 
-                    document.getElementById('invoiceForm').reset(); document.getElementById('invoiceItemsContainer').innerHTML = ""; addInvoiceItem(); calculateDueDate(); fetchAppData(); 
+                    document.getElementById('invoiceForm').reset(); 
+                    document.getElementById('invoiceItemsContainer').innerHTML = ""; 
+                    addInvoiceItem(); calculateDueDate(); fetchAppData(); 
                     
-                    // V12: Tolak data ke dalam memori secara 'live' supaya tak perlu tunggu refresh
-                    appData.invoices.unshift({
-                        invoiceNo: payload.invoiceNo, client: payload.client, status: "Pending", pdfLink: res.pdfUrl, tc: payload.terms,
-                        sheetItems: payload.items.map(i => ({ invNo: payload.invoiceNo, desc: i.desc, price: i.price, qty: i.qty, total: i.total })),
-                        fullData: payload
-                    });
-                    viewInvoiceDetail(payload.invoiceNo);
+                    // Kemas kini link PDF bila siap
+                    let inv = appData.invoices.find(i => i.invoiceNo === payload.invoiceNo);
+                    if(inv) inv.pdfLink = res.pdfUrl;
+                    if(currentPdfUrl === "") currentPdfUrl = res.pdfUrl;
+                    showToast("Invoice successfully backed up to Google Drive!");
                 } 
+            }).catch(err => {
+                btn.innerText = "Create Invoice"; 
+                btn.disabled = false;
             }); 
         });
     </script>
