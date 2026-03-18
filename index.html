@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Omnyzo: Admin</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -36,7 +36,7 @@
         .zoom-out-exit { transform: scale(1.3); opacity: 0; filter: blur(10px); pointer-events: none; }
 
         #login-page { position: fixed; inset: 0; z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; background: #0b0c10; transition: 0.8s; opacity:0;}
-        .login-box { background: #1a1b23; padding: 50px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: translateY(20px); transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+        .login-box { background: #1a1b23; padding: 50px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: translateY(20px); transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1); max-width:90%;}
         .login-box.active { transform: translateY(0); }
         .login-input { width: 100%; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: #fff; margin-bottom: 20px; font-family: inherit; font-size: 15px; outline:none; transition: 0.3s;}
         .login-input:focus { border-color: var(--accent-pink); box-shadow: 0 0 10px rgba(225, 78, 101, 0.2); }
@@ -63,7 +63,6 @@
         [data-theme="light"] .ios-toggle::after { transform: translateX(22px); content: '☀️'; }
         .theme-label { font-size: 14px; font-weight: 700; color: var(--text-muted); }
 
-        /* USER PROFILE COMPONENT */
         .user-profile { display: flex; align-items: center; gap: 12px; padding: 15px; border-top: 1px solid var(--border-color); margin-top: auto; }
         .user-profile .avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #e14e65, #f43f5e); color: #fff; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 14px; flex-shrink: 0; box-shadow: 0 4px 10px rgba(225,78,101,0.3);}
         .user-profile .user-info { flex: 1; overflow: hidden; }
@@ -72,7 +71,18 @@
         .logout-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 8px; transition: 0.2s; display: flex; justify-content: center; align-items: center; }
         .logout-btn:hover { background: rgba(225, 78, 101, 0.1); color: var(--accent-pink); }
 
-        .main-content { flex: 1; padding: 40px 50px; overflow-y: auto; overflow-x: hidden;}
+        /* LOCENG NOTIFIKASI */
+        .top-right-actions { position: fixed; top: 30px; right: 50px; z-index: 1000; display:flex; gap:15px; align-items:center;}
+        .notif-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 44px; height: 44px; border-radius: 50%; display:flex; justify-content:center; align-items:center; cursor:pointer; color:var(--text-main); position:relative; transition:0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
+        .notif-btn:hover { border-color: var(--accent-pink); color: var(--accent-pink); }
+        .notif-badge { position:absolute; top: -2px; right: -2px; background:var(--accent-pink); color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:10px;}
+        .notif-panel { position:absolute; top: 60px; right: 0; width: 340px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); display:none; max-height:400px; overflow-y:auto;}
+        .notif-panel.show { display:block; animation: slideUpFade 0.3s forwards; }
+        .notif-item { padding: 15px; border-bottom: 1px solid var(--border-color); font-size: 13px; line-height:1.5; color:var(--text-main);}
+        .notif-item:last-child { border-bottom:none; }
+        .notif-time { font-size:11px; color:var(--text-muted); margin-bottom:5px; font-weight:600;}
+
+        .main-content { flex: 1; padding: 40px 50px; overflow-y: auto; overflow-x: hidden; position:relative;}
         .view-section { display: none; animation: slideUpFade 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         .view-section.active-view { display: block; }
         @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -147,9 +157,9 @@
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: 0.4s; }
         .modal-overlay.show { display: flex; opacity: 1; }
-        .modal { background: var(--card-bg); width: 420px; padding: 40px; border-radius: 28px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9) translateY(20px); transition: 0.4s; max-width:90%;}
+        .modal { background: var(--card-bg); width: 420px; padding: 40px; border-radius: 28px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9) translateY(20px); transition: 0.4s; max-width:90%; max-height:90vh; overflow-y:auto;}
         .modal-overlay.show .modal { transform: scale(1) translateY(0); }
-        .modal-customer { width: 600px; text-align: left; max-height: 90vh; overflow-y: auto; padding: 30px;}
+        .modal-customer { width: 600px; text-align: left; padding: 30px;}
         .modal-close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
 
         #toast-notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: rgba(16, 185, 129, 0.95); color: white; padding: 16px 30px; border-radius: 40px; font-weight: 700; font-size: 14px; z-index: 9999; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; display: flex; align-items: center; gap: 10px; white-space:nowrap; }
@@ -198,15 +208,16 @@
         .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #e14e65; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom:15px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* PELARASAN MOBILE & LOCENG NOTIF */
         @media (max-width: 768px) {
             body { flex-direction: column; }
             .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; flex-direction: row; padding: 10px; justify-content: space-around; align-items: center; border-top: 1px solid var(--border-color); border-right: none; border-radius: 20px 20px 0 0; }
             .business-selector, .nav-text, .theme-toggle-wrapper { display: none; }
             .nav-item { margin: 0; padding: 10px; justify-content: center; flex: 1; }
             .nav-item svg { width: 24px; height: 24px; margin: 0 auto; }
-            .main-content { padding: 20px; padding-bottom: 100px; }
+            .main-content { padding: 20px; padding-top: 80px; padding-bottom: 100px; }
             .header-title { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .header-title .btn-add-pink { position: absolute; right: 20px; top: 25px; }
+            .header-title .btn-add-pink { position: absolute; right: 20px; top: 85px; }
             .dash-top-grid { grid-template-columns: repeat(2, 1fr); }
             .qa-grid { grid-template-columns: 1fr; }
             .dash-bottom-grid { grid-template-columns: 1fr; }
@@ -225,7 +236,10 @@
             .li-header { padding: 20px; }
             .li-meta { padding: 0 20px 20px; }
             .li-bottom { padding: 20px; }
-            .user-profile { display:none; /* Sembunyikan profile di fon untuk jimat ruang */ } 
+            .user-profile { display:none; } 
+            
+            .top-right-actions { top: 20px; right: 20px; }
+            .notif-panel { right: -20px; width: 300px; }
         }
     </style>
 </head>
@@ -268,19 +282,34 @@
         </div>
     </div>
 
+    <div id="delete-invoice-modal" class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close-btn" onclick="document.getElementById('delete-invoice-modal').classList.remove('show')">×</button>
+            <div style="width:60px; height:60px; background:rgba(225,78,101,0.1); color:var(--accent-pink); border-radius:50%; display:flex; justify-content:center; align-items:center; margin:0 auto 15px;">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 10px;">Security Verification</h2>
+            <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 13px;">Please verify your identity to delete Invoice <span id="delInvNoLabel" style="font-weight:700; color:var(--text-main);"></span>. This action cannot be undone.</p>
+            <form id="deleteInvoiceForm">
+                <input type="hidden" id="delInvNoValue">
+                <input type="text" id="delUsername" class="login-input" placeholder="Your Username" required>
+                <input type="password" id="delPassword" class="login-input" placeholder="Your Password" required>
+                <button type="submit" id="btnDeleteSubmit" class="btn-solid" style="background:#e14e65; margin-top:10px;">Delete Invoice</button>
+            </form>
+        </div>
+    </div>
+
     <div id="pay-trans-modal" class="modal-overlay">
         <div class="modal" style="text-align:left;">
             <button class="modal-close-btn" onclick="document.getElementById('pay-trans-modal').classList.remove('show')">×</button>
             <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 10px;">Confirm Payment</h2>
             <form id="payTransForm">
                 <input type="hidden" id="payTransRowIdx">
-                
                 <div class="form-group" style="margin-top:15px; margin-bottom:15px;">
                     <label style="color:var(--text-muted); font-size:12px; margin-bottom:8px; display:block;">Upload Bank Slip (AI Auto-Fill)</label>
                     <input type="file" id="payTransReceipt" class="form-control" accept=".png,.jpg,.jpeg,.pdf">
                     <div id="payTransScanStatus" style="font-size:11px; color:var(--accent-pink); margin-top:5px; font-weight:600; display:none;">Scanning with AI...</div>
                 </div>
-
                 <div class="form-grid">
                     <div class="form-group"><label>Payment Date</label><input type="date" id="payTransDateModal" class="form-control" required></div>
                     <div class="form-group"><label>Payment Method</label><input type="text" id="payTransMethodModal" class="form-control" placeholder="e.g. Maybank, CIMB" required></div>
@@ -332,30 +361,16 @@
                         <div class="form-group"><label>Phone Number *</label><input type="text" id="freePhone" class="form-control" value="+60" required></div>
                         <div class="form-group"><label>Email Address</label><input type="email" id="freeEmail" class="form-control"></div>
                         <div class="form-group" style="grid-column: span 2;"><label>Service / Role</label><input type="text" id="freeService" class="form-control" required></div>
-                        
                         <div class="form-group" style="grid-column: span 2;">
                             <label>Bank Info *</label>
                             <div style="display:flex; gap:10px;">
                                 <select id="freeBankName" class="form-control" style="flex:1;" required onchange="if(this.value==='Other'){document.getElementById('freeOtherBank').style.display='block'; document.getElementById('freeOtherBank').required=true;}else{document.getElementById('freeOtherBank').style.display='none'; document.getElementById('freeOtherBank').required=false;}">
                                     <option value="">Select Bank...</option>
                                     <optgroup label="Malaysia">
-                                        <option value="Maybank">Maybank</option>
-                                        <option value="CIMB Bank">CIMB Bank</option>
-                                        <option value="Public Bank">Public Bank</option>
-                                        <option value="RHB Bank">RHB Bank</option>
-                                        <option value="Hong Leong Bank">Hong Leong Bank</option>
-                                        <option value="AmBank">AmBank</option>
-                                        <option value="Bank Islam">Bank Islam</option>
+                                        <option value="Maybank">Maybank</option><option value="CIMB Bank">CIMB Bank</option><option value="Public Bank">Public Bank</option><option value="RHB Bank">RHB Bank</option><option value="Hong Leong Bank">Hong Leong Bank</option><option value="AmBank">AmBank</option><option value="Bank Islam">Bank Islam</option>
                                     </optgroup>
                                     <optgroup label="Indonesia">
-                                        <option value="Bank BCA">Bank BCA</option>
-                                        <option value="Bank Mandiri">Bank Mandiri</option>
-                                        <option value="Bank BRI">Bank BRI</option>
-                                        <option value="Bank BNI">Bank BNI</option>
-                                        <option value="BSI (Syariah)">BSI (Syariah)</option>
-                                        <option value="GoPay">GoPay</option>
-                                        <option value="OVO">OVO</option>
-                                        <option value="DANA">DANA</option>
+                                        <option value="Bank BCA">Bank BCA</option><option value="Bank Mandiri">Bank Mandiri</option><option value="Bank BRI">Bank BRI</option><option value="Bank BNI">Bank BNI</option><option value="BSI (Syariah)">BSI (Syariah)</option><option value="GoPay">GoPay</option><option value="OVO">OVO</option><option value="DANA">DANA</option>
                                     </optgroup>
                                     <option value="Other">Other...</option>
                                 </select>
@@ -363,7 +378,6 @@
                                 <input type="text" id="freeBankAcc" class="form-control" placeholder="Account No." style="flex:1.5;" required>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <button type="submit" id="saveFreeBtn" class="btn-solid">Save Freelancer</button>
@@ -372,6 +386,20 @@
     </div>
 
     <div id="app-container">
+        
+        <div class="top-right-actions">
+            <div class="notif-btn" onclick="toggleNotifPanel()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
+                <div class="notif-panel" id="notifPanel">
+                    <div style="padding:15px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                        <h3 style="font-size:14px; font-weight:800; margin:0;">Activity Logs</h3>
+                    </div>
+                    <div id="notif-list"><div style="padding:20px; text-align:center; color:var(--text-muted); font-size:12px;">No recent activity.</div></div>
+                </div>
+            </div>
+        </div>
+
         <aside class="sidebar">
             <div class="business-selector"><small>BUSINESS</small><div class="biz-name">Omnyzo Agency<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="8 9 12 5 16 9"></polyline><polyline points="16 15 12 19 8 15"></polyline></svg></div></div>
             <nav style="display:flex; flex-direction:inherit; width:100%;">
@@ -704,7 +732,6 @@
                             </div>
                             
                             <div id="paymentFields" style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                                
                                 <div class="form-group" style="grid-column: span 2; margin-bottom: 10px;">
                                     <label style="color:var(--text-muted); font-size:12px;">Proof of Payment (Bank Transfer Slip)</label>
                                     <input type="file" id="bankSlipFileInput" style="display:none;" accept=".png,.jpg,.jpeg,.pdf">
@@ -716,12 +743,10 @@
                                         <div style="font-weight:600; font-size:13px; color:var(--text-main);" id="bankSlipUploadFileName">Upload Bank Slip (AI Auto-Fill)</div>
                                     </div>
                                 </div>
-
                                 <div class="form-group"><label>Payment Date</label><input type="date" id="transPayDate" class="form-control"></div>
                                 <div class="form-group"><label>Payment Method</label><input type="text" id="transPayMethod" class="form-control" placeholder="e.g. Maybank, CIMB, Cash"></div>
                                 <div class="form-group" style="grid-column: span 2;"><label>Bank Ref ID / Trans No.</label><input type="text" id="transRefId" class="form-control" placeholder="Optional"></div>
                             </div>
-
                         </div>
                         <button type="submit" id="saveTransBtn" class="btn-solid" style="margin-top: 25px; padding: 18px;">Save Record</button>
                     </div>
@@ -731,7 +756,8 @@
             <div id="customers-view" class="view-section">
                 <div class="header-title">
                     <div><h1 style="font-size: 34px;">Contacts Directory</h1><p>Manage your clients and freelancers.</p></div>
-                    <div style="display:flex; gap:10px;">
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                        <input type="text" id="searchContacts" class="search-box" placeholder="🔍 Search contacts..." oninput="filterContacts()" style="width:200px;">
                         <button class="btn-outline" style="background:#f4f4f5; color:#1d1d1f; border:none; padding:12px 16px; border-radius:12px; cursor:pointer;" onclick="openAddFreelancerModal()">+ Add Freelancer</button>
                         <button class="btn-outline" style="background:var(--accent-pink); color:#fff; border:none; padding:12px 16px; border-radius:12px; cursor:pointer;" onclick="openAddCustomerModal()">+ Add Customer</button>
                     </div>
@@ -757,27 +783,23 @@
             <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this)">
             <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this); updateRowTotal(this)">
             <div class="item-total" style="font-weight:700; font-size: 14px;">0.00</div>
-            <button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();" style="background:none; border:none; color:var(--accent-pink); cursor:pointer;">🗑️</button>
+            <button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();" style="background:none; border:none; color:var(--accent-pink); cursor:pointer;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
         </div>
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9_6P25y7eiY3Z6UkPBOew9cFFU6CCHya6Q68k3E5OyAJQnAKSmYYpl2BMH9UN2tjR/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHUPMxcL5Y9S7USUEFbQNAGLGnGi7R9dnxk0jidcP1yRzsQ8FRKE1BB36j8qtE5GOB/exec';
         
         const sound = document.getElementById('successSound');
-        let appData = { invoices: [], customers: [], freelancers: [] };
+        let appData = { invoices: [], customers: [], freelancers: [], logs: [] };
         
-        let currentReceiptData = null; 
-        let currentBankSlipData = null; 
-        
+        let currentReceiptData = null; let currentBankSlipData = null; 
         let pendingConfirmAction = null; let currentPdfUrl = "";
-        let currentRowToPay = null;
-        let editingCustomer = null;
-        let editingFreelancer = null;
+        let currentRowToPay = null; let editingCustomer = null; let editingFreelancer = null;
         
-        // VARIABEL PERMISSION
-        let currentUserRole = '';
-        let currentUsername = '';
+        let currentUserRole = ''; let currentUsername = '';
 
         function unformatCurrency(val) { return parseFloat(val.toString().replace(/,/g, '')) || 0; }
         function formatCurrency(val) { return parseFloat(val || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
@@ -791,10 +813,7 @@
         function startLoginProcess() {
             document.getElementById('intro-page').style.display = 'none';
             document.getElementById('login-page').style.display = 'flex';
-            setTimeout(() => {
-                document.getElementById('login-page').style.opacity = '1';
-                document.getElementById('loginBoxUi').classList.add('active');
-            }, 50);
+            setTimeout(() => { document.getElementById('login-page').style.opacity = '1'; document.getElementById('loginBoxUi').classList.add('active'); }, 50);
         }
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -802,23 +821,18 @@
             const btn = document.getElementById('btnLoginSubmit');
             const u = document.getElementById('loginUsername').value;
             const p = document.getElementById('loginPassword').value;
-            
             btn.innerHTML = "Authenticating..."; btn.disabled = true;
             
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "login", username: u, password: p }) })
             .then(res => res.json())
             .then(res => {
                 if(res.status === 'success') {
-                    // SIMPAN INFO USER
-                    currentUserRole = res.role;
-                    currentUsername = u;
-                    
+                    currentUserRole = res.role; currentUsername = u;
                     document.getElementById('sidebar-username').innerText = u.charAt(0).toUpperCase() + u.slice(1);
                     document.getElementById('sidebar-role').innerText = currentUserRole;
                     document.getElementById('sidebar-avatar').innerText = u.charAt(0).toUpperCase();
                     
-                    applyRolePermissions(); // TAPIS AKSES!
-                    
+                    applyRolePermissions(); 
                     document.getElementById('loginBoxUi').style.display = 'none';
                     document.getElementById('loginSyncing').style.display = 'block';
                     document.getElementById('invDate').valueAsDate = new Date(); 
@@ -827,34 +841,25 @@
                     
                     fetchAppData().then(() => {
                         const loginPage = document.getElementById('login-page');
-                        loginPage.classList.add('zoom-out-exit'); 
-                        loginPage.style.opacity = '0';
+                        loginPage.classList.add('zoom-out-exit'); loginPage.style.opacity = '0';
                         setTimeout(() => { 
-                            loginPage.style.display = 'none';
-                            document.getElementById('app-container').classList.add('visible'); 
-                            showToast(`Welcome back, ${u}!`);
+                            loginPage.style.display = 'none'; document.getElementById('app-container').classList.add('visible'); showToast(`Welcome back, ${u}!`);
                         }, 800); 
                     });
                 } else {
-                    btn.innerHTML = "Login"; btn.disabled = false;
-                    showToast("Invalid Username or Password!", true);
+                    btn.innerHTML = "Login"; btn.disabled = false; showToast("Invalid Username or Password!", true);
                 }
-            }).catch(err => {
-                btn.innerHTML = "Login"; btn.disabled = false;
-                showToast("Connection Error.", true);
-            });
+            }).catch(err => { btn.innerHTML = "Login"; btn.disabled = false; showToast("Connection Error.", true); });
         });
 
-        // FUNGSI KUNCI PANGKAT (ROLE PERMISSION)
+        // FUNGSI KUNCI PANGKAT
         function applyRolePermissions() {
             if (currentUserRole !== 'Superadmin' && currentUserRole !== 'Owner' && currentUserRole.toLowerCase() !== 'faiz') {
-                // Sekat Admin dari Cashflow & Net Report
                 document.getElementById('nav-cashflow').style.display = 'none';
                 document.getElementById('card-netcash').style.display = 'none';
                 document.getElementById('card-thismonth').style.display = 'none';
                 document.getElementById('qa-expense').style.display = 'none';
             } else {
-                // Superadmin Akses Penuh
                 document.getElementById('nav-cashflow').style.display = 'flex';
                 document.getElementById('card-netcash').style.display = 'block';
                 document.getElementById('card-thismonth').style.display = 'block';
@@ -868,120 +873,101 @@
                 document.getElementById('app-container').classList.remove('visible');
                 setTimeout(() => {
                     document.getElementById('app-container').style.display = 'none';
-                    
-                    // Kembalikan kotak login
                     const loginPage = document.getElementById('login-page');
-                    loginPage.classList.remove('zoom-out-exit');
-                    loginPage.style.display = 'flex';
-                    document.getElementById('loginBoxUi').style.display = 'block';
-                    document.getElementById('loginSyncing').style.display = 'none';
-                    
+                    loginPage.classList.remove('zoom-out-exit'); loginPage.style.display = 'flex';
+                    document.getElementById('loginBoxUi').style.display = 'block'; document.getElementById('loginSyncing').style.display = 'none';
                     setTimeout(() => { loginPage.style.opacity = '1'; }, 50);
-                    
-                    // Reset borang & variable
-                    document.getElementById('loginForm').reset();
-                    document.getElementById('btnLoginSubmit').innerHTML = "Login"; 
-                    document.getElementById('btnLoginSubmit').disabled = false;
+                    document.getElementById('loginForm').reset(); document.getElementById('btnLoginSubmit').innerHTML = "Login"; document.getElementById('btnLoginSubmit').disabled = false;
                     switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); 
-                    currentUserRole = '';
-                    currentUsername = '';
+                    currentUserRole = ''; currentUsername = '';
                 }, 500);
             });
         }
+
+        // FUNGSI BUKA LOCENG
+        function toggleNotifPanel() { document.getElementById('notifPanel').classList.toggle('show'); }
 
         function togglePaymentFields() {
             var status = document.getElementById('transStatus').value;
             var payFields = document.getElementById('paymentFields');
             if(status === 'Paid') {
-                payFields.style.display = 'grid';
-                document.getElementById('transPayDate').required = true;
-                document.getElementById('transPayMethod').required = true;
+                payFields.style.display = 'grid'; document.getElementById('transPayDate').required = true; document.getElementById('transPayMethod').required = true;
             } else {
-                payFields.style.display = 'none';
-                document.getElementById('transPayDate').required = false;
-                document.getElementById('transPayMethod').required = false;
+                payFields.style.display = 'none'; document.getElementById('transPayDate').required = false; document.getElementById('transPayMethod').required = false;
             }
         }
 
-        function openAddCustomerModal() {
-            editingCustomer = null;
-            document.querySelector('#customer-modal h2').innerText = "Add New Customer";
-            document.getElementById('customerForm').reset();
-            document.getElementById('custPhone').value = "+60";
-            document.getElementById('customer-modal').classList.add('show');
+        // DELETE INVOICE (DOUBLE SAFETY)
+        function openDeleteInvoiceModal(invNo) {
+            document.getElementById('delInvNoLabel').innerText = invNo;
+            document.getElementById('delInvNoValue').value = invNo;
+            document.getElementById('deleteInvoiceForm').reset();
+            document.getElementById('delete-invoice-modal').classList.add('show');
         }
 
-        function openAddFreelancerModal() {
-            editingFreelancer = null;
-            document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer";
-            document.getElementById('freelancerForm').reset();
-            document.getElementById('freePhone').value = "+60";
-            document.getElementById('freeOtherBank').style.display = 'none';
-            document.getElementById('freelancer-modal').classList.add('show');
-        }
+        document.getElementById('deleteInvoiceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnDeleteSubmit'); btn.innerHTML = "Verifying..."; btn.disabled = true;
+            const payload = {
+                type: "delete_invoice", username: currentUsername, invoiceNo: document.getElementById('delInvNoValue').value,
+                delUsername: document.getElementById('delUsername').value, delPassword: document.getElementById('delPassword').value
+            };
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => {
+                btn.innerHTML = "Delete Invoice"; btn.disabled = false;
+                if(res.status === 'success') {
+                    document.getElementById('delete-invoice-modal').classList.remove('show'); showToast("Invoice Deleted Forever."); fetchAppData();
+                } else { showToast("Security Blocked: Wrong Username/Password", true); }
+            }).catch(err => { btn.innerHTML = "Delete Invoice"; btn.disabled = false; showToast("Connection Error.", true); });
+        });
 
+        function openAddCustomerModal() { editingCustomer = null; document.querySelector('#customer-modal h2').innerText = "Add New Customer"; document.getElementById('customerForm').reset(); document.getElementById('custPhone').value = "+60"; document.getElementById('customer-modal').classList.add('show'); }
+        function openAddFreelancerModal() { editingFreelancer = null; document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer"; document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; document.getElementById('freeOtherBank').style.display = 'none'; document.getElementById('freelancer-modal').classList.add('show'); }
         function editCustomer(company) {
-            let c = appData.customers.find(x => x.company === company);
-            if(!c) return;
-            editingCustomer = company;
-            document.getElementById('custType').value = c.custType || 'Company';
-            document.getElementById('custCompany').value = c.company;
-            document.getElementById('custPIC').value = c.pic;
-            document.getElementById('custEmail').value = c.email;
-            document.getElementById('custPhone').value = c.phone;
-            document.getElementById('custAddress').value = c.address;
-            document.getElementById('custPostcode').value = c.postcode;
-            document.getElementById('custCity').value = c.city;
-            document.getElementById('custState').value = c.state;
-            
-            document.querySelector('#customer-modal h2').innerText = "Edit Customer Info";
-            document.getElementById('customer-modal').classList.add('show');
+            let c = appData.customers.find(x => x.company === company); if(!c) return; editingCustomer = company;
+            document.getElementById('custType').value = c.custType || 'Company'; document.getElementById('custCompany').value = c.company; document.getElementById('custPIC').value = c.pic; document.getElementById('custEmail').value = c.email; document.getElementById('custPhone').value = c.phone; document.getElementById('custAddress').value = c.address; document.getElementById('custPostcode').value = c.postcode; document.getElementById('custCity').value = c.city; document.getElementById('custState').value = c.state;
+            document.querySelector('#customer-modal h2').innerText = "Edit Customer Info"; document.getElementById('customer-modal').classList.add('show');
         }
-
         function editFreelancer(name) {
-            let f = appData.freelancers.find(x => x.name === name);
-            if(!f) return;
-            editingFreelancer = name;
-            document.getElementById('freeName').value = f.name;
-            document.getElementById('freePhone').value = f.phone;
-            document.getElementById('freeEmail').value = f.email;
-            document.getElementById('freeService').value = f.service;
-            
-            let bankParts = f.bank.split(' - ');
-            let bName = bankParts[0] || '';
-            let bAcc = bankParts[1] || '';
-            
-            let bankSelect = document.getElementById('freeBankName');
-            let opts = Array.from(bankSelect.options).map(o => o.value);
-            if(opts.includes(bName)) {
-                bankSelect.value = bName;
-                document.getElementById('freeOtherBank').style.display = 'none';
-            } else {
-                bankSelect.value = 'Other';
-                document.getElementById('freeOtherBank').style.display = 'block';
-                document.getElementById('freeOtherBank').value = bName;
-            }
+            let f = appData.freelancers.find(x => x.name === name); if(!f) return; editingFreelancer = name;
+            document.getElementById('freeName').value = f.name; document.getElementById('freePhone').value = f.phone; document.getElementById('freeEmail').value = f.email; document.getElementById('freeService').value = f.service;
+            let bankParts = f.bank.split(' - '); let bName = bankParts[0] || ''; let bAcc = bankParts[1] || ''; let bankSelect = document.getElementById('freeBankName'); let opts = Array.from(bankSelect.options).map(o => o.value);
+            if(opts.includes(bName)) { bankSelect.value = bName; document.getElementById('freeOtherBank').style.display = 'none'; } else { bankSelect.value = 'Other'; document.getElementById('freeOtherBank').style.display = 'block'; document.getElementById('freeOtherBank').value = bName; }
             document.getElementById('freeBankAcc').value = bAcc;
-
-            document.querySelector('#freelancer-modal h2').innerText = "Edit Freelancer Info";
-            document.getElementById('freelancer-modal').classList.add('show');
+            document.querySelector('#freelancer-modal h2').innerText = "Edit Freelancer Info"; document.getElementById('freelancer-modal').classList.add('show');
+        }
+        function formatCleanAddress(c) {
+            let parts = []; if(c.address) parts.push(c.address);
+            if(c.postcode || c.city) { let pc = c.postcode ? c.postcode + " " : ""; let cy = c.city ? c.city : ""; if(pc || cy) parts.push(pc + cy); }
+            if(c.state) parts.push(c.state); return parts.join(", ");
         }
 
-        function formatCleanAddress(c) {
-            let parts = [];
-            if(c.address) parts.push(c.address);
-            if(c.postcode || c.city) {
-                let pc = c.postcode ? c.postcode + " " : "";
-                let cy = c.city ? c.city : "";
-                if(pc || cy) parts.push(pc + cy);
-            }
-            if(c.state) parts.push(c.state);
-            return parts.join(", ");
+        // FUNGSI SEARCH CONTACTS
+        function filterContacts() {
+            let q = document.getElementById('searchContacts').value.toLowerCase();
+            document.querySelectorAll('#customerListContainer .cust-row').forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(q) ? 'grid' : 'none';
+            });
+            document.querySelectorAll('#freelancerListContainer .freelance-row').forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(q) ? 'grid' : 'none';
+            });
         }
 
         function renderAll() {
             const fmt = (val) => 'RM ' + parseFloat(val).toLocaleString('en-MY', {minimumFractionDigits: 2});
             
+            // RENDER LOGS (Loceng)
+            let logsHtml = '';
+            if(appData.logs && appData.logs.length > 0) {
+                appData.logs.forEach(l => {
+                    let logTime = new Date(l.time);
+                    let timeStr = !isNaN(logTime) ? logTime.toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}) : l.time;
+                    logsHtml += `<div class="notif-item"><div class="notif-time">${timeStr} • <span style="color:var(--accent-pink);">${l.user}</span></div><div>${l.action}</div></div>`;
+                });
+                document.getElementById('notif-list').innerHTML = logsHtml;
+                document.getElementById('notif-badge').style.display = 'block';
+                document.getElementById('notif-badge').innerText = appData.logs.length > 9 ? '9+' : appData.logs.length;
+            }
+
             let totalAmt = 0, pendingAmt = 0, paidAmt = 0, pendingCount = 0, paidCount = 0, tblHTML = '';
             appData.invoices.forEach(inv => {
                 let amt = parseFloat(inv.amount) || 0; totalAmt += amt;
@@ -990,72 +976,54 @@
                 let dStr = new Date(inv.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : inv.date;
                 let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
 
-                tblHTML += `<div class="tbl-row" id="row-${inv.invoiceNo}"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">${fmt(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}" id="tag-${inv.invoiceNo}">${inv.status}</span></div><div class="action-btns" id="btn-group-${inv.invoiceNo}">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : `<button onclick="revertToPending('${inv.invoiceNo}')" class="action-btn btn-undo">↩ Undo</button>`}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button></div></div>`;
+                // TAMBAH BUTANG DELETE KAT INVOIS
+                tblHTML += `<div class="tbl-row" id="row-${inv.invoiceNo}"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">${fmt(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}" id="tag-${inv.invoiceNo}">${inv.status}</span></div><div class="action-btns" id="btn-group-${inv.invoiceNo}">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : `<button onclick="revertToPending('${inv.invoiceNo}')" class="action-btn btn-undo">↩ Undo</button>`}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button><button onclick="openDeleteInvoiceModal('${inv.invoiceNo}')" class="action-btn btn-undo" style="border-color:#e14e65; color:#e14e65;" title="Delete Invoice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></div></div>`;
             });
 
-            document.getElementById('dash-netcash').innerText = fmt(totalAmt); 
-            document.getElementById('dash-outstanding-amt').innerText = fmt(pendingAmt); 
-            document.getElementById('dash-paid-amt').innerText = fmt(paidAmt); 
-            document.getElementById('stat-paid-amt').innerText = fmt(paidAmt); 
-            document.getElementById('stat-pending-amt').innerText = fmt(pendingAmt); 
-            document.getElementById('count-paid').innerText = `${paidCount}`; 
-            document.getElementById('count-pending').innerText = `${pendingCount}`;
-            document.getElementById('inv-count-total').innerText = appData.invoices.length; 
-            document.getElementById('inv-amt-total').innerText = fmt(totalAmt); 
-            document.getElementById('inv-count-paid-tbl').innerText = paidCount; 
-            document.getElementById('inv-count-pending-tbl').innerText = pendingCount;
-            document.getElementById('invoiceListContainer').innerHTML = tblHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No invoices found.</div>';
+            document.getElementById('dash-netcash').innerText = fmt(totalAmt); document.getElementById('dash-outstanding-amt').innerText = fmt(pendingAmt); document.getElementById('dash-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-pending-amt').innerText = fmt(pendingAmt); document.getElementById('count-paid').innerText = `${paidCount}`; document.getElementById('count-pending').innerText = `${pendingCount}`; document.getElementById('inv-count-total').innerText = appData.invoices.length; document.getElementById('inv-amt-total').innerText = fmt(totalAmt); document.getElementById('inv-count-paid-tbl').innerText = paidCount; document.getElementById('inv-count-pending-tbl').innerText = pendingCount; document.getElementById('invoiceListContainer').innerHTML = tblHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No invoices found.</div>';
             
             let cfIn = 0, cfOut = 0, cfHTML = '';
-            appData.cashflow.forEach((c, index) => {
+            // FIX AUTO-SORT CASHFLOW: Susun ikut tarikh dari baru ke lama
+            let sortedCashflow = [...appData.cashflow].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            sortedCashflow.forEach((c) => {
                 let amt = parseFloat(c.amount)||0; 
                 let isPaid = (c.status === 'Paid');
-                
                 if (isPaid) { if(c.type==='In') cfIn += amt; else cfOut += amt; }
                 
                 let dStr = new Date(c.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : c.date;
                 
+                // TUKAR Ikon SVG Profesional (Buang Emoji)
                 let proofLink = `<div style="display:flex; justify-content:center; gap:8px;">`;
-                if(c.receipt) proofLink += `<a href="${c.receipt}" target="_blank" title="Invoice/Receipt" style="text-decoration:none;">📄</a>`;
-                if(c.bankSlip) proofLink += `<a href="${c.bankSlip}" target="_blank" title="Bank Slip" style="text-decoration:none;">💳</a>`;
+                if(c.receipt) proofLink += `<a href="${c.receipt}" target="_blank" title="Invoice/Receipt" style="color:var(--text-main);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></a>`;
+                if(c.bankSlip) proofLink += `<a href="${c.bankSlip}" target="_blank" title="Bank Slip" style="color:#d97706;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></a>`;
                 if(!c.receipt && !c.bankSlip) proofLink += `-`;
                 proofLink += `</div>`;
                 
-                let mappedRowIdx = index + 2; 
+                let mappedRowIdx = appData.cashflow.indexOf(c) + 2; 
                 let actionHtml = !isPaid ? `<button onclick="openPayTransModal(${mappedRowIdx})" class="action-btn btn-pay" style="padding:6px 12px; font-size:11px; border-color:#d97706; color:#d97706;">⏳ Pay Now</button>` : `<span class="status-tag tag-paid" style="padding:6px 12px;">✔ Paid</span>`;
 
-                cfHTML += `<div class="cf-row"><div>${dStr}</div><div style="font-weight:700;">${c.merchant}</div><div style="color:var(--text-muted);">${c.category}</div><div>${c.description}</div><div style="text-align:right; color:${c.type==='In'?'#10b981':'#e14e65'}; font-weight:800;">${c.type==='In'?'+':'-'} ${fmt(amt)}</div><div style="text-align:center; font-size:18px;">${proofLink}</div><div style="text-align:right;">${actionHtml}</div></div>`;
+                cfHTML += `<div class="cf-row"><div>${dStr}</div><div style="font-weight:700;">${c.merchant}</div><div style="color:var(--text-muted);">${c.category}</div><div>${c.description}</div><div style="text-align:right; color:${c.type==='In'?'#10b981':'#e14e65'}; font-weight:800;">${c.type==='In'?'+':'-'} ${fmt(amt)}</div><div style="text-align:center;">${proofLink}</div><div style="text-align:right;">${actionHtml}</div></div>`;
             });
             
-            document.getElementById('cf-net').innerText = (cfIn - cfOut >= 0 ? '+ ' : '- ') + fmt(Math.abs(cfIn - cfOut)); 
-            document.getElementById('cf-income').innerText = '+ ' + fmt(cfIn); 
-            document.getElementById('cf-expense').innerText = '- ' + fmt(cfOut);
-            document.getElementById('cashflowListContainer').innerHTML = cfHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div>';
-            document.getElementById('this-month-income').innerText = fmt(cfIn); 
-            document.getElementById('this-month-expense').innerText = fmt(cfOut); 
-            document.getElementById('this-month-net').innerText = fmt(cfIn - cfOut);
+            document.getElementById('cf-net').innerText = (cfIn - cfOut >= 0 ? '+ ' : '- ') + fmt(Math.abs(cfIn - cfOut)); document.getElementById('cf-income').innerText = '+ ' + fmt(cfIn); document.getElementById('cf-expense').innerText = '- ' + fmt(cfOut); document.getElementById('cashflowListContainer').innerHTML = cfHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div>'; document.getElementById('this-month-income').innerText = fmt(cfIn); document.getElementById('this-month-expense').innerText = fmt(cfOut); document.getElementById('this-month-net').innerText = fmt(cfIn - cfOut);
 
             let cHTML = ''; let custDrop = '<option value="">Select customer...</option>';
             appData.customers.forEach(c => {
                 custDrop += `<option value="${c.id}">${c.company}</option>`; 
-                let initials = c.company.substring(0,2).toUpperCase();
-                let cleanAddr = formatCleanAddress(c);
-                cHTML += `<div class="cust-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar">${initials}</div><div><div style="font-weight:700;">${c.company}</div><div style="color:var(--text-muted); font-size:12px;">${c.pic}</div></div></div><div style="color:var(--text-muted);">${c.email}<br>${c.phone}</div><div style="color:var(--text-muted);">${cleanAddr}</div><div style="text-align:right;"><button style="background:none; border:none; cursor:pointer;" onclick="editCustomer('${c.company.replace(/'/g, "\\'")}')">✏️</button></div></div>`;
+                let initials = c.company.substring(0,2).toUpperCase(); let cleanAddr = formatCleanAddress(c);
+                cHTML += `<div class="cust-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar">${initials}</div><div><div style="font-weight:700;">${c.company}</div><div style="color:var(--text-muted); font-size:12px;">${c.pic}</div></div></div><div style="color:var(--text-muted);">${c.email}<br>${c.phone}</div><div style="color:var(--text-muted);">${cleanAddr}</div><div style="text-align:right;"><button style="background:none; border:none; color:var(--text-main); cursor:pointer;" onclick="editCustomer('${c.company.replace(/'/g, "\\'")}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-pink)" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div>`;
             });
             document.getElementById('customerListContainer').innerHTML = cHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No customers found.</div>';
-            let currentCust = document.getElementById('invCustomer').value;
-            document.getElementById('invCustomer').innerHTML = custDrop;
-            if(currentCust) document.getElementById('invCustomer').value = currentCust;
+            let currentCust = document.getElementById('invCustomer').value; document.getElementById('invCustomer').innerHTML = custDrop; if(currentCust) document.getElementById('invCustomer').value = currentCust;
             
             let fHTML = ''; let freeDrop = '';
             appData.freelancers.forEach(f => {
                 freeDrop += `<option value="${f.name}">`; let initials = f.name.substring(0,2).toUpperCase();
-                fHTML += `<div class="freelance-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar" style="background:rgba(59,130,246,0.1); color:#3b82f6;">${initials}</div><div style="font-weight:700;">${f.name}</div></div><div style="color:var(--text-muted);">${f.email}<br>${f.phone}</div><div style="font-weight:600; color:var(--text-main);">${f.service}</div><div style="color:var(--text-muted);">${f.bank}</div><div style="text-align:right;"><button style="background:none; border:none; cursor:pointer;" onclick="editFreelancer('${f.name.replace(/'/g, "\\'")}')">✏️</button></div></div>`;
+                fHTML += `<div class="freelance-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar" style="background:rgba(59,130,246,0.1); color:#3b82f6;">${initials}</div><div style="font-weight:700;">${f.name}</div></div><div style="color:var(--text-muted);">${f.email}<br>${f.phone}</div><div style="font-weight:600; color:var(--text-main);">${f.service}</div><div style="color:var(--text-muted);">${f.bank}</div><div style="text-align:right;"><button style="background:none; border:none; cursor:pointer;" onclick="editFreelancer('${f.name.replace(/'/g, "\\'")}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-pink)" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div>`;
             });
             document.getElementById('freelancerListContainer').innerHTML = fHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No freelancers found.</div>';
-            let currentFree = document.getElementById('transMerchant').value;
-            document.getElementById('merchantList').innerHTML = freeDrop;
-            if(currentFree) document.getElementById('transMerchant').value = currentFree;
+            let currentFree = document.getElementById('transMerchant').value; document.getElementById('merchantList').innerHTML = freeDrop; if(currentFree) document.getElementById('transMerchant').value = currentFree;
         }
 
         function fetchAppData() {
@@ -1091,7 +1059,7 @@
             reader.onload = function(e) { 
                 const base64Data = e.target.result.split(',')[1];
                 currentReceiptData = { name: file.name, mime: file.type, base64: base64Data }; 
-                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({type: "ocr", receiptFileName: file.name, receiptMimeType: file.type, receiptBase64: base64Data})})
+                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({type: "ocr", username: currentUsername, receiptFileName: file.name, receiptMimeType: file.type, receiptBase64: base64Data})})
                 .then(res => res.json())
                 .then(res => { document.getElementById('scanOverlay').style.display = "none"; if(res.status === 'success' && res.text) { parseOCRText(res.text); showToast("Invoice Scanned! Form Auto-Filled."); } else { showToast("File uploaded, but AI couldn't read text.", true); } })
                 .catch(err => { document.getElementById('scanOverlay').style.display = "none"; showToast("AI Scanning timeout. File is attached.", true); });
@@ -1157,7 +1125,7 @@
             reader.onload = function(e) {
                 const base64Data = e.target.result.split(',')[1];
                 currentBankSlipData = { name: file.name, mime: file.type, base64: base64Data };
-                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({type: "ocr", receiptFileName: file.name, receiptMimeType: file.type, receiptBase64: base64Data})})
+                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({type: "ocr", username: currentUsername, receiptFileName: file.name, receiptMimeType: file.type, receiptBase64: base64Data})})
                 .then(res => res.json())
                 .then(res => {
                     document.getElementById('bankSlipScanOverlay').style.display = "none";
@@ -1186,19 +1154,13 @@
             }
 
             let wiseAmtMatch = text.match(/([0-9,]+\.\d{2})\s*MYR/i);
-            if(wiseAmtMatch) {
-                document.getElementById('transAmount').value = wiseAmtMatch[1].replace(/,/g, '');
-            }
+            if(wiseAmtMatch) { document.getElementById('transAmount').value = wiseAmtMatch[1].replace(/,/g, ''); }
             
             let cleanText = text.replace(/invoice|oice|tarikh|masa|date|time|amount/gi, '');
             let refMatch = cleanText.match(/(?:Reference|Ref|Transaction|Trans|Rujukan|No Rujukan)\s*(?:No\.?|Number|ID)?[\s:.\-]*([A-Z0-9]{6,20})/i);
             let wiseRefMatch = text.match(/Transfer\s*#([0-9]+)/i);
             
-            if(wiseRefMatch) {
-                document.getElementById('transRefId').value = "#" + wiseRefMatch[1];
-            } else if(refMatch) { 
-                document.getElementById('transRefId').value = refMatch[1].trim();
-            }
+            if(wiseRefMatch) { document.getElementById('transRefId').value = "#" + wiseRefMatch[1]; } else if(refMatch) { document.getElementById('transRefId').value = refMatch[1].trim(); }
         }
 
         function setTransType(type) { document.getElementById('transType').value = type; if(type === 'Out') { document.getElementById('btn-out').className = 'active-out'; document.getElementById('btn-in').className = ''; } else { document.getElementById('btn-out').className = ''; document.getElementById('btn-in').className = 'active-in'; } }
@@ -1206,7 +1168,7 @@
         document.getElementById('transactionForm').addEventListener('submit', function(e) {
             e.preventDefault(); const btn = document.getElementById('saveTransBtn'); const originalText = btn.innerHTML; btn.innerHTML = "Saving..."; btn.disabled = true;
             const payload = { 
-                type: "transaction", 
+                type: "transaction", username: currentUsername,
                 date: document.getElementById('transDate').value, amount: document.getElementById('transAmount').value, 
                 merchant: document.getElementById('transMerchant').value, category: document.getElementById('transCategory').value, 
                 desc: document.getElementById('transDesc').value, transType: document.getElementById('transType').value,
@@ -1218,13 +1180,8 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
                 btn.innerHTML = originalText; btn.disabled = false; 
                 if(res.status === 'success') { 
-                    document.getElementById('transactionForm').reset(); 
-                    document.getElementById('uploadFileName').innerText = "Drag & Drop Invoice/Receipt"; 
-                    document.getElementById('uploadBoxUI').style.borderColor = "var(--border-color)"; currentReceiptData = null; 
-                    document.getElementById('bankSlipUploadFileName').innerText = "Upload Bank Slip (AI Auto-Fill)";
-                    document.getElementById('bankSlipUploadBoxUI').style.borderColor = "var(--border-color)"; currentBankSlipData = null;
-                    togglePaymentFields();
-                    showToast("Transaction Recorded!"); switchView('cashflow-view'); fetchAppData(); 
+                    document.getElementById('transactionForm').reset(); document.getElementById('uploadFileName').innerText = "Drag & Drop Invoice/Receipt"; document.getElementById('uploadBoxUI').style.borderColor = "var(--border-color)"; currentReceiptData = null; document.getElementById('bankSlipUploadFileName').innerText = "Upload Bank Slip (AI Auto-Fill)"; document.getElementById('bankSlipUploadBoxUI').style.borderColor = "var(--border-color)"; currentBankSlipData = null;
+                    togglePaymentFields(); showToast("Transaction Recorded!"); switchView('cashflow-view'); fetchAppData(); 
                 } 
             });
         });
@@ -1241,7 +1198,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const base64Data = e.target.result.split(',')[1];
-                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({type: "ocr", receiptFileName: file.name, receiptMimeType: file.type, receiptBase64: base64Data})})
+                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({type: "ocr", username: currentUsername, receiptFileName: file.name, receiptMimeType: file.type, receiptBase64: base64Data})})
                 .then(res => res.json())
                 .then(res => {
                     document.getElementById('payTransScanStatus').style.display = "none";
@@ -1251,9 +1208,7 @@
 
                         if (wiseDateMatch) {
                             let months = {"january":"01","february":"02","march":"03","april":"04","may":"05","june":"06","july":"07","august":"08","september":"09","october":"10","november":"11","december":"12"};
-                            let m = months[wiseDateMatch[1].toLowerCase()];
-                            let d = ("0" + wiseDateMatch[2]).slice(-2);
-                            let y = wiseDateMatch[3];
+                            let m = months[wiseDateMatch[1].toLowerCase()]; let d = ("0" + wiseDateMatch[2]).slice(-2); let y = wiseDateMatch[3];
                             document.getElementById('payTransDateModal').value = `${y}-${m}-${d}`;
                         } else if(dateMatch) { 
                             let d = dateMatch[1], m = dateMatch[2], y = dateMatch[3]; if(y.length === 2) y = "20" + y; 
@@ -1264,11 +1219,7 @@
                         let refMatch = cleanText.match(/(?:Reference|Ref|Transaction|Trans|Rujukan|No Rujukan)\s*(?:No\.?|Number|ID)?[\s:.\-]*([A-Z0-9]{6,20})/i);
                         let wiseRefMatch = res.text.match(/Transfer\s*#([0-9]+)/i);
                         
-                        if(wiseRefMatch) {
-                            document.getElementById('payTransRefModal').value = "#" + wiseRefMatch[1];
-                        } else if(refMatch) {
-                            document.getElementById('payTransRefModal').value = refMatch[1].trim();
-                        }
+                        if(wiseRefMatch) { document.getElementById('payTransRefModal').value = "#" + wiseRefMatch[1]; } else if(refMatch) { document.getElementById('payTransRefModal').value = refMatch[1].trim(); }
                         showToast("Bank Slip Scanned! Form Auto-Filled.");
                     } else { showToast("File attached, but AI couldn't read text.", true); }
                 }).catch(err => { document.getElementById('payTransScanStatus').style.display = "none"; showToast("AI timeout, file attached.", true); });
@@ -1279,7 +1230,7 @@
         document.getElementById('payTransForm').addEventListener('submit', function(e) {
             e.preventDefault(); const btn = document.getElementById('btnConfirmPayTrans'); const origText = btn.innerHTML; btn.innerHTML = "Processing..."; btn.disabled = true;
             const payload = {
-                type: "pay_transaction", rowIdx: currentRowToPay,
+                type: "pay_transaction", username: currentUsername, rowIdx: currentRowToPay,
                 paymentDate: document.getElementById('payTransDateModal').value, paymentMethod: document.getElementById('payTransMethodModal').value, refId: document.getElementById('payTransRefModal').value
             };
             const file = document.getElementById('payTransReceipt').files[0];
@@ -1305,73 +1256,41 @@
         }
 
         function autoFillCustomerByIndex() { 
-            let id = parseInt(document.getElementById('invCustomer').value); 
-            if(isNaN(id)) return;
+            let id = parseInt(document.getElementById('invCustomer').value); if(isNaN(id)) return;
             let c = appData.customers.find(x => x.id === id); 
-            if(c) { 
-                document.getElementById('invPIC').value = c.pic; 
-                document.getElementById('invPhone').value = c.phone; 
-                document.getElementById('invEmail').value = c.email; 
-                document.getElementById('invAddress').value = formatCleanAddress(c); 
-            } 
+            if(c) { document.getElementById('invPIC').value = c.pic; document.getElementById('invPhone').value = c.phone; document.getElementById('invEmail').value = c.email; document.getElementById('invAddress').value = formatCleanAddress(c); } 
         }
 
         document.getElementById('customerForm').addEventListener('submit', function(e) { 
-            e.preventDefault(); 
-            const btn = document.getElementById('saveCustBtn'); 
-            const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
+            e.preventDefault(); const btn = document.getElementById('saveCustBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
             const payload = { 
-                type: editingCustomer ? "update_customer" : "customer", 
-                oldCompany: editingCustomer,
+                type: editingCustomer ? "update_customer" : "customer", username: currentUsername, oldCompany: editingCustomer,
                 custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value 
             }; 
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
                 btn.innerText = originalText; btn.disabled = false; 
                 if(res.status === 'success') { 
-                    document.getElementById('customer-modal').classList.remove('show'); 
-                    document.getElementById('customerForm').reset(); 
-                    document.getElementById('custPhone').value = "+60"; 
-                    showToast(editingCustomer ? "Customer Updated!" : "Customer Saved!"); 
-                    editingCustomer = null;
-                    document.querySelector('#customer-modal h2').innerText = "Add New Customer";
-                    fetchAppData(); 
+                    document.getElementById('customer-modal').classList.remove('show'); document.getElementById('customerForm').reset(); document.getElementById('custPhone').value = "+60"; showToast(editingCustomer ? "Customer Updated!" : "Customer Saved!"); 
+                    editingCustomer = null; document.querySelector('#customer-modal h2').innerText = "Add New Customer"; fetchAppData(); 
                 } 
             }); 
         });
         
         document.getElementById('freelancerForm').addEventListener('submit', function(e) { 
-            e.preventDefault(); 
-            const btn = document.getElementById('saveFreeBtn'); 
-            const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
-            
-            let bankName = document.getElementById('freeBankName').value;
-            if(bankName === 'Other') bankName = document.getElementById('freeOtherBank').value;
-            let bankAcc = document.getElementById('freeBankAcc').value;
-            let combinedBankInfo = bankName + " - " + bankAcc;
-
+            e.preventDefault(); const btn = document.getElementById('saveFreeBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
+            let bankName = document.getElementById('freeBankName').value; if(bankName === 'Other') bankName = document.getElementById('freeOtherBank').value;
+            let bankAcc = document.getElementById('freeBankAcc').value; let combinedBankInfo = bankName + " - " + bankAcc;
             const payload = { 
-                type: editingFreelancer ? "update_freelancer" : "freelancer", 
-                oldName: editingFreelancer,
-                name: document.getElementById('freeName').value, 
-                phone: document.getElementById('freePhone').value, 
-                email: document.getElementById('freeEmail').value, 
-                service: document.getElementById('freeService').value, 
-                bank: combinedBankInfo 
+                type: editingFreelancer ? "update_freelancer" : "freelancer", username: currentUsername, oldName: editingFreelancer,
+                name: document.getElementById('freeName').value, phone: document.getElementById('freePhone').value, email: document.getElementById('freeEmail').value, service: document.getElementById('freeService').value, bank: combinedBankInfo 
             }; 
-            
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
             .then(res => res.json())
             .then(res => { 
                 btn.innerText = originalText; btn.disabled = false; 
                 if(res.status === 'success') { 
-                    document.getElementById('freelancer-modal').classList.remove('show'); 
-                    document.getElementById('freelancerForm').reset(); 
-                    document.getElementById('freePhone').value = "+60"; 
-                    document.getElementById('freeOtherBank').style.display = 'none';
-                    showToast(editingFreelancer ? "Freelancer Updated!" : "Freelancer Saved!"); 
-                    editingFreelancer = null;
-                    document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer";
-                    fetchAppData(); 
+                    document.getElementById('freelancer-modal').classList.remove('show'); document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; document.getElementById('freeOtherBank').style.display = 'none'; showToast(editingFreelancer ? "Freelancer Updated!" : "Freelancer Saved!"); 
+                    editingFreelancer = null; document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer"; fetchAppData(); 
                 } 
             }); 
         });
@@ -1405,9 +1324,8 @@
                     let finalDesc; if (isHeader) { finalDesc = rawDesc; } else { finalDesc = itemCounter + ". " + toTitleCase(rawDesc); itemCounter++; }
                     return { desc: finalDesc, qty: isHeader ? "" : qtyVal, price: isHeader ? "" : priceVal.toFixed(2), total: isHeader ? "" : unformatCurrency(r.querySelector('.item-total').innerText).toFixed(2) }; 
                 }); 
-                const sel = document.getElementById('invCustomer');
-                const clientName = sel.options[sel.selectedIndex].text; 
-                const payload = { type: "invoice", client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, discount: unformatCurrency(document.getElementById('sumDiscount').value).toFixed(2), taxPercent: parseFloat(document.getElementById('sumTaxPercent').value || 0).toFixed(2), subtotal: unformatCurrency(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), taxAmount: unformatCurrency(document.getElementById('sumTaxAmount').innerText.replace('RM ', '')).toFixed(2), grandTotal: unformatCurrency(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2) }; 
+                const sel = document.getElementById('invCustomer'); const clientName = sel.options[sel.selectedIndex].text; 
+                const payload = { type: "invoice", username: currentUsername, client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, discount: unformatCurrency(document.getElementById('sumDiscount').value).toFixed(2), taxPercent: parseFloat(document.getElementById('sumTaxPercent').value || 0).toFixed(2), subtotal: unformatCurrency(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), taxAmount: unformatCurrency(document.getElementById('sumTaxAmount').innerText.replace('RM ', '')).toFixed(2), grandTotal: unformatCurrency(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2) }; 
                 appData.invoices.unshift({ date: payload.invoiceDate, dueDate: payload.dueDate, amount: payload.grandTotal, invoiceNo: payload.invoiceNo, client: payload.client, status: "Pending", pdfLink: "", tc: payload.terms, sheetItems: payload.items.map(i => ({ invNo: payload.invoiceNo, desc: i.desc, price: i.price, qty: i.qty, total: i.total })), fullData: payload });
                 switchView('invoice-detail-view'); document.getElementById('invoiceLoadingOverlay').style.display = "flex"; viewInvoiceDetail(payload.invoiceNo); 
                 fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = "Create Invoice"; btn.disabled = false; if(res.status === 'success') { document.getElementById('invoiceLoadingOverlay').style.display = "none"; sound.play().catch(e => console.log("Audio issue")); document.getElementById('invoiceForm').reset(); document.getElementById('invoiceItemsContainer').innerHTML = ""; addInvoiceItem(); calculateDueDate(); fetchAppData(); let inv = appData.invoices.find(i => i.invoiceNo === payload.invoiceNo); if(inv) inv.pdfLink = res.pdfUrl; if(currentPdfUrl === "") currentPdfUrl = res.pdfUrl; showToast("Invoice successfully backed up to Google Drive!"); } }).catch(err => { document.getElementById('invoiceLoadingOverlay').style.display = "none"; btn.innerText = "Create Invoice"; btn.disabled = false; }); 
@@ -1449,8 +1367,8 @@
         }
         function downloadInvoicePDF() { const btn = document.querySelector('.btn-outline'); const originalText = btn.innerHTML; btn.innerHTML = "Generating PDF..."; showToast("Snapping picture of invoice..."); const element = document.getElementById('invoiceCaptureArea'); const invNo = document.getElementById('li-inv-no').innerText; const opt = { margin: [0.4, 0, 0, 0], filename: `Invoice_${invNo}.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true, letterRendering: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }, pagebreak: { mode: ['css', 'legacy'], avoid: 'tr' } }; element.style.boxShadow = 'none'; element.style.border = 'none'; html2pdf().set(opt).from(element).save().then(() => { element.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)'; element.style.border = '1px solid #eef0f2'; btn.innerHTML = originalText; showToast("PDF Downloaded successfully!"); }); }
         function copyDetailLink() { navigator.clipboard.writeText(currentPdfUrl); showToast("Google Drive PDF Link copied!"); }
-        function markAsPaid(invNo) { showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid?`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Paid'; renderAll(); showToast(`Invoice ${invNo} marked as Paid!`); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) }); }); }
-        function revertToPending(invNo) { showConfirm("Revert to Pending", `Undo payment status for ${invNo} back to Pending?`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Pending'; renderAll(); showToast(`Invoice ${invNo} reverted to Pending!`); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Pending" }) }); }); }
+        function markAsPaid(invNo) { showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid?`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Paid'; renderAll(); showToast(`Invoice ${invNo} marked as Paid!`); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", username: currentUsername, invoiceNo: invNo, newStatus: "Paid" }) }); }); }
+        function revertToPending(invNo) { showConfirm("Revert to Pending", `Undo payment status for ${invNo} back to Pending?`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Pending'; renderAll(); showToast(`Invoice ${invNo} reverted to Pending!`); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", username: currentUsername, invoiceNo: invNo, newStatus: "Pending" }) }); }); }
 
     </script>
 </body>
