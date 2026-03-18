@@ -299,7 +299,38 @@
                         <div class="form-group"><label>Phone Number *</label><input type="text" id="freePhone" class="form-control" value="+60" required></div>
                         <div class="form-group"><label>Email Address</label><input type="email" id="freeEmail" class="form-control"></div>
                         <div class="form-group" style="grid-column: span 2;"><label>Service / Role</label><input type="text" id="freeService" class="form-control" required></div>
-                        <div class="form-group" style="grid-column: span 2;"><label>Bank Info *</label><input type="text" id="freeBank" class="form-control" required></div>
+                        
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label>Bank Info *</label>
+                            <div style="display:flex; gap:10px;">
+                                <select id="freeBankName" class="form-control" style="flex:1;" required onchange="if(this.value==='Other'){document.getElementById('freeOtherBank').style.display='block'; document.getElementById('freeOtherBank').required=true;}else{document.getElementById('freeOtherBank').style.display='none'; document.getElementById('freeOtherBank').required=false;}">
+                                    <option value="">Select Bank...</option>
+                                    <optgroup label="Malaysia">
+                                        <option value="Maybank">Maybank</option>
+                                        <option value="CIMB Bank">CIMB Bank</option>
+                                        <option value="Public Bank">Public Bank</option>
+                                        <option value="RHB Bank">RHB Bank</option>
+                                        <option value="Hong Leong Bank">Hong Leong Bank</option>
+                                        <option value="AmBank">AmBank</option>
+                                        <option value="Bank Islam">Bank Islam</option>
+                                    </optgroup>
+                                    <optgroup label="Indonesia">
+                                        <option value="Bank BCA">Bank BCA</option>
+                                        <option value="Bank Mandiri">Bank Mandiri</option>
+                                        <option value="Bank BRI">Bank BRI</option>
+                                        <option value="Bank BNI">Bank BNI</option>
+                                        <option value="BSI (Syariah)">BSI (Syariah)</option>
+                                        <option value="GoPay">GoPay</option>
+                                        <option value="OVO">OVO</option>
+                                        <option value="DANA">DANA</option>
+                                    </optgroup>
+                                    <option value="Other">Other...</option>
+                                </select>
+                                <input type="text" id="freeOtherBank" class="form-control" placeholder="Specify Bank" style="display:none; flex:1;">
+                                <input type="text" id="freeBankAcc" class="form-control" placeholder="Account No." style="flex:1.5;" required>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <button type="submit" id="saveFreeBtn" class="btn-solid">Save Freelancer</button>
@@ -687,6 +718,7 @@
     </template>
 
     <script>
+        // WEB APP LATEST URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6GefPqwA9CMtIbI-8dhqG08DlFF7yN0p1rEYbVE5KqxN_w2t0Rwa84IZsy83WBWrv/exec';
         
         const sound = document.getElementById('successSound');
@@ -859,14 +891,13 @@
             reader.readAsDataURL(file);
         }
 
-        // UPGRADE MAGIS: KEBAL RUPIAH & INDONESIAN DATE
         function parseOCRText(text) {
             let isIDR = /Rp\.?|IDR|Rupiah/i.test(text);
 
             if (isIDR) {
                 let idrAmtMatch = text.match(/(?:Rp\.?|IDR)[\s]*([0-9.,]+)/i);
                 let idrAmt = idrAmtMatch ? idrAmtMatch[1] : "UNKNOWN";
-                document.getElementById('transAmount').value = ""; // Sengaja kosongkan supaya tak masuk juta-juta
+                document.getElementById('transAmount').value = ""; 
                 document.getElementById('transDesc').value = "Invoice (IDR " + idrAmt + ")"; 
             } else {
                 let amtMatch = text.match(/(?:RM|MYR|TOTAL DUE|GRAND TOTAL|PAYABLE|AMOUNT|AMT)[\s:.\-]*(?:RM)?\s*([0-9,]+(?:\.\d{2})?)/i);
@@ -898,7 +929,7 @@
             }
         }
 
-        // --- OCR 2 : BANK SLIP DRAG & DROP (PENAPIS PINTAR WISE) ---
+        // --- OCR 2 : BANK SLIP DRAG & DROP ---
         const bankSlipUploadBox = document.getElementById('bankSlipUploadBoxUI');
         const bankSlipFileInput = document.getElementById('bankSlipFileInput');
 
@@ -947,13 +978,11 @@
                 document.getElementById('transPayDate').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`;
             }
 
-            // Pandai cari jumlah MYR dari Wise resit
             let wiseAmtMatch = text.match(/([0-9,]+\.\d{2})\s*MYR/i);
             if(wiseAmtMatch) {
                 document.getElementById('transAmount').value = wiseAmtMatch[1].replace(/,/g, '');
             }
             
-            // Penapis Pintar (Kebal INVOICE & Support Bank Tempatan / Wise Transfer #)
             let cleanText = text.replace(/invoice|oice|tarikh|masa|date|time|amount/gi, '');
             let refMatch = cleanText.match(/(?:Reference|Ref|Transaction|Trans|Rujukan|No Rujukan)\s*(?:No\.?|Number|ID)?[\s:.\-]*([A-Z0-9]{6,20})/i);
             let wiseRefMatch = text.match(/Transfer\s*#([0-9]+)/i);
@@ -1001,7 +1030,7 @@
             document.getElementById('pay-trans-modal').classList.add('show');
         }
 
-        // AI OCR Untuk Modal Pay (PENAPIS PINTAR WISE)
+        // AI OCR Untuk Modal Pay 
         document.getElementById('payTransReceipt').addEventListener('change', function() {
             const file = this.files[0]; if(!file) return;
             document.getElementById('payTransScanStatus').style.display = "block";
@@ -1071,10 +1100,46 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } });
         }
 
-        /* BAHAGIAN INVOIS & CUSTOMER */
+        /* BAHAGIAN CUSTOMER & FREELANCER DENGAN CANTUMAN BANK LATEST */
         function autoFillCustomer() { let sel = document.getElementById('invCustomer').value; let c = appData.customers.find(x => x.company === sel); if(c) { document.getElementById('invPIC').value = c.pic; document.getElementById('invPhone').value = c.phone; document.getElementById('invEmail').value = c.email; document.getElementById('invAddress').value = `${c.address}, ${c.postcode} ${c.city}, ${c.state}`; } }
         document.getElementById('customerForm').addEventListener('submit', function(e) { e.preventDefault(); const btn = document.getElementById('saveCustBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; const payload = { type: "customer", custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value }; fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('customer-modal').classList.remove('show'); document.getElementById('customerForm').reset(); document.getElementById('custPhone').value = "+60"; showToast("Customer Saved!"); fetchAppData(); } }); });
-        document.getElementById('freelancerForm').addEventListener('submit', function(e) { e.preventDefault(); const btn = document.getElementById('saveFreeBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; const payload = { type: "freelancer", name: document.getElementById('freeName').value, phone: document.getElementById('freePhone').value, email: document.getElementById('freeEmail').value, service: document.getElementById('freeService').value, bank: document.getElementById('freeBank').value }; fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('freelancer-modal').classList.remove('show'); document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; showToast("Freelancer Saved!"); fetchAppData(); } }); });
+        
+        document.getElementById('freelancerForm').addEventListener('submit', function(e) { 
+            e.preventDefault(); 
+            const btn = document.getElementById('saveFreeBtn'); 
+            const originalText = btn.innerText; 
+            btn.innerText = "Saving..."; 
+            btn.disabled = true; 
+            
+            let bankName = document.getElementById('freeBankName').value;
+            if(bankName === 'Other') bankName = document.getElementById('freeOtherBank').value;
+            let bankAcc = document.getElementById('freeBankAcc').value;
+            let combinedBankInfo = bankName + " - " + bankAcc;
+
+            const payload = { 
+                type: "freelancer", 
+                name: document.getElementById('freeName').value, 
+                phone: document.getElementById('freePhone').value, 
+                email: document.getElementById('freeEmail').value, 
+                service: document.getElementById('freeService').value, 
+                bank: combinedBankInfo 
+            }; 
+            
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+            .then(res => res.json())
+            .then(res => { 
+                btn.innerText = originalText; 
+                btn.disabled = false; 
+                if(res.status === 'success') { 
+                    document.getElementById('freelancer-modal').classList.remove('show'); 
+                    document.getElementById('freelancerForm').reset(); 
+                    document.getElementById('freePhone').value = "+60"; 
+                    document.getElementById('freeOtherBank').style.display = 'none';
+                    showToast("Freelancer Saved!"); 
+                    fetchAppData(); 
+                } 
+            }); 
+        });
         
         function toTitleCase(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
         function addInvoiceItem() { document.getElementById('invoiceItemsContainer').appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true)); }
