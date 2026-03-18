@@ -99,8 +99,11 @@
         
         .cust-header { display: grid; grid-template-columns: 2fr 2fr 3fr 80px; padding: 15px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
         .cust-row { display: grid; grid-template-columns: 2fr 2fr 3fr 80px; padding: 20px; font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--border-color); align-items: center; }
-        .freelance-header { display: grid; grid-template-columns: 2.5fr 2fr 2fr 3fr; padding: 15px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
-        .freelance-row { display: grid; grid-template-columns: 2.5fr 2fr 2fr 3fr; padding: 20px; font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--border-color); align-items: center; }
+        
+        /* FREELANCER HEADER DIUBAH UNTUK MUATKAN BUTANG EDIT */
+        .freelance-header { display: grid; grid-template-columns: 2.5fr 2fr 2fr 2.5fr 50px; padding: 15px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
+        .freelance-row { display: grid; grid-template-columns: 2.5fr 2fr 2fr 2.5fr 50px; padding: 20px; font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--border-color); align-items: center; }
+        
         .cust-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(225, 78, 101, 0.1); color: var(--accent-pink); display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 14px; flex-shrink:0;}
 
         .invoice-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; align-items: start; }
@@ -419,7 +422,7 @@
                                 <h3>Invoice Details</h3>
                                 <div class="form-grid">
                                     <div class="form-group" style="grid-column: span 2;">
-                                        <label>Customer <span class="add-link" style="color:var(--accent-pink); float:right; cursor:pointer; font-size:11px;" onclick="document.getElementById('customer-modal').classList.add('show')">+ Add New Customer</span></label>
+                                        <label>Customer <span class="add-link" style="color:var(--accent-pink); float:right; cursor:pointer; font-size:11px;" onclick="openAddCustomerModal()">+ Add New Customer</span></label>
                                         <select id="invCustomer" class="form-control" required onchange="autoFillCustomer()"><option value="">Select customer...</option></select>
                                     </div>
                                     <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" readonly style="font-weight:700;"></div>
@@ -688,8 +691,8 @@
                 <div class="header-title">
                     <div><h1 style="font-size: 34px;">Contacts Directory</h1><p>Manage your clients and freelancers.</p></div>
                     <div style="display:flex; gap:10px;">
-                        <button class="btn-outline" style="background:#f4f4f5; color:#1d1d1f; border:none; padding:12px 16px; border-radius:12px; cursor:pointer;" onclick="document.getElementById('freelancer-modal').classList.add('show')">+ Add Freelancer</button>
-                        <button class="btn-outline" style="background:var(--accent-pink); color:#fff; border:none; padding:12px 16px; border-radius:12px; cursor:pointer;" onclick="document.getElementById('customer-modal').classList.add('show')">+ Add Customer</button>
+                        <button class="btn-outline" style="background:#f4f4f5; color:#1d1d1f; border:none; padding:12px 16px; border-radius:12px; cursor:pointer;" onclick="openAddFreelancerModal()">+ Add Freelancer</button>
+                        <button class="btn-outline" style="background:var(--accent-pink); color:#fff; border:none; padding:12px 16px; border-radius:12px; cursor:pointer;" onclick="openAddCustomerModal()">+ Add Customer</button>
                     </div>
                 </div>
                 <div class="table-container" style="margin-bottom: 40px;">
@@ -699,7 +702,7 @@
                 </div>
                 <div class="table-container">
                     <div style="padding: 20px 25px; border-bottom: 1px solid var(--border-color);"><h3 style="font-size: 16px; font-weight: 700;">Freelancer & Vendor List</h3></div>
-                    <div class="freelance-header"><div>Name</div><div>Contact</div><div>Service / Role</div><div>Bank Info</div></div>
+                    <div class="freelance-header"><div>Name</div><div>Contact</div><div>Service / Role</div><div>Bank Info</div><div style="text-align:right;">Edit</div></div>
                     <div id="freelancerListContainer"><div style="padding:20px; text-align:center; color:var(--text-muted);">No freelancers found.</div></div>
                 </div>
             </div>
@@ -719,7 +722,7 @@
 
     <script>
         // WEB APP LATEST URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6GefPqwA9CMtIbI-8dhqG08DlFF7yN0p1rEYbVE5KqxN_w2t0Rwa84IZsy83WBWrv/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2tIaxb4PEfiiz9yppDGrWLw3blurH8vHdI7NG6yrkKD4cFHfpzrLhUHkkXl9a3R8s/exec';
         
         const sound = document.getElementById('successSound');
         let appData = { invoices: [], customers: [], freelancers: [] };
@@ -729,6 +732,10 @@
         
         let pendingConfirmAction = null; let currentPdfUrl = "";
         let currentRowToPay = null;
+        
+        // VARIABEL BARU UNTUK EDIT FUNGSI
+        let editingCustomer = null;
+        let editingFreelancer = null;
 
         function unformatCurrency(val) { return parseFloat(val.toString().replace(/,/g, '')) || 0; }
         function formatCurrency(val) { return parseFloat(val || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
@@ -750,6 +757,74 @@
                 document.getElementById('transPayDate').required = false;
                 document.getElementById('transPayMethod').required = false;
             }
+        }
+
+        // FUNGSI BUKA MODAL CUSTOMER (BARU)
+        function openAddCustomerModal() {
+            editingCustomer = null;
+            document.querySelector('#customer-modal h2').innerText = "Add New Customer";
+            document.getElementById('customerForm').reset();
+            document.getElementById('custPhone').value = "+60";
+            document.getElementById('customer-modal').classList.add('show');
+        }
+
+        // FUNGSI BUKA MODAL FREELANCER (BARU)
+        function openAddFreelancerModal() {
+            editingFreelancer = null;
+            document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer";
+            document.getElementById('freelancerForm').reset();
+            document.getElementById('freePhone').value = "+60";
+            document.getElementById('freeOtherBank').style.display = 'none';
+            document.getElementById('freelancer-modal').classList.add('show');
+        }
+
+        // FUNGSI AUTO-FILL EDIT CUSTOMER
+        function editCustomer(company) {
+            let c = appData.customers.find(x => x.company === company);
+            if(!c) return;
+            editingCustomer = company;
+            document.getElementById('custType').value = c.custType || 'Company';
+            document.getElementById('custCompany').value = c.company;
+            document.getElementById('custPIC').value = c.pic;
+            document.getElementById('custEmail').value = c.email;
+            document.getElementById('custPhone').value = c.phone;
+            document.getElementById('custAddress').value = c.address;
+            document.getElementById('custPostcode').value = c.postcode;
+            document.getElementById('custCity').value = c.city;
+            document.getElementById('custState').value = c.state;
+            
+            document.querySelector('#customer-modal h2').innerText = "Edit Customer Info";
+            document.getElementById('customer-modal').classList.add('show');
+        }
+
+        // FUNGSI AUTO-FILL EDIT FREELANCER
+        function editFreelancer(name) {
+            let f = appData.freelancers.find(x => x.name === name);
+            if(!f) return;
+            editingFreelancer = name;
+            document.getElementById('freeName').value = f.name;
+            document.getElementById('freePhone').value = f.phone;
+            document.getElementById('freeEmail').value = f.email;
+            document.getElementById('freeService').value = f.service;
+            
+            let bankParts = f.bank.split(' - ');
+            let bName = bankParts[0] || '';
+            let bAcc = bankParts[1] || '';
+            
+            let bankSelect = document.getElementById('freeBankName');
+            let opts = Array.from(bankSelect.options).map(o => o.value);
+            if(opts.includes(bName)) {
+                bankSelect.value = bName;
+                document.getElementById('freeOtherBank').style.display = 'none';
+            } else {
+                bankSelect.value = 'Other';
+                document.getElementById('freeOtherBank').style.display = 'block';
+                document.getElementById('freeOtherBank').value = bName;
+            }
+            document.getElementById('freeBankAcc').value = bAcc;
+
+            document.querySelector('#freelancer-modal h2').innerText = "Edit Freelancer Info";
+            document.getElementById('freelancer-modal').classList.add('show');
         }
 
         function renderAll() {
@@ -811,7 +886,7 @@
             let cHTML = ''; let custDrop = '<option value="">Select customer...</option>';
             appData.customers.forEach(c => {
                 custDrop += `<option value="${c.company}">${c.company}</option>`; let initials = c.company.substring(0,2).toUpperCase();
-                cHTML += `<div class="cust-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar">${initials}</div><div><div style="font-weight:700;">${c.company}</div><div style="color:var(--text-muted); font-size:12px;">${c.pic}</div></div></div><div style="color:var(--text-muted);">${c.email}<br>${c.phone}</div><div style="color:var(--text-muted);">${c.address}, ${c.city}</div><div style="text-align:right;"><button style="background:none; border:none; cursor:pointer;">✏️</button></div></div>`;
+                cHTML += `<div class="cust-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar">${initials}</div><div><div style="font-weight:700;">${c.company}</div><div style="color:var(--text-muted); font-size:12px;">${c.pic}</div></div></div><div style="color:var(--text-muted);">${c.email}<br>${c.phone}</div><div style="color:var(--text-muted);">${c.address}, ${c.city}</div><div style="text-align:right;"><button style="background:none; border:none; cursor:pointer;" onclick="editCustomer('${c.company.replace(/'/g, "\\'")}')">✏️</button></div></div>`;
             });
             document.getElementById('customerListContainer').innerHTML = cHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No customers found.</div>';
             let currentCust = document.getElementById('invCustomer').value;
@@ -821,7 +896,7 @@
             let fHTML = ''; let freeDrop = '';
             appData.freelancers.forEach(f => {
                 freeDrop += `<option value="${f.name}">`; let initials = f.name.substring(0,2).toUpperCase();
-                fHTML += `<div class="freelance-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar" style="background:rgba(59,130,246,0.1); color:#3b82f6;">${initials}</div><div style="font-weight:700;">${f.name}</div></div><div style="color:var(--text-muted);">${f.email}<br>${f.phone}</div><div style="font-weight:600; color:var(--text-main);">${f.service}</div><div style="color:var(--text-muted);">${f.bank}</div></div>`;
+                fHTML += `<div class="freelance-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar" style="background:rgba(59,130,246,0.1); color:#3b82f6;">${initials}</div><div style="font-weight:700;">${f.name}</div></div><div style="color:var(--text-muted);">${f.email}<br>${f.phone}</div><div style="font-weight:600; color:var(--text-main);">${f.service}</div><div style="color:var(--text-muted);">${f.bank}</div><div style="text-align:right;"><button style="background:none; border:none; cursor:pointer;" onclick="editFreelancer('${f.name.replace(/'/g, "\\'")}')">✏️</button></div></div>`;
             });
             document.getElementById('freelancerListContainer').innerHTML = fHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No freelancers found.</div>';
             let currentFree = document.getElementById('transMerchant').value;
@@ -1030,7 +1105,7 @@
             document.getElementById('pay-trans-modal').classList.add('show');
         }
 
-        // AI OCR Untuk Modal Pay 
+        // AI OCR Untuk Modal Pay
         document.getElementById('payTransReceipt').addEventListener('change', function() {
             const file = this.files[0]; if(!file) return;
             document.getElementById('payTransScanStatus').style.display = "block";
@@ -1100,16 +1175,34 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } });
         }
 
-        /* BAHAGIAN CUSTOMER & FREELANCER DENGAN CANTUMAN BANK LATEST */
-        function autoFillCustomer() { let sel = document.getElementById('invCustomer').value; let c = appData.customers.find(x => x.company === sel); if(c) { document.getElementById('invPIC').value = c.pic; document.getElementById('invPhone').value = c.phone; document.getElementById('invEmail').value = c.email; document.getElementById('invAddress').value = `${c.address}, ${c.postcode} ${c.city}, ${c.state}`; } }
-        document.getElementById('customerForm').addEventListener('submit', function(e) { e.preventDefault(); const btn = document.getElementById('saveCustBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; const payload = { type: "customer", custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value }; fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('customer-modal').classList.remove('show'); document.getElementById('customerForm').reset(); document.getElementById('custPhone').value = "+60"; showToast("Customer Saved!"); fetchAppData(); } }); });
+        /* BAHAGIAN SUBMIT CUSTOMER & FREELANCER (DITAMBAH EDIT PAYLOAD) */
+        document.getElementById('customerForm').addEventListener('submit', function(e) { 
+            e.preventDefault(); 
+            const btn = document.getElementById('saveCustBtn'); 
+            const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
+            const payload = { 
+                type: editingCustomer ? "update_customer" : "customer", 
+                oldCompany: editingCustomer, // Rujukan nama lama untuk tindih
+                custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value 
+            }; 
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
+                btn.innerText = originalText; btn.disabled = false; 
+                if(res.status === 'success') { 
+                    document.getElementById('customer-modal').classList.remove('show'); 
+                    document.getElementById('customerForm').reset(); 
+                    document.getElementById('custPhone').value = "+60"; 
+                    showToast(editingCustomer ? "Customer Updated!" : "Customer Saved!"); 
+                    editingCustomer = null;
+                    document.querySelector('#customer-modal h2').innerText = "Add New Customer";
+                    fetchAppData(); 
+                } 
+            }); 
+        });
         
         document.getElementById('freelancerForm').addEventListener('submit', function(e) { 
             e.preventDefault(); 
             const btn = document.getElementById('saveFreeBtn'); 
-            const originalText = btn.innerText; 
-            btn.innerText = "Saving..."; 
-            btn.disabled = true; 
+            const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
             
             let bankName = document.getElementById('freeBankName').value;
             if(bankName === 'Other') bankName = document.getElementById('freeOtherBank').value;
@@ -1117,7 +1210,8 @@
             let combinedBankInfo = bankName + " - " + bankAcc;
 
             const payload = { 
-                type: "freelancer", 
+                type: editingFreelancer ? "update_freelancer" : "freelancer", 
+                oldName: editingFreelancer, // Rujukan nama lama untuk tindih
                 name: document.getElementById('freeName').value, 
                 phone: document.getElementById('freePhone').value, 
                 email: document.getElementById('freeEmail').value, 
@@ -1128,14 +1222,15 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
             .then(res => res.json())
             .then(res => { 
-                btn.innerText = originalText; 
-                btn.disabled = false; 
+                btn.innerText = originalText; btn.disabled = false; 
                 if(res.status === 'success') { 
                     document.getElementById('freelancer-modal').classList.remove('show'); 
                     document.getElementById('freelancerForm').reset(); 
                     document.getElementById('freePhone').value = "+60"; 
                     document.getElementById('freeOtherBank').style.display = 'none';
-                    showToast("Freelancer Saved!"); 
+                    showToast(editingFreelancer ? "Freelancer Updated!" : "Freelancer Saved!"); 
+                    editingFreelancer = null;
+                    document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer";
                     fetchAppData(); 
                 } 
             }); 
