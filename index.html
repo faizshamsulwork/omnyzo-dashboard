@@ -166,7 +166,7 @@
         .li-meta-l td:first-child { font-weight: 800; padding-right: 15px; }
         
         .li-meta-r { max-width: 280px; text-align: right; margin-left: auto; word-break: normal; }
-        .li-meta-r p { margin-bottom: 4px; line-height: 1.5; color: #86868b; }
+        .li-meta-r p { margin-bottom: 4px; line-height: 1.8; color: #86868b; }
         
         /* TABLE ANTI-TERPOTONG */
         .li-table { width: calc(100% - 80px); margin: 0 40px; border-collapse: collapse; border: 1px solid #eef0f2; }
@@ -403,7 +403,7 @@
                             <p style="font-size:12px; color:#86868b; margin-top:5px;">Please wait while we save to Google Drive</p>
                         </div>
 
-                        <div style="display: flex; flex-direction: column; min-height: 280mm;">
+                        <div style="display: flex; flex-direction: column; min-height: 280mm; position: relative;">
                             <div class="li-header">
                                 <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo Logo">
                                 <div class="li-company">
@@ -426,7 +426,7 @@
                                 <div class="li-meta-r">
                                     <p style="font-weight:800; color:#1d1d1f; margin-bottom:10px;">TO:</p>
                                     <h3 id="li-client-name" style="font-size:16px; font-weight:800; color:#1d1d1f; margin-bottom:5px;"></h3>
-                                    <p id="li-client-address"></p>
+                                    <p id="li-client-address" style="line-height: 1.8;"></p>
                                 </div>
                             </div>
                             <table class="li-table">
@@ -706,7 +706,6 @@
         function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
         document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
 
-        // FUNGSI RENDER (LOCAL UPDATE) - TAK PAYAH RE-FETCH MASA TEKAN PAID
         function renderAll() {
             const fmt = (val) => 'RM ' + parseFloat(val).toLocaleString('en-MY', {minimumFractionDigits: 2});
             
@@ -952,7 +951,7 @@
             switchView('invoice-detail-view');
         }
 
-        // FIX 1: Margin atas untuk Safe Space Page 2 & Header repeat table (avoid tr)
+        // FIX 1: TUKAR MARGIN BAWAH KEPADA 0.
         function downloadInvoicePDF() {
             const btn = document.querySelector('.btn-outline');
             const originalText = btn.innerHTML;
@@ -984,7 +983,6 @@
 
         function copyDetailLink() { navigator.clipboard.writeText(currentPdfUrl); showToast("Google Drive PDF Link copied!"); }
 
-        // FIX 2: ZERO-FLICKER INSTANT UPDATE
         function markAsPaid(invNo) { 
             showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid?`, function() { 
                 
