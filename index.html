@@ -34,8 +34,17 @@
         @keyframes pulseGlow { 0% { filter: invert(1) drop-shadow(0 0 5px rgba(255,255,255,0.1)); } 100% { filter: invert(1) drop-shadow(0 0 15px rgba(255,255,255,0.6)); } }
         .zoom-out-exit { transform: scale(1.3); opacity: 0; filter: blur(10px); pointer-events: none; }
 
-        #app-container { display: flex; width: 100%; height: 100%; opacity: 0; transform: scale(0.98); transition: 1s cubic-bezier(0.25, 1, 0.5, 1); }
-        #app-container.visible { opacity: 1; transform: scale(1); }
+        /* GAYA LOGIN PAGE BARU */
+        #login-page { position: fixed; inset: 0; z-index: 9000; display: none; flex-direction: column; justify-content: center; align-items: center; background: #0b0c10; transition: 0.8s; opacity:0;}
+        .login-box { background: #1a1b23; padding: 50px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: translateY(20px); transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+        .login-box.active { transform: translateY(0); }
+        .login-input { width: 100%; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: #fff; margin-bottom: 20px; font-family: inherit; font-size: 15px; outline:none; transition: 0.3s;}
+        .login-input:focus { border-color: var(--accent-pink); box-shadow: 0 0 10px rgba(225, 78, 101, 0.2); }
+        .login-btn { width: 100%; background: var(--accent-pink); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px;}
+        .login-btn:hover { background: #f43f5e; box-shadow: 0 5px 20px rgba(225, 78, 101, 0.4); }
+
+        #app-container { display: flex; width: 100%; height: 100%; opacity: 0; transform: scale(0.98); transition: 1s cubic-bezier(0.25, 1, 0.5, 1); display:none;}
+        #app-container.visible { display:flex; opacity: 1; transform: scale(1); }
 
         .sidebar { width: 280px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); padding: 30px 20px; display: flex; flex-direction: column; z-index: 100; transition: 0.4s ease;}
         .business-selector { border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 30px; cursor: pointer; }
@@ -99,11 +108,8 @@
         
         .cust-header { display: grid; grid-template-columns: 2fr 2fr 3fr 80px; padding: 15px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
         .cust-row { display: grid; grid-template-columns: 2fr 2fr 3fr 80px; padding: 20px; font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--border-color); align-items: center; }
-        
-        /* FREELANCER HEADER DIUBAH UNTUK MUATKAN BUTANG EDIT */
         .freelance-header { display: grid; grid-template-columns: 2.5fr 2fr 2fr 2.5fr 50px; padding: 15px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
         .freelance-row { display: grid; grid-template-columns: 2.5fr 2fr 2fr 2.5fr 50px; padding: 20px; font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--border-color); align-items: center; }
-        
         .cust-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(225, 78, 101, 0.1); color: var(--accent-pink); display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 14px; flex-shrink:0;}
 
         .invoice-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; align-items: start; }
@@ -222,9 +228,23 @@
         <div class="intro-content">
             <img id="introLogoGraphic" src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png">
             <h1 class="intro-title">OMNYZO ADMIN</h1>
-            <button class="btn-enter" id="startBtn" onclick="launchApp()">START</button>
-            <div id="introLoading" class="sync-text">SYNCHRONIZING DATABASE...</div>
+            <button class="btn-enter" id="startBtn" onclick="startLoginProcess()">START</button>
+            <div id="introLoading" class="sync-text">INITIALIZING...</div>
         </div>
+    </div>
+    
+    <div id="login-page">
+        <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" style="width:120px; filter:invert(1); margin-bottom:30px;">
+        <div class="login-box" id="loginBoxUi">
+            <h2 style="font-size:24px; font-weight:800; margin-bottom:10px;">Admin Access</h2>
+            <p style="color:var(--text-muted); font-size:13px; margin-bottom:30px;">Enter your credentials to continue.</p>
+            <form id="loginForm">
+                <input type="text" id="loginUsername" class="login-input" placeholder="Username" required autocomplete="username">
+                <input type="password" id="loginPassword" class="login-input" placeholder="Password" required autocomplete="current-password">
+                <button type="submit" id="btnLoginSubmit" class="login-btn">Login</button>
+            </form>
+        </div>
+        <div id="loginSyncing" class="sync-text" style="display:none; margin-top:40px;">SYNCHRONIZING DATABASE...</div>
     </div>
 
     <div id="confirm-modal" class="modal-overlay">
@@ -423,7 +443,7 @@
                                 <div class="form-grid">
                                     <div class="form-group" style="grid-column: span 2;">
                                         <label>Customer <span class="add-link" style="color:var(--accent-pink); float:right; cursor:pointer; font-size:11px;" onclick="openAddCustomerModal()">+ Add New Customer</span></label>
-                                        <select id="invCustomer" class="form-control" required onchange="autoFillCustomer()"><option value="">Select customer...</option></select>
+                                        <select id="invCustomer" class="form-control" required onchange="autoFillCustomerByIndex()"><option value="">Select customer...</option></select>
                                     </div>
                                     <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" readonly style="font-weight:700;"></div>
                                     <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" required onchange="calculateDueDate()"></div>
@@ -721,8 +741,7 @@
     </template>
 
     <script>
-        // WEB APP LATEST URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2tIaxb4PEfiiz9yppDGrWLw3blurH8vHdI7NG6yrkKD4cFHfpzrLhUHkkXl9a3R8s/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhgWTU15SU20E3F00_tL07ImA6ETz8zhJRvXIWyg6YPFfBhb9alCoEGcNcrAZJ5Mo/exec';
         
         const sound = document.getElementById('successSound');
         let appData = { invoices: [], customers: [], freelancers: [] };
@@ -732,8 +751,6 @@
         
         let pendingConfirmAction = null; let currentPdfUrl = "";
         let currentRowToPay = null;
-        
-        // VARIABEL BARU UNTUK EDIT FUNGSI
         let editingCustomer = null;
         let editingFreelancer = null;
 
@@ -744,6 +761,56 @@
         function showConfirm(title, message, callback) { document.getElementById('confirm-title').innerText = title; document.getElementById('confirm-message').innerText = message; pendingConfirmAction = callback; document.getElementById('confirm-modal').classList.add('show'); }
         function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
         document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
+
+        // SISTEM LOGIN GATEWAY
+        function startLoginProcess() {
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('login-page').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('login-page').style.opacity = '1';
+                document.getElementById('loginBoxUi').classList.add('active');
+            }, 50);
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnLoginSubmit');
+            const u = document.getElementById('loginUsername').value;
+            const p = document.getElementById('loginPassword').value;
+            
+            btn.innerHTML = "Authenticating..."; btn.disabled = true;
+            
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "login", username: u, password: p }) })
+            .then(res => res.json())
+            .then(res => {
+                if(res.status === 'success') {
+                    document.getElementById('loginBoxUi').style.display = 'none';
+                    document.getElementById('loginSyncing').style.display = 'block';
+                    document.getElementById('invDate').valueAsDate = new Date(); 
+                    document.getElementById('transPayDate').valueAsDate = new Date();
+                    calculateDueDate(); addInvoiceItem(); 
+                    
+                    fetchAppData().then(() => {
+                        const intro = document.getElementById('intro-page');
+                        const loginPage = document.getElementById('login-page');
+                        intro.classList.add('zoom-out-exit'); 
+                        loginPage.style.opacity = '0';
+                        setTimeout(() => { 
+                            intro.style.display = 'none'; 
+                            loginPage.style.display = 'none';
+                            document.getElementById('app-container').classList.add('visible'); 
+                            showToast(`Welcome back, ${u}!`);
+                        }, 800); 
+                    });
+                } else {
+                    btn.innerHTML = "Login"; btn.disabled = false;
+                    showToast("Invalid Username or Password!", true);
+                }
+            }).catch(err => {
+                btn.innerHTML = "Login"; btn.disabled = false;
+                showToast("Connection Error.", true);
+            });
+        });
 
         function togglePaymentFields() {
             var status = document.getElementById('transStatus').value;
@@ -759,7 +826,6 @@
             }
         }
 
-        // FUNGSI BUKA MODAL CUSTOMER (BARU)
         function openAddCustomerModal() {
             editingCustomer = null;
             document.querySelector('#customer-modal h2').innerText = "Add New Customer";
@@ -768,7 +834,6 @@
             document.getElementById('customer-modal').classList.add('show');
         }
 
-        // FUNGSI BUKA MODAL FREELANCER (BARU)
         function openAddFreelancerModal() {
             editingFreelancer = null;
             document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer";
@@ -778,7 +843,6 @@
             document.getElementById('freelancer-modal').classList.add('show');
         }
 
-        // FUNGSI AUTO-FILL EDIT CUSTOMER
         function editCustomer(company) {
             let c = appData.customers.find(x => x.company === company);
             if(!c) return;
@@ -797,7 +861,6 @@
             document.getElementById('customer-modal').classList.add('show');
         }
 
-        // FUNGSI AUTO-FILL EDIT FREELANCER
         function editFreelancer(name) {
             let f = appData.freelancers.find(x => x.name === name);
             if(!f) return;
@@ -825,6 +888,19 @@
 
             document.querySelector('#freelancer-modal h2').innerText = "Edit Freelancer Info";
             document.getElementById('freelancer-modal').classList.add('show');
+        }
+
+        // FUNGSI GABUNGAN ALAMAT BERSIH (TANPA KOMA KOSONG)
+        function formatCleanAddress(c) {
+            let parts = [];
+            if(c.address) parts.push(c.address);
+            if(c.postcode || c.city) {
+                let pc = c.postcode ? c.postcode + " " : "";
+                let cy = c.city ? c.city : "";
+                if(pc || cy) parts.push(pc + cy);
+            }
+            if(c.state) parts.push(c.state);
+            return parts.join(", ");
         }
 
         function renderAll() {
@@ -885,8 +961,11 @@
 
             let cHTML = ''; let custDrop = '<option value="">Select customer...</option>';
             appData.customers.forEach(c => {
-                custDrop += `<option value="${c.company}">${c.company}</option>`; let initials = c.company.substring(0,2).toUpperCase();
-                cHTML += `<div class="cust-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar">${initials}</div><div><div style="font-weight:700;">${c.company}</div><div style="color:var(--text-muted); font-size:12px;">${c.pic}</div></div></div><div style="color:var(--text-muted);">${c.email}<br>${c.phone}</div><div style="color:var(--text-muted);">${c.address}, ${c.city}</div><div style="text-align:right;"><button style="background:none; border:none; cursor:pointer;" onclick="editCustomer('${c.company.replace(/'/g, "\\'")}')">✏️</button></div></div>`;
+                // Tembak masuk ID dalam Dropdown untuk elak issue Space
+                custDrop += `<option value="${c.id}">${c.company}</option>`; 
+                let initials = c.company.substring(0,2).toUpperCase();
+                let cleanAddr = formatCleanAddress(c);
+                cHTML += `<div class="cust-row"><div style="display:flex; align-items:center; gap:15px;"><div class="cust-avatar">${initials}</div><div><div style="font-weight:700;">${c.company}</div><div style="color:var(--text-muted); font-size:12px;">${c.pic}</div></div></div><div style="color:var(--text-muted);">${c.email}<br>${c.phone}</div><div style="color:var(--text-muted);">${cleanAddr}</div><div style="text-align:right;"><button style="background:none; border:none; cursor:pointer;" onclick="editCustomer('${c.company.replace(/'/g, "\\'")}')">✏️</button></div></div>`;
             });
             document.getElementById('customerListContainer').innerHTML = cHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No customers found.</div>';
             let currentCust = document.getElementById('invCustomer').value;
@@ -910,26 +989,6 @@
             });
         }
 
-        function launchApp() { 
-            document.getElementById('startBtn').style.display = 'none';
-            document.querySelector('.sync-text').style.display = 'block';
-            
-            let invDateElem = document.getElementById('invDate');
-            if(invDateElem) invDateElem.valueAsDate = new Date(); 
-            
-            let transPayDateElem = document.getElementById('transPayDate');
-            if(transPayDateElem) transPayDateElem.valueAsDate = new Date();
-            
-            calculateDueDate(); addInvoiceItem(); 
-            fetchAppData().then(() => {
-                const intro = document.getElementById('intro-page');
-                intro.classList.add('zoom-out-exit'); 
-                setTimeout(() => { intro.style.display = 'none'; document.getElementById('app-container').classList.add('visible'); }, 800); 
-            }).catch(e => {
-                showToast("Connection Error. Please check your App Script.", true);
-            });
-        }
-
         function toggleTheme() { 
             const b = document.body; const isLight = b.getAttribute('data-theme') === 'light';
             b.setAttribute('data-theme', isLight ? 'dark' : 'light'); 
@@ -938,7 +997,6 @@
 
         function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); if(nav) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); nav.classList.add('active'); } document.getElementById(viewId).classList.add('active-view'); }
         
-        // --- OCR 1 : INVOICE/RECEIPT DRAG & DROP ---
         const uploadBox = document.getElementById('uploadBoxUI');
         const fileInput = document.getElementById('receiptFileInput');
         if(uploadBox && fileInput) {
@@ -1004,7 +1062,6 @@
             }
         }
 
-        // --- OCR 2 : BANK SLIP DRAG & DROP ---
         const bankSlipUploadBox = document.getElementById('bankSlipUploadBoxUI');
         const bankSlipFileInput = document.getElementById('bankSlipFileInput');
 
@@ -1071,7 +1128,6 @@
 
         function setTransType(type) { document.getElementById('transType').value = type; if(type === 'Out') { document.getElementById('btn-out').className = 'active-out'; document.getElementById('btn-in').className = ''; } else { document.getElementById('btn-out').className = ''; document.getElementById('btn-in').className = 'active-in'; } }
 
-        // PAYLOAD TRANSACTION BARU
         document.getElementById('transactionForm').addEventListener('submit', function(e) {
             e.preventDefault(); const btn = document.getElementById('saveTransBtn'); const originalText = btn.innerHTML; btn.innerHTML = "Saving..."; btn.disabled = true;
             const payload = { 
@@ -1098,14 +1154,12 @@
             });
         });
 
-        // OCR 3: MODAL BAYAR CASHFLOW
         function openPayTransModal(rowIdx) {
             currentRowToPay = rowIdx;
             document.getElementById('payTransDateModal').valueAsDate = new Date();
             document.getElementById('pay-trans-modal').classList.add('show');
         }
 
-        // AI OCR Untuk Modal Pay
         document.getElementById('payTransReceipt').addEventListener('change', function() {
             const file = this.files[0]; if(!file) return;
             document.getElementById('payTransScanStatus').style.display = "block";
@@ -1175,14 +1229,26 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } });
         }
 
-        /* BAHAGIAN SUBMIT CUSTOMER & FREELANCER (DITAMBAH EDIT PAYLOAD) */
+        // FUNGSI AUTO FILL KEBAL DENGAN INDEX
+        function autoFillCustomerByIndex() { 
+            let id = parseInt(document.getElementById('invCustomer').value); 
+            if(isNaN(id)) return;
+            let c = appData.customers.find(x => x.id === id); 
+            if(c) { 
+                document.getElementById('invPIC').value = c.pic; 
+                document.getElementById('invPhone').value = c.phone; 
+                document.getElementById('invEmail').value = c.email; 
+                document.getElementById('invAddress').value = formatCleanAddress(c); 
+            } 
+        }
+
         document.getElementById('customerForm').addEventListener('submit', function(e) { 
             e.preventDefault(); 
             const btn = document.getElementById('saveCustBtn'); 
             const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
             const payload = { 
                 type: editingCustomer ? "update_customer" : "customer", 
-                oldCompany: editingCustomer, // Rujukan nama lama untuk tindih
+                oldCompany: editingCustomer,
                 custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value 
             }; 
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
@@ -1211,7 +1277,7 @@
 
             const payload = { 
                 type: editingFreelancer ? "update_freelancer" : "freelancer", 
-                oldName: editingFreelancer, // Rujukan nama lama untuk tindih
+                oldName: editingFreelancer,
                 name: document.getElementById('freeName').value, 
                 phone: document.getElementById('freePhone').value, 
                 email: document.getElementById('freeEmail').value, 
@@ -1265,7 +1331,8 @@
                     let finalDesc; if (isHeader) { finalDesc = rawDesc; } else { finalDesc = itemCounter + ". " + toTitleCase(rawDesc); itemCounter++; }
                     return { desc: finalDesc, qty: isHeader ? "" : qtyVal, price: isHeader ? "" : priceVal.toFixed(2), total: isHeader ? "" : unformatCurrency(r.querySelector('.item-total').innerText).toFixed(2) }; 
                 }); 
-                const clientName = document.getElementById('invCustomer').options[document.getElementById('invCustomer').selectedIndex].text; 
+                const sel = document.getElementById('invCustomer');
+                const clientName = sel.options[sel.selectedIndex].text; // Ambil balik nama company untuk display
                 const payload = { type: "invoice", client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, discount: unformatCurrency(document.getElementById('sumDiscount').value).toFixed(2), taxPercent: parseFloat(document.getElementById('sumTaxPercent').value || 0).toFixed(2), subtotal: unformatCurrency(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), taxAmount: unformatCurrency(document.getElementById('sumTaxAmount').innerText.replace('RM ', '')).toFixed(2), grandTotal: unformatCurrency(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2) }; 
                 appData.invoices.unshift({ date: payload.invoiceDate, dueDate: payload.dueDate, amount: payload.grandTotal, invoiceNo: payload.invoiceNo, client: payload.client, status: "Pending", pdfLink: "", tc: payload.terms, sheetItems: payload.items.map(i => ({ invNo: payload.invoiceNo, desc: i.desc, price: i.price, qty: i.qty, total: i.total })), fullData: payload });
                 switchView('invoice-detail-view'); document.getElementById('invoiceLoadingOverlay').style.display = "flex"; viewInvoiceDetail(payload.invoiceNo); 
@@ -1280,7 +1347,12 @@
             let dStr = new Date(inv.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : inv.date;
             let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
             document.getElementById('li-inv-no').innerText = inv.invoiceNo; document.getElementById('li-inv-date').innerText = dStr; document.getElementById('li-inv-due').innerText = dueStr; document.getElementById('li-client-name').innerText = inv.client;
-            let data = inv.fullData; let c = appData.customers.find(x => x.company === inv.client); let cAddress = c ? `${c.address}<br>${c.postcode} ${c.city}, ${c.state}<br>${c.phone}<br>${c.email}` : "-"; document.getElementById('li-client-address').innerHTML = (data && data.address) ? `${data.address}<br>${data.phone || ""}<br>${data.email || ""}` : cAddress;
+            
+            let data = inv.fullData; 
+            let c = appData.customers.find(x => x.company === inv.client); 
+            let cAddress = c ? formatCleanAddress(c) + `<br>${c.phone || ""}<br>${c.email || ""}` : "-"; 
+            document.getElementById('li-client-address').innerHTML = (data && data.address) ? `${data.address}<br>${data.phone || ""}<br>${data.email || ""}` : cAddress;
+            
             let itemsHtml = ""; let subtotal = 0;
             if (inv.sheetItems && inv.sheetItems.length > 0) {
                 inv.sheetItems.forEach(i => { let isHeader = !i.price || parseFloat(i.price) === 0 || isNaN(parseFloat(i.price)); if (isHeader) { itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`; } else { itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${formatCurrency(i.price)}</td><td>${i.qty}</td><td>${formatCurrency(i.total)}</td></tr>`; subtotal += parseFloat(i.total); } });
