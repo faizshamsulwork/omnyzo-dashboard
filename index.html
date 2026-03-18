@@ -374,6 +374,79 @@
                 </div>
             </div>
 
+            <div id="new-invoice-view" class="view-section">
+                <div class="header-title">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <button onclick="switchView('invoices-view')" style="background:none; border:none; color:var(--text-main); font-size:24px; cursor:pointer;">←</button>
+                        <div><h1>New Invoice</h1><p>Create and issue a new invoice.</p></div>
+                    </div>
+                </div>
+                <form id="invoiceForm">
+                    <div class="invoice-container">
+                        <div class="left-col">
+                            <div class="card">
+                                <h3>Invoice Details</h3>
+                                <div class="form-grid">
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label>Customer <span class="add-link" style="color:var(--accent-pink); float:right; cursor:pointer; font-size:11px;" onclick="document.getElementById('customer-modal').classList.add('show')">+ Add New Customer</span></label>
+                                        <select id="invCustomer" class="form-control" required onchange="autoFillCustomer()"><option value="">Select customer...</option></select>
+                                    </div>
+                                    <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" readonly style="font-weight:700;"></div>
+                                    <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" required onchange="calculateDueDate()"></div>
+                                    <div class="form-group"><label>Credit Term</label>
+                                        <select id="invCreditTerm" class="form-control" onchange="calculateDueDate()">
+                                            <option value="0">Due on Receipt (0)</option>
+                                            <option value="7">7 Days</option><option value="14">14 Days</option><option value="30" selected>30 Days</option>
+                                            <option value="45">45 Days</option><option value="60">60 Days</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group"><label>Due Date (Auto)</label><input type="date" id="invDueDate" class="form-control" required readonly style="opacity:0.7;"></div>
+                                </div>
+                                <div style="margin-top:20px; padding-top:20px; border-top:1px dashed var(--border-color);">
+                                    <h4 style="font-size:12px; color:var(--text-muted); margin-bottom:15px; text-transform:uppercase;">Client Information</h4>
+                                    <div class="form-grid">
+                                        <div class="form-group"><label>PIC Name</label><input type="text" id="invPIC" class="form-control" required></div>
+                                        <div class="form-group"><label>Phone</label><input type="text" id="invPhone" class="form-control"></div>
+                                        <div class="form-group"><label>Email</label><input type="email" id="invEmail" class="form-control"></div>
+                                        <div class="form-group" style="grid-column: span 2;"><label>Full Address</label><input type="text" id="invAddress" class="form-control"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;"><h3>Items</h3><button type="button" onclick="addInvoiceItem()" style="background:#f4f4f5; border:none; padding:8px 16px; border-radius:8px; font-weight:600; color:#1d1d1f; cursor:pointer;">+ Add Item</button></div>
+                                <div class="item-header"><div>Description</div><div>Qty</div><div>Price (RM)</div><div>Total (RM)</div><div></div></div>
+                                <div id="invoiceItemsContainer"></div>
+                            </div>
+                            <div class="card">
+                                <h3>Additional Info</h3>
+                                <div class="form-group" style="margin-bottom:20px;"><label>Notes</label><textarea id="invNotes" class="form-control" rows="3"></textarea></div>
+                                <div class="form-group" style="margin-bottom:15px;">
+                                    <label>T&C Template <span style="color:var(--text-muted); font-weight:normal; font-size:11px;">(Auto-updates days)</span></label>
+                                    <select id="tcTemplate" class="form-control" onchange="updateTerms()">
+                                        <option value="standard">Template A (Standard)</option>
+                                        <option value="retainer">Template B (Monthly Retainer)</option>
+                                        <option value="deposit">Template C (50% Advance Deposit)</option>
+                                        <option value="rush">Template D (Rush Job / Strict)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control" rows="4"></textarea></div>
+                            </div>
+                            <button type="submit" id="saveInvoiceBtn" class="btn-solid" style="padding:20px; font-size:16px;">Create Invoice</button>
+                        </div>
+                        <div class="right-col">
+                            <div class="summary-card">
+                                <h2 style="margin-bottom:30px; font-size: 22px; font-weight:700;">Summary</h2>
+                                <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">RM 0.00</span></div>
+                                <div class="summary-row"><span>Discount (RM)</span><input type="text" id="sumDiscount" class="summary-input" value="0.00" oninput="formatInput(this); calculateInvoiceTotal()"></div>
+                                <div class="summary-row"><span>Tax (%)</span><input type="number" id="sumTaxPercent" class="summary-input" value="0" min="0" oninput="calculateInvoiceTotal()"></div>
+                                <div class="summary-row"><span>Tax Amount</span><span id="sumTaxAmount">RM 0.00</span></div>
+                                <div class="summary-total"><h3 style="font-size: 24px;">Total</h3><h2 id="sumGrandTotal" style="font-size: 28px; font-weight: 800;">RM 0.00</h2></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <div id="invoice-detail-view" class="view-section">
                 <div class="detail-top-bar">
                     <div style="display:flex; align-items:center; gap:20px;">
@@ -614,7 +687,6 @@
     </template>
 
     <script>
-        // WEB APP URL LATEST TELAH DIKEMASKINI DI BAWAH:
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5WpkqLc2r5gCIGvxlMT_aJh3h0Xwjroul0qh-DaSgz6fgYHgB-icBeKbM_iTaCPI/exec';
         
         const sound = document.getElementById('successSound');
@@ -684,7 +756,6 @@
                 
                 let dStr = new Date(c.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : c.date;
                 
-                // MULTI-PROOF DISPLAY
                 let proofLink = `<div style="display:flex; justify-content:center; gap:8px;">`;
                 if(c.receipt) proofLink += `<a href="${c.receipt}" target="_blank" title="Invoice/Receipt" style="text-decoration:none;">📄</a>`;
                 if(c.bankSlip) proofLink += `<a href="${c.bankSlip}" target="_blank" title="Bank Slip" style="text-decoration:none;">💳</a>`;
@@ -736,7 +807,6 @@
             document.getElementById('startBtn').style.display = 'none';
             document.querySelector('.sync-text').style.display = 'block';
             
-            // PASTIKAN ID INI WUJUD UNTUK ELAK ERROR KETIKA START
             let invDateElem = document.getElementById('invDate');
             if(invDateElem) invDateElem.valueAsDate = new Date(); 
             
@@ -749,7 +819,7 @@
                 intro.classList.add('zoom-out-exit'); 
                 setTimeout(() => { intro.style.display = 'none'; document.getElementById('app-container').classList.add('visible'); }, 800); 
             }).catch(e => {
-                showToast("Connection Error. Please check your App Script Deployment.", true);
+                showToast("Connection Error. Please check your App Script.", true);
             });
         }
 
@@ -953,6 +1023,18 @@
         function calculateDueDate() { const dateVal = document.getElementById('invDate').value; const term = parseInt(document.getElementById('invCreditTerm').value); if(dateVal) { const d = new Date(dateVal); d.setDate(d.getDate() + term); document.getElementById('invDueDate').valueAsDate = d; } updateTerms(); }
         function updateTerms() { const termDays = parseInt(document.getElementById('invCreditTerm').value); const template = document.getElementById('tcTemplate').value; const termText = termDays === 0 ? "immediately upon receipt" : `within ${termDays} days from invoice date`; let text = ""; if (template === 'standard') text = `1. Agency Fee is payable ${termText}.\n2. The Agency reserves the right to suspend any Services in the event of delay in payment.\n3. Please indicate the invoice number as reference when transferring the funds.\n4. Payment advice should be sent to billings@omnyzo.com.`; else if (template === 'retainer') text = `1. Monthly Retainer Fee is payable ${termText}.\n2. Work for the subsequent month will commence upon full clearance of this invoice.\n3. Payment advice should be sent to billings@omnyzo.com.`; else if (template === 'deposit') text = `1. A 50% non-refundable advance deposit is required to commence work.\n2. The remaining balance is payable ${termText} of the final invoice.\n3. Payment advice should be sent to billings@omnyzo.com.`; else if (template === 'rush') text = `1. Rush Job Agency Fee is payable ${termText}.\n2. Late payments will incur a 5% penalty fee per week of delay.\n3. Payment advice should be sent to billings@omnyzo.com.`; document.getElementById('invTerms').value = text; }
         
+        let invoiceItemsContainer = document.getElementById('invoiceItemsContainer');
+        if(invoiceItemsContainer) {
+            invoiceItemsContainer.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    if (e.target.classList.contains('item-price') || e.target.classList.contains('item-qty')) {
+                        e.preventDefault(); addInvoiceItem(); const rows = document.querySelectorAll('.item-row');
+                        if(rows.length > 0) rows[rows.length - 1].querySelector('.item-desc').focus();
+                    }
+                }
+            });
+        }
+
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
             e.preventDefault(); showConfirm("Generate Invoice", "Please confirm all invoice details before generating.", function() {
                 const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "Processing..."; btn.disabled = true; 
@@ -971,7 +1053,7 @@
             });
         });
 
-        function viewInvoiceDetail(invNo) { /* Logik kekal sama... */ 
+        function viewInvoiceDetail(invNo) { 
             let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(!inv) return;
             document.getElementById('detail-inv-no').innerText = inv.invoiceNo; document.getElementById('detail-client').innerText = inv.client; document.getElementById('detail-status').innerText = inv.status; document.getElementById('detail-status').className = `status-tag tag-${inv.status.toLowerCase()}`; currentPdfUrl = inv.pdfLink;
             const mailto = `mailto:?subject=Invoice ${inv.invoiceNo} from Omnyzo Agency&body=Hi ${inv.client},%0D%0A%0D%0AHere is the link to download your invoice PDF:%0D%0A${inv.pdfLink}%0D%0A%0D%0AThank you!`; document.getElementById('btn-detail-email').href = mailto;
