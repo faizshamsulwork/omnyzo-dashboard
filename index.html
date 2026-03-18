@@ -34,8 +34,8 @@
         @keyframes pulseGlow { 0% { filter: invert(1) drop-shadow(0 0 5px rgba(255,255,255,0.1)); } 100% { filter: invert(1) drop-shadow(0 0 15px rgba(255,255,255,0.6)); } }
         .zoom-out-exit { transform: scale(1.3); opacity: 0; filter: blur(10px); pointer-events: none; }
 
-        /* GAYA LOGIN PAGE BARU */
-        #login-page { position: fixed; inset: 0; z-index: 9000; display: none; flex-direction: column; justify-content: center; align-items: center; background: #0b0c10; transition: 0.8s; opacity:0;}
+        /* GAYA LOGIN PAGE BARU (FIX: Z-Index 10000 supaya duduk depan Intro) */
+        #login-page { position: fixed; inset: 0; z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; background: #0b0c10; transition: 0.8s; opacity:0;}
         .login-box { background: #1a1b23; padding: 50px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: translateY(20px); transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
         .login-box.active { transform: translateY(0); }
         .login-input { width: 100%; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: #fff; margin-bottom: 20px; font-family: inherit; font-size: 15px; outline:none; transition: 0.3s;}
@@ -741,6 +741,7 @@
     </template>
 
     <script>
+        // WEB APP LATEST URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhgWTU15SU20E3F00_tL07ImA6ETz8zhJRvXIWyg6YPFfBhb9alCoEGcNcrAZJ5Mo/exec';
         
         const sound = document.getElementById('successSound');
@@ -762,9 +763,9 @@
         function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
         document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
 
-        // SISTEM LOGIN GATEWAY
+        // SISTEM LOGIN GATEWAY (DIBETULKAN LOGIK Z-INDEX)
         function startLoginProcess() {
-            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('intro-page').style.display = 'none';
             document.getElementById('login-page').style.display = 'flex';
             setTimeout(() => {
                 document.getElementById('login-page').style.opacity = '1';
@@ -791,12 +792,10 @@
                     calculateDueDate(); addInvoiceItem(); 
                     
                     fetchAppData().then(() => {
-                        const intro = document.getElementById('intro-page');
                         const loginPage = document.getElementById('login-page');
-                        intro.classList.add('zoom-out-exit'); 
+                        loginPage.classList.add('zoom-out-exit'); 
                         loginPage.style.opacity = '0';
                         setTimeout(() => { 
-                            intro.style.display = 'none'; 
                             loginPage.style.display = 'none';
                             document.getElementById('app-container').classList.add('visible'); 
                             showToast(`Welcome back, ${u}!`);
@@ -890,7 +889,6 @@
             document.getElementById('freelancer-modal').classList.add('show');
         }
 
-        // FUNGSI GABUNGAN ALAMAT BERSIH (TANPA KOMA KOSONG)
         function formatCleanAddress(c) {
             let parts = [];
             if(c.address) parts.push(c.address);
@@ -1332,7 +1330,7 @@
                     return { desc: finalDesc, qty: isHeader ? "" : qtyVal, price: isHeader ? "" : priceVal.toFixed(2), total: isHeader ? "" : unformatCurrency(r.querySelector('.item-total').innerText).toFixed(2) }; 
                 }); 
                 const sel = document.getElementById('invCustomer');
-                const clientName = sel.options[sel.selectedIndex].text; // Ambil balik nama company untuk display
+                const clientName = sel.options[sel.selectedIndex].text; // FIX: Ambil balik nama syarikat, bukan ID nombor
                 const payload = { type: "invoice", client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, discount: unformatCurrency(document.getElementById('sumDiscount').value).toFixed(2), taxPercent: parseFloat(document.getElementById('sumTaxPercent').value || 0).toFixed(2), subtotal: unformatCurrency(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), taxAmount: unformatCurrency(document.getElementById('sumTaxAmount').innerText.replace('RM ', '')).toFixed(2), grandTotal: unformatCurrency(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2) }; 
                 appData.invoices.unshift({ date: payload.invoiceDate, dueDate: payload.dueDate, amount: payload.grandTotal, invoiceNo: payload.invoiceNo, client: payload.client, status: "Pending", pdfLink: "", tc: payload.terms, sheetItems: payload.items.map(i => ({ invNo: payload.invoiceNo, desc: i.desc, price: i.price, qty: i.qty, total: i.total })), fullData: payload });
                 switchView('invoice-detail-view'); document.getElementById('invoiceLoadingOverlay').style.display = "flex"; viewInvoiceDetail(payload.invoiceNo); 
