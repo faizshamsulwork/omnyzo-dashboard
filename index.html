@@ -88,6 +88,8 @@
         .action-btn { padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: none; border: 1px solid; display: inline-flex; align-items: center; gap: 5px; transition:0.2s;}
         .btn-pay { color: #10b981; border-color: #10b981; background: transparent; }
         .btn-pay:hover { background: rgba(16,185,129,0.1); }
+        .btn-undo { color: #86868b; border-color: #86868b; background: transparent; }
+        .btn-undo:hover { background: rgba(255,255,255,0.05); color: #fff; }
         .btn-pdf { color: var(--text-main); border-color: var(--border-color); background: transparent; }
         .btn-pdf:hover { background: var(--input-bg); }
 
@@ -108,7 +110,9 @@
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px; color: #a1aab2; align-items: center; }
         .summary-input { width: 80px; padding: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 20px; text-align: center; }
         .item-header { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; font-size: 13px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; min-width: 600px;}
-        .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; margin-bottom: 15px; align-items: center; min-width:600px;}
+        
+        /* FIX: Align items to start so textarea expands naturally */
+        .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; margin-bottom: 15px; align-items: start; min-width:600px;}
         
         .btn-solid { background: var(--accent-pink); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
         .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
@@ -170,7 +174,7 @@
         .li-table th:nth-child(2), .li-table td:nth-child(2), .li-table th:nth-child(3), .li-table td:nth-child(3) { text-align: center; }
         .li-table th:last-child, .li-table td:last-child { text-align: right; }
         .li-table td:last-child { font-weight: 700; }
-        .li-table tr { page-break-inside: avoid; } /* Mencegah baris terbelah dua bila PDF */
+        .li-table tr { page-break-inside: avoid; } 
         
         .li-summary-container { display: flex; justify-content: flex-end; padding: 20px 40px; page-break-inside: avoid; }
         .li-summary { width: 320px; }
@@ -441,8 +445,8 @@
                             </div>
                         </div>
 
-                        <div class="li-payment-advice" style="border-top: 2px dashed #a1a1aa; margin-top: 30px; padding: 30px 40px; page-break-inside: avoid;">
-                            <div style="text-align: center; color: #a1a1aa; margin-top: -42px; background: #fff; width: 40px; margin-left: auto; margin-right: auto; font-size: 14px;">✂️</div>
+                        <div class="li-payment-advice" style="border-top: 2px dashed #a1a1aa; padding: 40px; page-break-before: always;">
+                            <div style="text-align: center; color: #a1a1aa; margin-top: -52px; background: #fff; width: 40px; margin-left: auto; margin-right: auto; font-size: 16px;">✂️</div>
                             <h3 style="font-size: 14px; font-weight: 800; color: #1d1d1f; margin-bottom: 15px; letter-spacing: 1px;">PAYMENT ADVICE</h3>
                             <div style="display: flex; justify-content: space-between; font-size: 12px;">
                                 <div>
@@ -635,7 +639,13 @@
     </div>
 
     <template id="invoiceItemTemplate">
-        <div class="item-row"><input type="text" class="form-control item-desc" required placeholder="Description"><input type="number" class="form-control item-qty" value="1" min="1" oninput="updateRowTotal(this)"><input type="number" class="form-control item-price" value="0.00" step="0.01" oninput="updateRowTotal(this)"><div class="item-total" style="font-weight:700; font-size: 14px;">0.00</div><button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();" style="background:none; border:none; color:var(--accent-pink); cursor:pointer;">🗑️</button></div>
+        <div class="item-row">
+            <textarea class="form-control item-desc" required placeholder="Description (Press Enter for new line)" style="resize:vertical; min-height:48px; padding:12px; font-family:inherit;"></textarea>
+            <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this)">
+            <input type="number" class="form-control item-price" placeholder="Price" step="0.01" oninput="updateRowTotal(this)">
+            <div class="item-total" style="font-weight:700; font-size: 14px;">0.00</div>
+            <button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();" style="background:none; border:none; color:var(--accent-pink); cursor:pointer;">🗑️</button>
+        </div>
     </template>
 
     <script>
@@ -649,7 +659,7 @@
         function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
         document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
 
-        // FETCH DATA - SYNC INTRO
+        // FETCH DATA DENGAN INSTANT UI UPDATE
         function fetchAppData() {
             return fetch(SCRIPT_URL).then(res => res.json()).then(data => {
                 if(data.status === 'success') {
@@ -663,7 +673,8 @@
                         let dStr = new Date(inv.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : inv.date;
                         let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
 
-                        tblHTML += `<div class="tbl-row"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">${fmt(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}">${inv.status}</span></div><div class="action-btns">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : ''}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button></div></div>`;
+                        // TAMBAHAN UNDO BUTTON DAN INSTANT UPDATE
+                        tblHTML += `<div class="tbl-row" id="row-${inv.invoiceNo}"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">${fmt(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}" id="tag-${inv.invoiceNo}">${inv.status}</span></div><div class="action-btns" id="btn-group-${inv.invoiceNo}">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : `<button onclick="revertToPending('${inv.invoiceNo}')" class="action-btn btn-undo">↩ Undo</button>`}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button></div></div>`;
                     });
 
                     document.getElementById('dash-netcash').innerText = fmt(totalAmt); document.getElementById('dash-outstanding-amt').innerText = fmt(pendingAmt); document.getElementById('dash-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-pending-amt').innerText = fmt(pendingAmt); document.getElementById('count-paid').innerText = `${paidCount}`; document.getElementById('count-pending').innerText = `${pendingCount}`;
@@ -733,7 +744,16 @@
         function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); if(nav) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); nav.classList.add('active'); } document.getElementById(viewId).classList.add('active-view'); if(viewId !== 'new-invoice-view' && viewId !== 'record-transaction-view' && viewId !== 'invoice-detail-view') fetchAppData(); }
         
         function addInvoiceItem() { document.getElementById('invoiceItemsContainer').appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true)); }
-        function updateRowTotal(input) { const row = input.closest('.item-row'); row.querySelector('.item-total').innerText = ((parseFloat(row.querySelector('.item-qty').value)||0) * (parseFloat(row.querySelector('.item-price').value)||0)).toFixed(2); calculateInvoiceTotal(); }
+        
+        // PENGIRAAN MATEMATIK DENGAN TITIK PERPULUHAN KEKAL .00
+        function updateRowTotal(input) { 
+            const row = input.closest('.item-row'); 
+            let qStr = row.querySelector('.item-qty').value;
+            let pStr = row.querySelector('.item-price').value;
+            if(!pStr || parseFloat(pStr) === 0) { row.querySelector('.item-total').innerText = "0.00"; } 
+            else { row.querySelector('.item-total').innerText = ((parseFloat(qStr)||0) * (parseFloat(pStr)||0)).toFixed(2); }
+            calculateInvoiceTotal(); 
+        }
         
         function calculateInvoiceTotal() { 
             let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += parseFloat(t.innerText)||0); 
@@ -765,7 +785,7 @@
             document.getElementById('invTerms').value = text;
         }
 
-        // VIEW LIVE HTML INVOICE
+        // VIEW LIVE HTML INVOICE KORPORAT (TEXTAREA MULTILINE & HEADER)
         function viewInvoiceDetail(invNo) {
             let inv = appData.invoices.find(i => i.invoiceNo === invNo);
             if(!inv) return;
@@ -797,8 +817,13 @@
 
             if (inv.sheetItems && inv.sheetItems.length > 0) {
                 inv.sheetItems.forEach(i => {
-                    itemsHtml += `<tr><td>${i.desc}</td><td>${parseFloat(i.price).toFixed(2)}</td><td>${i.qty}</td><td>${parseFloat(i.total).toFixed(2)}</td></tr>`;
-                    subtotal += parseFloat(i.total);
+                    let isHeader = !i.price || parseFloat(i.price) === 0 || isNaN(parseFloat(i.price));
+                    if (isHeader) {
+                        itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`;
+                    } else {
+                        itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${parseFloat(i.price).toFixed(2)}</td><td>${i.qty}</td><td>${parseFloat(i.total).toFixed(2)}</td></tr>`;
+                        subtotal += parseFloat(i.total);
+                    }
                 });
                 document.getElementById('li-items').innerHTML = itemsHtml;
                 document.getElementById('li-sub').innerText = subtotal.toFixed(2);
@@ -815,14 +840,20 @@
                 document.getElementById('li-total').innerText = "RM " + parseFloat(inv.amount).toFixed(2);
                 document.getElementById('li-terms').innerText = inv.tc || "Standard terms apply.";
                 
-                // PAYMENT ADVICE SYNC
                 document.getElementById('pa-inv-no').innerText = inv.invoiceNo;
                 document.getElementById('pa-client-name').innerText = inv.client;
                 document.getElementById('pa-due-date').innerText = dueStr;
                 document.getElementById('pa-amount').innerText = "RM " + parseFloat(inv.amount).toFixed(2);
 
             } else if (data && data.items) {
-                data.items.forEach(i => itemsHtml += `<tr><td>${i.desc}</td><td>${parseFloat(i.price).toFixed(2)}</td><td>${i.qty}</td><td>${parseFloat(i.total).toFixed(2)}</td></tr>`);
+                data.items.forEach(i => {
+                    let isHeader = !i.price || parseFloat(i.price) === 0 || isNaN(parseFloat(i.price));
+                    if (isHeader) {
+                        itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`;
+                    } else {
+                        itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${parseFloat(i.price).toFixed(2)}</td><td>${i.qty}</td><td>${parseFloat(i.total).toFixed(2)}</td></tr>`;
+                    }
+                });
                 document.getElementById('li-items').innerHTML = itemsHtml;
                 document.getElementById('li-sub').innerText = parseFloat(data.subtotal).toFixed(2);
                 
@@ -838,14 +869,13 @@
                 document.getElementById('li-total').innerText = "RM " + parseFloat(data.grandTotal).toFixed(2);
                 document.getElementById('li-terms').innerText = data.terms || "-";
                 
-                // PAYMENT ADVICE SYNC
                 document.getElementById('pa-inv-no').innerText = inv.invoiceNo;
                 document.getElementById('pa-client-name').innerText = inv.client;
                 document.getElementById('pa-due-date').innerText = dueStr;
                 document.getElementById('pa-amount').innerText = "RM " + parseFloat(data.grandTotal).toFixed(2);
 
             } else {
-                document.getElementById('li-items').innerHTML = `<tr><td>Professional Services</td><td>${parseFloat(inv.amount).toFixed(2)}</td><td>1</td><td>${parseFloat(inv.amount).toFixed(2)}</td></tr>`;
+                document.getElementById('li-items').innerHTML = `<tr><td style="white-space:pre-wrap;">Professional Services</td><td>${parseFloat(inv.amount).toFixed(2)}</td><td>1</td><td>${parseFloat(inv.amount).toFixed(2)}</td></tr>`;
                 document.getElementById('li-sub').innerText = parseFloat(inv.amount).toFixed(2);
                 document.getElementById('li-discount-row').style.display = "none";
                 document.getElementById('li-tax-label').innerText = "0.00";
@@ -853,7 +883,6 @@
                 document.getElementById('li-total').innerText = "RM " + parseFloat(inv.amount).toFixed(2);
                 document.getElementById('li-terms').innerText = "Standard terms apply.";
                 
-                // PAYMENT ADVICE SYNC
                 document.getElementById('pa-inv-no').innerText = inv.invoiceNo;
                 document.getElementById('pa-client-name').innerText = inv.client;
                 document.getElementById('pa-due-date').innerText = dueStr;
@@ -862,7 +891,6 @@
             switchView('invoice-detail-view');
         }
 
-        // KAMERA SCRIPT (1-CLICK PDF DOWNLOAD)
         function downloadInvoicePDF() {
             const btn = document.querySelector('.btn-outline');
             const originalText = btn.innerHTML;
@@ -893,8 +921,34 @@
 
         function copyDetailLink() { navigator.clipboard.writeText(currentPdfUrl); showToast("Google Drive PDF Link copied!"); }
 
+        // MENGUBAH STATUS SECARA INSTANT + BUTANG UNDO
+        function markAsPaid(invNo) { 
+            showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid?`, function() { 
+                
+                // INSTANT UI UPDATE (Tak payah tunggu backend)
+                document.getElementById(`tag-${invNo}`).innerText = "Paid";
+                document.getElementById(`tag-${invNo}`).className = "status-tag tag-paid";
+                document.getElementById(`btn-group-${invNo}`).innerHTML = `<button onclick="revertToPending('${invNo}')" class="action-btn btn-undo">↩ Undo</button><button onclick="viewInvoiceDetail('${invNo}')" class="action-btn btn-pdf">👁️ View</button>`;
+                showToast(`Invoice ${invNo} marked as Paid!`);
+                
+                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } }); 
+            }); 
+        }
+
+        function revertToPending(invNo) {
+            showConfirm("Revert to Pending", `Undo payment status for ${invNo} back to Pending?`, function() { 
+                
+                // INSTANT UI UPDATE
+                document.getElementById(`tag-${invNo}`).innerText = "Pending";
+                document.getElementById(`tag-${invNo}`).className = "status-tag tag-pending";
+                document.getElementById(`btn-group-${invNo}`).innerHTML = `<button onclick="markAsPaid('${invNo}')" class="action-btn btn-pay">✔ Paid</button><button onclick="viewInvoiceDetail('${invNo}')" class="action-btn btn-pdf">👁️ View</button>`;
+                showToast(`Invoice ${invNo} reverted to Pending!`);
+                
+                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Pending" }) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } }); 
+            }); 
+        }
+
         function autoFillCustomer() { let sel = document.getElementById('invCustomer').value; let c = appData.customers.find(x => x.company === sel); if(c) { document.getElementById('invPIC').value = c.pic; document.getElementById('invPhone').value = c.phone; document.getElementById('invEmail').value = c.email; document.getElementById('invAddress').value = `${c.address}, ${c.postcode} ${c.city}, ${c.state}`; } }
-        function markAsPaid(invNo) { showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid?`, function() { fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", invoiceNo: invNo, newStatus: "Paid" }) }).then(res => res.json()).then(res => { if(res.status === 'success') { showToast(`Invoice ${invNo} marked as Paid! Cashflow updated.`); fetchAppData(); } }); }); }
         document.getElementById('custPostcode').addEventListener('input', function(e) { let pc = e.target.value.trim(); if(pc.length === 5) { fetch(`https://api.zippopotam.us/my/${pc}`).then(res => res.json()).then(data => { if(data.places && data.places.length > 0) { document.getElementById('custCity').value = data.places[0]['place name']; document.getElementById('custState').value = data.places[0]['state']; } }).catch(err => console.log('Postcode API failed')); } });
 
         const uploadBox = document.getElementById('uploadBoxUI');
@@ -944,11 +998,8 @@
         document.getElementById('freelancerForm').addEventListener('submit', function(e) { e.preventDefault(); const btn = document.getElementById('saveFreeBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; const payload = { type: "freelancer", name: document.getElementById('freeName').value, phone: document.getElementById('freePhone').value, email: document.getElementById('freeEmail').value, service: document.getElementById('freeService').value, bank: document.getElementById('freeBank').value }; fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('freelancer-modal').classList.remove('show'); document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; showToast("Freelancer Saved!"); fetchAppData(); } }); });
         function closeSuccessModal() { document.getElementById('success-modal').classList.remove('show'); document.getElementById('invoiceForm').reset(); document.getElementById('invoiceItemsContainer').innerHTML = ""; addInvoiceItem(); calculateDueDate(); switchView('invoices-view', document.querySelectorAll('.nav-item')[1]); }
 
-        function toTitleCase(str) { return str.toLowerCase().replace(/(?:^|\s)\w/g, function(match) { return match.toUpperCase(); }); }
+        function toTitleCase(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
-        // =========================================
-        // ZERO-LAG CREATE INVOICE 
-        // =========================================
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
             e.preventDefault(); 
             
@@ -958,20 +1009,31 @@
                 btn.innerText = "Processing..."; 
                 btn.disabled = true; 
                 
-                const items = Array.from(document.querySelectorAll('.item-row')).map((r, index) => { 
+                let itemCounter = 1;
+                const items = Array.from(document.querySelectorAll('.item-row')).map((r) => { 
                     let rawDesc = r.querySelector('.item-desc').value.trim();
-                    let finalDesc = (index + 1) + ". " + toTitleCase(rawDesc);
+                    let qtyVal = r.querySelector('.item-qty').value;
+                    let priceVal = r.querySelector('.item-price').value;
+                    
+                    let isHeader = !priceVal || parseFloat(priceVal) === 0 || isNaN(parseFloat(priceVal));
+                    
+                    let finalDesc;
+                    if (isHeader) {
+                        finalDesc = rawDesc; // Jangan usik case untuk perenggan/nota panjang
+                    } else {
+                        finalDesc = itemCounter + ". " + toTitleCase(rawDesc);
+                        itemCounter++;
+                    }
+                    
                     return { 
                         desc: finalDesc, 
-                        qty: r.querySelector('.item-qty').value, 
-                        price: parseFloat(r.querySelector('.item-price').value).toFixed(2), 
-                        total: parseFloat(r.querySelector('.item-total').innerText).toFixed(2) 
+                        qty: isHeader ? "" : qtyVal, 
+                        price: isHeader ? "" : parseFloat(priceVal).toFixed(2), 
+                        total: isHeader ? "" : parseFloat(r.querySelector('.item-total').innerText).toFixed(2) 
                     }; 
                 }); 
                 
                 const clientName = document.getElementById('invCustomer').options[document.getElementById('invCustomer').selectedIndex].text; 
-                
-                // PAYLOAD KEMAS & TEPAT
                 const payload = { 
                     type: "invoice", client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, 
                     invoiceNo: document.getElementById('invNo').value, 
@@ -987,11 +1049,10 @@
                     grandTotal: parseFloat(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2) 
                 }; 
                 
-                // MASUKKAN DATA KE MEMORI UNTUK TAYANGAN ZERO-LAG 
                 appData.invoices.unshift({
-                    date: payload.invoiceDate, // FIX: Tarikh masuk ngam-ngam
-                    dueDate: payload.dueDate,  // FIX: Due Date ngam-ngam
-                    amount: payload.grandTotal, // FIX: Total masuk ngam-ngam
+                    date: payload.invoiceDate, 
+                    dueDate: payload.dueDate,  
+                    amount: payload.grandTotal, 
                     invoiceNo: payload.invoiceNo, 
                     client: payload.client, 
                     status: "Pending", 
@@ -1003,15 +1064,12 @@
                 
                 switchView('invoice-detail-view');
                 document.getElementById('invoiceLoadingOverlay').style.display = "flex"; 
-                
-                // Tayang Invois serta-merta kat sebalik Loading (Tiada undefined)
                 viewInvoiceDetail(payload.invoiceNo); 
                 
                 fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
                     btn.innerText = "Create Invoice"; 
                     btn.disabled = false; 
                     if(res.status === 'success') { 
-                        // PADAM LOADING BILA DRIVE SIAP SAVE
                         document.getElementById('invoiceLoadingOverlay').style.display = "none";
                         sound.play().catch(e => console.log("Audio issue")); 
                         document.getElementById('invoiceForm').reset(); 
