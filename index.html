@@ -63,6 +63,10 @@
         .header-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .header-title h1 { font-size: 34px; font-weight: 800; letter-spacing: -1px; }
 
+        /* CARIAN (SEARCH BOX) */
+        .search-box { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 20px; border-radius: 20px; font-size: 13px; font-family: inherit; width: 260px; outline: none; transition: 0.3s; font-weight: 500; }
+        .search-box:focus { border-color: var(--accent-pink); box-shadow: 0 0 10px rgba(225, 78, 101, 0.2); }
+
         .card { background: var(--card-bg); border-radius: 20px; padding: 30px; border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-bottom: 25px;}
         .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 25px; }
 
@@ -161,13 +165,14 @@
         .li-meta-l td { padding-bottom: 8px; white-space: nowrap; }
         .li-meta-l td:first-child { font-weight: 800; padding-right: 15px; }
         
-        .li-meta-r { max-width: 280px; text-align: right; margin-left: auto; word-wrap: break-word; }
+        .li-meta-r { max-width: 280px; text-align: right; margin-left: auto; word-break: normal; }
         .li-meta-r p { margin-bottom: 4px; line-height: 1.5; color: #86868b; }
         
         /* TABLE ANTI-TERPOTONG */
         .li-table { width: calc(100% - 80px); margin: 0 40px; border-collapse: collapse; border: 1px solid #eef0f2; }
         .li-table th, .li-table td { border: 1px solid #eef0f2; padding: 12px 15px; font-size: 13px; }
         .li-table th { background: #1d1d1f; color: #fff; font-size: 11px; font-weight: 800; text-transform: uppercase; border-color: #333; }
+        .li-table thead { display: table-header-group; }
         .li-table th:first-child, .li-table td:first-child { text-align: left; }
         .li-table th:nth-child(2), .li-table td:nth-child(2), .li-table th:nth-child(3), .li-table td:nth-child(3) { text-align: center; }
         .li-table th:last-child, .li-table td:last-child { text-align: right; }
@@ -179,12 +184,19 @@
         .li-summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; }
         .li-summary-row.total { background: #1d1d1f; color: #fff; padding: 15px 20px; font-weight: 800; font-size: 16px; margin-top: 10px; align-items: center; border-radius: 8px; }
         
-        .li-bottom { display: flex; gap: 40px; padding: 30px 40px; margin-top: 20px; border-top: 1px solid #eef0f2; page-break-inside: avoid; }
+        .li-bottom { display: flex; gap: 40px; padding: 30px 40px; margin-top: auto; border-top: 1px solid #eef0f2; page-break-inside: avoid; }
         .li-box { flex: 1; }
         .li-box h4 { font-size: 11px; font-weight: 800; color: #1d1d1f; margin-bottom: 10px; text-transform: uppercase; }
         .li-box p { font-size: 11px; color: #86868b; line-height: 1.6; }
         
-        .li-footer { text-align: center; padding: 30px; font-size: 10px; color: #a1a1aa; font-style: italic; background: #fbfbfd; }
+        .li-footer { text-align: center; padding: 30px; font-size: 10px; color: #a1a1aa; font-style: italic; background: #fbfbfd; margin-top: 0; }
+
+        /* PAYMENT ADVICE (BILIK A4 KOSONG DENGAN FLEX-END) */
+        .li-payment-advice-page { page-break-before: always; min-height: 280mm; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 40px; background: #fff; }
+        .li-payment-advice { border-top: 2px dashed #a1a1aa; padding: 40px; }
+        .li-pa-scissor { text-align: center; color: #a1a1aa; margin-top: -52px; background: #fff; width: 40px; margin-left: auto; margin-right: auto; font-size: 16px; }
+        .li-pa-title { font-size: 14px; font-weight: 800; color: #1d1d1f; margin-bottom: 15px; letter-spacing: 1px; }
+        .li-pa-grid { display: flex; justify-content: space-between; font-size: 12px; }
 
         /* LOADING OVERLAY */
         #invoiceLoadingOverlay {
@@ -349,7 +361,10 @@
             <div id="invoices-view" class="view-section">
                 <div class="header-title">
                     <div><h1 style="font-size: 34px;">Invoices</h1><p>Manage invoices and track payments.</p></div>
-                    <button class="btn-add-pink" onclick="switchView('new-invoice-view')">+</button>
+                    <div style="display:flex; gap:15px; align-items:center;">
+                        <input type="text" id="searchInvoice" class="search-box" placeholder="🔍 Search invoices..." oninput="filterInvoices()">
+                        <button class="btn-add-pink" onclick="switchView('new-invoice-view')">+</button>
+                    </div>
                 </div>
                 <div class="dash-top-grid">
                     <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Total Invoices</div><div class="dash-val" id="inv-count-total">0</div></div>
@@ -444,7 +459,9 @@
                                 </div>
                             </div>
                             
-                            <div style="flex-grow: 1;"></div> <div class="li-footer" style="padding-bottom: 20px;">
+                            <div style="flex-grow: 1;"></div> 
+                            
+                            <div class="li-footer" style="padding-bottom: 20px;">
                                 This is a system-generated invoice and is valid without a signature.<br><br>
                                 <span style="font-weight:800; font-style:normal; letter-spacing:2px; font-size:9px;">POWERED BY Omnyzo: Admin</span>
                             </div>
@@ -477,7 +494,10 @@
             <div id="cashflow-view" class="view-section">
                 <div class="header-title">
                     <div><h1 style="font-size: 34px;">Cashflow</h1><p>Track business income and expenses.</p></div>
-                    <button class="btn-add-pink" onclick="switchView('record-transaction-view'); document.getElementById('transDate').valueAsDate = new Date();">+</button>
+                    <div style="display:flex; gap:15px; align-items:center;">
+                        <input type="text" id="searchCashflow" class="search-box" placeholder="🔍 Search transactions..." oninput="filterCashflow()">
+                        <button class="btn-add-pink" onclick="switchView('record-transaction-view'); document.getElementById('transDate').valueAsDate = new Date();">+</button>
+                    </div>
                 </div>
                 <div class="dash-top-grid" style="grid-template-columns: repeat(3, 1fr);">
                     <div class="card"><div style="color:var(--text-muted); font-size:12px; font-weight:700;">Net Balance</div><div class="dash-val" id="cf-net" style="color:#10b981;">+ RM 0.00</div></div>
@@ -657,14 +677,29 @@
         let appData = { invoices: [], customers: [], freelancers: [] };
         let currentReceiptData = null; let pendingConfirmAction = null; let currentPdfUrl = "";
 
-        /* FIX 3: FUNGSI KOMA (THOUSANDS SEPARATOR) */
+        // FUNGSI LIVE SEARCH
+        function filterInvoices() {
+            const val = document.getElementById('searchInvoice').value.toLowerCase();
+            const rows = document.querySelectorAll('#invoiceListContainer .tbl-row');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(val) ? '' : 'none';
+            });
+        }
+        function filterCashflow() {
+            const val = document.getElementById('searchCashflow').value.toLowerCase();
+            const rows = document.querySelectorAll('#cashflowListContainer .cf-row');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(val) ? '' : 'none';
+            });
+        }
+
         function unformatCurrency(val) { return parseFloat(val.toString().replace(/,/g, '')) || 0; }
         function formatCurrency(val) { return parseFloat(val || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
         function formatInput(input) {
             let val = input.value.replace(/,/g, '');
-            if (!isNaN(val) && val.length > 0 && !val.endsWith('.')) {
-                // Biarkan user menaip decimal tanpa kacau koma secara agresif
-            }
+            if (!isNaN(val) && val.length > 0 && !val.endsWith('.')) { }
         }
 
         function showToast(msg, isError=false) { const t = document.getElementById('toast-notification'); document.getElementById('toast-message').innerText = msg; if(isError) { t.classList.add('error'); document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`; } else { t.classList.remove('error'); document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`; } t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500); }
@@ -751,7 +786,7 @@
             document.querySelector('.theme-label').innerText = isLight ? 'Dark Mode' : 'Light Mode';
         }
 
-        function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); if(nav) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); nav.classList.add('active'); } document.getElementById(viewId).classList.add('active-view'); if(viewId !== 'new-invoice-view' && viewId !== 'record-transaction-view' && viewId !== 'invoice-detail-view') fetchAppData(); }
+        function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); if(nav) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); nav.classList.add('active'); } document.getElementById(viewId).classList.add('active-view'); if(viewId !== 'new-invoice-view' && viewId !== 'record-transaction-view' && viewId !== 'invoice-detail-view') { fetchAppData(); document.getElementById('searchInvoice').value = ""; document.getElementById('searchCashflow').value = ""; filterInvoices(); filterCashflow(); } }
         
         function addInvoiceItem() { document.getElementById('invoiceItemsContainer').appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true)); }
         
@@ -899,7 +934,6 @@
             switchView('invoice-detail-view');
         }
 
-        // FIX 1: Margin selamat 0.2inci di bawah setiap page
         function downloadInvoicePDF() {
             const btn = document.querySelector('.btn-outline');
             const originalText = btn.innerHTML;
