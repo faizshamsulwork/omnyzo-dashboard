@@ -859,13 +859,32 @@
             reader.readAsDataURL(file);
         }
 
+        // UPGRADE MAGIS: KEBAL RUPIAH & INDONESIAN DATE
         function parseOCRText(text) {
-            let amtMatch = text.match(/(?:RM|MYR|TOTAL DUE|GRAND TOTAL|PAYABLE|AMOUNT|AMT)[\s:.\-]*(?:RM)?\s*([0-9,]+(?:\.\d{2})?)/i);
-            if(!amtMatch) amtMatch = text.match(/([0-9,]+\.\d{2})/);
-            if(amtMatch) document.getElementById('transAmount').value = amtMatch[1].replace(/,/g, '');
+            let isIDR = /Rp\.?|IDR|Rupiah/i.test(text);
+
+            if (isIDR) {
+                let idrAmtMatch = text.match(/(?:Rp\.?|IDR)[\s]*([0-9.,]+)/i);
+                let idrAmt = idrAmtMatch ? idrAmtMatch[1] : "UNKNOWN";
+                document.getElementById('transAmount').value = ""; // Sengaja kosongkan supaya tak masuk juta-juta
+                document.getElementById('transDesc').value = "Invoice (IDR " + idrAmt + ")"; 
+            } else {
+                let amtMatch = text.match(/(?:RM|MYR|TOTAL DUE|GRAND TOTAL|PAYABLE|AMOUNT|AMT)[\s:.\-]*(?:RM)?\s*([0-9,]+(?:\.\d{2})?)/i);
+                if(!amtMatch) amtMatch = text.match(/([0-9,]+\.\d{2})/);
+                if(amtMatch) document.getElementById('transAmount').value = amtMatch[1].replace(/,/g, '');
+                document.getElementById('transDesc').value = "Auto-filled by AI Scanner"; 
+            }
             
             let dateMatch = text.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
-            if(dateMatch) { 
+            let indoDateMatch = text.match(/(\d{1,2})\s+(JANUARI|FEBRUARI|MARET|APRIL|MEI|JUNI|JULI|AGUSTUS|SEPTEMBER|OKTOBER|NOVEMBER|DESEMBER|JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\s+(\d{4})/i);
+
+            if(indoDateMatch) {
+                let months = {"januari":"01","februari":"02","maret":"03","april":"04","mei":"05","juni":"06","juli":"07","agustus":"08","september":"09","oktober":"10","november":"11","desember":"12", "jan":"01","feb":"02","mar":"03","may":"05","jun":"06","jul":"07","aug":"08","sep":"09","oct":"10","nov":"11","dec":"12"};
+                let m = months[indoDateMatch[2].toLowerCase()];
+                let d = ("0" + indoDateMatch[1]).slice(-2);
+                let y = indoDateMatch[3];
+                if(m) document.getElementById('transDate').value = `${y}-${m}-${d}`;
+            } else if(dateMatch) { 
                 let d = dateMatch[1]; let m = dateMatch[2]; let y = dateMatch[3]; 
                 if(y.length === 2) y = "20" + y; 
                 document.getElementById('transDate').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`; 
@@ -876,11 +895,10 @@
                 let merchantName = lines[0]; 
                 if(merchantName.toLowerCase().includes("invoice")) merchantName = lines[1] || lines[0]; 
                 document.getElementById('transMerchant').value = merchantName.substring(0, 30); 
-                document.getElementById('transDesc').value = "Auto-filled by AI Scanner"; 
             }
         }
 
-        // --- OCR 2 : BANK SLIP DRAG & DROP (PENAPIS PINTAR) ---
+        // --- OCR 2 : BANK SLIP DRAG & DROP (PENAPIS PINTAR WISE) ---
         const bankSlipUploadBox = document.getElementById('bankSlipUploadBoxUI');
         const bankSlipFileInput = document.getElementById('bankSlipFileInput');
 
@@ -905,7 +923,7 @@
                 .then(res => res.json())
                 .then(res => {
                     document.getElementById('bankSlipScanOverlay').style.display = "none";
-                    if(res.status === 'success' && res.text) { parseBankSlipOCRText(res.text); showToast("Bank Slip Scanned! Date & Ref Auto-Filled."); } 
+                    if(res.status === 'success' && res.text) { parseBankSlipOCRText(res.text); showToast("Bank Slip Scanned! Form Auto-Filled."); } 
                     else { showToast("File uploaded, but AI couldn't read text.", true); }
                 })
                 .catch(err => { document.getElementById('bankSlipScanOverlay').style.display = "none"; showToast("AI Scanning timeout. File is attached.", true); });
@@ -915,17 +933,36 @@
 
         function parseBankSlipOCRText(text) {
             let dateMatch = text.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
-            if(dateMatch) {
+            let wiseDateMatch = text.match(/(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s+(\d{4})/i);
+
+            if (wiseDateMatch) {
+                let months = {"january":"01","february":"02","march":"03","april":"04","may":"05","june":"06","july":"07","august":"08","september":"09","october":"10","november":"11","december":"12"};
+                let m = months[wiseDateMatch[1].toLowerCase()];
+                let d = ("0" + wiseDateMatch[2]).slice(-2);
+                let y = wiseDateMatch[3];
+                document.getElementById('transPayDate').value = `${y}-${m}-${d}`;
+            } else if(dateMatch) {
                 let d = dateMatch[1]; let m = dateMatch[2]; let y = dateMatch[3];
                 if(y.length === 2) y = "20" + y;
                 document.getElementById('transPayDate').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`;
             }
+
+            // Pandai cari jumlah MYR dari Wise resit
+            let wiseAmtMatch = text.match(/([0-9,]+\.\d{2})\s*MYR/i);
+            if(wiseAmtMatch) {
+                document.getElementById('transAmount').value = wiseAmtMatch[1].replace(/,/g, '');
+            }
             
-            // Penapis Pintar (Kebal INVOICE & Support Bank Tempatan)
+            // Penapis Pintar (Kebal INVOICE & Support Bank Tempatan / Wise Transfer #)
             let cleanText = text.replace(/invoice|oice|tarikh|masa|date|time|amount/gi, '');
             let refMatch = cleanText.match(/(?:Reference|Ref|Transaction|Trans|Rujukan|No Rujukan)\s*(?:No\.?|Number|ID)?[\s:.\-]*([A-Z0-9]{6,20})/i);
+            let wiseRefMatch = text.match(/Transfer\s*#([0-9]+)/i);
             
-            if(refMatch) document.getElementById('transRefId').value = refMatch[1].trim();
+            if(wiseRefMatch) {
+                document.getElementById('transRefId').value = "#" + wiseRefMatch[1];
+            } else if(refMatch) { 
+                document.getElementById('transRefId').value = refMatch[1].trim();
+            }
         }
 
         function setTransType(type) { document.getElementById('transType').value = type; if(type === 'Out') { document.getElementById('btn-out').className = 'active-out'; document.getElementById('btn-in').className = ''; } else { document.getElementById('btn-out').className = ''; document.getElementById('btn-in').className = 'active-in'; } }
@@ -964,7 +1001,7 @@
             document.getElementById('pay-trans-modal').classList.add('show');
         }
 
-        // AI OCR Untuk Modal Pay (PENAPIS PINTAR)
+        // AI OCR Untuk Modal Pay (PENAPIS PINTAR WISE)
         document.getElementById('payTransReceipt').addEventListener('change', function() {
             const file = this.files[0]; if(!file) return;
             document.getElementById('payTransScanStatus').style.display = "block";
@@ -977,12 +1014,28 @@
                     document.getElementById('payTransScanStatus').style.display = "none";
                     if(res.status === 'success' && res.text) {
                         let dateMatch = res.text.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
-                        if(dateMatch) { let d = dateMatch[1], m = dateMatch[2], y = dateMatch[3]; if(y.length === 2) y = "20" + y; document.getElementById('payTransDateModal').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`; }
+                        let wiseDateMatch = res.text.match(/(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s+(\d{4})/i);
+
+                        if (wiseDateMatch) {
+                            let months = {"january":"01","february":"02","march":"03","april":"04","may":"05","june":"06","july":"07","august":"08","september":"09","october":"10","november":"11","december":"12"};
+                            let m = months[wiseDateMatch[1].toLowerCase()];
+                            let d = ("0" + wiseDateMatch[2]).slice(-2);
+                            let y = wiseDateMatch[3];
+                            document.getElementById('payTransDateModal').value = `${y}-${m}-${d}`;
+                        } else if(dateMatch) { 
+                            let d = dateMatch[1], m = dateMatch[2], y = dateMatch[3]; if(y.length === 2) y = "20" + y; 
+                            document.getElementById('payTransDateModal').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`; 
+                        }
                         
                         let cleanText = res.text.replace(/invoice|oice|tarikh|masa|date|time|amount/gi, '');
                         let refMatch = cleanText.match(/(?:Reference|Ref|Transaction|Trans|Rujukan|No Rujukan)\s*(?:No\.?|Number|ID)?[\s:.\-]*([A-Z0-9]{6,20})/i);
+                        let wiseRefMatch = res.text.match(/Transfer\s*#([0-9]+)/i);
                         
-                        if(refMatch) document.getElementById('payTransRefModal').value = refMatch[1].trim();
+                        if(wiseRefMatch) {
+                            document.getElementById('payTransRefModal').value = "#" + wiseRefMatch[1];
+                        } else if(refMatch) {
+                            document.getElementById('payTransRefModal').value = refMatch[1].trim();
+                        }
                         showToast("Bank Slip Scanned! Form Auto-Filled.");
                     } else { showToast("File attached, but AI couldn't read text.", true); }
                 }).catch(err => { document.getElementById('payTransScanStatus').style.display = "none"; showToast("AI timeout, file attached.", true); });
