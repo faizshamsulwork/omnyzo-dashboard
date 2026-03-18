@@ -692,8 +692,8 @@
         const sound = document.getElementById('successSound');
         let appData = { invoices: [], customers: [], freelancers: [] };
         
-        let currentReceiptData = null; // Untuk Invois Asal
-        let currentBankSlipData = null; // Untuk Slip Bank Baru
+        let currentReceiptData = null; 
+        let currentBankSlipData = null; 
         
         let pendingConfirmAction = null; let currentPdfUrl = "";
         let currentRowToPay = null;
@@ -880,7 +880,7 @@
             }
         }
 
-        // --- OCR 2 : BANK SLIP DRAG & DROP ---
+        // --- OCR 2 : BANK SLIP DRAG & DROP (PENAPIS PINTAR) ---
         const bankSlipUploadBox = document.getElementById('bankSlipUploadBoxUI');
         const bankSlipFileInput = document.getElementById('bankSlipFileInput');
 
@@ -920,7 +920,11 @@
                 if(y.length === 2) y = "20" + y;
                 document.getElementById('transPayDate').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`;
             }
-            let refMatch = text.match(/(?:REF|REFERENCE|TRANS|TRANSACTION|ID)[\s:.\-]*([A-Z0-9]+)/i);
+            
+            // Penapis Pintar (Kebal INVOICE & Support Bank Tempatan)
+            let cleanText = text.replace(/invoice|oice|tarikh|masa|date|time|amount/gi, '');
+            let refMatch = cleanText.match(/(?:Reference|Ref|Transaction|Trans|Rujukan|No Rujukan)\s*(?:No\.?|Number|ID)?[\s:.\-]*([A-Z0-9]{6,20})/i);
+            
             if(refMatch) document.getElementById('transRefId').value = refMatch[1].trim();
         }
 
@@ -960,7 +964,7 @@
             document.getElementById('pay-trans-modal').classList.add('show');
         }
 
-        // AI OCR Untuk Modal Pay
+        // AI OCR Untuk Modal Pay (PENAPIS PINTAR)
         document.getElementById('payTransReceipt').addEventListener('change', function() {
             const file = this.files[0]; if(!file) return;
             document.getElementById('payTransScanStatus').style.display = "block";
@@ -974,7 +978,10 @@
                     if(res.status === 'success' && res.text) {
                         let dateMatch = res.text.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
                         if(dateMatch) { let d = dateMatch[1], m = dateMatch[2], y = dateMatch[3]; if(y.length === 2) y = "20" + y; document.getElementById('payTransDateModal').value = `${y}-${("0"+m).slice(-2)}-${("0"+d).slice(-2)}`; }
-                        let refMatch = res.text.match(/(?:REF|REFERENCE|TRANS|TRANSACTION|ID)[\s:.\-]*([A-Z0-9]+)/i);
+                        
+                        let cleanText = res.text.replace(/invoice|oice|tarikh|masa|date|time|amount/gi, '');
+                        let refMatch = cleanText.match(/(?:Reference|Ref|Transaction|Trans|Rujukan|No Rujukan)\s*(?:No\.?|Number|ID)?[\s:.\-]*([A-Z0-9]{6,20})/i);
+                        
                         if(refMatch) document.getElementById('payTransRefModal').value = refMatch[1].trim();
                         showToast("Bank Slip Scanned! Form Auto-Filled.");
                     } else { showToast("File attached, but AI couldn't read text.", true); }
