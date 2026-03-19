@@ -71,16 +71,18 @@
         .logout-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 8px; transition: 0.2s; display: flex; justify-content: center; align-items: center; }
         .logout-btn:hover { background: rgba(225, 78, 101, 0.1); color: var(--accent-pink); }
 
-        /* LOCENG NOTIFIKASI */
-        .top-right-actions { position: fixed; top: 30px; right: 50px; z-index: 1000; display:flex; gap:15px; align-items:center;}
-        .notif-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 44px; height: 44px; border-radius: 50%; display:flex; justify-content:center; align-items:center; cursor:pointer; color:var(--text-main); position:relative; transition:0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
-        .notif-btn:hover { border-color: var(--accent-pink); color: var(--accent-pink); }
-        .notif-badge { position:absolute; top: -2px; right: -2px; background:var(--accent-pink); color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:10px;}
-        .notif-panel { position:absolute; top: 60px; right: 0; width: 340px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); display:none; max-height:400px; overflow-y:auto;}
+        /* LOCENG NOTIFIKASI (BOTTOM RIGHT FIX) */
+        .bottom-right-actions { position: fixed; bottom: 30px; right: 30px; z-index: 1000; display:flex; gap:15px; align-items:center;}
+        .notif-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 50px; height: 50px; border-radius: 50%; display:flex; justify-content:center; align-items:center; cursor:pointer; color:var(--text-main); position:relative; transition:0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.5);}
+        .notif-btn:hover { border-color: var(--accent-pink); color: var(--accent-pink); transform:scale(1.05); }
+        .notif-badge { position:absolute; top: -2px; right: -2px; background:var(--accent-pink); color:#fff; font-size:11px; font-weight:800; padding:3px 7px; border-radius:10px;}
+        .notif-panel { position:absolute; bottom: 65px; right: 0; width: 340px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); display:none; max-height:400px; overflow-y:auto;}
         .notif-panel.show { display:block; animation: slideUpFade 0.3s forwards; }
         .notif-item { padding: 15px; border-bottom: 1px solid var(--border-color); font-size: 13px; line-height:1.5; color:var(--text-main);}
         .notif-item:last-child { border-bottom:none; }
         .notif-time { font-size:11px; color:var(--text-muted); margin-bottom:5px; font-weight:600;}
+        .ringing { animation: ringBell 0.5s ease-in-out 3; color: var(--accent-pink) !important; border-color: var(--accent-pink) !important; }
+        @keyframes ringBell { 0% { transform: rotate(0); } 25% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 75% { transform: rotate(10deg); } 100% { transform: rotate(0); } }
 
         .main-content { flex: 1; padding: 40px 50px; overflow-y: auto; overflow-x: hidden; position:relative;}
         .view-section { display: none; animation: slideUpFade 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
@@ -208,16 +210,16 @@
         .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #e14e65; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom:15px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* PELARASAN MOBILE & LOCENG NOTIF */
+        /* PELARASAN MOBILE */
         @media (max-width: 768px) {
             body { flex-direction: column; }
             .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; flex-direction: row; padding: 10px; justify-content: space-around; align-items: center; border-top: 1px solid var(--border-color); border-right: none; border-radius: 20px 20px 0 0; }
             .business-selector, .nav-text, .theme-toggle-wrapper { display: none; }
             .nav-item { margin: 0; padding: 10px; justify-content: center; flex: 1; }
             .nav-item svg { width: 24px; height: 24px; margin: 0 auto; }
-            .main-content { padding: 20px; padding-top: 80px; padding-bottom: 100px; }
+            .main-content { padding: 20px; padding-bottom: 100px; }
             .header-title { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .header-title .btn-add-pink { position: absolute; right: 20px; top: 85px; }
+            .header-title .btn-add-pink { position: absolute; right: 20px; top: 25px; }
             .dash-top-grid { grid-template-columns: repeat(2, 1fr); }
             .qa-grid { grid-template-columns: 1fr; }
             .dash-bottom-grid { grid-template-columns: 1fr; }
@@ -238,14 +240,16 @@
             .li-bottom { padding: 20px; }
             .user-profile { display:none; } 
             
-            .top-right-actions { top: 20px; right: 20px; }
-            .notif-panel { right: -20px; width: 300px; }
+            .bottom-right-actions { bottom: 90px; right: 20px; }
+            .notif-panel { right: 0; bottom: 60px; width: 300px; }
         }
     </style>
 </head>
 <body data-theme="dark">
 
     <audio id="successSound" src="https://assets.mixkit.co/active_storage/sfx/2868/2868-preview.mp3" preload="auto"></audio>
+    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+    
     <div id="toast-notification"><span id="toast-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span> <span id="toast-message">Action successful!</span></div>
 
     <div id="intro-page">
@@ -366,12 +370,8 @@
                             <div style="display:flex; gap:10px;">
                                 <select id="freeBankName" class="form-control" style="flex:1;" required onchange="if(this.value==='Other'){document.getElementById('freeOtherBank').style.display='block'; document.getElementById('freeOtherBank').required=true;}else{document.getElementById('freeOtherBank').style.display='none'; document.getElementById('freeOtherBank').required=false;}">
                                     <option value="">Select Bank...</option>
-                                    <optgroup label="Malaysia">
-                                        <option value="Maybank">Maybank</option><option value="CIMB Bank">CIMB Bank</option><option value="Public Bank">Public Bank</option><option value="RHB Bank">RHB Bank</option><option value="Hong Leong Bank">Hong Leong Bank</option><option value="AmBank">AmBank</option><option value="Bank Islam">Bank Islam</option>
-                                    </optgroup>
-                                    <optgroup label="Indonesia">
-                                        <option value="Bank BCA">Bank BCA</option><option value="Bank Mandiri">Bank Mandiri</option><option value="Bank BRI">Bank BRI</option><option value="Bank BNI">Bank BNI</option><option value="BSI (Syariah)">BSI (Syariah)</option><option value="GoPay">GoPay</option><option value="OVO">OVO</option><option value="DANA">DANA</option>
-                                    </optgroup>
+                                    <optgroup label="Malaysia"><option value="Maybank">Maybank</option><option value="CIMB Bank">CIMB Bank</option><option value="Public Bank">Public Bank</option><option value="RHB Bank">RHB Bank</option><option value="Hong Leong Bank">Hong Leong Bank</option><option value="AmBank">AmBank</option><option value="Bank Islam">Bank Islam</option></optgroup>
+                                    <optgroup label="Indonesia"><option value="Bank BCA">Bank BCA</option><option value="Bank Mandiri">Bank Mandiri</option><option value="Bank BRI">Bank BRI</option><option value="Bank BNI">Bank BNI</option><option value="BSI (Syariah)">BSI (Syariah)</option><option value="GoPay">GoPay</option><option value="OVO">OVO</option><option value="DANA">DANA</option></optgroup>
                                     <option value="Other">Other...</option>
                                 </select>
                                 <input type="text" id="freeOtherBank" class="form-control" placeholder="Specify Bank" style="display:none; flex:1;">
@@ -387,8 +387,8 @@
 
     <div id="app-container">
         
-        <div class="top-right-actions">
-            <div class="notif-btn" onclick="toggleNotifPanel()">
+        <div class="bottom-right-actions">
+            <div class="notif-btn" id="notifBell" onclick="toggleNotifPanel()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                 <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
                 <div class="notif-panel" id="notifPanel">
@@ -437,7 +437,7 @@
 
                 <h3 style="font-size: 16px; margin-bottom: 15px;">Quick Actions</h3>
                 <div class="qa-grid">
-                    <div class="qa-btn" onclick="switchView('new-invoice-view')"><div class="qa-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div><div><div style="font-weight:700; font-size:14px;">Create Invoice</div><div style="font-size:11px; color:var(--text-muted);">New invoice</div></div></div>
+                    <div class="qa-btn" onclick="openNewInvoice()"><div class="qa-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div><div><div style="font-weight:700; font-size:14px;">Create Invoice</div><div style="font-size:11px; color:var(--text-muted);">New invoice</div></div></div>
                     <div class="qa-btn" id="qa-expense" onclick="switchView('record-transaction-view'); document.getElementById('transDate').valueAsDate = new Date();"><div class="qa-icon" style="color:#d97706; background:rgba(217,119,6,0.1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line></svg></div><div><div style="font-weight:700; font-size:14px;">Record Expense</div><div style="font-size:11px; color:var(--text-muted);">Track spending</div></div></div>
                     <div class="qa-btn" onclick="switchView('customers-view', document.querySelectorAll('.nav-item')[3])"><div class="qa-icon" style="color:#3b82f6; background:rgba(59,130,246,0.1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle></svg></div><div><div style="font-weight:700; font-size:14px;">Contacts</div><div style="font-size:11px; color:var(--text-muted);">Clients & Freelancers</div></div></div>
                 </div>
@@ -462,7 +462,7 @@
                     <div><h1 style="font-size: 34px;">Invoices</h1><p>Manage invoices and track payments.</p></div>
                     <div style="display:flex; gap:15px; align-items:center;">
                         <input type="text" id="searchInvoice" class="search-box" placeholder="🔍 Search invoices..." oninput="filterInvoices()">
-                        <button class="btn-add-pink" onclick="switchView('new-invoice-view')">+</button>
+                        <button class="btn-add-pink" onclick="openNewInvoice()">+</button>
                     </div>
                 </div>
                 <div class="dash-top-grid">
@@ -481,10 +481,11 @@
                 <div class="header-title">
                     <div style="display:flex; align-items:center; gap:15px;">
                         <button onclick="switchView('invoices-view')" style="background:none; border:none; color:var(--text-main); font-size:24px; cursor:pointer;">←</button>
-                        <div><h1>New Invoice</h1><p>Create and issue a new invoice.</p></div>
+                        <div><h1 id="invoiceFormTitle">New Invoice</h1><p>Create and issue a new invoice.</p></div>
                     </div>
                 </div>
                 <form id="invoiceForm">
+                    <input type="hidden" id="editingInvoiceFlag" value="">
                     <div class="invoice-container">
                         <div class="left-col">
                             <div class="card">
@@ -541,9 +542,26 @@
                                 <h2 style="margin-bottom:30px; font-size: 22px; font-weight:700;">Summary</h2>
                                 <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">RM 0.00</span></div>
                                 <div class="summary-row"><span>Discount (RM)</span><input type="text" id="sumDiscount" class="summary-input" value="0.00" oninput="formatInput(this); calculateInvoiceTotal()"></div>
-                                <div class="summary-row"><span>Tax (%)</span><input type="number" id="sumTaxPercent" class="summary-input" value="0" min="0" oninput="calculateInvoiceTotal()"></div>
-                                <div class="summary-row"><span>Tax Amount</span><span id="sumTaxAmount">RM 0.00</span></div>
-                                <div class="summary-total"><h3 style="font-size: 24px;">Total</h3><h2 id="sumGrandTotal" style="font-size: 28px; font-weight: 800;">RM 0.00</h2></div>
+                                
+                                <div class="summary-row">
+                                    <span>Tax Type</span>
+                                    <select id="sumTaxType" class="summary-input" style="width:120px;" onchange="calculateInvoiceTotal()">
+                                        <option value="None">None</option>
+                                        <option value="SST">SST</option>
+                                        <option value="WHT">WHT</option>
+                                        <option value="Tax on Sales">Tax on Sales</option>
+                                    </select>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Tax Amount (RM)</span>
+                                    <input type="text" id="sumTaxAmountInput" class="summary-input" value="0.00" oninput="formatInput(this); calculateInvoiceTotal()">
+                                </div>
+                                <div class="summary-row" style="border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
+                                    <span id="sumTaxLabel" style="color:var(--accent-pink);">Tax</span>
+                                    <span id="sumTaxDisplay" style="color:var(--accent-pink);">RM 0.00</span>
+                                </div>
+                                
+                                <div class="summary-total" style="margin-top:20px;"><h3 style="font-size: 24px;">Total</h3><h2 id="sumGrandTotal" style="font-size: 28px; font-weight: 800;">RM 0.00</h2></div>
                             </div>
                         </div>
                     </div>
@@ -603,7 +621,7 @@
                                 <div class="li-summary">
                                     <div class="li-summary-row"><span>Subtotal</span><span id="li-sub"></span></div>
                                     <div class="li-summary-row" id="li-discount-row" style="display:none; color:#e14e65;"><span>Discount</span><span id="li-discount"></span></div>
-                                    <div class="li-summary-row"><span>Tax (<span id="li-tax-label">0.00</span>%)</span><span id="li-tax"></span></div>
+                                    <div class="li-summary-row"><span><span id="li-tax-label">Tax</span></span><span id="li-tax"></span></div>
                                     <div class="li-summary-row total"><span>TOTAL</span><span id="li-total"></span></div>
                                 </div>
                             </div>
@@ -790,14 +808,16 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHUPMxcL5Y9S7USUEFbQNAGLGnGi7R9dnxk0jidcP1yRzsQ8FRKE1BB36j8qtE5GOB/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAvb7RFs6NZQSmh5gob-Gi9pnMt95nxipnIsbC2POVA8XEUBRwEBc7KBnEiJ8uo80c/exec';
         
         const sound = document.getElementById('successSound');
+        const notifSound = document.getElementById('notifSound');
         let appData = { invoices: [], customers: [], freelancers: [], logs: [] };
         
         let currentReceiptData = null; let currentBankSlipData = null; 
         let pendingConfirmAction = null; let currentPdfUrl = "";
         let currentRowToPay = null; let editingCustomer = null; let editingFreelancer = null;
+        let previousLogsCount = 0;
         
         let currentUserRole = ''; let currentUsername = '';
 
@@ -809,7 +829,6 @@
         function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
         document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
 
-        // SISTEM LOGIN GATEWAY 
         function startLoginProcess() {
             document.getElementById('intro-page').style.display = 'none';
             document.getElementById('login-page').style.display = 'flex';
@@ -835,9 +854,6 @@
                     applyRolePermissions(); 
                     document.getElementById('loginBoxUi').style.display = 'none';
                     document.getElementById('loginSyncing').style.display = 'block';
-                    document.getElementById('invDate').valueAsDate = new Date(); 
-                    document.getElementById('transPayDate').valueAsDate = new Date();
-                    calculateDueDate(); addInvoiceItem(); 
                     
                     fetchAppData().then(() => {
                         const loginPage = document.getElementById('login-page');
@@ -852,7 +868,6 @@
             }).catch(err => { btn.innerHTML = "Login"; btn.disabled = false; showToast("Connection Error.", true); });
         });
 
-        // FUNGSI KUNCI PANGKAT
         function applyRolePermissions() {
             if (currentUserRole !== 'Superadmin' && currentUserRole !== 'Owner' && currentUserRole.toLowerCase() !== 'faiz') {
                 document.getElementById('nav-cashflow').style.display = 'none';
@@ -867,7 +882,6 @@
             }
         }
         
-        // FUNGSI LOGOUT
         function logoutApp() {
             showConfirm("Logout", "Are you sure you want to log out?", function() {
                 document.getElementById('app-container').classList.remove('visible');
@@ -879,13 +893,30 @@
                     setTimeout(() => { loginPage.style.opacity = '1'; }, 50);
                     document.getElementById('loginForm').reset(); document.getElementById('btnLoginSubmit').innerHTML = "Login"; document.getElementById('btnLoginSubmit').disabled = false;
                     switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); 
-                    currentUserRole = ''; currentUsername = '';
+                    currentUserRole = ''; currentUsername = ''; previousLogsCount = 0;
                 }, 500);
             });
         }
 
-        // FUNGSI BUKA LOCENG
-        function toggleNotifPanel() { document.getElementById('notifPanel').classList.toggle('show'); }
+        // FUNGSI "BACA & PADAM" LOCENG
+        function toggleNotifPanel() { 
+            const panel = document.getElementById('notifPanel');
+            const badge = document.getElementById('notif-badge');
+            
+            if (panel.classList.contains('show')) {
+                // MASA TUTUP LOCENG
+                panel.classList.remove('show');
+                badge.style.display = 'none'; // Padam nombor
+                document.getElementById('notif-list').innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:12px;">No recent activity.</div>';
+                // Reset memori loceng supaya kalau buka balik dia kosong
+                appData.logs = []; 
+                previousLogsCount = 0; 
+            } else {
+                // MASA BUKA LOCENG
+                panel.classList.add('show');
+                document.getElementById('notifBell').classList.remove('ringing');
+            }
+        }
 
         function togglePaymentFields() {
             var status = document.getElementById('transStatus').value;
@@ -897,7 +928,6 @@
             }
         }
 
-        // DELETE INVOICE (DOUBLE SAFETY)
         function openDeleteInvoiceModal(invNo) {
             document.getElementById('delInvNoLabel').innerText = invNo;
             document.getElementById('delInvNoValue').value = invNo;
@@ -941,31 +971,34 @@
             if(c.state) parts.push(c.state); return parts.join(", ");
         }
 
-        // FUNGSI SEARCH CONTACTS
         function filterContacts() {
             let q = document.getElementById('searchContacts').value.toLowerCase();
-            document.querySelectorAll('#customerListContainer .cust-row').forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(q) ? 'grid' : 'none';
-            });
-            document.querySelectorAll('#freelancerListContainer .freelance-row').forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(q) ? 'grid' : 'none';
-            });
+            document.querySelectorAll('#customerListContainer .cust-row').forEach(row => { row.style.display = row.innerText.toLowerCase().includes(q) ? 'grid' : 'none'; });
+            document.querySelectorAll('#freelancerListContainer .freelance-row').forEach(row => { row.style.display = row.innerText.toLowerCase().includes(q) ? 'grid' : 'none'; });
         }
 
         function renderAll() {
             const fmt = (val) => 'RM ' + parseFloat(val).toLocaleString('en-MY', {minimumFractionDigits: 2});
             
-            // RENDER LOGS (Loceng)
-            let logsHtml = '';
+            // LOCENG & ANIMASI 
             if(appData.logs && appData.logs.length > 0) {
+                if (previousLogsCount !== 0 && appData.logs.length > previousLogsCount) {
+                    document.getElementById('notifBell').classList.add('ringing');
+                    notifSound.play().catch(e => console.log("Sound error"));
+                }
+                previousLogsCount = appData.logs.length;
+                
+                let logsHtml = '';
                 appData.logs.forEach(l => {
                     let logTime = new Date(l.time);
                     let timeStr = !isNaN(logTime) ? logTime.toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}) : l.time;
                     logsHtml += `<div class="notif-item"><div class="notif-time">${timeStr} • <span style="color:var(--accent-pink);">${l.user}</span></div><div>${l.action}</div></div>`;
                 });
                 document.getElementById('notif-list').innerHTML = logsHtml;
-                document.getElementById('notif-badge').style.display = 'block';
-                document.getElementById('notif-badge').innerText = appData.logs.length > 9 ? '9+' : appData.logs.length;
+                if (!document.getElementById('notifPanel').classList.contains('show')) {
+                    document.getElementById('notif-badge').style.display = 'block';
+                    document.getElementById('notif-badge').innerText = appData.logs.length > 9 ? '9+' : appData.logs.length;
+                }
             }
 
             let totalAmt = 0, pendingAmt = 0, paidAmt = 0, pendingCount = 0, paidCount = 0, tblHTML = '';
@@ -976,14 +1009,13 @@
                 let dStr = new Date(inv.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : inv.date;
                 let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
 
-                // TAMBAH BUTANG DELETE KAT INVOIS
-                tblHTML += `<div class="tbl-row" id="row-${inv.invoiceNo}"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">${fmt(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}" id="tag-${inv.invoiceNo}">${inv.status}</span></div><div class="action-btns" id="btn-group-${inv.invoiceNo}">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : `<button onclick="revertToPending('${inv.invoiceNo}')" class="action-btn btn-undo">↩ Undo</button>`}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button><button onclick="openDeleteInvoiceModal('${inv.invoiceNo}')" class="action-btn btn-undo" style="border-color:#e14e65; color:#e14e65;" title="Delete Invoice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></div></div>`;
+                // TAMBAH BUTANG EDIT INVOIS
+                tblHTML += `<div class="tbl-row" id="row-${inv.invoiceNo}"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">${fmt(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}" id="tag-${inv.invoiceNo}">${inv.status}</span></div><div class="action-btns" id="btn-group-${inv.invoiceNo}">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : `<button onclick="revertToPending('${inv.invoiceNo}')" class="action-btn btn-undo">↩ Undo</button>`}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button><button onclick="editInvoiceData('${inv.invoiceNo}')" class="action-btn btn-undo" style="border-color:#3b82f6; color:#3b82f6;" title="Edit Invoice">✏️</button><button onclick="openDeleteInvoiceModal('${inv.invoiceNo}')" class="action-btn btn-undo" style="border-color:#e14e65; color:#e14e65;" title="Delete Invoice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></div></div>`;
             });
 
             document.getElementById('dash-netcash').innerText = fmt(totalAmt); document.getElementById('dash-outstanding-amt').innerText = fmt(pendingAmt); document.getElementById('dash-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-pending-amt').innerText = fmt(pendingAmt); document.getElementById('count-paid').innerText = `${paidCount}`; document.getElementById('count-pending').innerText = `${pendingCount}`; document.getElementById('inv-count-total').innerText = appData.invoices.length; document.getElementById('inv-amt-total').innerText = fmt(totalAmt); document.getElementById('inv-count-paid-tbl').innerText = paidCount; document.getElementById('inv-count-pending-tbl').innerText = pendingCount; document.getElementById('invoiceListContainer').innerHTML = tblHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No invoices found.</div>';
             
             let cfIn = 0, cfOut = 0, cfHTML = '';
-            // FIX AUTO-SORT CASHFLOW: Susun ikut tarikh dari baru ke lama
             let sortedCashflow = [...appData.cashflow].sort((a,b) => new Date(b.date) - new Date(a.date));
 
             sortedCashflow.forEach((c) => {
@@ -993,7 +1025,6 @@
                 
                 let dStr = new Date(c.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : c.date;
                 
-                // TUKAR Ikon SVG Profesional (Buang Emoji)
                 let proofLink = `<div style="display:flex; justify-content:center; gap:8px;">`;
                 if(c.receipt) proofLink += `<a href="${c.receipt}" target="_blank" title="Invoice/Receipt" style="color:var(--text-main);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></a>`;
                 if(c.bankSlip) proofLink += `<a href="${c.bankSlip}" target="_blank" title="Bank Slip" style="color:#d97706;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></a>`;
@@ -1028,7 +1059,7 @@
 
         function fetchAppData() {
             return fetch(SCRIPT_URL).then(res => res.json()).then(data => {
-                if(data.status === 'success') { appData = data; renderAll(); if(data.nextInvoiceNo) document.getElementById('invNo').value = data.nextInvoiceNo; }
+                if(data.status === 'success') { appData = data; renderAll(); if(data.nextInvoiceNo && !document.getElementById('editingInvoiceFlag').value) document.getElementById('invNo').value = data.nextInvoiceNo; }
             });
         }
 
@@ -1087,9 +1118,7 @@
 
             if(indoDateMatch) {
                 let months = {"januari":"01","februari":"02","maret":"03","april":"04","mei":"05","juni":"06","juli":"07","agustus":"08","september":"09","oktober":"10","november":"11","desember":"12", "jan":"01","feb":"02","mar":"03","may":"05","jun":"06","jul":"07","aug":"08","sep":"09","oct":"10","nov":"11","dec":"12"};
-                let m = months[indoDateMatch[2].toLowerCase()];
-                let d = ("0" + indoDateMatch[1]).slice(-2);
-                let y = indoDateMatch[3];
+                let m = months[indoDateMatch[2].toLowerCase()]; let d = ("0" + indoDateMatch[1]).slice(-2); let y = indoDateMatch[3];
                 if(m) document.getElementById('transDate').value = `${y}-${m}-${d}`;
             } else if(dateMatch) { 
                 let d = dateMatch[1]; let m = dateMatch[2]; let y = dateMatch[3]; 
@@ -1143,9 +1172,7 @@
 
             if (wiseDateMatch) {
                 let months = {"january":"01","february":"02","march":"03","april":"04","may":"05","june":"06","july":"07","august":"08","september":"09","october":"10","november":"11","december":"12"};
-                let m = months[wiseDateMatch[1].toLowerCase()];
-                let d = ("0" + wiseDateMatch[2]).slice(-2);
-                let y = wiseDateMatch[3];
+                let m = months[wiseDateMatch[1].toLowerCase()]; let d = ("0" + wiseDateMatch[2]).slice(-2); let y = wiseDateMatch[3];
                 document.getElementById('transPayDate').value = `${y}-${m}-${d}`;
             } else if(dateMatch) {
                 let d = dateMatch[1]; let m = dateMatch[2]; let y = dateMatch[3];
@@ -1187,9 +1214,7 @@
         });
 
         function openPayTransModal(rowIdx) {
-            currentRowToPay = rowIdx;
-            document.getElementById('payTransDateModal').valueAsDate = new Date();
-            document.getElementById('pay-trans-modal').classList.add('show');
+            currentRowToPay = rowIdx; document.getElementById('payTransDateModal').valueAsDate = new Date(); document.getElementById('pay-trans-modal').classList.add('show');
         }
 
         document.getElementById('payTransReceipt').addEventListener('change', function() {
@@ -1236,10 +1261,7 @@
             const file = document.getElementById('payTransReceipt').files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(evt) {
-                    payload.receiptBase64 = evt.target.result.split(',')[1]; payload.receiptMimeType = file.type; payload.receiptFileName = file.name;
-                    sendPayRequest(payload, btn, origText);
-                };
+                reader.onload = function(evt) { payload.receiptBase64 = evt.target.result.split(',')[1]; payload.receiptMimeType = file.type; payload.receiptFileName = file.name; sendPayRequest(payload, btn, origText); };
                 reader.readAsDataURL(file);
             } else { sendPayRequest(payload, btn, origText); }
         });
@@ -1247,58 +1269,103 @@
         function sendPayRequest(payload, btn, origText) {
             let index = payload.rowIdx - 2; 
             if(appData.cashflow[index]) { appData.cashflow[index].status = 'Paid'; appData.cashflow[index].paymentDate = payload.paymentDate; }
-            renderAll();
-            document.getElementById('pay-trans-modal').classList.remove('show');
-            document.getElementById('payTransForm').reset();
-            btn.innerHTML = origText; btn.disabled = false;
-            showToast("Payment confirmed! Cashflow updated.");
+            renderAll(); document.getElementById('pay-trans-modal').classList.remove('show'); document.getElementById('payTransForm').reset();
+            btn.innerHTML = origText; btn.disabled = false; showToast("Payment confirmed! Cashflow updated.");
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } });
         }
 
+        // AUTOFILL CUSTOMER INVOIS
         function autoFillCustomerByIndex() { 
             let id = parseInt(document.getElementById('invCustomer').value); if(isNaN(id)) return;
             let c = appData.customers.find(x => x.id === id); 
             if(c) { document.getElementById('invPIC').value = c.pic; document.getElementById('invPhone').value = c.phone; document.getElementById('invEmail').value = c.email; document.getElementById('invAddress').value = formatCleanAddress(c); } 
         }
 
-        document.getElementById('customerForm').addEventListener('submit', function(e) { 
-            e.preventDefault(); const btn = document.getElementById('saveCustBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
-            const payload = { 
-                type: editingCustomer ? "update_customer" : "customer", username: currentUsername, oldCompany: editingCustomer,
-                custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value 
-            }; 
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
-                btn.innerText = originalText; btn.disabled = false; 
-                if(res.status === 'success') { 
-                    document.getElementById('customer-modal').classList.remove('show'); document.getElementById('customerForm').reset(); document.getElementById('custPhone').value = "+60"; showToast(editingCustomer ? "Customer Updated!" : "Customer Saved!"); 
-                    editingCustomer = null; document.querySelector('#customer-modal h2').innerText = "Add New Customer"; fetchAppData(); 
-                } 
-            }); 
-        });
-        
-        document.getElementById('freelancerForm').addEventListener('submit', function(e) { 
-            e.preventDefault(); const btn = document.getElementById('saveFreeBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
-            let bankName = document.getElementById('freeBankName').value; if(bankName === 'Other') bankName = document.getElementById('freeOtherBank').value;
-            let bankAcc = document.getElementById('freeBankAcc').value; let combinedBankInfo = bankName + " - " + bankAcc;
-            const payload = { 
-                type: editingFreelancer ? "update_freelancer" : "freelancer", username: currentUsername, oldName: editingFreelancer,
-                name: document.getElementById('freeName').value, phone: document.getElementById('freePhone').value, email: document.getElementById('freeEmail').value, service: document.getElementById('freeService').value, bank: combinedBankInfo 
-            }; 
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
-            .then(res => res.json())
-            .then(res => { 
-                btn.innerText = originalText; btn.disabled = false; 
-                if(res.status === 'success') { 
-                    document.getElementById('freelancer-modal').classList.remove('show'); document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; document.getElementById('freeOtherBank').style.display = 'none'; showToast(editingFreelancer ? "Freelancer Updated!" : "Freelancer Saved!"); 
-                    editingFreelancer = null; document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer"; fetchAppData(); 
-                } 
-            }); 
-        });
+        // BUKA FORM INVOIS BARU
+        function openNewInvoice() {
+            document.getElementById('invoiceFormTitle').innerText = "New Invoice";
+            document.getElementById('invoiceForm').reset();
+            document.getElementById('editingInvoiceFlag').value = "";
+            document.getElementById('saveInvoiceBtn').innerText = "Create Invoice";
+            document.getElementById('invoiceItemsContainer').innerHTML = "";
+            addInvoiceItem();
+            calculateDueDate();
+            fetchAppData(); // Tarik nombor invois latest
+            switchView('new-invoice-view');
+        }
+
+        // EDIT INVOIS (BARU)
+        function editInvoiceData(invNo) {
+            let inv = appData.invoices.find(i => i.invoiceNo === invNo);
+            if(!inv) return;
+            
+            document.getElementById('invoiceFormTitle').innerText = "Edit Invoice";
+            document.getElementById('editingInvoiceFlag').value = "true";
+            document.getElementById('saveInvoiceBtn').innerText = "Update Invoice";
+            
+            document.getElementById('invNo').value = inv.invoiceNo;
+            document.getElementById('invDate').value = inv.date.split('T')[0];
+            document.getElementById('invDueDate').value = inv.dueDate.split('T')[0];
+            
+            // Set Dropdown Customer
+            let c = appData.customers.find(x => x.company === inv.client);
+            if(c) { document.getElementById('invCustomer').value = c.id; autoFillCustomerByIndex(); }
+            
+            // Masukkan Items (Dari Sheet Invoice Items)
+            document.getElementById('invoiceItemsContainer').innerHTML = '';
+            if(inv.sheetItems && inv.sheetItems.length > 0) {
+                inv.sheetItems.forEach(item => { addInvoiceItem(item.desc, item.qty, item.price); });
+            } else { addInvoiceItem(); }
+            
+            document.getElementById('invNotes').value = inv.notes || "";
+            document.getElementById('invTerms').value = inv.tc || "";
+            document.getElementById('sumDiscount').value = inv.discount || "0.00";
+            document.getElementById('sumTaxType').value = inv.taxType || "None";
+            document.getElementById('sumTaxAmountInput').value = inv.taxAmount || "0.00";
+            
+            calculateInvoiceTotal();
+            switchView('new-invoice-view');
+        }
         
         function toTitleCase(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
-        function addInvoiceItem() { document.getElementById('invoiceItemsContainer').appendChild(document.importNode(document.getElementById('invoiceItemTemplate').content, true)); }
+        function addInvoiceItem(desc='', qty='', price='') { 
+            const template = document.getElementById('invoiceItemTemplate').content.cloneNode(true);
+            if(desc) template.querySelector('.item-desc').value = desc;
+            if(qty) template.querySelector('.item-qty').value = qty;
+            if(price) template.querySelector('.item-price').value = price;
+            document.getElementById('invoiceItemsContainer').appendChild(template);
+            if(desc) { const rows = document.querySelectorAll('.item-row'); updateRowTotal(rows[rows.length-1].querySelector('.item-price')); }
+        }
+        
         function updateRowTotal(input) { const row = input.closest('.item-row'); let qStr = unformatCurrency(row.querySelector('.item-qty').value); let pStr = unformatCurrency(row.querySelector('.item-price').value); if(pStr === 0) { row.querySelector('.item-total').innerText = "0.00"; } else { row.querySelector('.item-total').innerText = formatCurrency(qStr * pStr); } calculateInvoiceTotal(); }
-        function calculateInvoiceTotal() { let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += unformatCurrency(t.innerText)); const disc = unformatCurrency(document.getElementById('sumDiscount').value); const taxP = parseFloat(document.getElementById('sumTaxPercent').value) || 0; const subDisc = Math.max(0, sub - disc); const taxA = subDisc * (taxP / 100); document.getElementById('sumSubtotal').innerText = 'RM ' + formatCurrency(sub); document.getElementById('sumTaxAmount').innerText = 'RM ' + formatCurrency(taxA); document.getElementById('sumGrandTotal').innerText = 'RM ' + formatCurrency(subDisc + taxA); }
+        
+        // PENGIRAAN CUKAI BARU (SST, WHT, dll)
+        function calculateInvoiceTotal() { 
+            let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += unformatCurrency(t.innerText)); 
+            const disc = unformatCurrency(document.getElementById('sumDiscount').value); 
+            const subDisc = Math.max(0, sub - disc); 
+            
+            const taxType = document.getElementById('sumTaxType').value;
+            let taxAmt = unformatCurrency(document.getElementById('sumTaxAmountInput').value);
+            
+            let finalTotal = subDisc;
+            if (taxType === 'WHT') {
+                finalTotal = subDisc - taxAmt; // Tolak WHT
+            } else if (taxType !== 'None') {
+                finalTotal = subDisc + taxAmt; // Tambah SST / Tax on Sales
+            } else { taxAmt = 0; }
+
+            document.getElementById('sumSubtotal').innerText = 'RM ' + formatCurrency(sub); 
+            
+            let taxLabel = taxType === 'None' ? 'Tax' : taxType;
+            let taxSign = taxType === 'WHT' ? '- RM ' : '+ RM ';
+            if(taxAmt === 0) taxSign = 'RM ';
+            
+            document.getElementById('sumTaxLabel').innerText = taxLabel;
+            document.getElementById('sumTaxDisplay').innerText = taxSign + formatCurrency(taxAmt); 
+            document.getElementById('sumGrandTotal').innerText = 'RM ' + formatCurrency(finalTotal); 
+        }
+
         function calculateDueDate() { const dateVal = document.getElementById('invDate').value; const term = parseInt(document.getElementById('invCreditTerm').value); if(dateVal) { const d = new Date(dateVal); d.setDate(d.getDate() + term); document.getElementById('invDueDate').valueAsDate = d; } updateTerms(); }
         function updateTerms() { const termDays = parseInt(document.getElementById('invCreditTerm').value); const template = document.getElementById('tcTemplate').value; const termText = termDays === 0 ? "immediately upon receipt" : `within ${termDays} days from invoice date`; let text = ""; if (template === 'standard') text = `1. Agency Fee is payable ${termText}.\n2. The Agency reserves the right to suspend any Services in the event of delay in payment.\n3. Please indicate the invoice number as reference when transferring the funds.\n4. Payment advice should be sent to billings@omnyzo.com.`; else if (template === 'retainer') text = `1. Monthly Retainer Fee is payable ${termText}.\n2. Work for the subsequent month will commence upon full clearance of this invoice.\n3. Payment advice should be sent to billings@omnyzo.com.`; else if (template === 'deposit') text = `1. A 50% non-refundable advance deposit is required to commence work.\n2. The remaining balance is payable ${termText} of the final invoice.\n3. Payment advice should be sent to billings@omnyzo.com.`; else if (template === 'rush') text = `1. Rush Job Agency Fee is payable ${termText}.\n2. Late payments will incur a 5% penalty fee per week of delay.\n3. Payment advice should be sent to billings@omnyzo.com.`; document.getElementById('invTerms').value = text; }
         
@@ -1314,8 +1381,10 @@
             });
         }
 
+        // SUBMIT INVOICE (CREATE ATAU UPDATE)
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
-            e.preventDefault(); showConfirm("Generate Invoice", "Please confirm all invoice details before generating.", function() {
+            e.preventDefault(); showConfirm(document.getElementById('editingInvoiceFlag').value ? "Update Invoice" : "Generate Invoice", "Please confirm all details before proceeding.", function() {
+                const isUpdate = document.getElementById('editingInvoiceFlag').value === "true";
                 const btn = document.getElementById('saveInvoiceBtn'); btn.innerText = "Processing..."; btn.disabled = true; 
                 let itemCounter = 1;
                 const items = Array.from(document.querySelectorAll('.item-row')).map((r) => { 
@@ -1325,13 +1394,36 @@
                     return { desc: finalDesc, qty: isHeader ? "" : qtyVal, price: isHeader ? "" : priceVal.toFixed(2), total: isHeader ? "" : unformatCurrency(r.querySelector('.item-total').innerText).toFixed(2) }; 
                 }); 
                 const sel = document.getElementById('invCustomer'); const clientName = sel.options[sel.selectedIndex].text; 
-                const payload = { type: "invoice", username: currentUsername, client: clientName, pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, discount: unformatCurrency(document.getElementById('sumDiscount').value).toFixed(2), taxPercent: parseFloat(document.getElementById('sumTaxPercent').value || 0).toFixed(2), subtotal: unformatCurrency(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), taxAmount: unformatCurrency(document.getElementById('sumTaxAmount').innerText.replace('RM ', '')).toFixed(2), grandTotal: unformatCurrency(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2) }; 
-                appData.invoices.unshift({ date: payload.invoiceDate, dueDate: payload.dueDate, amount: payload.grandTotal, invoiceNo: payload.invoiceNo, client: payload.client, status: "Pending", pdfLink: "", tc: payload.terms, sheetItems: payload.items.map(i => ({ invNo: payload.invoiceNo, desc: i.desc, price: i.price, qty: i.qty, total: i.total })), fullData: payload });
-                switchView('invoice-detail-view'); document.getElementById('invoiceLoadingOverlay').style.display = "flex"; viewInvoiceDetail(payload.invoiceNo); 
-                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerText = "Create Invoice"; btn.disabled = false; if(res.status === 'success') { document.getElementById('invoiceLoadingOverlay').style.display = "none"; sound.play().catch(e => console.log("Audio issue")); document.getElementById('invoiceForm').reset(); document.getElementById('invoiceItemsContainer').innerHTML = ""; addInvoiceItem(); calculateDueDate(); fetchAppData(); let inv = appData.invoices.find(i => i.invoiceNo === payload.invoiceNo); if(inv) inv.pdfLink = res.pdfUrl; if(currentPdfUrl === "") currentPdfUrl = res.pdfUrl; showToast("Invoice successfully backed up to Google Drive!"); } }).catch(err => { document.getElementById('invoiceLoadingOverlay').style.display = "none"; btn.innerText = "Create Invoice"; btn.disabled = false; }); 
+                let existingPdf = "";
+                if(isUpdate) { let oldInv = appData.invoices.find(i => i.invoiceNo === document.getElementById('invNo').value); if(oldInv) existingPdf = oldInv.pdfLink; }
+
+                const payload = { 
+                    type: isUpdate ? "update_invoice" : "invoice", username: currentUsername, client: clientName, 
+                    pic: document.getElementById('invPIC').value, phone: document.getElementById('invPhone').value, email: document.getElementById('invEmail').value, address: document.getElementById('invAddress').value, 
+                    invoiceNo: document.getElementById('invNo').value, invoiceDate: document.getElementById('invDate').value, dueDate: document.getElementById('invDueDate').value, 
+                    terms: document.getElementById('invTerms').value, notes: document.getElementById('invNotes').value, items: items, 
+                    discount: unformatCurrency(document.getElementById('sumDiscount').value).toFixed(2), 
+                    taxType: document.getElementById('sumTaxType').value, taxAmount: unformatCurrency(document.getElementById('sumTaxAmountInput').value).toFixed(2), 
+                    subtotal: unformatCurrency(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), 
+                    grandTotal: unformatCurrency(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2),
+                    pdfLink: existingPdf
+                }; 
+                
+                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
+                    btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; 
+                    if(res.status === 'success') { 
+                        document.getElementById('invoiceLoadingOverlay').style.display = "none"; sound.play().catch(e => console.log("Audio issue")); 
+                        fetchAppData().then(() => { 
+                            showToast(isUpdate ? "Invoice Updated Successfully!" : "Invoice Backup to Google Drive!"); 
+                            viewInvoiceDetail(payload.invoiceNo); // Paksa update UI View
+                        });
+                    } 
+                }).catch(err => { document.getElementById('invoiceLoadingOverlay').style.display = "none"; btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; }); 
+                switchView('invoice-detail-view'); document.getElementById('invoiceLoadingOverlay').style.display = "flex"; 
             });
         });
 
+        // VIEW INVOICE (DENGAN DATA ITEMS SEBENAR & CUKAI)
         function viewInvoiceDetail(invNo) { 
             let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(!inv) return;
             document.getElementById('detail-inv-no').innerText = inv.invoiceNo; document.getElementById('detail-client').innerText = inv.client; document.getElementById('detail-status').innerText = inv.status; document.getElementById('detail-status').className = `status-tag tag-${inv.status.toLowerCase()}`; currentPdfUrl = inv.pdfLink;
@@ -1340,35 +1432,47 @@
             let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
             document.getElementById('li-inv-no').innerText = inv.invoiceNo; document.getElementById('li-inv-date').innerText = dStr; document.getElementById('li-inv-due').innerText = dueStr; document.getElementById('li-client-name').innerText = inv.client;
             
-            let data = inv.fullData; 
             let c = appData.customers.find(x => x.company === inv.client); 
             let cAddress = c ? formatCleanAddress(c) + `<br>${c.phone || ""}<br>${c.email || ""}` : "-"; 
-            document.getElementById('li-client-address').innerHTML = (data && data.address) ? `${data.address}<br>${data.phone || ""}<br>${data.email || ""}` : cAddress;
+            document.getElementById('li-client-address').innerHTML = cAddress;
             
-            let itemsHtml = ""; let subtotal = 0;
+            let itemsHtml = ""; let calcSubtotal = 0;
+            
+            // 1. Tarik dari Invoice Items Sheet 
             if (inv.sheetItems && inv.sheetItems.length > 0) {
-                inv.sheetItems.forEach(i => { let isHeader = !i.price || parseFloat(i.price) === 0 || isNaN(parseFloat(i.price)); if (isHeader) { itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`; } else { itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${formatCurrency(i.price)}</td><td>${i.qty}</td><td>${formatCurrency(i.total)}</td></tr>`; subtotal += parseFloat(i.total); } });
-                document.getElementById('li-items').innerHTML = itemsHtml; document.getElementById('li-sub').innerText = formatCurrency(subtotal);
-                if(data && data.discount && parseFloat(data.discount) > 0) { document.getElementById('li-discount-row').style.display = "flex"; document.getElementById('li-discount').innerText = "- " + formatCurrency(data.discount); } else { document.getElementById('li-discount-row').style.display = "none"; }
-                document.getElementById('li-tax-label').innerText = data ? (data.taxPercent || "0.00") : "0.00"; document.getElementById('li-tax').innerText = data ? formatCurrency(data.taxAmount || 0) : "0.00"; document.getElementById('li-total').innerText = "RM " + formatCurrency(inv.amount); document.getElementById('li-terms').innerText = inv.tc || "Standard terms apply.";
-                let notes = data ? data.notes : ""; if (notes && notes.trim() !== "") { document.getElementById('li-notes-container').style.display = "block"; document.getElementById('li-notes-text').innerText = notes; } else { document.getElementById('li-notes-container').style.display = "none"; }
-                document.getElementById('pa-inv-no').innerText = inv.invoiceNo; document.getElementById('pa-client-name').innerText = inv.client; document.getElementById('pa-due-date').innerText = dueStr; document.getElementById('pa-amount').innerText = "RM " + formatCurrency(inv.amount);
-            } else if (data && data.items) {
-                data.items.forEach(i => { let isHeader = !i.price || parseFloat(i.price) === 0 || isNaN(parseFloat(i.price)); if (isHeader) { itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`; } else { itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${formatCurrency(i.price)}</td><td>${i.qty}</td><td>${formatCurrency(i.total)}</td></tr>`; } });
-                document.getElementById('li-items').innerHTML = itemsHtml; document.getElementById('li-sub').innerText = formatCurrency(data.subtotal);
-                if(data.discount && parseFloat(data.discount) > 0) { document.getElementById('li-discount-row').style.display = "flex"; document.getElementById('li-discount').innerText = "- " + formatCurrency(data.discount); } else { document.getElementById('li-discount-row').style.display = "none"; }
-                document.getElementById('li-tax-label').innerText = data.taxPercent || "0.00"; document.getElementById('li-tax').innerText = formatCurrency(data.taxAmount); document.getElementById('li-total').innerText = "RM " + formatCurrency(data.grandTotal); document.getElementById('li-terms').innerText = data.terms || "-";
-                let notes = data.notes; if (notes && notes.trim() !== "") { document.getElementById('li-notes-container').style.display = "block"; document.getElementById('li-notes-text').innerText = notes; } else { document.getElementById('li-notes-container').style.display = "none"; }
-                document.getElementById('pa-inv-no').innerText = inv.invoiceNo; document.getElementById('pa-client-name').innerText = inv.client; document.getElementById('pa-due-date').innerText = dueStr; document.getElementById('pa-amount').innerText = "RM " + formatCurrency(data.grandTotal);
+                inv.sheetItems.forEach(i => { 
+                    let isHeader = !i.price || parseFloat(i.price) === 0 || isNaN(parseFloat(i.price)); 
+                    if (isHeader) { itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`; } 
+                    else { itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${formatCurrency(i.price)}</td><td>${i.qty}</td><td>${formatCurrency(i.total)}</td></tr>`; calcSubtotal += parseFloat(i.total); } 
+                });
             } else {
-                document.getElementById('li-items').innerHTML = `<tr><td style="white-space:pre-wrap;">Professional Services</td><td>${formatCurrency(inv.amount)}</td><td>1</td><td>${formatCurrency(inv.amount)}</td></tr>`; document.getElementById('li-sub').innerText = formatCurrency(inv.amount); document.getElementById('li-discount-row').style.display = "none"; document.getElementById('li-tax-label').innerText = "0.00"; document.getElementById('li-tax').innerText = "0.00"; document.getElementById('li-total').innerText = "RM " + formatCurrency(inv.amount); document.getElementById('li-terms').innerText = "Standard terms apply."; document.getElementById('li-notes-container').style.display = "none"; document.getElementById('pa-inv-no').innerText = inv.invoiceNo; document.getElementById('pa-client-name').innerText = inv.client; document.getElementById('pa-due-date').innerText = dueStr; document.getElementById('pa-amount').innerText = "RM " + formatCurrency(inv.amount);
+                itemsHtml = `<tr><td style="white-space:pre-wrap;">Professional Services</td><td>${formatCurrency(inv.amount)}</td><td>1</td><td>${formatCurrency(inv.amount)}</td></tr>`; 
+                calcSubtotal = parseFloat(inv.amount);
             }
+            
+            document.getElementById('li-items').innerHTML = itemsHtml; 
+            document.getElementById('li-sub').innerText = formatCurrency(inv.subtotal || calcSubtotal);
+            
+            if(inv.discount && parseFloat(inv.discount) > 0) { document.getElementById('li-discount-row').style.display = "flex"; document.getElementById('li-discount').innerText = "- " + formatCurrency(inv.discount); } else { document.getElementById('li-discount-row').style.display = "none"; }
+            
+            let tType = inv.taxType && inv.taxType !== "None" ? inv.taxType : "Tax";
+            let tSign = inv.taxType === "WHT" ? "- " : "";
+            document.getElementById('li-tax-label').innerText = tType; 
+            document.getElementById('li-tax').innerText = tSign + formatCurrency(inv.taxAmount || 0); 
+            
+            document.getElementById('li-total').innerText = "RM " + formatCurrency(inv.amount); 
+            document.getElementById('li-terms').innerText = inv.tc || "Standard terms apply.";
+            if (inv.notes && inv.notes.trim() !== "") { document.getElementById('li-notes-container').style.display = "block"; document.getElementById('li-notes-text').innerText = inv.notes; } else { document.getElementById('li-notes-container').style.display = "none"; }
+            document.getElementById('pa-inv-no').innerText = inv.invoiceNo; document.getElementById('pa-client-name').innerText = inv.client; document.getElementById('pa-due-date').innerText = dueStr; document.getElementById('pa-amount').innerText = "RM " + formatCurrency(inv.amount);
+            
             switchView('invoice-detail-view');
         }
+
         function downloadInvoicePDF() { const btn = document.querySelector('.btn-outline'); const originalText = btn.innerHTML; btn.innerHTML = "Generating PDF..."; showToast("Snapping picture of invoice..."); const element = document.getElementById('invoiceCaptureArea'); const invNo = document.getElementById('li-inv-no').innerText; const opt = { margin: [0.4, 0, 0, 0], filename: `Invoice_${invNo}.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true, letterRendering: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }, pagebreak: { mode: ['css', 'legacy'], avoid: 'tr' } }; element.style.boxShadow = 'none'; element.style.border = 'none'; html2pdf().set(opt).from(element).save().then(() => { element.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)'; element.style.border = '1px solid #eef0f2'; btn.innerHTML = originalText; showToast("PDF Downloaded successfully!"); }); }
         function copyDetailLink() { navigator.clipboard.writeText(currentPdfUrl); showToast("Google Drive PDF Link copied!"); }
-        function markAsPaid(invNo) { showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid?`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Paid'; renderAll(); showToast(`Invoice ${invNo} marked as Paid!`); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", username: currentUsername, invoiceNo: invNo, newStatus: "Paid" }) }); }); }
-        function revertToPending(invNo) { showConfirm("Revert to Pending", `Undo payment status for ${invNo} back to Pending?`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Pending'; renderAll(); showToast(`Invoice ${invNo} reverted to Pending!`); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", username: currentUsername, invoiceNo: invNo, newStatus: "Pending" }) }); }); }
+        
+        function markAsPaid(invNo) { showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid? (This will also link Income to Cashflow)`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Paid'; renderAll(); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", username: currentUsername, invoiceNo: invNo, newStatus: "Paid" }) }).then(()=>{ showToast(`Invoice ${invNo} Paid & Linked to Cashflow!`); fetchAppData(); }); }); }
+        function revertToPending(invNo) { showConfirm("Revert to Pending", `Undo payment status for ${invNo} back to Pending? (Income record in Cashflow will be removed)`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Pending'; renderAll(); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", username: currentUsername, invoiceNo: invNo, newStatus: "Pending" }) }).then(()=>{ showToast(`Invoice ${invNo} reverted to Pending!`); fetchAppData(); }); }); }
 
     </script>
 </body>
