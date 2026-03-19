@@ -342,7 +342,9 @@
                 <div class="card" style="padding: 20px; margin-bottom: 20px; box-shadow:none;">
                     <div class="form-grid">
                         <div class="form-group" style="grid-column: span 2;"><label>Address *</label><input type="text" id="custAddress" class="form-control" required></div>
-                        <div class="form-group"><label>Postcode *</label><input type="text" id="custPostcode" class="form-control" placeholder="Type 5 digits..." required></div>
+                        
+                        <div class="form-group"><label>Postcode *</label><input type="text" id="custPostcode" class="form-control" placeholder="Type 5 digits..." required oninput="autoFillPostcode(this.value)"></div>
+                        
                         <div class="form-group"><label>City *</label><input type="text" id="custCity" class="form-control" required></div>
                         <div class="form-group"><label>State *</label><input type="text" id="custState" class="form-control" required></div>
                         <div class="form-group"><label>Country</label><input type="text" id="custCountry" class="form-control" value="Malaysia" readonly></div>
@@ -807,7 +809,7 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAvb7RFs6NZQSmh5gob-Gi9pnMt95nxipnIsbC2POVA8XEUBRwEBc7KBnEiJ8uo80c/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNVjqVjr26Yr6aDQb1JCCdBOtwzv-FRDINcW95_kOajeAmG1OKQetR9kIP0EdhGGkX/exec';
         
         const sound = document.getElementById('successSound');
         const notifSound = document.getElementById('notifSound');
@@ -945,13 +947,37 @@
             }).catch(err => { btn.innerHTML = "Delete Invoice"; btn.disabled = false; showToast("Connection Error.", true); });
         });
 
+        // ==========================================
+        // AUTO-FILL POSTCODE API (PETA MALAYSIA)
+        // ==========================================
+        function autoFillPostcode(val) {
+            val = val.trim();
+            if(val.length === 5 && /^\d+$/.test(val)) {
+                document.getElementById('custCity').placeholder = "Loading...";
+                document.getElementById('custState').placeholder = "Loading...";
+                fetch('https://api.zippopotam.us/MY/' + val)
+                .then(res => res.json())
+                .then(data => {
+                    if(data && data.places && data.places.length > 0) {
+                        document.getElementById('custCity').value = data.places[0]['place name'];
+                        document.getElementById('custState').value = data.places[0]['state'];
+                    }
+                }).catch(e => {
+                    document.getElementById('custCity').placeholder = "";
+                    document.getElementById('custState').placeholder = "";
+                });
+            }
+        }
+
         function openAddCustomerModal() { editingCustomer = null; document.querySelector('#customer-modal h2').innerText = "Add New Customer"; document.getElementById('customerForm').reset(); document.getElementById('custPhone').value = "+60"; document.getElementById('customer-modal').classList.add('show'); }
         function openAddFreelancerModal() { editingFreelancer = null; document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer"; document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; document.getElementById('freeOtherBank').style.display = 'none'; document.getElementById('freelancer-modal').classList.add('show'); }
+        
         function editCustomer(company) {
             let c = appData.customers.find(x => x.company === company); if(!c) return; editingCustomer = company;
             document.getElementById('custType').value = c.custType || 'Company'; document.getElementById('custCompany').value = c.company; document.getElementById('custPIC').value = c.pic; document.getElementById('custEmail').value = c.email; document.getElementById('custPhone').value = c.phone; document.getElementById('custAddress').value = c.address; document.getElementById('custPostcode').value = c.postcode; document.getElementById('custCity').value = c.city; document.getElementById('custState').value = c.state;
             document.querySelector('#customer-modal h2').innerText = "Edit Customer Info"; document.getElementById('customer-modal').classList.add('show');
         }
+        
         function editFreelancer(name) {
             let f = appData.freelancers.find(x => x.name === name); if(!f) return; editingFreelancer = name;
             document.getElementById('freeName').value = f.name; document.getElementById('freePhone').value = f.phone; document.getElementById('freeEmail').value = f.email; document.getElementById('freeService').value = f.service;
@@ -960,6 +986,7 @@
             document.getElementById('freeBankAcc').value = bAcc;
             document.querySelector('#freelancer-modal h2').innerText = "Edit Freelancer Info"; document.getElementById('freelancer-modal').classList.add('show');
         }
+        
         function formatCleanAddress(c) {
             let parts = []; if(c.address) parts.push(c.address);
             if(c.postcode || c.city) { let pc = c.postcode ? c.postcode + " " : ""; let cy = c.city ? c.city : ""; if(pc || cy) parts.push(pc + cy); }
@@ -1267,6 +1294,7 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } });
         }
 
+        // FUNGSI INVOIS & ITEM
         function openNewInvoice() {
             document.getElementById('invoiceFormTitle').innerText = "New Invoice"; document.getElementById('invoiceForm').reset(); document.getElementById('editingInvoiceFlag').value = ""; document.getElementById('saveInvoiceBtn').innerText = "Create Invoice"; document.getElementById('invoiceItemsContainer').innerHTML = "";
             addInvoiceItem(); calculateDueDate(); fetchAppData(); switchView('new-invoice-view');
@@ -1316,7 +1344,6 @@
             });
         }
 
-        // FUNGSI GABUNGAN BORANG FORM (TANPA KEMBAR)
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
             e.preventDefault(); showConfirm(document.getElementById('editingInvoiceFlag').value ? "Update Invoice" : "Generate Invoice", "Please confirm all details before proceeding.", function() {
                 const isUpdate = document.getElementById('editingInvoiceFlag').value === "true";
