@@ -897,7 +897,6 @@
             });
         }
 
-        // FUNGSI "BACA & PADAM" LOCENG
         function toggleNotifPanel() { 
             const panel = document.getElementById('notifPanel');
             const badge = document.getElementById('notif-badge');
@@ -976,7 +975,6 @@
         function renderAll() {
             const fmt = (val) => 'RM ' + parseFloat(val).toLocaleString('en-MY', {minimumFractionDigits: 2});
             
-            // LOCENG & ANIMASI 
             if(appData.logs && appData.logs.length > 0) {
                 if (previousLogsCount !== 0 && appData.logs.length > previousLogsCount) {
                     document.getElementById('notifBell').classList.add('ringing');
@@ -1318,7 +1316,6 @@
             });
         }
 
-        // FUNGSI GABUNGAN BORANG FORM (TANPA KEMBAR)
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
             e.preventDefault(); showConfirm(document.getElementById('editingInvoiceFlag').value ? "Update Invoice" : "Generate Invoice", "Please confirm all details before proceeding.", function() {
                 const isUpdate = document.getElementById('editingInvoiceFlag').value === "true";
