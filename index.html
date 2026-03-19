@@ -1316,6 +1316,7 @@
             });
         }
 
+        // FUNGSI GABUNGAN BORANG FORM (TANPA KEMBAR)
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
             e.preventDefault(); showConfirm(document.getElementById('editingInvoiceFlag').value ? "Update Invoice" : "Generate Invoice", "Please confirm all details before proceeding.", function() {
                 const isUpdate = document.getElementById('editingInvoiceFlag').value === "true";
