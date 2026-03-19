@@ -71,7 +71,6 @@
         .logout-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 8px; transition: 0.2s; display: flex; justify-content: center; align-items: center; }
         .logout-btn:hover { background: rgba(225, 78, 101, 0.1); color: var(--accent-pink); }
 
-        /* LOCENG NOTIFIKASI (BOTTOM RIGHT FIX) */
         .bottom-right-actions { position: fixed; bottom: 30px; right: 30px; z-index: 1000; display:flex; gap:15px; align-items:center;}
         .notif-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 50px; height: 50px; border-radius: 50%; display:flex; justify-content:center; align-items:center; cursor:pointer; color:var(--text-main); position:relative; transition:0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.5);}
         .notif-btn:hover { border-color: var(--accent-pink); color: var(--accent-pink); transform:scale(1.05); }
@@ -217,9 +216,9 @@
             .business-selector, .nav-text, .theme-toggle-wrapper { display: none; }
             .nav-item { margin: 0; padding: 10px; justify-content: center; flex: 1; }
             .nav-item svg { width: 24px; height: 24px; margin: 0 auto; }
-            .main-content { padding: 20px; padding-bottom: 100px; }
+            .main-content { padding: 20px; padding-top: 80px; padding-bottom: 100px; }
             .header-title { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .header-title .btn-add-pink { position: absolute; right: 20px; top: 25px; }
+            .header-title .btn-add-pink { position: absolute; right: 20px; top: 85px; }
             .dash-top-grid { grid-template-columns: repeat(2, 1fr); }
             .qa-grid { grid-template-columns: 1fr; }
             .dash-bottom-grid { grid-template-columns: 1fr; }
@@ -904,15 +903,12 @@
             const badge = document.getElementById('notif-badge');
             
             if (panel.classList.contains('show')) {
-                // MASA TUTUP LOCENG
                 panel.classList.remove('show');
-                badge.style.display = 'none'; // Padam nombor
+                badge.style.display = 'none'; 
                 document.getElementById('notif-list').innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:12px;">No recent activity.</div>';
-                // Reset memori loceng supaya kalau buka balik dia kosong
                 appData.logs = []; 
                 previousLogsCount = 0; 
             } else {
-                // MASA BUKA LOCENG
                 panel.classList.add('show');
                 document.getElementById('notifBell').classList.remove('ringing');
             }
@@ -1009,7 +1005,6 @@
                 let dStr = new Date(inv.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : inv.date;
                 let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
 
-                // TAMBAH BUTANG EDIT INVOIS
                 tblHTML += `<div class="tbl-row" id="row-${inv.invoiceNo}"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">${fmt(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}" id="tag-${inv.invoiceNo}">${inv.status}</span></div><div class="action-btns" id="btn-group-${inv.invoiceNo}">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : `<button onclick="revertToPending('${inv.invoiceNo}')" class="action-btn btn-undo">↩ Undo</button>`}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button><button onclick="editInvoiceData('${inv.invoiceNo}')" class="action-btn btn-undo" style="border-color:#3b82f6; color:#3b82f6;" title="Edit Invoice">✏️</button><button onclick="openDeleteInvoiceModal('${inv.invoiceNo}')" class="action-btn btn-undo" style="border-color:#e14e65; color:#e14e65;" title="Delete Invoice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></div></div>`;
             });
 
@@ -1274,96 +1269,43 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } });
         }
 
-        // AUTOFILL CUSTOMER INVOIS
-        function autoFillCustomerByIndex() { 
-            let id = parseInt(document.getElementById('invCustomer').value); if(isNaN(id)) return;
-            let c = appData.customers.find(x => x.id === id); 
-            if(c) { document.getElementById('invPIC').value = c.pic; document.getElementById('invPhone').value = c.phone; document.getElementById('invEmail').value = c.email; document.getElementById('invAddress').value = formatCleanAddress(c); } 
-        }
-
-        // BUKA FORM INVOIS BARU
         function openNewInvoice() {
-            document.getElementById('invoiceFormTitle').innerText = "New Invoice";
-            document.getElementById('invoiceForm').reset();
-            document.getElementById('editingInvoiceFlag').value = "";
-            document.getElementById('saveInvoiceBtn').innerText = "Create Invoice";
-            document.getElementById('invoiceItemsContainer').innerHTML = "";
-            addInvoiceItem();
-            calculateDueDate();
-            fetchAppData(); // Tarik nombor invois latest
-            switchView('new-invoice-view');
+            document.getElementById('invoiceFormTitle').innerText = "New Invoice"; document.getElementById('invoiceForm').reset(); document.getElementById('editingInvoiceFlag').value = ""; document.getElementById('saveInvoiceBtn').innerText = "Create Invoice"; document.getElementById('invoiceItemsContainer').innerHTML = "";
+            addInvoiceItem(); calculateDueDate(); fetchAppData(); switchView('new-invoice-view');
         }
 
-        // EDIT INVOIS (BARU)
         function editInvoiceData(invNo) {
-            let inv = appData.invoices.find(i => i.invoiceNo === invNo);
-            if(!inv) return;
-            
-            document.getElementById('invoiceFormTitle').innerText = "Edit Invoice";
-            document.getElementById('editingInvoiceFlag').value = "true";
-            document.getElementById('saveInvoiceBtn').innerText = "Update Invoice";
-            
-            document.getElementById('invNo').value = inv.invoiceNo;
-            document.getElementById('invDate').value = inv.date.split('T')[0];
-            document.getElementById('invDueDate').value = inv.dueDate.split('T')[0];
-            
-            // Set Dropdown Customer
-            let c = appData.customers.find(x => x.company === inv.client);
-            if(c) { document.getElementById('invCustomer').value = c.id; autoFillCustomerByIndex(); }
-            
-            // Masukkan Items (Dari Sheet Invoice Items)
+            let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(!inv) return;
+            document.getElementById('invoiceFormTitle').innerText = "Edit Invoice"; document.getElementById('editingInvoiceFlag').value = "true"; document.getElementById('saveInvoiceBtn').innerText = "Update Invoice";
+            document.getElementById('invNo').value = inv.invoiceNo; document.getElementById('invDate').value = inv.date.split('T')[0]; document.getElementById('invDueDate').value = inv.dueDate.split('T')[0];
+            let c = appData.customers.find(x => x.company === inv.client); if(c) { document.getElementById('invCustomer').value = c.id; autoFillCustomerByIndex(); }
             document.getElementById('invoiceItemsContainer').innerHTML = '';
-            if(inv.sheetItems && inv.sheetItems.length > 0) {
-                inv.sheetItems.forEach(item => { addInvoiceItem(item.desc, item.qty, item.price); });
-            } else { addInvoiceItem(); }
-            
-            document.getElementById('invNotes').value = inv.notes || "";
-            document.getElementById('invTerms').value = inv.tc || "";
-            document.getElementById('sumDiscount').value = inv.discount || "0.00";
-            document.getElementById('sumTaxType').value = inv.taxType || "None";
-            document.getElementById('sumTaxAmountInput').value = inv.taxAmount || "0.00";
-            
-            calculateInvoiceTotal();
-            switchView('new-invoice-view');
+            if(inv.sheetItems && inv.sheetItems.length > 0) { inv.sheetItems.forEach(item => { addInvoiceItem(item.desc, item.qty, item.price); }); } else { addInvoiceItem(); }
+            document.getElementById('invNotes').value = inv.notes || ""; document.getElementById('invTerms').value = inv.tc || ""; document.getElementById('sumDiscount').value = inv.discount || "0.00"; document.getElementById('sumTaxType').value = inv.taxType || "None"; document.getElementById('sumTaxAmountInput').value = inv.taxAmount || "0.00";
+            calculateInvoiceTotal(); switchView('new-invoice-view');
         }
         
         function toTitleCase(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
         function addInvoiceItem(desc='', qty='', price='') { 
             const template = document.getElementById('invoiceItemTemplate').content.cloneNode(true);
-            if(desc) template.querySelector('.item-desc').value = desc;
-            if(qty) template.querySelector('.item-qty').value = qty;
-            if(price) template.querySelector('.item-price').value = price;
+            if(desc) template.querySelector('.item-desc').value = desc; if(qty) template.querySelector('.item-qty').value = qty; if(price) template.querySelector('.item-price').value = price;
             document.getElementById('invoiceItemsContainer').appendChild(template);
             if(desc) { const rows = document.querySelectorAll('.item-row'); updateRowTotal(rows[rows.length-1].querySelector('.item-price')); }
         }
         
         function updateRowTotal(input) { const row = input.closest('.item-row'); let qStr = unformatCurrency(row.querySelector('.item-qty').value); let pStr = unformatCurrency(row.querySelector('.item-price').value); if(pStr === 0) { row.querySelector('.item-total').innerText = "0.00"; } else { row.querySelector('.item-total').innerText = formatCurrency(qStr * pStr); } calculateInvoiceTotal(); }
         
-        // PENGIRAAN CUKAI BARU (SST, WHT, dll)
         function calculateInvoiceTotal() { 
             let sub = 0; document.querySelectorAll('.item-total').forEach(t => sub += unformatCurrency(t.innerText)); 
-            const disc = unformatCurrency(document.getElementById('sumDiscount').value); 
-            const subDisc = Math.max(0, sub - disc); 
-            
-            const taxType = document.getElementById('sumTaxType').value;
-            let taxAmt = unformatCurrency(document.getElementById('sumTaxAmountInput').value);
+            const disc = unformatCurrency(document.getElementById('sumDiscount').value); const subDisc = Math.max(0, sub - disc); 
+            const taxType = document.getElementById('sumTaxType').value; let taxAmt = unformatCurrency(document.getElementById('sumTaxAmountInput').value);
             
             let finalTotal = subDisc;
-            if (taxType === 'WHT') {
-                finalTotal = subDisc - taxAmt; // Tolak WHT
-            } else if (taxType !== 'None') {
-                finalTotal = subDisc + taxAmt; // Tambah SST / Tax on Sales
-            } else { taxAmt = 0; }
+            if (taxType === 'WHT') { finalTotal = subDisc - taxAmt; } else if (taxType !== 'None') { finalTotal = subDisc + taxAmt; } else { taxAmt = 0; }
 
             document.getElementById('sumSubtotal').innerText = 'RM ' + formatCurrency(sub); 
-            
-            let taxLabel = taxType === 'None' ? 'Tax' : taxType;
-            let taxSign = taxType === 'WHT' ? '- RM ' : '+ RM ';
-            if(taxAmt === 0) taxSign = 'RM ';
-            
-            document.getElementById('sumTaxLabel').innerText = taxLabel;
-            document.getElementById('sumTaxDisplay').innerText = taxSign + formatCurrency(taxAmt); 
-            document.getElementById('sumGrandTotal').innerText = 'RM ' + formatCurrency(finalTotal); 
+            let taxLabel = taxType === 'None' ? 'Tax' : taxType; let taxSign = taxType === 'WHT' ? '- RM ' : '+ RM '; if(taxAmt === 0) taxSign = 'RM ';
+            document.getElementById('sumTaxLabel').innerText = taxLabel; document.getElementById('sumTaxDisplay').innerText = taxSign + formatCurrency(taxAmt); document.getElementById('sumGrandTotal').innerText = 'RM ' + formatCurrency(finalTotal); 
         }
 
         function calculateDueDate() { const dateVal = document.getElementById('invDate').value; const term = parseInt(document.getElementById('invCreditTerm').value); if(dateVal) { const d = new Date(dateVal); d.setDate(d.getDate() + term); document.getElementById('invDueDate').valueAsDate = d; } updateTerms(); }
@@ -1372,16 +1314,11 @@
         let invoiceItemsContainer = document.getElementById('invoiceItemsContainer');
         if(invoiceItemsContainer) {
             invoiceItemsContainer.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    if (e.target.classList.contains('item-price') || e.target.classList.contains('item-qty')) {
-                        e.preventDefault(); addInvoiceItem(); const rows = document.querySelectorAll('.item-row');
-                        if(rows.length > 0) rows[rows.length - 1].querySelector('.item-desc').focus();
-                    }
-                }
+                if (e.key === 'Enter') { if (e.target.classList.contains('item-price') || e.target.classList.contains('item-qty')) { e.preventDefault(); addInvoiceItem(); const rows = document.querySelectorAll('.item-row'); if(rows.length > 0) rows[rows.length - 1].querySelector('.item-desc').focus(); } }
             });
         }
 
-        // SUBMIT INVOICE (CREATE ATAU UPDATE)
+        // FUNGSI GABUNGAN BORANG FORM (TANPA KEMBAR)
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
             e.preventDefault(); showConfirm(document.getElementById('editingInvoiceFlag').value ? "Update Invoice" : "Generate Invoice", "Please confirm all details before proceeding.", function() {
                 const isUpdate = document.getElementById('editingInvoiceFlag').value === "true";
@@ -1389,13 +1326,11 @@
                 let itemCounter = 1;
                 const items = Array.from(document.querySelectorAll('.item-row')).map((r) => { 
                     let rawDesc = r.querySelector('.item-desc').value.trim(); let qtyVal = r.querySelector('.item-qty').value; let priceVal = unformatCurrency(r.querySelector('.item-price').value);
-                    let isHeader = !priceVal || priceVal === 0 || isNaN(priceVal);
-                    let finalDesc; if (isHeader) { finalDesc = rawDesc; } else { finalDesc = itemCounter + ". " + toTitleCase(rawDesc); itemCounter++; }
+                    let isHeader = !priceVal || priceVal === 0 || isNaN(priceVal); let finalDesc; if (isHeader) { finalDesc = rawDesc; } else { finalDesc = itemCounter + ". " + toTitleCase(rawDesc); itemCounter++; }
                     return { desc: finalDesc, qty: isHeader ? "" : qtyVal, price: isHeader ? "" : priceVal.toFixed(2), total: isHeader ? "" : unformatCurrency(r.querySelector('.item-total').innerText).toFixed(2) }; 
                 }); 
                 const sel = document.getElementById('invCustomer'); const clientName = sel.options[sel.selectedIndex].text; 
-                let existingPdf = "";
-                if(isUpdate) { let oldInv = appData.invoices.find(i => i.invoiceNo === document.getElementById('invNo').value); if(oldInv) existingPdf = oldInv.pdfLink; }
+                let existingPdf = ""; if(isUpdate) { let oldInv = appData.invoices.find(i => i.invoiceNo === document.getElementById('invNo').value); if(oldInv) existingPdf = oldInv.pdfLink; }
 
                 const payload = { 
                     type: isUpdate ? "update_invoice" : "invoice", username: currentUsername, client: clientName, 
@@ -1405,25 +1340,20 @@
                     discount: unformatCurrency(document.getElementById('sumDiscount').value).toFixed(2), 
                     taxType: document.getElementById('sumTaxType').value, taxAmount: unformatCurrency(document.getElementById('sumTaxAmountInput').value).toFixed(2), 
                     subtotal: unformatCurrency(document.getElementById('sumSubtotal').innerText.replace('RM ', '')).toFixed(2), 
-                    grandTotal: unformatCurrency(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2),
-                    pdfLink: existingPdf
+                    grandTotal: unformatCurrency(document.getElementById('sumGrandTotal').innerText.replace('RM ', '')).toFixed(2), pdfLink: existingPdf
                 }; 
                 
                 fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
                     btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; 
                     if(res.status === 'success') { 
                         document.getElementById('invoiceLoadingOverlay').style.display = "none"; sound.play().catch(e => console.log("Audio issue")); 
-                        fetchAppData().then(() => { 
-                            showToast(isUpdate ? "Invoice Updated Successfully!" : "Invoice Backup to Google Drive!"); 
-                            viewInvoiceDetail(payload.invoiceNo); // Paksa update UI View
-                        });
+                        fetchAppData().then(() => { showToast(isUpdate ? "Invoice Updated Successfully!" : "Invoice Backup to Google Drive!"); viewInvoiceDetail(payload.invoiceNo); });
                     } 
                 }).catch(err => { document.getElementById('invoiceLoadingOverlay').style.display = "none"; btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; }); 
                 switchView('invoice-detail-view'); document.getElementById('invoiceLoadingOverlay').style.display = "flex"; 
             });
         });
 
-        // VIEW INVOICE (DENGAN DATA ITEMS SEBENAR & CUKAI)
         function viewInvoiceDetail(invNo) { 
             let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(!inv) return;
             document.getElementById('detail-inv-no').innerText = inv.invoiceNo; document.getElementById('detail-client').innerText = inv.client; document.getElementById('detail-status').innerText = inv.status; document.getElementById('detail-status').className = `status-tag tag-${inv.status.toLowerCase()}`; currentPdfUrl = inv.pdfLink;
@@ -1432,36 +1362,19 @@
             let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
             document.getElementById('li-inv-no').innerText = inv.invoiceNo; document.getElementById('li-inv-date').innerText = dStr; document.getElementById('li-inv-due').innerText = dueStr; document.getElementById('li-client-name').innerText = inv.client;
             
-            let c = appData.customers.find(x => x.company === inv.client); 
-            let cAddress = c ? formatCleanAddress(c) + `<br>${c.phone || ""}<br>${c.email || ""}` : "-"; 
-            document.getElementById('li-client-address').innerHTML = cAddress;
-            
+            let c = appData.customers.find(x => x.company === inv.client); let cAddress = c ? formatCleanAddress(c) + `<br>${c.phone || ""}<br>${c.email || ""}` : "-"; document.getElementById('li-client-address').innerHTML = cAddress;
             let itemsHtml = ""; let calcSubtotal = 0;
             
-            // 1. Tarik dari Invoice Items Sheet 
             if (inv.sheetItems && inv.sheetItems.length > 0) {
-                inv.sheetItems.forEach(i => { 
-                    let isHeader = !i.price || parseFloat(i.price) === 0 || isNaN(parseFloat(i.price)); 
-                    if (isHeader) { itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`; } 
-                    else { itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${formatCurrency(i.price)}</td><td>${i.qty}</td><td>${formatCurrency(i.total)}</td></tr>`; calcSubtotal += parseFloat(i.total); } 
-                });
-            } else {
-                itemsHtml = `<tr><td style="white-space:pre-wrap;">Professional Services</td><td>${formatCurrency(inv.amount)}</td><td>1</td><td>${formatCurrency(inv.amount)}</td></tr>`; 
-                calcSubtotal = parseFloat(inv.amount);
-            }
+                inv.sheetItems.forEach(i => { let isHeader = !i.price || parseFloat(i.price) === 0 || isNaN(parseFloat(i.price)); if (isHeader) { itemsHtml += `<tr><td style="font-weight:800; white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`; } else { itemsHtml += `<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${formatCurrency(i.price)}</td><td>${i.qty}</td><td>${formatCurrency(i.total)}</td></tr>`; calcSubtotal += parseFloat(i.total); } });
+            } else { itemsHtml = `<tr><td style="white-space:pre-wrap;">Professional Services</td><td>${formatCurrency(inv.amount)}</td><td>1</td><td>${formatCurrency(inv.amount)}</td></tr>`; calcSubtotal = parseFloat(inv.amount); }
             
-            document.getElementById('li-items').innerHTML = itemsHtml; 
-            document.getElementById('li-sub').innerText = formatCurrency(inv.subtotal || calcSubtotal);
-            
+            document.getElementById('li-items').innerHTML = itemsHtml; document.getElementById('li-sub').innerText = formatCurrency(inv.subtotal || calcSubtotal);
             if(inv.discount && parseFloat(inv.discount) > 0) { document.getElementById('li-discount-row').style.display = "flex"; document.getElementById('li-discount').innerText = "- " + formatCurrency(inv.discount); } else { document.getElementById('li-discount-row').style.display = "none"; }
             
-            let tType = inv.taxType && inv.taxType !== "None" ? inv.taxType : "Tax";
-            let tSign = inv.taxType === "WHT" ? "- " : "";
-            document.getElementById('li-tax-label').innerText = tType; 
-            document.getElementById('li-tax').innerText = tSign + formatCurrency(inv.taxAmount || 0); 
-            
-            document.getElementById('li-total').innerText = "RM " + formatCurrency(inv.amount); 
-            document.getElementById('li-terms').innerText = inv.tc || "Standard terms apply.";
+            let tType = inv.taxType && inv.taxType !== "None" ? inv.taxType : "Tax"; let tSign = inv.taxType === "WHT" ? "- " : "";
+            document.getElementById('li-tax-label').innerText = tType; document.getElementById('li-tax').innerText = tSign + formatCurrency(inv.taxAmount || 0); 
+            document.getElementById('li-total').innerText = "RM " + formatCurrency(inv.amount); document.getElementById('li-terms').innerText = inv.tc || "Standard terms apply.";
             if (inv.notes && inv.notes.trim() !== "") { document.getElementById('li-notes-container').style.display = "block"; document.getElementById('li-notes-text').innerText = inv.notes; } else { document.getElementById('li-notes-container').style.display = "none"; }
             document.getElementById('pa-inv-no').innerText = inv.invoiceNo; document.getElementById('pa-client-name').innerText = inv.client; document.getElementById('pa-due-date').innerText = dueStr; document.getElementById('pa-amount').innerText = "RM " + formatCurrency(inv.amount);
             
