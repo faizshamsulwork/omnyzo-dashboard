@@ -342,9 +342,7 @@
                 <div class="card" style="padding: 20px; margin-bottom: 20px; box-shadow:none;">
                     <div class="form-grid">
                         <div class="form-group" style="grid-column: span 2;"><label>Address *</label><input type="text" id="custAddress" class="form-control" required></div>
-                        
                         <div class="form-group"><label>Postcode *</label><input type="text" id="custPostcode" class="form-control" placeholder="Type 5 digits..." required oninput="autoFillPostcode(this.value)"></div>
-                        
                         <div class="form-group"><label>City *</label><input type="text" id="custCity" class="form-control" required></div>
                         <div class="form-group"><label>State *</label><input type="text" id="custState" class="form-control" required></div>
                         <div class="form-group"><label>Country</label><input type="text" id="custCountry" class="form-control" value="Malaysia" readonly></div>
@@ -969,6 +967,9 @@
             }
         }
 
+        // ==========================================
+        // BORANG CONTACTS (YANG SAH & BEBAS KEMBAR)
+        // ==========================================
         function openAddCustomerModal() { editingCustomer = null; document.querySelector('#customer-modal h2').innerText = "Add New Customer"; document.getElementById('customerForm').reset(); document.getElementById('custPhone').value = "+60"; document.getElementById('customer-modal').classList.add('show'); }
         function openAddFreelancerModal() { editingFreelancer = null; document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer"; document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; document.getElementById('freeOtherBank').style.display = 'none'; document.getElementById('freelancer-modal').classList.add('show'); }
         
@@ -986,6 +987,40 @@
             document.getElementById('freeBankAcc').value = bAcc;
             document.querySelector('#freelancer-modal h2').innerText = "Edit Freelancer Info"; document.getElementById('freelancer-modal').classList.add('show');
         }
+        
+        document.getElementById('customerForm').addEventListener('submit', function(e) { 
+            e.preventDefault(); const btn = document.getElementById('saveCustBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
+            const payload = { 
+                type: editingCustomer ? "update_customer" : "customer", username: currentUsername, oldCompany: editingCustomer,
+                custType: document.getElementById('custType').value, company: document.getElementById('custCompany').value, pic: document.getElementById('custPIC').value, email: document.getElementById('custEmail').value, phone: document.getElementById('custPhone').value, tin: document.getElementById('custTIN').value, ssm: document.getElementById('custSSM').value, address: document.getElementById('custAddress').value, postcode: document.getElementById('custPostcode').value, city: document.getElementById('custCity').value, state: document.getElementById('custState').value 
+            }; 
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
+                btn.innerText = originalText; btn.disabled = false; 
+                if(res.status === 'success') { 
+                    document.getElementById('customer-modal').classList.remove('show'); document.getElementById('customerForm').reset(); document.getElementById('custPhone').value = "+60"; showToast(editingCustomer ? "Customer Updated!" : "Customer Saved!"); 
+                    editingCustomer = null; document.querySelector('#customer-modal h2').innerText = "Add New Customer"; fetchAppData(); 
+                } 
+            }).catch(err => { btn.innerText = originalText; btn.disabled = false; showToast("Connection Error.", true); });
+        });
+        
+        document.getElementById('freelancerForm').addEventListener('submit', function(e) { 
+            e.preventDefault(); const btn = document.getElementById('saveFreeBtn'); const originalText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true; 
+            let bankName = document.getElementById('freeBankName').value; if(bankName === 'Other') bankName = document.getElementById('freeOtherBank').value;
+            let bankAcc = document.getElementById('freeBankAcc').value; let combinedBankInfo = bankName + " - " + bankAcc;
+            const payload = { 
+                type: editingFreelancer ? "update_freelancer" : "freelancer", username: currentUsername, oldName: editingFreelancer,
+                name: document.getElementById('freeName').value, phone: document.getElementById('freePhone').value, email: document.getElementById('freeEmail').value, service: document.getElementById('freeService').value, bank: combinedBankInfo 
+            }; 
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+            .then(res => res.json())
+            .then(res => { 
+                btn.innerText = originalText; btn.disabled = false; 
+                if(res.status === 'success') { 
+                    document.getElementById('freelancer-modal').classList.remove('show'); document.getElementById('freelancerForm').reset(); document.getElementById('freePhone').value = "+60"; document.getElementById('freeOtherBank').style.display = 'none'; showToast(editingFreelancer ? "Freelancer Updated!" : "Freelancer Saved!"); 
+                    editingFreelancer = null; document.querySelector('#freelancer-modal h2').innerText = "Add New Freelancer"; fetchAppData(); 
+                } 
+            }).catch(err => { btn.innerText = originalText; btn.disabled = false; showToast("Connection Error.", true); });
+        });
         
         function formatCleanAddress(c) {
             let parts = []; if(c.address) parts.push(c.address);
@@ -1294,7 +1329,6 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { if(res.status === 'success') { fetchAppData(); } });
         }
 
-        // FUNGSI INVOIS & ITEM
         function openNewInvoice() {
             document.getElementById('invoiceFormTitle').innerText = "New Invoice"; document.getElementById('invoiceForm').reset(); document.getElementById('editingInvoiceFlag').value = ""; document.getElementById('saveInvoiceBtn').innerText = "Create Invoice"; document.getElementById('invoiceItemsContainer').innerHTML = "";
             addInvoiceItem(); calculateDueDate(); fetchAppData(); switchView('new-invoice-view');
