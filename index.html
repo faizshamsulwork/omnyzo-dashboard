@@ -1479,6 +1479,9 @@
             });
         });
 
+        // ==========================================
+        // VIEW INVOICE DETAIL (FIX MUKA SURAT KOSONG PAYMENT ADVICE)
+        // ==========================================
         function viewInvoiceDetail(invNo) { 
             let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(!inv) return;
             document.getElementById('detail-inv-no').innerText = inv.invoiceNo; document.getElementById('detail-client').innerText = inv.client; document.getElementById('detail-status').innerText = inv.status; document.getElementById('detail-status').className = `status-tag tag-${inv.status.toLowerCase()}`; currentPdfUrl = inv.pdfLink;
@@ -1487,11 +1490,18 @@
             let dueStr = new Date(inv.dueDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : inv.dueDate;
             document.getElementById('li-inv-no').innerText = inv.invoiceNo; document.getElementById('li-inv-date').innerText = dStr; document.getElementById('li-inv-due').innerText = dueStr; document.getElementById('li-client-name').innerText = inv.client;
             
-            // PAYMENT ADVICE TOGGLE RENDER
+            // PAYMENT ADVICE TOGGLE RENDER FIX: Bunuh Muka Surat Kosong
+            let advPage = document.querySelector('.li-payment-advice-page');
             if (inv.hasPaymentAdvice === false) {
-                document.querySelector('.li-payment-advice-page').style.display = 'none';
+                advPage.style.display = 'none';
+                advPage.style.pageBreakBefore = 'auto'; // Matikan arahan Page Break
+                advPage.style.minHeight = '0';
+                advPage.style.padding = '0';
             } else {
-                document.querySelector('.li-payment-advice-page').style.display = 'flex';
+                advPage.style.display = 'flex';
+                advPage.style.pageBreakBefore = 'always'; // Hidupkan balik untuk Cagamas/MNC
+                advPage.style.minHeight = '280mm';
+                advPage.style.paddingBottom = '40px';
             }
             
             let c = appData.customers.find(x => x.company === inv.client); let cAddress = c ? formatCleanAddress(c) + `<br>${c.phone || ""}<br>${c.email || ""}` : "-"; document.getElementById('li-client-address').innerHTML = (inv.fullData && inv.fullData.address) ? `${inv.fullData.address}<br>${inv.fullData.phone || ""}<br>${inv.fullData.email || ""}` : cAddress;
