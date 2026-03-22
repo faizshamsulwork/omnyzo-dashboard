@@ -149,8 +149,9 @@
         .summary-card { background: #11141e; color: #fff; border-radius: 20px; padding: 35px; position: sticky; top: 0; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px; color: #a1aab2; align-items: center; }
         .summary-input { width: 80px; padding: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 20px; text-align: center; }
-        .item-header { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; font-size: 13px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; min-width: 600px;}
-        .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 40px; gap: 15px; margin-bottom: 15px; align-items: start; min-width:600px;}
+        
+        .item-header { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 15px; font-size: 13px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; min-width: 600px;}
+        .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 15px; margin-bottom: 15px; align-items: start; min-width:600px;}
         
         .btn-solid { background: var(--accent-pink); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
         .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
@@ -402,9 +403,9 @@
                 <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
                 <div class="notif-panel" id="notifPanel">
                     <div style="padding:15px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
-                        <h3 style="font-size:14px; font-weight:800; margin:0;">Activity Logs</h3>
+                        <h3 style="font-size:14px; font-weight:800; margin:0;">New Activity</h3>
                     </div>
-                    <div id="notif-list"><div style="padding:20px; text-align:center; color:var(--text-muted); font-size:12px;">No recent activity.</div></div>
+                    <div id="notif-list"><div style="padding:20px; text-align:center; color:var(--text-muted); font-size:12px;">No new activity. Check Logs tab.</div></div>
                 </div>
             </div>
         </div>
@@ -413,14 +414,13 @@
             <div class="business-selector"><small>BUSINESS</small><div class="biz-name">Omnyzo Agency<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="8 9 12 5 16 9"></polyline><polyline points="16 15 12 19 8 15"></polyline></svg></div></div>
             <nav style="display:flex; flex-direction:inherit; width:100%;">
                 <div class="nav-item active" onclick="switchView('dashboard-view', this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg> <span class="nav-text">Dashboard</span></div>
-                
                 <div class="nav-item" onclick="switchView('quotations-view', this)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> <span class="nav-text">Quotations</span></div>
-                
                 <div class="nav-item" onclick="switchView('invoices-view', this)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> <span class="nav-text">Invoices</span></div>
                 <div id="nav-cashflow" class="nav-item" onclick="switchView('cashflow-view', this)"><svg viewBox="0 0 24 24"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> <span class="nav-text">Cashflow</span></div>
                 <div class="nav-item" onclick="switchView('customers-view', this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> <span class="nav-text">Contacts</span></div>
+                <div class="nav-item" onclick="switchView('logs-view', this)"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> <span class="nav-text">Activity Logs</span></div>
             </nav>
-            <div class="theme-toggle-wrapper" onclick="toggleTheme()">
+            <div class="theme-toggle-wrapper" onclick="toggleTheme()" style="margin-top:15px;">
                 <div class="ios-toggle"></div>
                 <span class="theme-label">Dark Mode</span>
             </div>
@@ -467,6 +467,15 @@
                         <div style="background:rgba(225,78,101,0.1); padding:15px; border-radius:12px; display:flex; justify-content:space-between; margin-bottom:20px; font-weight:700;"><span style="color:#e14e65;">↗ Expenses</span><span id="this-month-expense" style="color:#e14e65;">RM 0.00</span></div>
                         <div style="display:flex; justify-content:space-between; border-top:1px solid var(--border-color); padding-top:15px; font-weight:800;"><span>Net</span><span id="this-month-net" style="color:#10b981;">RM 0.00</span></div>
                     </div>
+                </div>
+            </div>
+            
+            <div id="logs-view" class="view-section">
+                <div class="header-title">
+                    <div><h1 style="font-size: 34px;">Activity Logs</h1><p>Full history of system activities.</p></div>
+                </div>
+                <div class="card" style="padding:0; overflow:hidden;">
+                    <div id="fullLogsContainer"></div>
                 </div>
             </div>
 
@@ -995,7 +1004,13 @@
             <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this, 'inv')">
             <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this); updateRowTotal(this, 'inv')">
             <div class="item-total" style="font-weight:700; font-size: 14px;">0.00</div>
-            <button type="button" onclick="this.parentElement.remove(); calculateInvoiceTotal();" style="background:none; border:none; color:var(--accent-pink); cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+            <div style="display:flex; gap:5px; align-items:center;">
+                <div style="display:flex; flex-direction:column; gap:2px;">
+                    <button type="button" onclick="moveRowUp(this)" style="background:var(--input-bg); border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; border-radius:4px; padding:2px 6px; font-size:10px;">▲</button>
+                    <button type="button" onclick="moveRowDown(this)" style="background:var(--input-bg); border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; border-radius:4px; padding:2px 6px; font-size:10px;">▼</button>
+                </div>
+                <button type="button" onclick="removeRow(this)" style="background:none; border:none; color:var(--accent-pink); cursor:pointer; padding:5px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+            </div>
         </div>
     </template>
     
@@ -1005,12 +1020,18 @@
             <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this, 'qtn')">
             <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this); updateRowTotal(this, 'qtn')">
             <div class="item-total" style="font-weight:700; font-size: 14px;">0.00</div>
-            <button type="button" onclick="this.parentElement.remove(); calculateQtnTotal();" style="background:none; border:none; color:var(--qtn-blue); cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+            <div style="display:flex; gap:5px; align-items:center;">
+                <div style="display:flex; flex-direction:column; gap:2px;">
+                    <button type="button" onclick="moveRowUp(this)" style="background:var(--input-bg); border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; border-radius:4px; padding:2px 6px; font-size:10px;">▲</button>
+                    <button type="button" onclick="moveRowDown(this)" style="background:var(--input-bg); border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; border-radius:4px; padding:2px 6px; font-size:10px;">▼</button>
+                </div>
+                <button type="button" onclick="removeRow(this)" style="background:none; border:none; color:var(--qtn-blue); cursor:pointer; padding:5px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+            </div>
         </div>
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvLTM4vkU20NxR3cI3nhBSn2tJX5UJJP_YKGtckF72kpw9d7UASCNRRhQrHpstsnz/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytGF25haOOtC4NMQ6-2E3k0YDwAD_b8qCMWvhZOPVos7HallWzqjN1w-3xMSRtncKU/exec';
         
         const sound = document.getElementById('successSound');
         const notifSound = document.getElementById('notifSound');
@@ -1076,7 +1097,7 @@
                     document.getElementById('loginBoxUi').style.display = 'block'; document.getElementById('loginSyncing').style.display = 'none';
                     setTimeout(() => { loginPage.style.opacity = '1'; }, 50);
                     document.getElementById('loginForm').reset(); document.getElementById('btnLoginSubmit').innerHTML = "Login"; document.getElementById('btnLoginSubmit').disabled = false;
-                    switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); currentUserRole = ''; currentUsername = ''; previousLogsCount = 0;
+                    switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); currentUserRole = ''; currentUsername = '';
                 }, 500);
             });
         }
@@ -1084,32 +1105,28 @@
         function toggleNotifPanel() { 
             const panel = document.getElementById('notifPanel'); const badge = document.getElementById('notif-badge');
             if (panel.classList.contains('show')) {
-                panel.classList.remove('show'); badge.style.display = 'none'; 
-                document.getElementById('notif-list').innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:12px;">No recent activity.</div>';
-                appData.logs = []; previousLogsCount = 0; 
-            } else { panel.classList.add('show'); document.getElementById('notifBell').classList.remove('ringing'); }
+                panel.classList.remove('show'); 
+                badge.style.display = 'none'; 
+                document.getElementById('notif-list').innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:12px;">No new activity. Check Logs tab.</div>';
+                // Update memori loceng masa Boss tutup
+                localStorage.setItem('omnyzo_last_log_time', Date.now());
+            } else { 
+                panel.classList.add('show'); 
+                document.getElementById('notifBell').classList.remove('ringing'); 
+            }
         }
 
         function openDeleteDocModal(docNo, docType) {
-            document.getElementById('delDocNoLabel').innerText = docNo;
-            document.getElementById('delDocNoValue').value = docNo;
-            document.getElementById('delDocType').value = docType;
-            document.getElementById('deleteDocForm').reset();
-            document.getElementById('delete-doc-modal').classList.add('show');
+            document.getElementById('delDocNoLabel').innerText = docNo; document.getElementById('delDocNoValue').value = docNo; document.getElementById('delDocType').value = docType;
+            document.getElementById('deleteDocForm').reset(); document.getElementById('delete-doc-modal').classList.add('show');
         }
 
         document.getElementById('deleteDocForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnDeleteSubmit'); btn.innerHTML = "Verifying..."; btn.disabled = true;
-            const payload = {
-                type: "delete_doc", username: currentUsername, docNo: document.getElementById('delDocNoValue').value, docType: document.getElementById('delDocType').value,
-                delUsername: document.getElementById('delUsername').value, delPassword: document.getElementById('delPassword').value
-            };
+            e.preventDefault(); const btn = document.getElementById('btnDeleteSubmit'); btn.innerHTML = "Verifying..."; btn.disabled = true;
+            const payload = { type: "delete_doc", username: currentUsername, docNo: document.getElementById('delDocNoValue').value, docType: document.getElementById('delDocType').value, delUsername: document.getElementById('delUsername').value, delPassword: document.getElementById('delPassword').value };
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => {
                 btn.innerHTML = "Delete Document"; btn.disabled = false;
-                if(res.status === 'success') {
-                    document.getElementById('delete-doc-modal').classList.remove('show'); showToast("Document Deleted Forever."); fetchAppData();
-                } else { showToast("Security Blocked: Wrong Username/Password", true); }
+                if(res.status === 'success') { document.getElementById('delete-doc-modal').classList.remove('show'); showToast("Document Deleted Forever."); fetchAppData(); } else { showToast("Security Blocked: Wrong Username/Password", true); }
             }).catch(err => { btn.innerHTML = "Delete Document"; btn.disabled = false; showToast("Connection Error.", true); });
         });
 
@@ -1174,20 +1191,45 @@
             document.querySelectorAll('#quotationListContainer .tbl-row').forEach(row => { row.style.display = row.innerText.toLowerCase().includes(q) ? 'grid' : 'none'; });
         }
 
+        function filterCashflow() {
+            let q = document.getElementById('searchCashflow').value.toLowerCase();
+            document.querySelectorAll('#cashflowListContainer .cf-row').forEach(row => { row.style.display = row.innerText.toLowerCase().includes(q) ? 'grid' : 'none'; });
+        }
+
         function renderAll() {
             const fmt = (val) => 'RM ' + parseFloat(val).toLocaleString('en-MY', {minimumFractionDigits: 2});
             
-            if(appData.logs && appData.logs.length > 0) {
-                if (previousLogsCount !== 0 && appData.logs.length > previousLogsCount) { document.getElementById('notifBell').classList.add('ringing'); notifSound.play().catch(e => console.log("Sound error")); }
-                previousLogsCount = appData.logs.length;
-                let logsHtml = '';
-                appData.logs.forEach(l => {
+            // --- LOGS & NOTIFIKASI (FIX BACA BARU SAHAJA) ---
+            let lastReadTime = parseInt(localStorage.getItem('omnyzo_last_log_time') || "0");
+            
+            // Tapis hanya log yang MASIH BARU (berlaku selepas kali terakhir loceng ditutup)
+            let unreadLogs = appData.logs.filter(l => new Date(l.time).getTime() > lastReadTime);
+            
+            if(unreadLogs.length > 0) {
+                document.getElementById('notifBell').classList.add('ringing');
+                notifSound.play().catch(e => console.log("Sound error"));
+                document.getElementById('notif-badge').style.display = 'block';
+                document.getElementById('notif-badge').innerText = unreadLogs.length > 9 ? '9+' : unreadLogs.length;
+                
+                let bellHtml = '';
+                unreadLogs.forEach(l => {
                     let logTime = new Date(l.time); let timeStr = !isNaN(logTime) ? logTime.toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}) : l.time;
-                    logsHtml += `<div class="notif-item"><div class="notif-time">${timeStr} • <span style="color:var(--accent-pink);">${l.user}</span></div><div>${l.action}</div></div>`;
+                    bellHtml += `<div class="notif-item"><div class="notif-time">${timeStr} • <span style="color:var(--accent-pink);">${l.user}</span></div><div>${l.action}</div></div>`;
                 });
-                document.getElementById('notif-list').innerHTML = logsHtml;
-                if (!document.getElementById('notifPanel').classList.contains('show')) { document.getElementById('notif-badge').style.display = 'block'; document.getElementById('notif-badge').innerText = appData.logs.length > 9 ? '9+' : appData.logs.length; }
+                document.getElementById('notif-list').innerHTML = bellHtml;
             }
+
+            // Render Full Logs Screen
+            let fullLogsHtml = '';
+            appData.logs.forEach(l => {
+                let logTime = new Date(l.time);
+                let timeStr = !isNaN(logTime) ? logTime.toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit', second:'2-digit'}) : l.time;
+                fullLogsHtml += `<div style="padding:15px 25px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                    <div><div style="font-size:14px; color:var(--text-main); font-weight:600;">${l.action}</div><div style="font-size:11px; color:var(--text-muted); margin-top:4px;">${timeStr}</div></div>
+                    <div style="background:rgba(225,78,101,0.1); color:var(--accent-pink); padding:4px 10px; border-radius:8px; font-size:11px; font-weight:700;">${l.user}</div>
+                </div>`;
+            });
+            document.getElementById('fullLogsContainer').innerHTML = fullLogsHtml || '<div style="padding:30px; text-align:center; color:var(--text-muted);">No activity recorded yet.</div>';
 
             // --- INVOICES RENDER ---
             let totalAmt = 0, pendingAmt = 0, paidAmt = 0, pendingCount = 0, paidCount = 0, tblHTML = '';
@@ -1282,12 +1324,59 @@
         }
 
         // ==========================================
+        // INSTANT DOC NUMBER GENERATOR (LOCAL)
+        // ==========================================
+        function generateLocalDocNo(prefix, dataset, key) {
+            let today = new Date();
+            let yy = today.getFullYear().toString().slice(-2);
+            let mm = String(today.getMonth() + 1).padStart(2, '0');
+            let currentPrefix = prefix + "-" + yy + mm + "-";
+            let max = 0;
+            dataset.forEach(item => {
+                let noStr = item[key];
+                if(noStr && noStr.startsWith(currentPrefix)) {
+                    let parts = noStr.split('-');
+                    if(parts.length === 3) {
+                        let num = parseInt(parts[2]);
+                        if(!isNaN(num) && num > max) max = num;
+                    }
+                }
+            });
+            return currentPrefix + String(max + 1).padStart(3, '0');
+        }
+
+        // ==========================================
+        // ITEM REORDER LOGIC (UP / DOWN)
+        // ==========================================
+        function moveRowUp(btn) {
+            let row = btn.closest('.item-row');
+            if(row.previousElementSibling && row.previousElementSibling.classList.contains('item-row')) {
+                row.parentNode.insertBefore(row, row.previousElementSibling);
+            }
+        }
+        
+        function moveRowDown(btn) {
+            let row = btn.closest('.item-row');
+            if(row.nextElementSibling && row.nextElementSibling.classList.contains('item-row')) {
+                row.parentNode.insertBefore(row.nextElementSibling, row);
+            }
+        }
+        
+        function removeRow(btn) {
+            let row = btn.closest('.item-row');
+            let isQtn = row.closest('#quotationItemsContainer');
+            row.remove();
+            if(isQtn) calculateQtnTotal(); else calculateInvoiceTotal();
+        }
+
+        // ==========================================
         // INVOICES LOGIC
         // ==========================================
         function openNewInvoice() {
             document.getElementById('invoiceFormTitle').innerText = "New Invoice"; document.getElementById('invoiceForm').reset(); document.getElementById('editingInvoiceFlag').value = ""; document.getElementById('saveInvoiceBtn').innerText = "Create Invoice"; document.getElementById('invoiceItemsContainer').innerHTML = ""; document.getElementById('invPaymentAdvice').checked = true;
             let today = new Date(); let yyyy = today.getFullYear(); let mm = String(today.getMonth() + 1).padStart(2, '0'); let dd = String(today.getDate()).padStart(2, '0'); document.getElementById('invDate').value = `${yyyy}-${mm}-${dd}`;
-            addInvoiceItem(); calculateDueDate(); fetchAppData(); switchView('new-invoice-view');
+            document.getElementById('invNo').value = generateLocalDocNo('OMN', appData.invoices, 'invoiceNo'); // INSTANT NO
+            addInvoiceItem(); calculateDueDate(); switchView('new-invoice-view');
         }
 
         function editInvoiceData(invNo) {
@@ -1322,6 +1411,13 @@
 
         function calculateDueDate() { const dateVal = document.getElementById('invDate').value; const term = parseInt(document.getElementById('invCreditTerm').value); if(dateVal) { const d = new Date(dateVal); d.setDate(d.getDate() + term); document.getElementById('invDueDate').valueAsDate = d; } updateTerms(); }
         function updateTerms() { const termDays = parseInt(document.getElementById('invCreditTerm').value); const template = document.getElementById('tcTemplate').value; const termText = termDays === 0 ? "immediately upon receipt" : `within ${termDays} days from invoice date`; let text = ""; if (template === 'standard') text = `1. Agency Fee is payable ${termText}.\n2. The Agency reserves the right to suspend any Services in the event of delay in payment.\n3. Please indicate the invoice number as reference when transferring the funds.\n4. Payment advice should be sent to billings@omnyzo.com.`; else if (template === 'retainer') text = `1. Monthly Retainer Fee is payable ${termText}.\n2. Work for the subsequent month will commence upon full clearance of this invoice.\n3. Payment advice should be sent to billings@omnyzo.com.`; else if (template === 'deposit') text = `1. A 50% non-refundable advance deposit is required to commence work.\n2. The remaining balance is payable ${termText} of the final invoice.\n3. Payment advice should be sent to billings@omnyzo.com.`; else if (template === 'rush') text = `1. Rush Job Agency Fee is payable ${termText}.\n2. Late payments will incur a 5% penalty fee per week of delay.\n3. Payment advice should be sent to billings@omnyzo.com.`; document.getElementById('invTerms').value = text; }
+
+        let invoiceItemsContainer = document.getElementById('invoiceItemsContainer');
+        if(invoiceItemsContainer) {
+            invoiceItemsContainer.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { if (e.target.classList.contains('item-price') || e.target.classList.contains('item-qty')) { e.preventDefault(); addInvoiceItem(); const rows = document.querySelectorAll('#invoiceItemsContainer .item-row'); if(rows.length > 0) rows[rows.length - 1].querySelector('.item-desc').focus(); } }
+            });
+        }
 
         document.getElementById('invoiceForm').addEventListener('submit', function(e) { 
             e.preventDefault(); showConfirm(document.getElementById('editingInvoiceFlag').value ? "Update Invoice" : "Generate Invoice", "Please confirm all details before proceeding.", function() {
@@ -1377,12 +1473,13 @@
         function revertToPending(invNo) { showConfirm("Revert to Pending", `Undo payment status for ${invNo} back to Pending? (Income record in Cashflow will be removed)`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Pending'; renderAll(); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", username: currentUsername, invoiceNo: invNo, newStatus: "Pending" }) }).then(()=>{ showToast(`Invoice ${invNo} reverted to Pending!`); fetchAppData(); }); }); }
 
         // ==========================================
-        // QUOTATIONS LOGIC (BARU 100%)
+        // QUOTATIONS LOGIC
         // ==========================================
         function openNewQuotation() {
             document.getElementById('quotationFormTitle').innerText = "New Quotation"; document.getElementById('quotationForm').reset(); document.getElementById('editingQtnFlag').value = ""; document.getElementById('saveQuotationBtn').innerText = "Create Quotation"; document.getElementById('quotationItemsContainer').innerHTML = "";
             let today = new Date(); let yyyy = today.getFullYear(); let mm = String(today.getMonth() + 1).padStart(2, '0'); let dd = String(today.getDate()).padStart(2, '0'); document.getElementById('qtnDate').value = `${yyyy}-${mm}-${dd}`;
-            addQtnItem(); calculateQtnDueDate(); fetchAppData(); switchView('new-quotation-view');
+            document.getElementById('qtnNo').value = generateLocalDocNo('QTN', appData.quotations, 'quotationNo'); // INSTANT NO
+            addQtnItem(); calculateQtnDueDate(); switchView('new-quotation-view');
         }
 
         function editQuotationData(qtnNo) {
@@ -1415,6 +1512,13 @@
 
         function calculateQtnDueDate() { const dateVal = document.getElementById('qtnDate').value; const term = parseInt(document.getElementById('qtnValidTerm').value); if(dateVal) { const d = new Date(dateVal); d.setDate(d.getDate() + term); document.getElementById('qtnValidDate').valueAsDate = d; } updateQtnTerms(); }
         function updateQtnTerms() { const template = document.getElementById('qtnTcTemplate').value; let text = ""; if (template === 'standard') text = `1. This quotation is valid for the period stated above.\n2. Prices are subject to change upon revision of project scope.\n3. To proceed, please reply with your confirmation or a signed Purchase Order (PO).`; else if (template === 'deposit') text = `1. This quotation is valid for the period stated above.\n2. A 50% non-refundable deposit is required before the commencement of work.\n3. To proceed, please reply with your confirmation or a signed Purchase Order (PO).`; document.getElementById('qtnTerms').value = text; }
+
+        let qtnItemsContainer = document.getElementById('quotationItemsContainer');
+        if(qtnItemsContainer) {
+            qtnItemsContainer.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { if (e.target.classList.contains('item-price') || e.target.classList.contains('item-qty')) { e.preventDefault(); addQtnItem(); const rows = document.querySelectorAll('#quotationItemsContainer .item-row'); if(rows.length > 0) rows[rows.length - 1].querySelector('.item-desc').focus(); } }
+            });
+        }
 
         document.getElementById('quotationForm').addEventListener('submit', function(e) { 
             e.preventDefault(); showConfirm(document.getElementById('editingQtnFlag').value ? "Update Quotation" : "Generate Quotation", "Please confirm all details before proceeding.", function() {
