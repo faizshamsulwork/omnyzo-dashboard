@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Omnyzo: Admin</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -1031,7 +1031,7 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytGF25haOOtC4NMQ6-2E3k0YDwAD_b8qCMWvhZOPVos7HallWzqjN1w-3xMSRtncKU/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5srLsKOlCdKmu62IWuQzXsIS8_AqxG25ZxTx5xOMjckLZ8sZOo6r5sH4SqrNpiiA_/exec';
         
         const sound = document.getElementById('successSound');
         const notifSound = document.getElementById('notifSound');
@@ -1108,7 +1108,6 @@
                 panel.classList.remove('show'); 
                 badge.style.display = 'none'; 
                 document.getElementById('notif-list').innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:12px;">No new activity. Check Logs tab.</div>';
-                // Update memori loceng masa Boss tutup
                 localStorage.setItem('omnyzo_last_log_time', Date.now());
             } else { 
                 panel.classList.add('show'); 
@@ -1199,10 +1198,8 @@
         function renderAll() {
             const fmt = (val) => 'RM ' + parseFloat(val).toLocaleString('en-MY', {minimumFractionDigits: 2});
             
-            // --- LOGS & NOTIFIKASI (FIX BACA BARU SAHAJA) ---
+            // --- LOGS & NOTIFIKASI ---
             let lastReadTime = parseInt(localStorage.getItem('omnyzo_last_log_time') || "0");
-            
-            // Tapis hanya log yang MASIH BARU (berlaku selepas kali terakhir loceng ditutup)
             let unreadLogs = appData.logs.filter(l => new Date(l.time).getTime() > lastReadTime);
             
             if(unreadLogs.length > 0) {
@@ -1219,7 +1216,6 @@
                 document.getElementById('notif-list').innerHTML = bellHtml;
             }
 
-            // Render Full Logs Screen
             let fullLogsHtml = '';
             appData.logs.forEach(l => {
                 let logTime = new Date(l.time);
@@ -1314,9 +1310,6 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerHTML = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('transactionForm').reset(); currentReceiptData = null; currentBankSlipData = null; togglePaymentFields(); showToast("Transaction Recorded!"); switchView('cashflow-view'); fetchAppData(); } });
         });
 
-        // ==========================================
-        // AUTO-FILL CUSTOMER
-        // ==========================================
         function autoFillCustomerByIndex(prefix) { 
             let comp = document.getElementById(prefix + 'Customer').value; if(!comp) return;
             let c = appData.customers.find(x => x.company === comp); 
@@ -1324,50 +1317,24 @@
         }
 
         // ==========================================
-        // INSTANT DOC NUMBER GENERATOR (LOCAL)
+        // INSTANT DOC NUMBER GENERATOR
         // ==========================================
         function generateLocalDocNo(prefix, dataset, key) {
-            let today = new Date();
-            let yy = today.getFullYear().toString().slice(-2);
-            let mm = String(today.getMonth() + 1).padStart(2, '0');
-            let currentPrefix = prefix + "-" + yy + mm + "-";
-            let max = 0;
+            let today = new Date(); let yy = today.getFullYear().toString().slice(-2); let mm = String(today.getMonth() + 1).padStart(2, '0');
+            let currentPrefix = prefix + "-" + yy + mm + "-"; let max = 0;
             dataset.forEach(item => {
                 let noStr = item[key];
-                if(noStr && noStr.startsWith(currentPrefix)) {
-                    let parts = noStr.split('-');
-                    if(parts.length === 3) {
-                        let num = parseInt(parts[2]);
-                        if(!isNaN(num) && num > max) max = num;
-                    }
-                }
+                if(noStr && noStr.startsWith(currentPrefix)) { let parts = noStr.split('-'); if(parts.length === 3) { let num = parseInt(parts[2]); if(!isNaN(num) && num > max) max = num; } }
             });
             return currentPrefix + String(max + 1).padStart(3, '0');
         }
 
         // ==========================================
-        // ITEM REORDER LOGIC (UP / DOWN)
+        // ITEM REORDER LOGIC
         // ==========================================
-        function moveRowUp(btn) {
-            let row = btn.closest('.item-row');
-            if(row.previousElementSibling && row.previousElementSibling.classList.contains('item-row')) {
-                row.parentNode.insertBefore(row, row.previousElementSibling);
-            }
-        }
-        
-        function moveRowDown(btn) {
-            let row = btn.closest('.item-row');
-            if(row.nextElementSibling && row.nextElementSibling.classList.contains('item-row')) {
-                row.parentNode.insertBefore(row.nextElementSibling, row);
-            }
-        }
-        
-        function removeRow(btn) {
-            let row = btn.closest('.item-row');
-            let isQtn = row.closest('#quotationItemsContainer');
-            row.remove();
-            if(isQtn) calculateQtnTotal(); else calculateInvoiceTotal();
-        }
+        function moveRowUp(btn) { let row = btn.closest('.item-row'); if(row.previousElementSibling && row.previousElementSibling.classList.contains('item-row')) { row.parentNode.insertBefore(row, row.previousElementSibling); } }
+        function moveRowDown(btn) { let row = btn.closest('.item-row'); if(row.nextElementSibling && row.nextElementSibling.classList.contains('item-row')) { row.parentNode.insertBefore(row.nextElementSibling, row); } }
+        function removeRow(btn) { let row = btn.closest('.item-row'); let isQtn = row.closest('#quotationItemsContainer'); row.remove(); if(isQtn) calculateQtnTotal(); else calculateInvoiceTotal(); }
 
         // ==========================================
         // INVOICES LOGIC
@@ -1375,7 +1342,7 @@
         function openNewInvoice() {
             document.getElementById('invoiceFormTitle').innerText = "New Invoice"; document.getElementById('invoiceForm').reset(); document.getElementById('editingInvoiceFlag').value = ""; document.getElementById('saveInvoiceBtn').innerText = "Create Invoice"; document.getElementById('invoiceItemsContainer').innerHTML = ""; document.getElementById('invPaymentAdvice').checked = true;
             let today = new Date(); let yyyy = today.getFullYear(); let mm = String(today.getMonth() + 1).padStart(2, '0'); let dd = String(today.getDate()).padStart(2, '0'); document.getElementById('invDate').value = `${yyyy}-${mm}-${dd}`;
-            document.getElementById('invNo').value = generateLocalDocNo('OMN', appData.invoices, 'invoiceNo'); // INSTANT NO
+            document.getElementById('invNo').value = generateLocalDocNo('OMN', appData.invoices, 'invoiceNo'); 
             addInvoiceItem(); calculateDueDate(); switchView('new-invoice-view');
         }
 
@@ -1478,7 +1445,7 @@
         function openNewQuotation() {
             document.getElementById('quotationFormTitle').innerText = "New Quotation"; document.getElementById('quotationForm').reset(); document.getElementById('editingQtnFlag').value = ""; document.getElementById('saveQuotationBtn').innerText = "Create Quotation"; document.getElementById('quotationItemsContainer').innerHTML = "";
             let today = new Date(); let yyyy = today.getFullYear(); let mm = String(today.getMonth() + 1).padStart(2, '0'); let dd = String(today.getDate()).padStart(2, '0'); document.getElementById('qtnDate').value = `${yyyy}-${mm}-${dd}`;
-            document.getElementById('qtnNo').value = generateLocalDocNo('QTN', appData.quotations, 'quotationNo'); // INSTANT NO
+            document.getElementById('qtnNo').value = generateLocalDocNo('QTN', appData.quotations, 'quotationNo'); 
             addQtnItem(); calculateQtnDueDate(); switchView('new-quotation-view');
         }
 
@@ -1522,8 +1489,7 @@
 
         document.getElementById('quotationForm').addEventListener('submit', function(e) { 
             e.preventDefault(); showConfirm(document.getElementById('editingQtnFlag').value ? "Update Quotation" : "Generate Quotation", "Please confirm all details before proceeding.", function() {
-                const isUpdate = document.getElementById('editingQtnFlag').value === "true";
-                const btn = document.getElementById('saveQuotationBtn'); btn.innerText = "Processing..."; btn.disabled = true; let itemCounter = 1;
+                const isUpdate = document.getElementById('editingQtnFlag').value === "true"; const btn = document.getElementById('saveQuotationBtn'); btn.innerText = "Processing..."; btn.disabled = true; let itemCounter = 1;
                 const items = Array.from(document.querySelectorAll('#quotationItemsContainer .item-row')).map((r) => { 
                     let rawDesc = r.querySelector('.item-desc').value.trim(); let qtyVal = r.querySelector('.item-qty').value; let priceVal = unformatCurrency(r.querySelector('.item-price').value);
                     let isHeader = !priceVal || priceVal === 0 || isNaN(priceVal); let finalDesc; if (isHeader) { finalDesc = rawDesc; } else { finalDesc = itemCounter + ". " + rawDesc; itemCounter++; }
@@ -1551,7 +1517,6 @@
         function viewQuotationDetail(qtnNo) { 
             let qtn = appData.quotations.find(q => q.quotationNo === qtnNo); if(!qtn) return;
             document.getElementById('detail-qtn-no').innerText = qtn.quotationNo; document.getElementById('detail-qtn-client').innerText = qtn.client; document.getElementById('detail-qtn-status').innerText = qtn.status; document.getElementById('detail-qtn-status').className = `status-tag tag-${qtn.status.toLowerCase()}`; currentPdfUrl = qtn.pdfLink;
-            const mailto = `mailto:?subject=Quotation ${qtn.quotationNo} from Omnyzo Agency&body=Hi ${qtn.client},%0D%0A%0D%0AHere is the link to download your quotation PDF:%0D%0A${qtn.pdfLink}%0D%0A%0D%0AThank you!`; document.getElementById('btn-detail-qtn-email').href = mailto;
             let dStr = new Date(qtn.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : qtn.date;
             let dueStr = new Date(qtn.validDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : qtn.validDate;
             document.getElementById('li-qtn-no').innerText = qtn.quotationNo; document.getElementById('li-qtn-date').innerText = dStr; document.getElementById('li-qtn-due').innerText = dueStr; document.getElementById('li-qtn-client-name').innerText = qtn.client;
@@ -1583,13 +1548,12 @@
 
         function convertQtnToInv(qtnNo) {
             let qtn = appData.quotations.find(q => q.quotationNo === qtnNo); if(!qtn) return;
-            openNewInvoice(); // Reset form invois & dapatkan nombor baru
+            openNewInvoice();
             
             let c = appData.customers.find(x => x.company === qtn.client); if(c) { document.getElementById('invCustomer').value = c.company; autoFillCustomerByIndex('inv'); }
             
             document.getElementById('invoiceItemsContainer').innerHTML = '';
             if(qtn.sheetItems && qtn.sheetItems.length > 0) { 
-                // Buang nombor list (1. 2.) yang dah ditambah masa QTN, supaya tak double numbering bila save jadi Invois
                 qtn.sheetItems.forEach(item => { 
                     let cleanDesc = item.desc.replace(/^\d+\.\s*/, '');
                     addInvoiceItem(cleanDesc, item.qty, item.price); 
