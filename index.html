@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Omnyzo: Admin</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -1031,7 +1031,7 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5srLsKOlCdKmu62IWuQzXsIS8_AqxG25ZxTx5xOMjckLZ8sZOo6r5sH4SqrNpiiA_/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgidjLGoEZZRP90xEOroZAaYxiZP14liSkV09wrMHjF70bWv7IV0B9BmHPfearauiU/exec';
         
         const sound = document.getElementById('successSound');
         const notifSound = document.getElementById('notifSound');
@@ -1290,8 +1290,15 @@
         }
 
         function fetchAppData() {
-            return fetch(SCRIPT_URL).then(res => res.json()).then(data => {
-                if(data.status === 'success') { appData = data; renderAll(); if(data.nextInvoiceNo && !document.getElementById('editingInvoiceFlag').value) document.getElementById('invNo').value = data.nextInvoiceNo; if(data.nextQtnNo && !document.getElementById('editingQtnFlag').value) document.getElementById('qtnNo').value = data.nextQtnNo; }
+            // VAKSIN CACHE-BUSTER: Paksa tarik data terbaru dari Google Sheets setiap masa
+            let noCacheUrl = SCRIPT_URL + "?t=" + new Date().getTime();
+            return fetch(noCacheUrl).then(res => res.json()).then(data => {
+                if(data.status === 'success') { 
+                    appData = data; 
+                    renderAll(); 
+                    if(data.nextInvoiceNo && !document.getElementById('editingInvoiceFlag').value) document.getElementById('invNo').value = data.nextInvoiceNo; 
+                    if(data.nextQtnNo && !document.getElementById('editingQtnFlag').value) document.getElementById('qtnNo').value = data.nextQtnNo; 
+                }
             });
         }
 
@@ -1310,6 +1317,9 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerHTML = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('transactionForm').reset(); currentReceiptData = null; currentBankSlipData = null; togglePaymentFields(); showToast("Transaction Recorded!"); switchView('cashflow-view'); fetchAppData(); } });
         });
 
+        // ==========================================
+        // AUTO-FILL CUSTOMER
+        // ==========================================
         function autoFillCustomerByIndex(prefix) { 
             let comp = document.getElementById(prefix + 'Customer').value; if(!comp) return;
             let c = appData.customers.find(x => x.company === comp); 
@@ -1317,7 +1327,7 @@
         }
 
         // ==========================================
-        // INSTANT DOC NUMBER GENERATOR
+        // INSTANT DOC NUMBER GENERATOR (LOCAL)
         // ==========================================
         function generateLocalDocNo(prefix, dataset, key) {
             let today = new Date(); let yy = today.getFullYear().toString().slice(-2); let mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -1330,7 +1340,7 @@
         }
 
         // ==========================================
-        // ITEM REORDER LOGIC
+        // ITEM REORDER LOGIC (UP / DOWN)
         // ==========================================
         function moveRowUp(btn) { let row = btn.closest('.item-row'); if(row.previousElementSibling && row.previousElementSibling.classList.contains('item-row')) { row.parentNode.insertBefore(row, row.previousElementSibling); } }
         function moveRowDown(btn) { let row = btn.closest('.item-row'); if(row.nextElementSibling && row.nextElementSibling.classList.contains('item-row')) { row.parentNode.insertBefore(row.nextElementSibling, row); } }
@@ -1517,6 +1527,7 @@
         function viewQuotationDetail(qtnNo) { 
             let qtn = appData.quotations.find(q => q.quotationNo === qtnNo); if(!qtn) return;
             document.getElementById('detail-qtn-no').innerText = qtn.quotationNo; document.getElementById('detail-qtn-client').innerText = qtn.client; document.getElementById('detail-qtn-status').innerText = qtn.status; document.getElementById('detail-qtn-status').className = `status-tag tag-${qtn.status.toLowerCase()}`; currentPdfUrl = qtn.pdfLink;
+            const mailto = `mailto:?subject=Quotation ${qtn.quotationNo} from Omnyzo Agency&body=Hi ${qtn.client},%0D%0A%0D%0AHere is the link to download your quotation PDF:%0D%0A${qtn.pdfLink}%0D%0A%0D%0AThank you!`; document.getElementById('btn-detail-qtn-email').href = mailto;
             let dStr = new Date(qtn.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : qtn.date;
             let dueStr = new Date(qtn.validDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : qtn.validDate;
             document.getElementById('li-qtn-no').innerText = qtn.quotationNo; document.getElementById('li-qtn-date').innerText = dStr; document.getElementById('li-qtn-due').innerText = dueStr; document.getElementById('li-qtn-client-name').innerText = qtn.client;
@@ -1548,12 +1559,13 @@
 
         function convertQtnToInv(qtnNo) {
             let qtn = appData.quotations.find(q => q.quotationNo === qtnNo); if(!qtn) return;
-            openNewInvoice();
+            openNewInvoice(); // Reset form invois & dapatkan nombor baru
             
             let c = appData.customers.find(x => x.company === qtn.client); if(c) { document.getElementById('invCustomer').value = c.company; autoFillCustomerByIndex('inv'); }
             
             document.getElementById('invoiceItemsContainer').innerHTML = '';
             if(qtn.sheetItems && qtn.sheetItems.length > 0) { 
+                // Buang nombor list (1. 2.) yang dah ditambah masa QTN, supaya tak double numbering bila save jadi Invois
                 qtn.sheetItems.forEach(item => { 
                     let cleanDesc = item.desc.replace(/^\d+\.\s*/, '');
                     addInvoiceItem(cleanDesc, item.qty, item.price); 
