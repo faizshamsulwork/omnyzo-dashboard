@@ -42,14 +42,6 @@
         @keyframes pulseGlow { 0% { filter: invert(1) drop-shadow(0 0 5px rgba(255,255,255,0.1)); } 100% { filter: invert(1) drop-shadow(0 0 15px rgba(255,255,255,0.6)); } }
         .zoom-out-exit { transform: scale(1.3); opacity: 0; filter: blur(10px); pointer-events: none; }
 
-        #login-page { position: fixed; inset: 0; z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; background: #0b0c10; transition: 0.8s; opacity:0;}
-        .login-box { background: #1a1b23; padding: 50px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: translateY(20px); transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1); max-width:90%;}
-        .login-box.active { transform: translateY(0); }
-        .login-input { width: 100%; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: #fff; margin-bottom: 20px; font-family: inherit; font-size: 15px; outline:none; transition: 0.3s;}
-        .login-input:focus { border-color: var(--accent-pink); box-shadow: 0 0 10px rgba(225, 78, 101, 0.2); }
-        .login-btn { width: 100%; background: var(--accent-pink); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px;}
-        .login-btn:hover { background: #f43f5e; box-shadow: 0 5px 20px rgba(225, 78, 101, 0.4); }
-
         #app-container { display: flex; width: 100%; height: 100%; opacity: 0; transform: scale(0.98); transition: 1s cubic-bezier(0.25, 1, 0.5, 1); display:none;}
         #app-container.visible { display:flex; opacity: 1; transform: scale(1); }
 
@@ -87,9 +79,7 @@
         .notif-item { padding: 15px; border-bottom: 1px solid var(--border-color); font-size: 13px; line-height:1.5; color:var(--text-main);}
         .notif-item:last-child { border-bottom:none; }
         .notif-time { font-size:11px; color:var(--text-muted); margin-bottom:5px; font-weight:600;}
-        .ringing { animation: ringBell 0.5s ease-in-out 3; color: var(--accent-pink) !important; border-color: var(--accent-pink) !important; }
-        @keyframes ringBell { 0% { transform: rotate(0); } 25% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 75% { transform: rotate(10deg); } 100% { transform: rotate(0); } }
-
+        
         .main-content { flex: 1; padding: 40px 50px; overflow-y: auto; overflow-x: hidden; position:relative;}
         .view-section { display: none; animation: slideUpFade 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         .view-section.active-view { display: block; }
@@ -118,8 +108,7 @@
         .qa-btn:hover { border-color: var(--accent-pink); transform: translateY(-2px); }
         .qa-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(225, 78, 101, 0.1); display: flex; justify-content: center; align-items: center; color: var(--accent-pink); flex-shrink:0; }
         .dash-bottom-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-        .status-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-color); font-weight: 600; }
-
+        
         .btn-add-pink { background: var(--accent-pink); color: #fff; width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 24px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 15px rgba(225, 78, 101, 0.4); transition: 0.3s; flex-shrink:0;}
         .table-container { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-color); overflow-x: auto; }
         .tbl-header, .tbl-row, .cf-header, .cf-row, .cust-header, .cust-row, .freelance-header, .freelance-row { min-width: 800px; } 
@@ -172,9 +161,6 @@
         .trans-toggle button { padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); font-weight: 600; cursor: pointer; transition: 0.3s; }
         .trans-toggle button.active-out { border-color: #e14e65; color: #e14e65; background: rgba(225,78,101,0.05); }
         .trans-toggle button.active-in { border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.05); }
-        
-        .upload-box { border: 2px dashed var(--border-color); border-radius: 12px; padding: 40px 30px; text-align: center; color: var(--text-muted); cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;}
-        .upload-box:hover, .upload-box.dragover { border-color: var(--accent-pink); background: rgba(225,78,101,0.05); }
         
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: 0.4s; }
         .modal-overlay.show { display: flex; opacity: 1; }
@@ -277,23 +263,9 @@
         <div class="intro-content">
             <img id="introLogoGraphic" src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" style="border-radius: 20px; filter:none; animation:none;">
             <h1 class="intro-title" style="margin-top:20px;">OMNYZO ADMIN</h1>
-            <button class="btn-enter" id="startBtn" onclick="startLoginProcess()">START</button>
+            <button class="btn-enter" id="startBtn" onclick="enterDashboard()">START</button>
             <div id="introLoading" class="sync-text">INITIALIZING...</div>
         </div>
-    </div>
-    
-    <div id="login-page">
-        <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" style="width:100px; border-radius:20px; margin-bottom:30px;">
-        <div class="login-box" id="loginBoxUi">
-            <h2 style="font-size:24px; font-weight:800; margin-bottom:10px;">Admin Access</h2>
-            <p style="color:var(--text-muted); font-size:13px; margin-bottom:30px;">Enter your credentials to continue.</p>
-            <form id="loginForm">
-                <input type="text" id="loginUsername" class="login-input" placeholder="Username" required autocomplete="username">
-                <input type="password" id="loginPassword" class="login-input" placeholder="Password" required autocomplete="current-password">
-                <button type="submit" id="btnLoginSubmit" class="login-btn">Login</button>
-            </form>
-        </div>
-        <div id="loginSyncing" class="sync-text" style="display:none; margin-top:40px;">SYNCHRONIZING DATABASE...</div>
     </div>
 
     <div id="confirm-modal" class="modal-overlay">
@@ -313,14 +285,12 @@
             <div style="width:60px; height:60px; background:rgba(225,78,101,0.1); color:var(--accent-pink); border-radius:50%; display:flex; justify-content:center; align-items:center; margin:0 auto 15px;">
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
             </div>
-            <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 10px;">Security Verification</h2>
-            <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 13px;">Please verify your identity to delete <span id="delDocNoLabel" style="font-weight:700; color:var(--text-main);"></span>. This action cannot be undone.</p>
+            <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 10px;">Confirm Deletion</h2>
+            <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 13px;">Are you sure you want to delete <span id="delDocNoLabel" style="font-weight:700; color:var(--text-main);"></span>? This action cannot be undone.</p>
             <form id="deleteDocForm">
                 <input type="hidden" id="delDocNoValue">
                 <input type="hidden" id="delDocType">
-                <input type="text" id="delUsername" class="login-input" placeholder="Your Username" required>
-                <input type="password" id="delPassword" class="login-input" placeholder="Your Password" required>
-                <button type="submit" id="btnDeleteSubmit" class="btn-solid" style="background:#e14e65; margin-top:10px;">Delete Document</button>
+                <button type="submit" id="btnDeleteSubmit" class="btn-solid" style="background:#e14e65; margin-top:10px;">Yes, Delete It</button>
             </form>
         </div>
     </div>
@@ -482,13 +452,13 @@
             </div>
             
             <div class="user-profile">
-                <div class="avatar" id="sidebar-avatar">O</div>
+                <div class="avatar" id="sidebar-avatar">B</div>
                 <div class="user-info">
-                    <div class="user-name" id="sidebar-username">User</div>
-                    <div class="user-role" id="sidebar-role">Admin</div>
+                    <div class="user-name" id="sidebar-username">Boss</div>
+                    <div class="user-role" id="sidebar-role">Superadmin</div>
                 </div>
-                <button class="logout-btn" onclick="logoutApp()" title="Logout">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <button class="logout-btn" onclick="logoutApp()" title="Reload App">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
                 </button>
             </div>
         </aside>
@@ -1129,7 +1099,7 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyG6NE80jGhkJxJJJd1DkN6wreWGBpIpMHhY99j67nhKQonGFMaMDbZioPdEICwd9Te/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDLsxt8-zEh-Egmdnz8YStDCYt9POg06MUeJwzf9WPGGbCKfuNck78fey343NTMliP/exec';
         
         let appData = { invoices: [], quotations: [], customers: [], freelancers: [], logs: [], cashflow: [] };
         
@@ -1138,7 +1108,8 @@
         let currentRowToPay = null; let editingCustomer = null; let editingFreelancer = null;
         let previousLogsCount = 0;
         
-        let currentUserRole = ''; let currentUsername = '';
+        let currentUserRole = 'Superadmin'; 
+        let currentUsername = 'Admin';
 
         function unformatCurrency(val) { return parseFloat(val.toString().replace(/,/g, '')) || 0; }
         function formatCurrency(val) { return parseFloat(val || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
@@ -1162,54 +1133,43 @@
         function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
         document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
 
-        function startLoginProcess() {
-            document.getElementById('intro-page').style.display = 'none'; document.getElementById('login-page').style.display = 'flex';
-            setTimeout(() => { document.getElementById('login-page').style.opacity = '1'; document.getElementById('loginBoxUi').classList.add('active'); }, 50);
+        // FUNGSI BYPASS LOGIN BARU
+        function enterDashboard() {
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('introLoading').style.display = 'block';
+            
+            document.getElementById('sidebar-username').innerText = "Boss";
+            document.getElementById('sidebar-role').innerText = "Superadmin";
+            document.getElementById('sidebar-avatar').innerText = "B";
+            
+            applyRolePermissions(); 
+            
+            fetchAppData().then(() => {
+                const introPage = document.getElementById('intro-page');
+                introPage.classList.add('zoom-out-exit');
+                setTimeout(() => {
+                    introPage.style.display = 'none';
+                    document.getElementById('app-container').classList.add('visible');
+                    showToast(`Welcome back, Boss!`);
+                }, 800);
+            }).catch(err => {
+                document.getElementById('startBtn').style.display = 'inline-block';
+                document.getElementById('introLoading').style.display = 'none';
+                showToast("Connection Error. Please try again.", true);
+            });
         }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault(); const btn = document.getElementById('btnLoginSubmit'); const u = document.getElementById('loginUsername').value; const p = document.getElementById('loginPassword').value;
-            btn.innerHTML = "Authenticating..."; btn.disabled = true;
-            
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "login", username: u, password: p }) })
-            .then(res => res.json())
-            .then(res => {
-                if(res.status === 'success') {
-                    currentUserRole = res.role; currentUsername = u;
-                    document.getElementById('sidebar-username').innerText = u.charAt(0).toUpperCase() + u.slice(1);
-                    document.getElementById('sidebar-role').innerText = currentUserRole; document.getElementById('sidebar-avatar').innerText = u.charAt(0).toUpperCase();
-                    
-                    applyRolePermissions(); 
-                    document.getElementById('loginBoxUi').style.display = 'none'; document.getElementById('loginSyncing').style.display = 'block';
-                    
-                    fetchAppData().then(() => {
-                        const loginPage = document.getElementById('login-page'); loginPage.classList.add('zoom-out-exit'); loginPage.style.opacity = '0';
-                        setTimeout(() => { loginPage.style.display = 'none'; document.getElementById('app-container').classList.add('visible'); showToast(`Welcome back, ${u}!`); }, 800); 
-                    });
-                } else { btn.innerHTML = "Login"; btn.disabled = false; showToast("Invalid Username or Password!", true); }
-            }).catch(err => { btn.innerHTML = "Login"; btn.disabled = false; showToast("Connection Error.", true); });
-        });
-
         function applyRolePermissions() {
-            if (currentUserRole !== 'Superadmin' && currentUserRole !== 'Owner' && currentUserRole.toLowerCase() !== 'faiz') {
-                document.getElementById('nav-cashflow').style.display = 'none'; document.getElementById('card-netcash').style.display = 'none'; document.getElementById('card-thismonth').style.display = 'none'; document.getElementById('qa-expense').style.display = 'none';
-            } else {
-                document.getElementById('nav-cashflow').style.display = 'flex'; document.getElementById('card-netcash').style.display = 'block'; document.getElementById('card-thismonth').style.display = 'block'; document.getElementById('qa-expense').style.display = 'flex';
-            }
+            // Semua sentiasa terbuka sebab Superadmin
+            document.getElementById('nav-cashflow').style.display = 'flex'; 
+            document.getElementById('card-netcash').style.display = 'block'; 
+            document.getElementById('card-thismonth').style.display = 'block'; 
+            document.getElementById('qa-expense').style.display = 'flex';
         }
         
         function logoutApp() {
-            showConfirm("Logout", "Are you sure you want to log out?", function() {
-                document.getElementById('app-container').classList.remove('visible');
-                setTimeout(() => {
-                    document.getElementById('app-container').style.display = 'none';
-                    const loginPage = document.getElementById('login-page'); loginPage.classList.remove('zoom-out-exit'); loginPage.style.display = 'flex';
-                    document.getElementById('loginBoxUi').style.display = 'block'; document.getElementById('loginSyncing').style.display = 'none';
-                    setTimeout(() => { loginPage.style.opacity = '1'; }, 50);
-                    document.getElementById('loginForm').reset(); document.getElementById('btnLoginSubmit').innerHTML = "Login"; document.getElementById('btnLoginSubmit').disabled = false;
-                    switchView('dashboard-view', document.querySelectorAll('.nav-item')[0]); currentUserRole = ''; currentUsername = '';
-                }, 500);
-            });
+            // Reload page sebab tiada login session lagi
+            window.location.reload();
         }
 
         function toggleNotifPanel() { 
@@ -1225,18 +1185,26 @@
         }
 
         function openDeleteDocModal(docNo, docType) {
-            document.getElementById('delDocNoLabel').innerText = docNo; document.getElementById('delDocNoValue').value = docNo; document.getElementById('delDocType').value = docType;
-            document.getElementById('deleteDocForm').reset(); document.getElementById('delete-doc-modal').classList.add('show');
+            document.getElementById('delDocNoLabel').innerText = docNo; 
+            document.getElementById('delDocNoValue').value = docNo; 
+            document.getElementById('delDocType').value = docType;
+            document.getElementById('delete-doc-modal').classList.add('show');
         }
 
+        // FUNGSI DELETE TANPA PASSWORD
         document.getElementById('deleteDocForm').addEventListener('submit', function(e) {
-            e.preventDefault(); const btn = document.getElementById('btnDeleteSubmit'); btn.innerHTML = "Verifying..."; btn.disabled = true;
-            const payload = { type: "delete_doc", username: currentUsername, docNo: document.getElementById('delDocNoValue').value, docType: document.getElementById('delDocType').value, delUsername: document.getElementById('delUsername').value, delPassword: document.getElementById('delPassword').value };
+            e.preventDefault(); const btn = document.getElementById('btnDeleteSubmit'); btn.innerHTML = "Deleting..."; btn.disabled = true;
+            const payload = { 
+                type: "delete_doc", 
+                username: currentUsername, 
+                docNo: document.getElementById('delDocNoValue').value, 
+                docType: document.getElementById('delDocType').value
+            };
             if(payload.docType === 'transaction') payload.rowIdx = document.getElementById('delDocNoValue').value;
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => {
-                btn.innerHTML = "Delete Document"; btn.disabled = false;
-                if(res.status === 'success') { document.getElementById('delete-doc-modal').classList.remove('show'); showToast("Record Deleted Forever."); fetchAppData(); } else { showToast("Security Blocked: Wrong Username/Password", true); }
-            }).catch(err => { btn.innerHTML = "Delete Document"; btn.disabled = false; showToast("Connection Error.", true); });
+                btn.innerHTML = "Yes, Delete It"; btn.disabled = false;
+                if(res.status === 'success') { document.getElementById('delete-doc-modal').classList.remove('show'); showToast("Record Deleted Forever."); fetchAppData(); } else { showToast("Error Deleting Document.", true); }
+            }).catch(err => { btn.innerHTML = "Yes, Delete It"; btn.disabled = false; showToast("Connection Error.", true); });
         });
 
         function autoFillPostcode(val) {
@@ -1636,7 +1604,7 @@
 
                 fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
                     btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; 
-                    if(res.status === 'success') { document.getElementById('invoiceLoadingOverlay').style.display = "none"; fetchAppData().then(() => { showToast(isUpdate ? "Invoice Updated Successfully!" : "Invoice Backup to Google Drive!"); viewInvoiceDetail(payload.invoiceNo); }); } 
+                    if(res.status === 'success') { document.getElementById('invoiceLoadingOverlay').style.display = "none"; fetchAppData().then(() => { showToast(isUpdate ? "Invoice Updated Successfully!" : "Invoice Saved!"); viewInvoiceDetail(payload.invoiceNo); }); } 
                 }).catch(err => { document.getElementById('invoiceLoadingOverlay').style.display = "none"; btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; }); 
             });
         });
@@ -1737,7 +1705,7 @@
 
                 fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
                     btn.innerText = isUpdate ? "Update Quotation" : "Create Quotation"; btn.disabled = false; 
-                    if(res.status === 'success') { document.getElementById('qtnLoadingOverlay').style.display = "none"; fetchAppData().then(() => { showToast(isUpdate ? "Quotation Updated Successfully!" : "Quotation Saved to Drive!"); viewQuotationDetail(payload.quotationNo); }); } 
+                    if(res.status === 'success') { document.getElementById('qtnLoadingOverlay').style.display = "none"; fetchAppData().then(() => { showToast(isUpdate ? "Quotation Updated Successfully!" : "Quotation Saved!"); viewQuotationDetail(payload.quotationNo); }); } 
                 }).catch(err => { document.getElementById('qtnLoadingOverlay').style.display = "none"; btn.innerText = isUpdate ? "Update Quotation" : "Create Quotation"; btn.disabled = false; }); 
             });
         });
