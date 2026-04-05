@@ -173,6 +173,9 @@
         .trans-toggle button.active-out { border-color: #e14e65; color: #e14e65; background: rgba(225,78,101,0.05); }
         .trans-toggle button.active-in { border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.05); }
         
+        .upload-box { border: 2px dashed var(--border-color); border-radius: 12px; padding: 40px 30px; text-align: center; color: var(--text-muted); cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;}
+        .upload-box:hover, .upload-box.dragover { border-color: var(--accent-pink); background: rgba(225,78,101,0.05); }
+        
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: 0.4s; }
         .modal-overlay.show { display: flex; opacity: 1; }
         .modal { background: var(--card-bg); width: 420px; padding: 40px; border-radius: 28px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9) translateY(20px); transition: 0.4s; max-width:90%; max-height:90vh; overflow-y:auto;}
@@ -1126,7 +1129,7 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUAYrnqOgtmHXNcO5TThmUnfHEW05dxo9wRK7siNJ9D4_066PzLTOf9VI-o9JT9Gt3/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyG6NE80jGhkJxJJJd1DkN6wreWGBpIpMHhY99j67nhKQonGFMaMDbZioPdEICwd9Te/exec';
         
         let appData = { invoices: [], quotations: [], customers: [], freelancers: [], logs: [], cashflow: [] };
         
