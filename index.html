@@ -1142,7 +1142,13 @@
             document.getElementById('sidebar-role').innerText = "Superadmin";
             document.getElementById('sidebar-avatar').innerText = "B";
             
-            applyRolePermissions(); 
+           function applyRolePermissions() {
+    // Semua sentiasa terbuka sebab Superadmin
+    document.getElementById('nav-cashflow').style.display = 'flex'; 
+    document.getElementById('card-netcash').style.display = 'block'; 
+    document.getElementById('card-thismonth').style.display = 'block'; 
+    document.getElementById('qa-expense').style.display = 'flex';
+}
             
             fetchAppData().then(() => {
                 const introPage = document.getElementById('intro-page');
