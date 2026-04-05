@@ -173,9 +173,6 @@
         .trans-toggle button.active-out { border-color: #e14e65; color: #e14e65; background: rgba(225,78,101,0.05); }
         .trans-toggle button.active-in { border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.05); }
         
-        .upload-box { border: 2px dashed var(--border-color); border-radius: 12px; padding: 40px 30px; text-align: center; color: var(--text-muted); cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;}
-        .upload-box:hover, .upload-box.dragover { border-color: var(--accent-pink); background: rgba(225,78,101,0.05); }
-        
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: 0.4s; }
         .modal-overlay.show { display: flex; opacity: 1; }
         .modal { background: var(--card-bg); width: 420px; padding: 40px; border-radius: 28px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9) translateY(20px); transition: 0.4s; max-width:90%; max-height:90vh; overflow-y:auto;}
@@ -1232,7 +1229,6 @@
         document.getElementById('deleteDocForm').addEventListener('submit', function(e) {
             e.preventDefault(); const btn = document.getElementById('btnDeleteSubmit'); btn.innerHTML = "Verifying..."; btn.disabled = true;
             const payload = { type: "delete_doc", username: currentUsername, docNo: document.getElementById('delDocNoValue').value, docType: document.getElementById('delDocType').value, delUsername: document.getElementById('delUsername').value, delPassword: document.getElementById('delPassword').value };
-            // Inject rowIdx untuk cashflow delete
             if(payload.docType === 'transaction') payload.rowIdx = document.getElementById('delDocNoValue').value;
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => {
                 btn.innerHTML = "Delete Document"; btn.disabled = false;
@@ -1719,8 +1715,7 @@
                     return { desc: finalDesc, qty: isHeader ? "" : qtyVal, price: isHeader ? "" : priceVal.toFixed(2), total: isHeader ? "" : unformatCurrency(r.querySelector('.item-total').innerText).toFixed(2) }; 
                 }); 
                 const sel = document.getElementById('qtnCustomer'); const clientName = sel.options[sel.selectedIndex].text; 
-                let existingPdf = ""; if(isUpdate) { let oldQ = appData.quotations.find(q => q.quotationNo === document.getElementById('qtnNo').value
-                                                                                        ); if(oldQ) existingPdf = oldQ.pdfLink; }
+                let existingPdf = ""; if(isUpdate) { let oldQ = appData.quotations.find(q => q.quotationNo === document.getElementById('qtnNo').value); if(oldQ) existingPdf = oldQ.pdfLink; }
 
                 const payload = { 
                     type: isUpdate ? "update_quotation" : "quotation", username: currentUsername, client: clientName, pic: document.getElementById('qtnPIC').value, phone: document.getElementById('qtnPhone').value, email: document.getElementById('qtnEmail').value, address: document.getElementById('qtnAddress').value, 
