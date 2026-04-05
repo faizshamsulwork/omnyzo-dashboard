@@ -452,7 +452,7 @@
             </div>
             
             <div class="user-profile">
-                <div class="avatar" id="sidebar-avatar">B</div>
+                <div class="avatar" id="sidebar-avatar" style="background:var(--accent-pink);">B</div>
                 <div class="user-info">
                     <div class="user-name" id="sidebar-username">Boss</div>
                     <div class="user-role" id="sidebar-role">Superadmin</div>
@@ -469,7 +469,7 @@
                 <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 25px;">Good morning,<br>Omnyzo Agency</h1>
                 
                 <div class="dash-top-grid">
-                    <div class="card card-red card-dash-click red-glow" onclick="switchView('cashflow-view', document.querySelectorAll('.nav-item')[3])"><div style="font-size:12px; font-weight:700; opacity:0.9;">Net Cash Flow</div><div class="dash-val" id="dash-netcash">RM 0.00</div><div style="font-size:11px; margin-top:8px; opacity:0.8;">This month</div></div>
+                    <div class="card card-red card-dash-click red-glow" id="card-netcash" onclick="switchView('cashflow-view', document.querySelectorAll('.nav-item')[3])"><div style="font-size:12px; font-weight:700; opacity:0.9;">Net Cash Flow</div><div class="dash-val" id="dash-netcash">RM 0.00</div><div style="font-size:11px; margin-top:8px; opacity:0.8;">This month</div></div>
                     <div class="card card-dash-click blue-glow" onclick="switchView('quotations-view', document.querySelectorAll('.nav-item')[1])"><div style="font-size:12px; font-weight:700; color:var(--qtn-blue);">Pipeline Value</div><div class="dash-val" id="dash-pipeline-amt" style="color:var(--qtn-blue);">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:var(--text-muted);">Pending Quotes</div></div>
                     <div class="card card-dash-click orange-glow" onclick="switchView('invoices-view', document.querySelectorAll('.nav-item')[2])"><div style="font-size:12px; font-weight:700; color:#d97706;">Awaiting Payment</div><div class="dash-val" id="dash-outstanding-amt" style="color:#d97706;">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:var(--text-muted);">View invoices</div></div>
                     <div class="card card-dash-click red-glow" id="card-thismonth" onclick="switchView('cashflow-view', document.querySelectorAll('.nav-item')[3])"><div style="font-size:12px; font-weight:700; color:#e14e65;">Total Expenses</div><div class="dash-val" id="dash-expense-amt" style="color:#e14e65;">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:var(--text-muted);">This month</div></div>
@@ -1604,7 +1604,7 @@
 
                 fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
                     btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; 
-                    if(res.status === 'success') { document.getElementById('invoiceLoadingOverlay').style.display = "none"; fetchAppData().then(() => { showToast(isUpdate ? "Invoice Updated Successfully!" : "Invoice Saved!"); viewInvoiceDetail(payload.invoiceNo); }); } 
+                    if(res.status === 'success') { document.getElementById('invoiceLoadingOverlay').style.display = "none"; fetchAppData().then(() => { showToast(isUpdate ? "Invoice Updated Successfully!" : "Invoice Backup to Google Drive!"); viewInvoiceDetail(payload.invoiceNo); }); } 
                 }).catch(err => { document.getElementById('invoiceLoadingOverlay').style.display = "none"; btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; }); 
             });
         });
