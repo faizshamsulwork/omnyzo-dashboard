@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>Omnyzo: Admin</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0b0c10">
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -151,7 +157,7 @@
         .summary-input { width: 80px; padding: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 20px; text-align: center; }
         
         .item-header { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 15px; font-size: 13px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; min-width: 600px;}
-        .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 15px; margin-bottom: 15px; align-items: start; min-width:600px;}
+        .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 15px; margin-bottom: 15px; align-items: start; min-width:600px; animation: slideInRight 0.3s forwards;}
         
         .btn-solid { background: var(--accent-pink); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
         .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 16px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
@@ -160,7 +166,7 @@
         .trans-toggle button.active-out { border-color: #e14e65; color: #e14e65; background: rgba(225,78,101,0.05); }
         .trans-toggle button.active-in { border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.05); }
         
-        .upload-box { border: 2px dashed var(--border-color); border-radius: 12px; padding: 30px; text-align: center; color: var(--text-muted); cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;}
+        .upload-box { border: 2px dashed var(--border-color); border-radius: 12px; padding: 40px 30px; text-align: center; color: var(--text-muted); cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;}
         .upload-box:hover, .upload-box.dragover { border-color: var(--accent-pink); background: rgba(225,78,101,0.05); }
         .scan-overlay { position:absolute; inset:0; background:rgba(26,27,35,0.9); display:none; flex-direction:column; justify-content:center; align-items:center; z-index:5; color:var(--accent-pink);}
         .scan-line { width: 100%; height: 2px; background: var(--accent-pink); box-shadow: 0 0 10px var(--accent-pink); position: absolute; top: 0; animation: scan 1.5s infinite linear; }
@@ -171,7 +177,7 @@
         .modal { background: var(--card-bg); width: 420px; padding: 40px; border-radius: 28px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9) translateY(20px); transition: 0.4s; max-width:90%; max-height:90vh; overflow-y:auto;}
         .modal-overlay.show .modal { transform: scale(1) translateY(0); }
         .modal-customer { width: 600px; text-align: left; padding: 30px;}
-        .modal-close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
+        .modal-close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; z-index: 10;}
 
         #toast-notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: rgba(16, 185, 129, 0.95); color: white; padding: 16px 30px; border-radius: 40px; font-weight: 700; font-size: 14px; z-index: 9999; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; display: flex; align-items: center; gap: 10px; white-space:nowrap; }
         #toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -219,6 +225,11 @@
         .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #e14e65; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom:15px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* WIZARD CSS */
+        .wizard-step { display: none; opacity: 0; animation: slideInRight 0.4s forwards; }
+        .wizard-step.active { display: block; opacity: 1; }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+
         /* PELARASAN MOBILE */
         @media (max-width: 768px) {
             body { flex-direction: column; }
@@ -255,23 +266,20 @@
     </style>
 </head>
 <body data-theme="dark">
-
-    <audio id="successSound" src="https://assets.mixkit.co/active_storage/sfx/2868/2868-preview.mp3" preload="auto"></audio>
-    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
     
     <div id="toast-notification"><span id="toast-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span> <span id="toast-message">Action successful!</span></div>
 
     <div id="intro-page">
         <div class="intro-content">
-            <img id="introLogoGraphic" src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png">
-            <h1 class="intro-title">OMNYZO ADMIN</h1>
+            <img id="introLogoGraphic" src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" style="border-radius: 20px; filter:none; animation:none;">
+            <h1 class="intro-title" style="margin-top:20px;">OMNYZO ADMIN</h1>
             <button class="btn-enter" id="startBtn" onclick="startLoginProcess()">START</button>
             <div id="introLoading" class="sync-text">INITIALIZING...</div>
         </div>
     </div>
     
     <div id="login-page">
-        <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" style="width:120px; filter:invert(1); margin-bottom:30px;">
+        <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" style="width:100px; border-radius:20px; margin-bottom:30px;">
         <div class="login-box" id="loginBoxUi">
             <h2 style="font-size:24px; font-weight:800; margin-bottom:10px;">Admin Access</h2>
             <p style="color:var(--text-muted); font-size:13px; margin-bottom:30px;">Enter your credentials to continue.</p>
@@ -438,13 +446,15 @@
         </aside>
 
         <main class="main-content">
+            
             <div id="dashboard-view" class="view-section active-view">
                 <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 25px;">Good morning,<br>Omnyzo Agency</h1>
+                
                 <div class="dash-top-grid">
                     <div class="card card-red" id="card-netcash"><div style="font-size:12px; font-weight:700; opacity:0.9;">Net Cash Flow</div><div class="dash-val" id="dash-netcash">RM 0.00</div><div style="font-size:11px; margin-top:8px;">This month</div></div>
-                    <div class="card"><div style="font-size:12px; font-weight:700; color:#d97706;">Outstanding</div><div class="dash-val" id="dash-outstanding-amt">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:#d97706; cursor:pointer;" onclick="switchView('invoices-view', document.querySelectorAll('.nav-item')[2])">View invoices ↗</div></div>
-                    <div class="card"><div style="font-size:12px; font-weight:700; color:#e14e65;">Overdue</div><div class="dash-val">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:var(--text-muted);">Needs attention</div></div>
-                    <div class="card"><div style="font-size:12px; font-weight:700; color:#10b981;">Paid Invoices</div><div class="dash-val" id="dash-paid-amt">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:var(--text-muted);">This month</div></div>
+                    <div class="card"><div style="font-size:12px; font-weight:700; color:var(--qtn-blue);">Pipeline Value</div><div class="dash-val" id="dash-pipeline-amt" style="color:var(--qtn-blue);">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:var(--text-muted); cursor:pointer;" onclick="switchView('quotations-view', document.querySelectorAll('.nav-item')[1])">Pending Quotes ↗</div></div>
+                    <div class="card"><div style="font-size:12px; font-weight:700; color:#d97706;">Awaiting Payment</div><div class="dash-val" id="dash-outstanding-amt" style="color:#d97706;">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:#d97706; cursor:pointer;" onclick="switchView('invoices-view', document.querySelectorAll('.nav-item')[2])">View invoices ↗</div></div>
+                    <div class="card" id="card-thismonth"><div style="font-size:12px; font-weight:700; color:#e14e65;">Total Expenses</div><div class="dash-val" id="dash-expense-amt" style="color:#e14e65;">RM 0.00</div><div style="font-size:11px; margin-top:8px; color:var(--text-muted);">This month</div></div>
                 </div>
 
                 <h3 style="font-size: 16px; margin-bottom: 15px;">Quick Actions</h3>
@@ -457,15 +467,23 @@
 
                 <div class="dash-bottom-grid">
                     <div class="card">
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 20px;"><h3 style="font-size:16px;">Invoice Status</h3></div>
-                        <div class="status-row"><div style="display:flex; align-items:center; gap:10px;"><div style="width:16px;height:16px;border-radius:50%;border:2px solid #10b981;"></div><div>Paid <span style="font-size:11px; color:var(--text-muted); font-weight:500; display:block;" id="count-paid">0</span></div></div><div id="stat-paid-amt" style="color:#10b981;">RM 0.00</div></div>
-                        <div class="status-row"><div style="display:flex; align-items:center; gap:10px;"><div style="width:16px;height:16px;border-radius:50%;border:2px solid #d97706;"></div><div>Pending <span style="font-size:11px; color:var(--text-muted); font-weight:500; display:block;" id="count-pending">0</span></div></div><div id="stat-pending-amt" style="color:#d97706;">RM 0.00</div></div>
+                        <h3 style="font-size:16px; margin-bottom:20px;">Financial Overview & Action Required</h3>
+                        
+                        <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:8px;">
+                            <span style="color:#10b981;">Income <span id="bar-income-val">RM 0.00</span></span>
+                            <span style="color:#e14e65;">Expense <span id="bar-expense-val">RM 0.00</span></span>
+                        </div>
+                        <div style="width:100%; height:8px; background:rgba(225,78,101,0.2); border-radius:4px; overflow:hidden; margin-bottom:30px; display:flex;">
+                            <div id="income-progress-bar" style="height:100%; background:#10b981; width:50%; transition:1s ease-out;"></div>
+                        </div>
+
+                        <h4 style="font-size:14px; margin-bottom:15px; color:var(--text-muted);">Needs Attention</h4>
+                        <div id="needs-attention-list"></div>
                     </div>
-                    <div class="card" id="card-thismonth">
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 20px;"><h3 style="font-size:16px;">This Month</h3></div>
-                        <div style="background:rgba(16,185,129,0.1); padding:15px; border-radius:12px; display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700;"><span style="color:#10b981;">↘ Income</span><span id="this-month-income" style="color:#10b981;">RM 0.00</span></div>
-                        <div style="background:rgba(225,78,101,0.1); padding:15px; border-radius:12px; display:flex; justify-content:space-between; margin-bottom:20px; font-weight:700;"><span style="color:#e14e65;">↗ Expenses</span><span id="this-month-expense" style="color:#e14e65;">RM 0.00</span></div>
-                        <div style="display:flex; justify-content:space-between; border-top:1px solid var(--border-color); padding-top:15px; font-weight:800;"><span>Net</span><span id="this-month-net" style="color:#10b981;">RM 0.00</span></div>
+                    
+                    <div class="card">
+                        <h3 style="font-size:16px; margin-bottom:20px;">Live Feed</h3>
+                        <div id="live-feed-list" style="display:flex; flex-direction:column; gap:15px;"></div>
                     </div>
                 </div>
             </div>
@@ -879,7 +897,7 @@
                     <div><h1 style="font-size: 34px;">Cashflow</h1><p>Track business income and expenses.</p></div>
                     <div style="display:flex; gap:15px; align-items:center;">
                         <input type="text" id="searchCashflow" class="search-box" placeholder="🔍 Search transactions..." oninput="filterCashflow()">
-                        <button class="btn-add-pink" onclick="switchView('record-transaction-view'); document.getElementById('transDate').value = new Date().toISOString().split('T')[0];">+</button>
+                        <button class="btn-add-pink" onclick="switchView('record-transaction-view'); document.getElementById('transDate').value = new Date().toISOString().split('T')[0]; nextWiz(1);">+</button>
                     </div>
                 </div>
                 <div class="dash-top-grid" style="grid-template-columns: repeat(3, 1fr);">
@@ -897,62 +915,101 @@
                 <div class="header-title">
                     <div style="display:flex; align-items:center; gap:15px;">
                         <button onclick="switchView('cashflow-view')" style="background:none; border:none; color:var(--text-main); font-size:24px; cursor:pointer;">←</button>
-                        <div><h1 style="font-size:34px;">Record Transaction</h1><p>Upload receipt to Auto-Fill with AI.</p></div>
+                        <div><h1 style="font-size:34px;">Record Transaction</h1><p>Step-by-step entry with AI Auto-Fill.</p></div>
                     </div>
                 </div>
-                <form id="transactionForm">
-                    <div class="card" style="max-width: 600px; margin: 0 auto;">
-                        <div class="trans-toggle">
-                            <button type="button" id="btn-out" class="active-out" onclick="setTransType('Out')">Money Out (Expense)</button>
-                            <button type="button" id="btn-in" onclick="setTransType('In')">Money In (Income)</button>
-                        </div>
-                        <input type="hidden" id="transType" value="Out">
-
-                        <div class="form-group" style="margin-bottom:25px;">
-                            <input type="file" id="receiptFileInput" style="display:none;" accept=".png,.jpg,.jpeg,.pdf">
-                            <div class="upload-box" id="uploadBoxUI" onclick="document.getElementById('receiptFileInput').click()">
-                                <div class="scan-overlay" id="scanOverlay">
-                                    <div class="scan-line"></div>
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: pulse 1s infinite;"><path d="M2 12h4l2-9 5 18 2-9h5"/></svg>
-                                    <div style="margin-top:10px; font-weight:700;">Scanning Receipt...</div>
-                                </div>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:10px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                                <div style="font-weight:600; color:var(--text-main);" id="uploadFileName">Drag & Drop Invoice/Receipt</div>
-                                <div style="font-size:12px; margin-top:5px; color:var(--text-muted);">AI will extract Amount & Merchant (Max 15MB)</div>
-                            </div>
+                <form id="transactionForm" onkeydown="return event.key != 'Enter';">
+                    <div class="card" style="max-width: 600px; margin: 0 auto; padding-top:40px; position:relative;">
+                        
+                        <div style="display:flex; gap:8px; margin-bottom:30px; position:absolute; top:30px; left:30px; right:30px;">
+                           <div id="wiz-bar-1" style="height:4px; flex:1; background:var(--accent-pink); border-radius:2px; transition:0.3s;"></div>
+                           <div id="wiz-bar-2" style="height:4px; flex:1; background:var(--border-color); border-radius:2px; transition:0.3s;"></div>
+                           <div id="wiz-bar-3" style="height:4px; flex:1; background:var(--border-color); border-radius:2px; transition:0.3s;"></div>
+                           <div id="wiz-bar-4" style="height:4px; flex:1; background:var(--border-color); border-radius:2px; transition:0.3s;"></div>
                         </div>
 
-                        <div class="form-grid">
-                            <div class="form-group"><label>Invoice / Receipt Date</label><input type="date" id="transDate" class="form-control" required></div>
-                            <div class="form-group"><label>Amount (RM)</label><input type="number" step="0.01" min="0" id="transAmount" class="form-control" required></div>
-                            <div class="form-group" style="grid-column: span 2;">
-                                <label>Paid To (Merchant / Freelancer)</label>
-                                <input type="text" id="transMerchant" class="form-control" placeholder="Select or type..." list="merchantList" required>
-                                <datalist id="merchantList"></datalist>
-                            </div>
-                            <div class="form-group" style="grid-column: span 2;">
-                                <label>Category</label>
-                                <select id="transCategory" class="form-control" required>
-                                    <option value="Freelancer/Contractor">Freelancer / Contractor</option>
-                                    <option value="Marketing (Ads)">Marketing (Ads)</option>
-                                    <option value="Software/Subscriptions">Software/Subscriptions</option>
-                                    <option value="Utilities">Utilities</option>
-                                    <option value="Payroll">Payroll</option>
-                                    <option value="Office Supplies">Office Supplies</option>
-                                    <option value="Miscellaneous">Miscellaneous</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="grid-column: span 2;"><label>Description / Notes</label><input type="text" id="transDesc" class="form-control" placeholder="Additional details..."></div>
+                        <div class="wizard-step active" id="step1" style="margin-top:20px;">
+                            <h3 style="font-size:18px; margin-bottom:5px;">Step 1: Transaction Type</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:25px;">Select type and upload receipt for AI auto-fill.</p>
                             
-                            <div class="form-group" style="grid-column: span 2; margin-top:10px; border-top:1px dashed var(--border-color); padding-top:20px;">
-                                <label style="color:var(--accent-pink); font-size:14px; margin-bottom:12px;">Payment Status</label>
+                            <div class="trans-toggle">
+                                <button type="button" id="btn-out" class="active-out" onclick="setTransType('Out')">Money Out (Expense)</button>
+                                <button type="button" id="btn-in" onclick="setTransType('In')">Money In (Income)</button>
+                            </div>
+                            <input type="hidden" id="transType" value="Out">
+
+                            <div class="form-group" style="margin-bottom:25px;">
+                                <input type="file" id="receiptFileInput" style="display:none;" accept=".png,.jpg,.jpeg,.pdf">
+                                <div class="upload-box" id="uploadBoxUI" onclick="document.getElementById('receiptFileInput').click()">
+                                    <div class="scan-overlay" id="scanOverlay">
+                                        <div class="scan-line"></div>
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: pulse 1s infinite;"><path d="M2 12h4l2-9 5 18 2-9h5"/></svg>
+                                        <div style="margin-top:10px; font-weight:700;">Scanning Receipt...</div>
+                                    </div>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:10px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                    <div style="font-weight:600; color:var(--text-main);" id="uploadFileName">Drag & Drop Invoice/Receipt</div>
+                                    <div style="font-size:12px; margin-top:5px; color:var(--text-muted);">AI will extract Amount & Merchant (Max 15MB)</div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-solid" onclick="nextWiz(2)">Next ➔</button>
+                        </div>
+
+                        <div class="wizard-step" id="step2" style="margin-top:20px;">
+                            <h3 style="font-size:18px; margin-bottom:5px;">Step 2: Basic Details</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:25px;">Verify the date, amount, and payee.</p>
+                            
+                            <div class="form-grid">
+                                <div class="form-group"><label>Invoice / Receipt Date</label><input type="date" id="transDate" class="form-control" required></div>
+                                <div class="form-group"><label>Amount (RM)</label><input type="number" step="0.01" min="0" id="transAmount" class="form-control" required></div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label>Paid To (Merchant / Freelancer)</label>
+                                    <input type="text" id="transMerchant" class="form-control" placeholder="Select or type..." list="merchantList" required>
+                                    <datalist id="merchantList"></datalist>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:15px; margin-top:25px;">
+                                <button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(1)">← Back</button>
+                                <button type="button" class="btn-solid" style="flex:2;" onclick="if(document.getElementById('transDate').value && document.getElementById('transAmount').value && document.getElementById('transMerchant').value) { nextWiz(3); } else { showToast('Please fill all required fields', true); }">Next ➔</button>
+                            </div>
+                        </div>
+
+                        <div class="wizard-step" id="step3" style="margin-top:20px;">
+                            <h3 style="font-size:18px; margin-bottom:5px;">Step 3: Categorization</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:25px;">Where should this transaction be recorded?</p>
+                            
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label>Category</label>
+                                    <select id="transCategory" class="form-control" required>
+                                        <option value="Freelancer/Contractor">Freelancer / Contractor</option>
+                                        <option value="Marketing (Ads)">Marketing (Ads)</option>
+                                        <option value="Software/Subscriptions">Software/Subscriptions</option>
+                                        <option value="Utilities">Utilities</option>
+                                        <option value="Payroll">Payroll</option>
+                                        <option value="Office Supplies">Office Supplies</option>
+                                        <option value="Miscellaneous">Miscellaneous</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;"><label>Description / Notes</label><input type="text" id="transDesc" class="form-control" placeholder="Additional details..."></div>
+                            </div>
+                            <div style="display:flex; gap:15px; margin-top:25px;">
+                                <button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(2)">← Back</button>
+                                <button type="button" class="btn-solid" style="flex:2;" onclick="nextWiz(4)">Next ➔</button>
+                            </div>
+                        </div>
+
+                        <div class="wizard-step" id="step4" style="margin-top:20px;">
+                            <h3 style="font-size:18px; margin-bottom:5px;">Step 4: Payment Status</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:25px;">Confirm if payment has been made.</p>
+                            
+                            <div class="form-group" style="margin-bottom:20px;">
                                 <select id="transStatus" class="form-control" onchange="togglePaymentFields()">
                                     <option value="Paid">Paid (Money already transferred)</option>
                                     <option value="Pending">Pending (To be paid later)</option>
                                 </select>
                             </div>
                             
-                            <div id="paymentFields" style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div id="paymentFields" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding:20px; background:var(--input-bg); border-radius:12px; border:1px solid var(--border-color);">
                                 <div class="form-group" style="grid-column: span 2; margin-bottom: 10px;">
                                     <label style="color:var(--text-muted); font-size:12px;">Proof of Payment (Bank Transfer Slip)</label>
                                     <input type="file" id="bankSlipFileInput" style="display:none;" accept=".png,.jpg,.jpeg,.pdf">
@@ -968,8 +1025,13 @@
                                 <div class="form-group"><label>Payment Method</label><input type="text" id="transPayMethod" class="form-control" placeholder="e.g. Maybank, CIMB, Cash"></div>
                                 <div class="form-group" style="grid-column: span 2;"><label>Bank Ref ID / Trans No.</label><input type="text" id="transRefId" class="form-control" placeholder="Optional"></div>
                             </div>
+
+                            <div style="display:flex; gap:15px; margin-top:25px;">
+                                <button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(3)">← Back</button>
+                                <button type="submit" id="saveTransBtn" class="btn-solid" style="flex:2;">Save Record ✔</button>
+                            </div>
                         </div>
-                        <button type="submit" id="saveTransBtn" class="btn-solid" style="margin-top: 25px; padding: 18px;">Save Record</button>
+                        
                     </div>
                 </form>
             </div>
@@ -1031,11 +1093,9 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgidjLGoEZZRP90xEOroZAaYxiZP14liSkV09wrMHjF70bWv7IV0B9BmHPfearauiU/exec';
+        const SCRIPT_URL = 'GANTIKAN_DENGAN_URL_WEB_APP_BARU_BOSS_DI_SINI';
         
-        const sound = document.getElementById('successSound');
-        const notifSound = document.getElementById('notifSound');
-        let appData = { invoices: [], quotations: [], customers: [], freelancers: [], logs: [] };
+        let appData = { invoices: [], quotations: [], customers: [], freelancers: [], logs: [], cashflow: [] };
         
         let currentReceiptData = null; let currentBankSlipData = null; 
         let pendingConfirmAction = null; let currentPdfUrl = "";
@@ -1047,7 +1107,21 @@
         function unformatCurrency(val) { return parseFloat(val.toString().replace(/,/g, '')) || 0; }
         function formatCurrency(val) { return parseFloat(val || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
         function formatInput(input) { let val = input.value.replace(/,/g, ''); if (!isNaN(val) && val.length > 0 && !val.endsWith('.')) { } }
-        function showToast(msg, isError=false) { const t = document.getElementById('toast-notification'); document.getElementById('toast-message').innerText = msg; if(isError) { t.classList.add('error'); document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`; } else { t.classList.remove('error'); document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`; } t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500); }
+        
+        function showToast(msg, isError=false) { 
+            const t = document.getElementById('toast-notification'); 
+            document.getElementById('toast-message').innerText = msg; 
+            if(isError) { 
+                t.classList.add('error'); 
+                document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`; 
+            } else { 
+                t.classList.remove('error'); 
+                document.getElementById('toast-icon').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`; 
+            } 
+            t.classList.add('show'); 
+            setTimeout(() => t.classList.remove('show'), 3500); 
+        }
+
         function showConfirm(title, message, callback) { document.getElementById('confirm-title').innerText = title; document.getElementById('confirm-message').innerText = message; pendingConfirmAction = callback; document.getElementById('confirm-modal').classList.add('show'); }
         function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
         document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
@@ -1204,7 +1278,6 @@
             
             if(unreadLogs.length > 0) {
                 document.getElementById('notifBell').classList.add('ringing');
-                notifSound.play().catch(e => console.log("Sound error"));
                 document.getElementById('notif-badge').style.display = 'block';
                 document.getElementById('notif-badge').innerText = unreadLogs.length > 9 ? '9+' : unreadLogs.length;
                 
@@ -1227,6 +1300,76 @@
             });
             document.getElementById('fullLogsContainer').innerHTML = fullLogsHtml || '<div style="padding:30px; text-align:center; color:var(--text-muted);">No activity recorded yet.</div>';
 
+            // --- DASHBOARD RENDER ---
+            let now = new Date();
+            let currentMonth = now.getMonth();
+            let currentYear = now.getFullYear();
+
+            let thisMonthIncome = 0; let thisMonthExpense = 0;
+            let outstandingAmt = 0; let pipelineAmt = 0;
+            let pendingInvoicesList = [];
+
+            appData.invoices.forEach(inv => {
+                let amt = parseFloat(inv.amount) || 0;
+                if(inv.status === 'Pending') { outstandingAmt += amt; pendingInvoicesList.push(inv); }
+            });
+
+            appData.quotations.forEach(qtn => {
+                let amt = parseFloat(qtn.amount) || 0;
+                if(qtn.status === 'Draft' || qtn.status === 'Sent') { pipelineAmt += amt; }
+            });
+
+            appData.cashflow.forEach(c => {
+                let amt = parseFloat(c.amount)||0; let d = new Date(c.date);
+                let isThisMonth = (d.getMonth() === currentMonth && d.getFullYear() === currentYear);
+                if (c.status === 'Paid' && isThisMonth) { if(c.type==='In') thisMonthIncome += amt; else thisMonthExpense += amt; }
+            });
+
+            let netCashFlow = thisMonthIncome - thisMonthExpense;
+            document.getElementById('dash-netcash').innerText = fmt(netCashFlow);
+            document.getElementById('dash-pipeline-amt').innerText = fmt(pipelineAmt);
+            document.getElementById('dash-outstanding-amt').innerText = fmt(outstandingAmt);
+            document.getElementById('dash-expense-amt').innerText = fmt(thisMonthExpense);
+
+            let totalIO = thisMonthIncome + thisMonthExpense;
+            let incomePct = totalIO === 0 ? 50 : (thisMonthIncome / totalIO) * 100;
+            document.getElementById('bar-income-val').innerText = fmt(thisMonthIncome);
+            document.getElementById('bar-expense-val').innerText = fmt(thisMonthExpense);
+            document.getElementById('income-progress-bar').style.width = incomePct + '%';
+
+            pendingInvoicesList.sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate)); 
+            let topPending = pendingInvoicesList.slice(0,3);
+            let needsAttentionHTML = '';
+            if(topPending.length > 0) {
+                topPending.forEach(inv => {
+                    let dStr = new Date(inv.dueDate); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : inv.dueDate;
+                    needsAttentionHTML += `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--input-bg); border-radius:12px; margin-bottom:10px;">
+                        <div><div style="font-size:13px; font-weight:700;">${inv.client}</div><div style="font-size:11px; color:var(--text-muted); margin-top:3px;">Due: ${dStr} • ${inv.invoiceNo}</div></div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="font-weight:800; font-size:13px; color:#d97706;">${fmt(inv.amount)}</div>
+                            <button onclick="viewInvoiceDetail('${inv.invoiceNo}')" style="background:rgba(217,119,6,0.1); color:#d97706; border:none; padding:6px 12px; border-radius:8px; font-weight:700; cursor:pointer; font-size:11px;">View</button>
+                        </div>
+                    </div>`;
+                });
+            } else { needsAttentionHTML = '<div style="font-size:12px; color:var(--text-muted);">All caught up! No pending invoices.</div>'; }
+            document.getElementById('needs-attention-list').innerHTML = needsAttentionHTML;
+
+            let liveFeedHTML = ''; let topLogs = appData.logs.slice(0, 5);
+            if(topLogs.length > 0) {
+                topLogs.forEach(l => {
+                    let logTime = new Date(l.time); let timeStr = !isNaN(logTime) ? logTime.toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}) : l.time;
+                    liveFeedHTML += `<div style="display:flex; gap:15px; align-items:flex-start;">
+                        <div style="width:8px; height:8px; background:var(--accent-pink); border-radius:50%; margin-top:6px; box-shadow:0 0 8px var(--accent-pink); flex-shrink:0;"></div>
+                        <div>
+                            <div style="font-size:13px; font-weight:600; color:var(--text-main); line-height:1.4;">${l.action}</div>
+                            <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">${timeStr} • <span style="text-transform:capitalize;">${l.user}</span></div>
+                        </div>
+                    </div>`;
+                });
+            } else { liveFeedHTML = '<div style="font-size:12px; color:var(--text-muted);">No recent activity.</div>'; }
+            document.getElementById('live-feed-list').innerHTML = liveFeedHTML;
+
+
             // --- INVOICES RENDER ---
             let totalAmt = 0, pendingAmt = 0, paidAmt = 0, pendingCount = 0, paidCount = 0, tblHTML = '';
             appData.invoices.forEach(inv => {
@@ -1238,7 +1381,7 @@
 
                 tblHTML += `<div class="tbl-row" id="row-${inv.invoiceNo}"><div style="color:var(--accent-pink); cursor:pointer;" onclick="viewInvoiceDetail('${inv.invoiceNo}')">${inv.invoiceNo}</div><div style="font-weight:700;">${inv.client}</div><div style="color:var(--text-muted);">${dStr}</div><div style="color:var(--text-muted);">${dueStr}</div><div style="font-weight:800;">${fmt(amt)}</div><div><span class="status-tag tag-${inv.status.toLowerCase()}" id="tag-${inv.invoiceNo}">${inv.status}</span></div><div class="action-btns" id="btn-group-${inv.invoiceNo}">${inv.status === 'Pending' ? `<button onclick="markAsPaid('${inv.invoiceNo}')" class="action-btn btn-pay">✔ Paid</button>` : `<button onclick="revertToPending('${inv.invoiceNo}')" class="action-btn btn-undo">↩ Undo</button>`}<button onclick="viewInvoiceDetail('${inv.invoiceNo}')" class="action-btn btn-pdf">👁️ View</button><button onclick="editInvoiceData('${inv.invoiceNo}')" class="action-btn btn-undo" style="border-color:#3b82f6; color:#3b82f6;" title="Edit Invoice">✏️</button><button onclick="openDeleteDocModal('${inv.invoiceNo}', 'invoice')" class="action-btn btn-undo" style="border-color:#e14e65; color:#e14e65;" title="Delete Invoice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></div></div>`;
             });
-            document.getElementById('dash-netcash').innerText = fmt(totalAmt); document.getElementById('dash-outstanding-amt').innerText = fmt(pendingAmt); document.getElementById('dash-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-paid-amt').innerText = fmt(paidAmt); document.getElementById('stat-pending-amt').innerText = fmt(pendingAmt); document.getElementById('count-paid').innerText = `${paidCount}`; document.getElementById('count-pending').innerText = `${pendingCount}`; document.getElementById('inv-count-total').innerText = appData.invoices.length; document.getElementById('inv-amt-total').innerText = fmt(totalAmt); document.getElementById('inv-count-paid-tbl').innerText = paidCount; document.getElementById('inv-count-pending-tbl').innerText = pendingCount; document.getElementById('invoiceListContainer').innerHTML = tblHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No invoices found.</div>';
+            document.getElementById('inv-count-total').innerText = appData.invoices.length; document.getElementById('inv-amt-total').innerText = fmt(totalAmt); document.getElementById('inv-count-paid-tbl').innerText = paidCount; document.getElementById('inv-count-pending-tbl').innerText = pendingCount; document.getElementById('invoiceListContainer').innerHTML = tblHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No invoices found.</div>';
             
             // --- QUOTATIONS RENDER ---
             let qTotalAmt = 0, qApprovedCount = 0, qPendingCount = 0, qTblHTML = '';
@@ -1267,7 +1410,7 @@
                 let actionHtml = !isPaid ? `<button onclick="openPayTransModal(${mappedRowIdx})" class="action-btn btn-pay" style="padding:6px 12px; font-size:11px; border-color:#d97706; color:#d97706;">⏳ Pay Now</button>` : `<span class="status-tag tag-paid" style="padding:6px 12px;">✔ Paid</span>`;
                 cfHTML += `<div class="cf-row"><div>${dStr}</div><div style="font-weight:700;">${c.merchant}</div><div style="color:var(--text-muted);">${c.category}</div><div>${c.description}</div><div style="text-align:right; color:${c.type==='In'?'#10b981':'#e14e65'}; font-weight:800;">${c.type==='In'?'+':'-'} ${fmt(amt)}</div><div style="text-align:center;">${proofLink}</div><div style="text-align:right;">${actionHtml}</div></div>`;
             });
-            document.getElementById('cf-net').innerText = (cfIn - cfOut >= 0 ? '+ ' : '- ') + fmt(Math.abs(cfIn - cfOut)); document.getElementById('cf-income').innerText = '+ ' + fmt(cfIn); document.getElementById('cf-expense').innerText = '- ' + fmt(cfOut); document.getElementById('cashflowListContainer').innerHTML = cfHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div>'; document.getElementById('this-month-income').innerText = fmt(cfIn); document.getElementById('this-month-expense').innerText = fmt(cfOut); document.getElementById('this-month-net').innerText = fmt(cfIn - cfOut);
+            document.getElementById('cf-net').innerText = (cfIn - cfOut >= 0 ? '+ ' : '- ') + fmt(Math.abs(cfIn - cfOut)); document.getElementById('cf-income').innerText = '+ ' + fmt(cfIn); document.getElementById('cf-expense').innerText = '- ' + fmt(cfOut); document.getElementById('cashflowListContainer').innerHTML = cfHTML || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No transactions found.</div>';
 
             // --- CONTACTS RENDER ---
             let cHTML = ''; let custDrop = '<option value="">Select customer...</option>';
@@ -1290,12 +1433,10 @@
         }
 
         function fetchAppData() {
-            // VAKSIN CACHE-BUSTER: Paksa tarik data terbaru dari Google Sheets setiap masa
             let noCacheUrl = SCRIPT_URL + "?t=" + new Date().getTime();
             return fetch(noCacheUrl).then(res => res.json()).then(data => {
                 if(data.status === 'success') { 
-                    appData = data; 
-                    renderAll(); 
+                    appData = data; renderAll(); 
                     if(data.nextInvoiceNo && !document.getElementById('editingInvoiceFlag').value) document.getElementById('invNo').value = data.nextInvoiceNo; 
                     if(data.nextQtnNo && !document.getElementById('editingQtnFlag').value) document.getElementById('qtnNo').value = data.nextQtnNo; 
                 }
@@ -1308,13 +1449,21 @@
 
         function switchView(viewId, nav) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view')); if(nav) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); nav.classList.add('active'); } document.getElementById(viewId).classList.add('active-view'); }
         
-        // --- TRANSACTIONS LOGIC ---
+        // --- TRANSACTIONS WIZARD LOGIC ---
         function setTransType(type) { document.getElementById('transType').value = type; if(type === 'Out') { document.getElementById('btn-out').className = 'active-out'; document.getElementById('btn-in').className = ''; } else { document.getElementById('btn-out').className = ''; document.getElementById('btn-in').className = 'active-in'; } }
+
+        function nextWiz(step) {
+            document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step'+step).classList.add('active');
+            for(let i=1; i<=4; i++) {
+                document.getElementById('wiz-bar-'+i).style.background = i <= step ? 'var(--accent-pink)' : 'var(--border-color)';
+            }
+        }
 
         document.getElementById('transactionForm').addEventListener('submit', function(e) {
             e.preventDefault(); const btn = document.getElementById('saveTransBtn'); const originalText = btn.innerHTML; btn.innerHTML = "Saving..."; btn.disabled = true;
             const payload = { type: "transaction", username: currentUsername, date: document.getElementById('transDate').value, amount: document.getElementById('transAmount').value, merchant: document.getElementById('transMerchant').value, category: document.getElementById('transCategory').value, desc: document.getElementById('transDesc').value, transType: document.getElementById('transType').value, status: document.getElementById('transStatus').value, paymentDate: document.getElementById('transPayDate').value, paymentMethod: document.getElementById('transPayMethod').value, refId: document.getElementById('transRefId').value, receiptFileName: currentReceiptData ? currentReceiptData.name : "", receiptMimeType: currentReceiptData ? currentReceiptData.mime : "", receiptBase64: currentReceiptData ? currentReceiptData.base64 : "", bankSlipFileName: currentBankSlipData ? currentBankSlipData.name : "", bankSlipMimeType: currentBankSlipData ? currentBankSlipData.mime : "", bankSlipBase64: currentBankSlipData ? currentBankSlipData.base64 : "" };
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerHTML = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('transactionForm').reset(); currentReceiptData = null; currentBankSlipData = null; togglePaymentFields(); showToast("Transaction Recorded!"); switchView('cashflow-view'); fetchAppData(); } });
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerHTML = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('transactionForm').reset(); currentReceiptData = null; currentBankSlipData = null; togglePaymentFields(); showToast("Transaction Recorded!"); switchView('cashflow-view'); nextWiz(1); fetchAppData(); } });
         });
 
         // ==========================================
@@ -1418,7 +1567,7 @@
 
                 fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
                     btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; 
-                    if(res.status === 'success') { document.getElementById('invoiceLoadingOverlay').style.display = "none"; sound.play().catch(e => console.log("Audio issue")); fetchAppData().then(() => { showToast(isUpdate ? "Invoice Updated Successfully!" : "Invoice Backup to Google Drive!"); viewInvoiceDetail(payload.invoiceNo); }); } 
+                    if(res.status === 'success') { document.getElementById('invoiceLoadingOverlay').style.display = "none"; fetchAppData().then(() => { showToast(isUpdate ? "Invoice Updated Successfully!" : "Invoice Backup to Google Drive!"); viewInvoiceDetail(payload.invoiceNo); }); } 
                 }).catch(err => { document.getElementById('invoiceLoadingOverlay').style.display = "none"; btn.innerText = isUpdate ? "Update Invoice" : "Create Invoice"; btn.disabled = false; }); 
             });
         });
@@ -1519,7 +1668,7 @@
 
                 fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { 
                     btn.innerText = isUpdate ? "Update Quotation" : "Create Quotation"; btn.disabled = false; 
-                    if(res.status === 'success') { document.getElementById('qtnLoadingOverlay').style.display = "none"; sound.play().catch(e => console.log("Audio issue")); fetchAppData().then(() => { showToast(isUpdate ? "Quotation Updated Successfully!" : "Quotation Saved to Drive!"); viewQuotationDetail(payload.quotationNo); }); } 
+                    if(res.status === 'success') { document.getElementById('qtnLoadingOverlay').style.display = "none"; fetchAppData().then(() => { showToast(isUpdate ? "Quotation Updated Successfully!" : "Quotation Saved to Drive!"); viewQuotationDetail(payload.quotationNo); }); } 
                 }).catch(err => { document.getElementById('qtnLoadingOverlay').style.display = "none"; btn.innerText = isUpdate ? "Update Quotation" : "Create Quotation"; btn.disabled = false; }); 
             });
         });
@@ -1527,7 +1676,6 @@
         function viewQuotationDetail(qtnNo) { 
             let qtn = appData.quotations.find(q => q.quotationNo === qtnNo); if(!qtn) return;
             document.getElementById('detail-qtn-no').innerText = qtn.quotationNo; document.getElementById('detail-qtn-client').innerText = qtn.client; document.getElementById('detail-qtn-status').innerText = qtn.status; document.getElementById('detail-qtn-status').className = `status-tag tag-${qtn.status.toLowerCase()}`; currentPdfUrl = qtn.pdfLink;
-            const mailto = `mailto:?subject=Quotation ${qtn.quotationNo} from Omnyzo Agency&body=Hi ${qtn.client},%0D%0A%0D%0AHere is the link to download your quotation PDF:%0D%0A${qtn.pdfLink}%0D%0A%0D%0AThank you!`; document.getElementById('btn-detail-qtn-email').href = mailto;
             let dStr = new Date(qtn.date); dStr = !isNaN(dStr) ? ("0"+dStr.getDate()).slice(-2)+"/"+("0"+(dStr.getMonth()+1)).slice(-2)+"/"+dStr.getFullYear() : qtn.date;
             let dueStr = new Date(qtn.validDate); dueStr = !isNaN(dueStr) ? ("0"+dueStr.getDate()).slice(-2)+"/"+("0"+(dueStr.getMonth()+1)).slice(-2)+"/"+dueStr.getFullYear() : qtn.validDate;
             document.getElementById('li-qtn-no').innerText = qtn.quotationNo; document.getElementById('li-qtn-date').innerText = dStr; document.getElementById('li-qtn-due').innerText = dueStr; document.getElementById('li-qtn-client-name').innerText = qtn.client;
@@ -1559,13 +1707,12 @@
 
         function convertQtnToInv(qtnNo) {
             let qtn = appData.quotations.find(q => q.quotationNo === qtnNo); if(!qtn) return;
-            openNewInvoice(); // Reset form invois & dapatkan nombor baru
+            openNewInvoice();
             
             let c = appData.customers.find(x => x.company === qtn.client); if(c) { document.getElementById('invCustomer').value = c.company; autoFillCustomerByIndex('inv'); }
             
             document.getElementById('invoiceItemsContainer').innerHTML = '';
             if(qtn.sheetItems && qtn.sheetItems.length > 0) { 
-                // Buang nombor list (1. 2.) yang dah ditambah masa QTN, supaya tak double numbering bila save jadi Invois
                 qtn.sheetItems.forEach(item => { 
                     let cleanDesc = item.desc.replace(/^\d+\.\s*/, '');
                     addInvoiceItem(cleanDesc, item.qty, item.price); 
