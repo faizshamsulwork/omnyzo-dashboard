@@ -1126,7 +1126,7 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_g36Eha5pI-1pGz0YtIGdWdYawTFBkzgTsH4zNaSevFy6KtCXG9vW3BBwvxg6Mj44/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuID6MWvJs2kicaQyzYItJhfzzI1pQdqnNSKOaRetmMMj9ADi-L2aiTmxjuXV0Mkpm/exec';
         
         let appData = { invoices: [], quotations: [], customers: [], freelancers: [], logs: [], cashflow: [] };
         
@@ -1510,6 +1510,12 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(res => { btn.innerHTML = originalText; btn.disabled = false; if(res.status === 'success') { document.getElementById('transactionForm').reset(); togglePaymentFields(); showToast("Transaction Recorded!"); switchView('cashflow-view'); nextWiz(1); fetchAppData(); } });
         }
 
+        function togglePaymentFields() {
+            var status = document.getElementById('transStatus').value;
+            var payFields = document.getElementById('paymentFields');
+            if(status === 'Paid') { payFields.style.display = 'grid'; } else { payFields.style.display = 'none'; }
+        }
+
         // --- EDIT CASHFLOW LOGIC ---
         function editCashflow(rowIdx) {
             let cf = appData.cashflow.find(c => c.rowIdx === rowIdx); if(!cf) return;
@@ -1654,7 +1660,7 @@
             switchView('invoice-detail-view');
         }
 
-        function downloadInvoicePDF() { const btn = document.querySelector('.btn-outline'); const originalText = btn.innerHTML; btn.innerHTML = "Generating PDF..."; showToast("Snapping picture..."); const element = document.getElementById('invoiceCaptureArea'); const invNo = document.getElementById('li-inv-no').innerText; const opt = { margin: [0.4, 0, 0, 0], filename: `Invoice_${invNo}.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true, letterRendering: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }, pagebreak: { mode: ['css', 'legacy'], avoid: ['tr', '.li-summary-container', '.li-bottom'] } }; element.style.boxShadow = 'none'; element.style.border = 'none'; html2pdf().set(opt).from(element).save().then(() => { element.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)'; element.style.border = '1px solid #eef0f2'; btn.innerHTML = originalText; showToast("PDF Downloaded successfully!"); }); }
+        function downloadInvoicePDF() { const btn = document.querySelector('.btn-outline'); const originalText = btn.innerHTML; btn.innerHTML = "Generating PDF..."; showToast("Snapping picture..."); const element = document.getElementById('invoiceCaptureArea'); const invNo = document.getElementById('li-inv-no').innerText; const opt = { margin: [0.4, 0, 0.4, 0], filename: `Invoice_${invNo}.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true, letterRendering: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }, pagebreak: { mode: ['css', 'legacy'], avoid: ['tr', '.li-summary-container', '.li-bottom'] } }; element.style.boxShadow = 'none'; element.style.border = 'none'; html2pdf().set(opt).from(element).save().then(() => { element.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)'; element.style.border = '1px solid #eef0f2'; btn.innerHTML = originalText; showToast("PDF Downloaded successfully!"); }); }
         function markAsPaid(invNo) { showConfirm("Mark as Paid", `Are you sure you want to mark invoice ${invNo} as Paid? (This will also link Income to Cashflow)`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Paid'; renderAll(); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", username: currentUsername, invoiceNo: invNo, newStatus: "Paid" }) }).then(()=>{ showToast(`Invoice ${invNo} Paid & Linked to Cashflow!`); fetchAppData(); }); }); }
         function revertToPending(invNo) { showConfirm("Revert to Pending", `Undo payment status for ${invNo} back to Pending? (Income record in Cashflow will be removed)`, function() { let inv = appData.invoices.find(i => i.invoiceNo === invNo); if(inv) inv.status = 'Pending'; renderAll(); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_status", username: currentUsername, invoiceNo: invNo, newStatus: "Pending" }) }).then(()=>{ showToast(`Invoice ${invNo} reverted to Pending!`); fetchAppData(); }); }); }
 
@@ -1762,7 +1768,7 @@
             switchView('quotation-detail-view');
         }
 
-        function downloadQtnPDF() { const btn = document.querySelector('#quotation-detail-view .btn-outline:nth-child(2)'); const originalText = btn.innerHTML; btn.innerHTML = "Generating..."; showToast("Snapping picture..."); const element = document.getElementById('quotationCaptureArea'); const qtnNo = document.getElementById('li-qtn-no').innerText; const opt = { margin: [0.4, 0, 0, 0], filename: `${qtnNo}.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true, letterRendering: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }, pagebreak: { mode: ['css', 'legacy'], avoid: ['tr', '.li-summary-container', '.li-bottom'] } }; element.style.boxShadow = 'none'; element.style.border = 'none'; html2pdf().set(opt).from(element).save().then(() => { element.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)'; element.style.border = '1px solid #eef0f2'; btn.innerHTML = originalText; showToast("PDF Downloaded!"); }); }
+        function downloadQtnPDF() { const btn = document.querySelector('#quotation-detail-view .btn-outline:nth-child(2)'); const originalText = btn.innerHTML; btn.innerHTML = "Generating..."; showToast("Snapping picture..."); const element = document.getElementById('quotationCaptureArea'); const qtnNo = document.getElementById('li-qtn-no').innerText; const opt = { margin: [0.4, 0, 0.4, 0], filename: `${qtnNo}.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true, letterRendering: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }, pagebreak: { mode: ['css', 'legacy'], avoid: ['tr', '.li-summary-container', '.li-bottom'] } }; element.style.boxShadow = 'none'; element.style.border = 'none'; html2pdf().set(opt).from(element).save().then(() => { element.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)'; element.style.border = '1px solid #eef0f2'; btn.innerHTML = originalText; showToast("PDF Downloaded!"); }); }
         
         function updateQtnStatus(qtnNo, newStatus) { showConfirm("Update Status", `Mark ${qtnNo} as ${newStatus}?`, function() { let qtn = appData.quotations.find(q => q.quotationNo === qtnNo); if(qtn) qtn.status = newStatus; renderAll(); fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: "update_quotation_status", username: currentUsername, quotationNo: qtnNo, newStatus: newStatus }) }).then(()=>{ showToast(`${qtnNo} marked as ${newStatus}!`); fetchAppData(); }); }); }
 
