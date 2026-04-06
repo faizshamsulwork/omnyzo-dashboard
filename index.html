@@ -74,6 +74,14 @@ body {
   *,*::before,*::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
 }
 
+/* ─── SPINNER ─── */
+.btn-spinner {
+  display: inline-block; width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
+  border-top-color: #fff; animation: spin 0.8s linear infinite; vertical-align: text-bottom; margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
 /* ─── LOGIN ─── */
 #login-page {
   position:fixed; inset:0; z-index:10001;
@@ -117,21 +125,20 @@ button, input, select, textarea { font-family: var(--font); }
   transition: transform 0.2s var(--ease), opacity 0.2s;
 }
 .btn-login:active { transform: scale(0.98); }
-.btn-login:disabled { opacity:0.6; cursor:not-allowed; }
-.login-hint { margin-top:16px; font-size:11px; color:var(--text-3); text-align:center; line-height:1.5; }
+.btn-login:disabled { opacity:0.8; cursor:not-allowed; }
 
-/* ─── INTRO ─── */
+/* ─── INTRO / LOADING PAGE ─── */
 #intro-page {
   position:fixed; inset:0; z-index:9999;
   display:none; flex-direction:column; justify-content:center; align-items:center;
-  background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(255,55,95,0.12), transparent 50%), var(--bg);
+  background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(232,76,104,0.08), transparent 50%), var(--bg);
   transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
 }
 #intro-page.show { display:flex; }
 #intro-page.exit { opacity:0; transform: scale(1.03); pointer-events:none; }
 .intro-grid {
   position:absolute; inset:0;
-  background-image: linear-gradient(rgba(255,55,95,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,55,95,0.04) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, black 25%, transparent 100%);
 }
@@ -141,32 +148,15 @@ button, input, select, textarea { font-family: var(--font); }
   width:84px; height:84px; margin:0 auto 22px;
   background: linear-gradient(145deg, var(--pink), #b01030);
   border-radius: 22px; display:flex; align-items:center; justify-content:center;
-  box-shadow: 0 0 0 1px rgba(255,55,95,0.35), 0 20px 50px rgba(255,55,95,0.35);
+  box-shadow: 0 0 0 1px rgba(232,76,104,0.2), 0 20px 50px rgba(232,76,104,0.15);
   animation: logoFloat 4s ease-in-out infinite;
 }
 @keyframes logoFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 .intro-logo-wrap img { width:52px; height:52px; border-radius:12px; }
-.intro-eyebrow { font-family:var(--font); font-size:10px; letter-spacing:4px; color:var(--pink); text-transform:uppercase; margin-bottom:8px; opacity:0.85; }
 .intro-title { font-family:var(--font); font-size:clamp(32px,8vw,44px); font-weight:800; letter-spacing:-1px; line-height:1.05; margin-bottom:6px; }
-.intro-sub { color: var(--text-3); font-size:14px; margin-bottom:8px; }
-.intro-user { font-size:13px; color:var(--text-2); margin-bottom:32px; }
+.intro-user { font-size:13px; color:var(--text-2); margin-top:16px; margin-bottom:8px; }
 .intro-user strong { color: var(--pink); }
-.btn-enter {
-  min-height: var(--tap-min); padding: 0 44px;
-  background: linear-gradient(180deg, #fff 0%, #f2f2f7 100%);
-  color:#1c1c1e; border: none; border-radius: 100px;
-  font-family:var(--font); font-size:14px; font-weight:700; letter-spacing:0.5px;
-  cursor:pointer; box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-  transition: transform 0.25s var(--ease-spring), box-shadow 0.25s;
-}
-.btn-enter:hover { transform: translateY(-2px); box-shadow: 0 14px 48px rgba(0,0,0,0.3); }
-.btn-enter:active { transform: translateY(0); }
-.intro-loading { display:none; margin-top:20px; color:var(--pink); font-size:12px; letter-spacing:2px; font-family:var(--font); }
-.intro-orbs { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
-.orb { position:absolute; border-radius:50%; filter:blur(72px); opacity:0.18; animation: orbFloat 22s linear infinite; }
-.orb-1 { width:420px; height:420px; background:var(--pink); top:-160px; left:-120px; }
-.orb-2 { width:360px; height:360px; background:var(--blue); bottom:-120px; right:-100px; animation-duration:28s; animation-delay:-6s; }
-@keyframes orbFloat { 0%,100%{transform:translate(0,0)} 50%{transform:translate(16px,-12px)} }
+.spinner { border:3px solid var(--surface-3); border-top:3px solid var(--pink); border-radius:50%; width:36px; height:36px; animation: spin 0.75s linear infinite; margin-bottom:12px; }
 
 #app-container { display:none; width:100%; height:100%; min-height:0; opacity:0; transition: opacity 0.5s var(--ease); }
 #app-container.visible { display:flex; }
@@ -209,7 +199,6 @@ button, input, select, textarea { font-family: var(--font); }
 .nav-item:hover { background: var(--surface-3); color: var(--text); }
 .nav-item:active { transform: scale(0.98); }
 .nav-item.active { background: var(--nav-active); color: var(--pink); font-weight: 600; }
-.nav-item.active::before { display: none; }
 
 .sidebar-spacer { flex:1; }
 .theme-toggle {
@@ -524,8 +513,6 @@ textarea.form-control { resize:vertical; min-height:88px; }
 .li-payment-advice-page { page-break-before:always; min-height:280mm; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:32px; background:#fff; }
 .li-payment-advice { border-top:2px dashed #a1a1aa; padding:28px clamp(20px,4vw,40px); }
 .loading-overlay { position:absolute; inset:0; background:rgba(255,255,255,0.96); z-index:50; display:none; flex-direction:column; justify-content:center; align-items:center; color:#1d1d1f; }
-.spinner { border:3px solid #f0f0f0; border-top:3px solid var(--pink); border-radius:50%; width:36px; height:36px; animation: spin 0.75s linear infinite; margin-bottom:12px; }
-@keyframes spin { to { transform: rotate(360deg); } }
 
 .bottom-actions { position:fixed; bottom: calc(20px + env(safe-area-inset-bottom)); right: calc(16px + env(safe-area-inset-right)); z-index:1000; }
 .notif-btn {
@@ -650,7 +637,6 @@ html.low-motion * { scroll-behavior: auto !important; }
       <div class="login-field"><label for="loginPass">Password</label><input type="password" id="loginPass" required autocomplete="current-password"></div>
       <button type="submit" class="btn-login" id="loginSubmit">Continue</button>
     </form>
-    <p class="login-hint">Users are managed in the Google Sheet <strong>Admins</strong>. Your Apps Script must handle POST <code style="font-size:10px;">type: login</code> (see script comment).</p>
   </div>
 </div>
 
@@ -659,12 +645,13 @@ html.low-motion * { scroll-behavior: auto !important; }
   <div class="intro-grid"></div>
   <div class="intro-content">
     <div class="intro-logo-wrap"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" alt=""></div>
-    <div class="intro-eyebrow">Admin Dashboard</div>
     <h1 class="intro-title">Omnyzo</h1>
-    <p class="intro-sub">Your financial command center</p>
-    <p class="intro-user">Signed in as <strong id="intro-username">—</strong> · <span id="intro-role-pill" style="display:inline-block;padding:4px 10px;border-radius:100px;background:var(--surface-3);font-size:12px;font-weight:600;">Superadmin</span></p>
-    <button type="button" class="btn-enter" id="startBtn">Enter Dashboard</button>
-    <div class="intro-loading" id="introLoading">Connecting</div>
+    <p class="intro-user">Signed in as <strong id="intro-username">—</strong></p>
+    
+    <div class="intro-loading" id="introLoading" style="display:flex; justify-content:center; align-items:center; gap:10px; margin-top:24px; color:var(--text-2); font-size:13px; font-weight:600; font-family:var(--font);">
+      <div class="spinner" style="width:20px; height:20px; border-width:2px; margin:0; border-top-color:var(--pink);"></div>
+      <span>Syncing data...</span>
+    </div>
   </div>
 </div>
 
@@ -1100,69 +1087,65 @@ function showConfirm(title,msg,cb){
 function closeConfirm(){ document.getElementById('confirm-modal').classList.remove('show'); pendingConfirm=null; }
 document.getElementById('confirm-yes').onclick=function(){ if(pendingConfirm)pendingConfirm(); closeConfirm(); };
 
-/* ── Login ── */
+/* ── Login Flow ── */
 document.getElementById('loginForm').addEventListener('submit',function(e){
   e.preventDefault();
   const u=document.getElementById('loginUser').value.trim();
   const p=document.getElementById('loginPass').value;
   const btn=document.getElementById('loginSubmit');
-  btn.disabled=true; btn.innerText='…';
+  
+  // Show spinner animation inside button
+  btn.disabled=true; 
+  btn.innerHTML='<span class="btn-spinner"></span> Authenticating...';
+  
   fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({type:'login',username:u,password:p}),headers:{'Content-Type':'text/plain'}})
     .then(r=>r.json())
     .then(d=>{
-      btn.disabled=false; btn.innerText='Continue';
       if(d.status==='success'&&d.role){
         setSession({username:d.username||u,role:d.role});
         applyRoleClass();
         document.getElementById('login-page').classList.add('hide');
         setTimeout(()=>{
           document.getElementById('login-page').style.display='none';
-          if(sessionStorage.getItem(INTRO_KEY)==='1') enterDashboard(true);
-          else showIntroAfterLogin();
+          showIntroAsLoading(); // Trigger Universal Loading Screen
         },400);
-      } else showToast(d.message||'Login failed',true);
+      } else {
+         btn.disabled=false; 
+         btn.innerHTML='Continue';
+         showToast(d.message||'Login failed',true);
+      }
     })
-    .catch(()=>{ btn.disabled=false; btn.innerText='Continue'; showToast('Cannot reach server. Add login handler in Apps Script.',true); });
+    .catch(()=>{ 
+      btn.disabled=false; 
+      btn.innerHTML='Continue'; 
+      showToast('Cannot reach server.',true); 
+    });
 });
 
-function showIntroAfterLogin(){
+/* ── Universal Data Loading Screen ── */
+function showIntroAsLoading(){
   const s=getSession();
   document.getElementById('intro-username').innerText=s?s.username:'—';
-  document.getElementById('intro-role-pill').innerText=s?s.role:'—';
   document.getElementById('intro-page').classList.add('show');
   document.getElementById('intro-page').classList.remove('exit');
-}
 
-document.getElementById('startBtn').addEventListener('click',enterDashboardFromIntro);
-
-function enterDashboardFromIntro(){
-  document.getElementById('startBtn').style.display='none';
-  document.getElementById('introLoading').style.display='block';
-  sessionStorage.setItem(INTRO_KEY,'1');
-  enterDashboard(false);
-}
-
-function enterDashboard(skipFetchOnly){
-  const run=()=>{
-    const ip=document.getElementById('intro-page');
-    ip.classList.add('exit');
-    setTimeout(()=>{ ip.classList.remove('show'); ip.style.display='none'; },600);
-    const ac=document.getElementById('app-container');
-    ac.classList.add('visible');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{ ac.classList.add('shown'); showToast('Welcome, '+(getSession().username||'team')+'!'); }));
-    updateUserChrome();
-  };
-  if(skipFetchOnly){
-    fetchAppData().then(run).catch(()=>{ document.getElementById('introLoading').style.display='none'; showToast('Connection error.',true); });
-    return;
-  }
+  // Load all data while showing this screen
   fetchAppData().then(()=>{
-    document.getElementById('introLoading').style.display='none';
-    document.getElementById('startBtn').style.display='inline-block';
-    run();
+    // Data fully loaded! Wait 0.8s for smooth transition then show dashboard
+    setTimeout(()=>{
+      const ip=document.getElementById('intro-page');
+      ip.classList.add('exit');
+      setTimeout(()=>{ ip.classList.remove('show'); ip.style.display='none'; },600);
+      
+      const ac=document.getElementById('app-container');
+      ac.classList.add('visible');
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{ ac.classList.add('shown'); showToast('Welcome, '+(getSession().username||'team')+'!'); }));
+      
+      updateUserChrome();
+      sessionStorage.setItem(INTRO_KEY,'1');
+    }, 800); 
   }).catch(()=>{
-    document.getElementById('introLoading').style.display='none';
-    document.getElementById('startBtn').style.display='inline-block';
+    document.getElementById('introLoading').innerHTML='<span style="color:var(--pink)">Connection error. Please reload page.</span>';
     showToast('Connection error.',true);
   });
 }
@@ -1202,14 +1185,8 @@ function fetchAppData(){
     return;
   }
   document.getElementById('login-page').style.display='none';
-  if(sessionStorage.getItem(INTRO_KEY)==='1'){
-    document.getElementById('intro-page').classList.remove('show');
-    document.getElementById('intro-page').style.display='none';
-    document.getElementById('app-container').classList.add('visible','shown');
-    fetchAppData().then(()=>updateUserChrome()).catch(()=>showToast('Data load failed',true));
-  } else {
-    showIntroAfterLogin();
-  }
+  // If already logged in, immediately show the loading screen to fetch fresh data
+  showIntroAsLoading();
 })();
 
 function switchView(id,navEl){
@@ -1460,22 +1437,25 @@ function calcDueDate(){
   if(d){ let dd=new Date(d); dd.setDate(dd.getDate()+term); document.getElementById('invDueDate').valueAsDate=dd; }
   updateTerms();
 }
+
+/* ── SHORTENED T&C FOR INVOICES ── */
 function updateTerms(){
   const t=parseInt(document.getElementById('invCreditTerm').value,10), tmpl=document.getElementById('tcTemplate').value;
-  const payStr=t===0?'due immediately upon receipt of this invoice':`due within ${t} calendar days from the invoice date`;
-  const dueLine=t===0?'Payment is due immediately upon receipt.':'The due date is calculated from the invoice date unless otherwise agreed in writing.';
+  const payStr=t===0?'due immediately upon receipt of this invoice':`due within ${t} days from invoice date`;
+  const dueLine=t===0?'Payment is due immediately.':'Please adhere to the due date stated.';
   let text='';
   if(tmpl==='standard'){
-    text='GENERAL\n1. "Omnyzo Agency" ("we", "us", "our") provides creative and marketing services as described in this invoice and any agreed statement of work.\n2. All amounts are quoted in Malaysian Ringgit (MYR) unless stated otherwise.\n\nPAYMENT\n3. Fees '+payStr+'. '+dueLine+'\n4. Payment must be made by bank transfer to the account stated on this document. You must quote our invoice number as the payment reference.\n5. Receipt of funds to our bank account constitutes payment. Bank charges borne by the payer unless otherwise agreed.\n6. If any amount remains unpaid after the due date, we may suspend or withhold delivery of further work until the account is brought current.\n7. Late payments may incur interest or administrative charges as permitted by applicable law; any such rate will be communicated in advance where required.\n\nSERVICE & DELIVERABLES\n8. Deliverables are deemed accepted unless you notify us in writing of material defects within seven (7) days of delivery.\n9. Changes outside the agreed scope may be quoted separately.\n\nLIABILITY\n10. To the maximum extent permitted by law, our total liability arising from this invoice and related services is limited to the fees paid by you for the specific engagement giving rise to the claim.\n\nDISPUTES & LAW\n11. For any dispute, parties agree to attempt good-faith negotiation before other remedies.\n12. These terms are governed by the laws of Malaysia. Courts of Malaysia shall have non-exclusive jurisdiction.\n\nCONTACT\n13. Payment advice and billing queries: billings@omnyzo.com.';
+    text='1. GENERAL: "Omnyzo Agency" provides services as described in this invoice.\n2. PAYMENT: Fees '+payStr+'. '+dueLine+'\n3. METHOD: Payment via bank transfer to the account stated on this document.\n4. LATE PAYMENT: We reserve the right to suspend work or apply late fees for overdue accounts.\n5. DELIVERABLES: Deemed accepted unless notified in writing within 7 days.\n6. LIABILITY: Limited to the fees paid for this specific engagement.';
   }else if(tmpl==='retainer'){
-    text='RETAINER AGREEMENT\n1. This invoice covers the monthly retainer period stated in our agreement or correspondence.\n2. Retainer fees '+payStr+'. '+dueLine+'\n3. Work for the subsequent calendar month may commence only after cleared payment of the current retainer invoice unless we agree otherwise in writing.\n4. Unused retainer hours or credits do not automatically roll over unless explicitly stated in your agreement.\n5. Either party may terminate the retainer in accordance with the notice period in your master agreement (or thirty (30) days written notice if none is specified).\n6. Payment must be by bank transfer using our invoice number as reference.\n7. Suspension: we may pause scheduled work if the retainer is overdue until payment is received.\n8. Liability is limited to the extent permitted by law and to fees paid for the period in question.\n9. Governing law: Malaysia.\n10. Contact: billings@omnyzo.com.';
+    text='1. RETAINER: This invoice covers the agreed monthly retainer period.\n2. PAYMENT: Fees '+payStr+'. '+dueLine+'\n3. CONTINUATION: Work for the next month commences only after cleared payment of this invoice.\n4. UNUSED HOURS: Do not automatically roll over unless explicitly agreed.\n5. CANCELLATION: Subject to the notice period in your master agreement (default 30 days).';
   }else if(tmpl==='deposit'){
-    text='DEPOSIT & BALANCE\n1. A non-refundable deposit of fifty percent (50%) of the agreed project fee is required before commencement of work, unless a different percentage is stated on this invoice.\n2. The remaining balance '+payStr+'. '+dueLine+'\n3. The deposit secures production capacity and initial creative work; it does not guarantee final delivery if the project is cancelled by the client after work has started, except where mandatory consumer laws apply.\n4. Final files or launch assets may be released only after cleared payment of all outstanding amounts unless otherwise agreed in writing.\n5. Bank transfer details appear on this invoice; reference must include our invoice number.\n6. Scope changes may incur additional fees quoted in writing.\n7. Deliverables: acceptance within seven (7) days of delivery unless otherwise agreed.\n8. Liability limited to fees paid, to the maximum extent permitted by law.\n9. Governing law: Malaysia.\n10. Contact: billings@omnyzo.com.';
+    text='1. DEPOSIT: A non-refundable 50% deposit is required before work commences.\n2. BALANCE: Remaining balance '+payStr+'. '+dueLine+'\n3. CANCELLATION: Deposit secures capacity and is forfeited if project is cancelled after work starts.\n4. RELEASE: Final deliverables are released only after full cleared payment.\n5. LIABILITY: Limited to the fees paid for this specific engagement.';
   }else if(tmpl==='rush'){
-    text='RUSH ENGAGEMENT\n1. Rush fees or expedited delivery charges '+payStr+'. '+dueLine+'\n2. Rush timelines depend on prompt feedback and asset delivery from your team; delays on your side may affect the delivery date without liability on our part.\n3. Late payment: overdue amounts may attract a late fee of up to five percent (5%) per week on the outstanding balance, capped where required by law, until paid in full.\n4. We may suspend rush or standard work if invoices are overdue.\n5. Payment by bank transfer only; use our invoice number as reference.\n6. Scope fixed as per this invoice; additional work is quoted separately.\n7. Acceptance of deliverables within seven (7) days of delivery.\n8. Limitation of liability to fees paid for this engagement, to the maximum extent permitted by law.\n9. Governing law: Malaysia.\n10. Contact: billings@omnyzo.com.';
+    text='1. RUSH ENGAGEMENT: Expedited delivery charges '+payStr+'. '+dueLine+'\n2. TIMELINES: Rush delivery depends on prompt feedback/assets from your team.\n3. LATE PAYMENT: Overdue amounts subject to 5% weekly late fee, capped by law.\n4. SUSPENSION: Rush work may be paused if invoices are overdue.\n5. ACCEPTANCE: Deliverables deemed accepted within 7 days of delivery.';
   }
   document.getElementById('invTerms').value=text;
 }
+
 document.getElementById('invoiceItemsContainer').addEventListener('keydown',function(e){
   if(e.key==='Enter'&&(e.target.classList.contains('item-price')||e.target.classList.contains('item-qty'))){ e.preventDefault(); addInvItem(); const rows=document.querySelectorAll('#invoiceItemsContainer .item-row'); if(rows.length) rows[rows.length-1].querySelector('.item-desc').focus(); }
 });
@@ -1607,16 +1587,19 @@ function calcQtnTotal(){
   document.getElementById('qtnTaxLabel').innerText=tLabel; document.getElementById('qtnTaxDisplay').innerText=tSign+fc(tAmt); document.getElementById('qtnGrandTotal').innerText='RM '+fc(final);
 }
 function calcQtnDue(){ const d=document.getElementById('qtnDate').value, term=parseInt(document.getElementById('qtnValidTerm').value,10); if(d){ let dd=new Date(d); dd.setDate(dd.getDate()+term); document.getElementById('qtnValidDate').valueAsDate=dd; } updateQtnTerms(); }
+
+/* ── SHORTENED T&C FOR QUOTATIONS ── */
 function updateQtnTerms(){
   const tmpl=document.getElementById('qtnTcTemplate').value;
   let text='';
   if(tmpl==='standard'){
-    text='QUOTATION — GENERAL TERMS\n1. This quotation ("Quote") is issued by Omnyzo Agency and remains valid only until the "Valid Until" date shown above, unless withdrawn or superseded earlier in writing.\n2. All prices are in Malaysian Ringgit (MYR) and, unless explicitly stated, exclude applicable taxes, duties, or third-party licensing fees, which will be charged as incurred or as required by law.\n3. The scope of work, deliverables, and assumptions are limited to what is described in this Quote and any referenced briefs or annexes. Any change to scope, timeline, or specifications may require a revised quotation or change order.\n4. Acceptance: You may accept this Quote by written confirmation (including email), a signed purchase order, or any other method we agree in writing. Work will be scheduled after acceptance and, where applicable, receipt of any required deposit.\n5. Project schedule depends on timely provision of content, approvals, and feedback from your side. Delays on your part may affect delivery dates and may incur additional costs if resources must be reallocated.\n6. Intellectual property in pre-existing materials and tools remains with us or our licensors. Upon full payment of the agreed fees, ownership or license of final deliverables will be as stated in your project agreement or, if silent, a non-exclusive license to use the deliverables for the agreed purpose.\n7. Confidential information received from either party will be used only for the purpose of the project and protected with reasonable care.\n8. Either party may terminate before commencement if the other materially breaches these terms and fails to remedy within a reasonable period; fees for work completed to date remain payable.\n9. This Quote does not constitute a binding contract until accepted and any stated conditions (such as deposit) are met.\n10. Governing law: Malaysia. Disputes: parties will first attempt resolution in good faith.\n11. For questions, contact your Omnyzo representative or billings@omnyzo.com.';
+    text='1. VALIDITY: This quotation is valid until the "Valid Until" date shown above.\n2. PRICING: Prices are in MYR and exclude applicable taxes/third-party fees unless stated.\n3. SCOPE: Limited to the description herein. Changes may require a revised quotation.\n4. ACCEPTANCE: Confirm via email or signed PO to commence scheduling.\n5. TIMELINES: Dependent on timely provision of feedback and assets from your side.\n6. IP RIGHTS: Final usage rights pass to you upon full payment, as agreed in writing.';
   }else{
-    text='QUOTATION — WITH DEPOSIT\n1. This Quote is valid until the "Valid Until" date above and is issued by Omnyzo Agency.\n2. Prices are in MYR unless stated otherwise; taxes and third-party costs may be additional.\n3. A non-refundable deposit of fifty percent (50%) of the quoted fee (or the percentage stated in the line items) is payable before work begins, unless we agree a different schedule in writing.\n4. The balance is due as stated in this Quote or, if not stated, according to the milestones or final invoice we issue on completion of the agreed scope.\n5. The deposit covers allocation of resources, initial planning, and creative work. If you cancel after work has started, the deposit may be forfeited to cover costs incurred, subject to applicable law.\n6. Scope is limited to this Quote; additional requests require a written change order and may incur extra fees.\n7. Deliverables are released after cleared payment unless otherwise agreed in writing.\n8. Timelines depend on your timely feedback and asset delivery.\n9. IP and confidentiality: as per our standard project terms; final usage rights pass as agreed in writing.\n10. Liability is limited to the extent permitted by law and typically to the fees paid under this engagement.\n11. Governing law: Malaysia.\n12. Acceptance: confirm by email, signed PO, or as agreed. Contact: billings@omnyzo.com.';
+    text='1. VALIDITY: This quotation is valid until the "Valid Until" date shown above.\n2. DEPOSIT: A non-refundable 50% deposit is payable before work begins.\n3. BALANCE: Due upon completion of milestones or final invoice.\n4. CANCELLATION: Deposit is forfeited to cover costs if cancelled after work starts.\n5. DELIVERABLES: Released only after cleared payment of all outstanding amounts.\n6. SCOPE: Limited to this quote; additional work requires a written change order.';
   }
   document.getElementById('qtnTerms').value=text;
 }
+
 document.getElementById('quotationItemsContainer').addEventListener('keydown',function(e){
   if(e.key==='Enter'&&(e.target.classList.contains('item-price')||e.target.classList.contains('item-qty'))){ e.preventDefault(); addQtnItem(); const rows=document.querySelectorAll('#quotationItemsContainer .item-row'); if(rows.length) rows[rows.length-1].querySelector('.item-desc').focus(); }
 });
