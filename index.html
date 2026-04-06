@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Omnyzo — Admin</title>
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
@@ -55,7 +55,8 @@
 }
 
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
-html { height:100%; -webkit-tap-highlight-color:transparent; }
+/* FIX: Elak double tap zoom */
+html { height:100%; -webkit-tap-highlight-color:transparent; touch-action: manipulation; }
 
 body {
   background: var(--bg);
@@ -483,13 +484,29 @@ textarea.form-control { resize:vertical; min-height:88px; }
 .a-btn-pink { background:var(--pink); color:#fff; border-color:var(--pink); }
 .a-btn-blue { background:var(--blue); color:#fff; border-color:var(--blue); }
 
+/* FIX: Susunan kertas berterusan untuk Preview Invoice/Quote tanpa potongan */
 .invoice-preview-wrap {
-  background:#e8e9ef; padding:clamp(16px,3vw,28px) 12px; border-radius:var(--radius); border:1px solid var(--border);
-  max-height:72vh; overflow-y:auto; display:flex; justify-content:center;
+  background: #e8e9ef;
+  padding: 32px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  max-height: 75vh;
+  overflow-y: auto;
+  display: block;
+  text-align: center;
 }
 .live-invoice {
-  background:#fff; width:100%; max-width:800px; color:#1d1d1f; font-family:'Plus Jakarta Sans',system-ui,sans-serif !important;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.08); border:1px solid #eee; position:relative;
+  background: #fff;
+  width: 100%;
+  max-width: 800px;
+  color: #1d1d1f;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+  border: 1px solid #ddd;
+  position: relative;
+  display: inline-block;
+  text-align: left;
+  min-height: 1130px; /* Panjang minimum ala A4 */
 }
 .live-invoice, .live-invoice * { font-family:'Plus Jakarta Sans',system-ui,sans-serif !important; }
 .li-header { padding:32px clamp(20px,4vw,40px); display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #1d1d1f; flex-wrap:wrap; gap:16px; }
@@ -612,7 +629,54 @@ body.role-admin .action-btn.btn-delete { display:none !important; }
   .bottom-actions { bottom: calc(88px + env(safe-area-inset-bottom)); }
   .brand, .nav-text-label { pointer-events: none; }
   .nav-item .nav-text { display: inline; }
+  
+  /* FIX: Mobile Tables jadi Card Stack */
+  .table-wrap { background: transparent; border: none; padding: 0; overflow-x: visible; }
+  .tbl-header, .cf-header, .cust-header, .freelance-header { display: none; }
+  
+  .tbl-row, .cf-row, .cust-row, .freelance-row { 
+    display: grid; min-width: 0; padding: 16px; margin-bottom: 12px;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+  }
+  
+  /* Quotation / Invoice Rows */
+  .tbl-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tbl-row > div:nth-child(1) { grid-column: span 2; font-size: 15px; font-weight: 700; }
+  .tbl-row > div:nth-child(2) { grid-column: span 2; font-size: 13px; color: var(--text-2); margin-top: -6px; }
+  .tbl-row > div:nth-child(3) { grid-column: 1; font-size: 12px; }
+  .tbl-row > div:nth-child(4) { grid-column: 2; font-size: 12px; text-align: right; }
+  .tbl-row > div:nth-child(5) { grid-column: 1; font-size: 18px; font-weight: 800; color: var(--text); margin-top: 4px;}
+  .tbl-row > div:nth-child(6) { grid-column: 2; text-align: right; margin-top: 4px;}
+  .tbl-row > div:nth-child(7) { grid-column: span 2; margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
+  
+  /* Cashflow Rows */
+  .cf-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cf-row > div:nth-child(1) { grid-column: 1; font-size: 12px; }
+  .cf-row > div:nth-child(6) { grid-column: 2; text-align: right; }
+  .cf-row > div:nth-child(2) { grid-column: span 2; font-size: 15px; font-weight: 700; }
+  .cf-row > div:nth-child(3) { grid-column: span 2; font-size: 12px; color: var(--text-2); margin-top: -6px; }
+  .cf-row > div:nth-child(4) { grid-column: span 2; font-size: 12px; }
+  .cf-row > div:nth-child(5) { grid-column: span 2; font-size: 18px; font-weight: 800; text-align: left !important; margin-top: 4px; }
+  .cf-row > div:nth-child(7) { grid-column: span 2; margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+
+  /* Contacts Rows */
+  .cust-row { grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
+  .cust-row > div:nth-child(1) { grid-column: span 2; }
+  .cust-row > div:nth-child(2) { grid-column: span 2; padding-left: 46px; margin-top: -16px; }
+  .cust-row > div:nth-child(3) { grid-column: span 2; padding-left: 46px; }
+  .cust-row > div:nth-child(4) { grid-column: span 2; margin-top: 8px; border-top: 1px solid var(--border); padding-top: 12px; text-align: right; }
+
+  .freelance-row { grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
+  .freelance-row > div:nth-child(1) { grid-column: span 2; }
+  .freelance-row > div:nth-child(2) { grid-column: span 2; padding-left: 46px; margin-top: -16px; }
+  .freelance-row > div:nth-child(3) { grid-column: span 2; padding-left: 46px; font-weight: 600; color: var(--pink); }
+  .freelance-row > div:nth-child(4) { grid-column: span 2; padding-left: 46px; }
+  .freelance-row > div:nth-child(5) { grid-column: span 2; margin-top: 8px; border-top: 1px solid var(--border); padding-top: 12px; text-align: right; }
+  
+  .action-btns { justify-content: space-between; width: 100%; }
 }
+
 @media (min-width: 769px) {
   .nav-text { display: inline; }
 }
@@ -1094,7 +1158,6 @@ document.getElementById('loginForm').addEventListener('submit',function(e){
   const p=document.getElementById('loginPass').value;
   const btn=document.getElementById('loginSubmit');
   
-  // Show spinner animation inside button
   btn.disabled=true; 
   btn.innerHTML='<span class="btn-spinner"></span> Authenticating...';
   
@@ -1107,7 +1170,7 @@ document.getElementById('loginForm').addEventListener('submit',function(e){
         document.getElementById('login-page').classList.add('hide');
         setTimeout(()=>{
           document.getElementById('login-page').style.display='none';
-          showIntroAsLoading(); // Trigger Universal Loading Screen
+          showIntroAsLoading(); 
         },400);
       } else {
          btn.disabled=false; 
@@ -1129,9 +1192,7 @@ function showIntroAsLoading(){
   document.getElementById('intro-page').classList.add('show');
   document.getElementById('intro-page').classList.remove('exit');
 
-  // Load all data while showing this screen
   fetchAppData().then(()=>{
-    // Data fully loaded! Wait 0.8s for smooth transition then show dashboard
     setTimeout(()=>{
       const ip=document.getElementById('intro-page');
       ip.classList.add('exit');
@@ -1185,7 +1246,6 @@ function fetchAppData(){
     return;
   }
   document.getElementById('login-page').style.display='none';
-  // If already logged in, immediately show the loading screen to fetch fresh data
   showIntroAsLoading();
 })();
 
@@ -1438,7 +1498,6 @@ function calcDueDate(){
   updateTerms();
 }
 
-/* ── SHORTENED T&C FOR INVOICES ── */
 function updateTerms(){
   const t=parseInt(document.getElementById('invCreditTerm').value,10), tmpl=document.getElementById('tcTemplate').value;
   const payStr=t===0?'due immediately upon receipt of this invoice':`due within ${t} days from invoice date`;
@@ -1588,7 +1647,6 @@ function calcQtnTotal(){
 }
 function calcQtnDue(){ const d=document.getElementById('qtnDate').value, term=parseInt(document.getElementById('qtnValidTerm').value,10); if(d){ let dd=new Date(d); dd.setDate(dd.getDate()+term); document.getElementById('qtnValidDate').valueAsDate=dd; } updateQtnTerms(); }
 
-/* ── SHORTENED T&C FOR QUOTATIONS ── */
 function updateQtnTerms(){
   const tmpl=document.getElementById('qtnTcTemplate').value;
   let text='';
