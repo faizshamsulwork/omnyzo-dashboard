@@ -479,6 +479,7 @@ textarea.form-control { resize:vertical; min-height:88px; }
 .a-btn-pink { background:var(--pink); color:#fff; border-color:var(--pink); }
 .a-btn-blue { background:var(--blue); color:#fff; border-color:var(--blue); }
 
+/* FIX: Susunan kertas berterusan untuk Preview Invoice/Quote tanpa potongan */
 .invoice-preview-wrap {
   background: #e8e9ef;
   padding: 32px 12px;
@@ -486,8 +487,8 @@ textarea.form-control { resize:vertical; min-height:88px; }
   border: 1px solid var(--border);
   max-height: 75vh;
   overflow-y: auto;
-  display: block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 .live-invoice {
   background: #fff;
@@ -498,9 +499,11 @@ textarea.form-control { resize:vertical; min-height:88px; }
   box-shadow: 0 12px 48px rgba(0,0,0,0.12);
   border: 1px solid #ddd;
   position: relative;
-  display: inline-block;
   text-align: left;
-  min-height: 1130px; 
+  /* FIX: Flex column untuk tolak Note & Terms ke bawah, dan set tinggi muat 1 page (A4) */
+  display: flex;
+  flex-direction: column;
+  min-height: 1040px; 
 }
 .live-invoice, .live-invoice * { font-family:'Plus Jakarta Sans',system-ui,sans-serif !important; }
 .li-header { padding:32px clamp(20px,4vw,40px); display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #1d1d1f; flex-wrap:wrap; gap:16px; }
@@ -518,9 +521,17 @@ textarea.form-control { resize:vertical; min-height:88px; }
 .li-summary { width:min(300px,100%); }
 .li-summary-row { display:flex; justify-content:space-between; padding:6px 0; font-size:12px; }
 .li-summary-row.total { background:#1d1d1f; color:#fff; padding:12px 14px; font-weight:800; font-size:14px; margin-top:6px; border-radius:8px; }
-.li-bottom { display:flex; gap:24px; padding:20px clamp(20px,4vw,40px) 32px; border-top:1px solid #eef0f2; flex-wrap:wrap; }
+
+/* FIX: Tolak Note & Terms ke bawah sekali */
+.li-bottom { margin-top: auto; display:flex; gap:24px; padding:24px clamp(20px,4vw,40px) 32px; border-top:1px solid #eef0f2; flex-wrap:wrap; }
 .li-box { flex:1; min-width:200px; }
-.li-box h4 { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.li-box h4 { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; color:#1d1d1f; }
+
+/* FIX: Kemaskan Terms & Note dengan font lebih kecil dan ada line height */
+#li-qtn-terms, #li-inv-terms, #li-inv-notes, #li-qtn-notes {
+  white-space: pre-line; font-size: 10px; color: #555; line-height: 1.6; text-align: justify;
+}
+
 .li-payment-advice-page { page-break-before:always; min-height:280mm; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:32px; background:#fff; }
 .li-payment-advice { border-top:2px dashed #a1a1aa; padding:28px clamp(20px,4vw,40px); }
 .loading-overlay { position:absolute; inset:0; background:rgba(255,255,255,0.96); z-index:50; display:none; flex-direction:column; justify-content:center; align-items:center; color:#1d1d1f; }
@@ -624,6 +635,7 @@ body.role-admin .action-btn.btn-delete { display:none !important; }
   .brand, .nav-text-label { pointer-events: none; }
   .nav-item .nav-text { display: inline; }
   
+  /* Mobile Tables jadi Card Stack */
   .table-wrap { background: transparent; border: none; padding: 0; overflow-x: visible; }
   .tbl-header, .cf-header, .cust-header, .freelance-header { display: none; }
   
@@ -633,7 +645,6 @@ body.role-admin .action-btn.btn-delete { display:none !important; }
     box-shadow: var(--shadow);
   }
   
-  /* Quotation / Invoice Rows */
   .tbl-row { grid-template-columns: 1fr 1fr; gap: 8px; }
   .tbl-row > div:nth-child(1) { grid-column: span 2; font-size: 15px; font-weight: 700; }
   .tbl-row > div:nth-child(2) { grid-column: span 2; font-size: 13px; color: var(--text-2); margin-top: -6px; }
@@ -643,7 +654,6 @@ body.role-admin .action-btn.btn-delete { display:none !important; }
   .tbl-row > div:nth-child(6) { grid-column: 2; text-align: right; margin-top: 4px;}
   .tbl-row > div:nth-child(7) { grid-column: span 2; margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
   
-  /* Cashflow Rows */
   .cf-row { grid-template-columns: 1fr 1fr; gap: 8px; }
   .cf-row > div:nth-child(1) { grid-column: 1; font-size: 12px; }
   .cf-row > div:nth-child(6) { grid-column: 2; text-align: right; }
@@ -653,7 +663,6 @@ body.role-admin .action-btn.btn-delete { display:none !important; }
   .cf-row > div:nth-child(5) { grid-column: span 2; font-size: 18px; font-weight: 800; text-align: left !important; margin-top: 4px; }
   .cf-row > div:nth-child(7) { grid-column: span 2; margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
 
-  /* Contacts Rows */
   .cust-row { grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
   .cust-row > div:nth-child(1) { grid-column: span 2; }
   .cust-row > div:nth-child(2) { grid-column: span 2; padding-left: 46px; margin-top: -16px; }
@@ -951,11 +960,19 @@ html.low-motion * { scroll-behavior: auto !important; }
         <div class="loading-overlay" id="qtnLoadingOverlay" style="display:none;"><div class="spinner"></div><div style="font-weight:600;">Loading…</div></div>
         <div class="li-header"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt=""><div class="li-company"><h2>Omnyzo Agency</h2>2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>billings@omnyzo.com · +6018-201 8001<br>Reg: (202503336982) (MA0340342-V)</div></div>
         <div class="li-title">QUOTATION</div>
-        <div class="li-meta"><div class="li-meta-l"><table><tr><td>Quote No:</td><td id="li-qtn-no"></td></tr><tr><td>Date:</td><td id="li-qtn-date"></td></tr><tr><td>Valid:</td><td id="li-qtn-due"></td></tr></table></div><div class="li-meta-r"><p style="font-weight:800;margin-bottom:6px;">TO:</p><h3 id="li-qtn-client" style="font-size:15px;font-weight:800;margin-bottom:4px;"></h3><p id="li-qtn-address" style="line-height:1.7;"></p></div></div>
+        <div class="li-meta"><div class="li-meta-l"><table><tr><td>Quote No:</td><td id="li-qtn-no"></td></tr><tr><td>Date:</td><td id="li-qtn-date"></td></tr><tr><td>Valid:</td><td id="li-qtn-due"></td></tr></table></div><div class="li-meta-r">
+          <p style="font-weight:800;margin-bottom:6px;">TO:</p>
+          <h3 id="li-qtn-client" style="font-size:15px;font-weight:800;margin-bottom:2px;"></h3>
+          <div id="li-qtn-pic" style="font-size:12px;font-weight:700;color:#e84c68;margin-bottom:6px;"></div>
+          <p id="li-qtn-address" style="line-height:1.6;"></p>
+        </div></div>
         <table class="li-table"><thead><tr><th>Description</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead><tbody id="li-qtn-items"></tbody></table>
         <div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-qtn-sub"></span></div><div class="li-summary-row" id="li-qtn-disc-row" style="display:none;color:#ff375f;"><span>Discount</span><span id="li-qtn-disc"></span></div><div class="li-summary-row"><span id="li-qtn-tax-lbl">Tax</span><span id="li-qtn-tax"></span></div><div class="li-summary-row total" style="background:#3b5fe4;"><span>TOTAL</span><span id="li-qtn-total"></span></div></div></div>
-        <div id="li-qtn-notes-wrap" style="display:none;padding:0 40px 14px;"><h4 style="font-size:10px;text-transform:uppercase;margin-bottom:6px;">Notes</h4><p id="li-qtn-notes" style="font-size:11px;color:#86868b;white-space:pre-line;"></p></div>
-        <div class="li-bottom"><div class="li-box"><h4>Note</h4><div style="border:1px solid #eef0f2;padding:12px;border-radius:10px;font-size:11px;color:#86868b;">Upon approval, this quote can become an invoice.</div></div><div class="li-box"><h4>Terms</h4><p id="li-qtn-terms" style="white-space:pre-line;font-size:11px;color:#86868b;"></p></div></div>
+        
+        <div class="li-bottom">
+          <div class="li-box"><h4>Note</h4><p id="li-qtn-notes" style="white-space:pre-line;font-size:10px;color:#555;line-height:1.6;"></p></div>
+          <div class="li-box"><h4>Terms</h4><p id="li-qtn-terms"></p></div>
+        </div>
       </div></div>
     </div>
 
@@ -1021,11 +1038,29 @@ html.low-motion * { scroll-behavior: auto !important; }
         <div class="loading-overlay" id="invLoadingOverlay" style="display:none;"><div class="spinner"></div><div style="font-weight:600;">Loading…</div></div>
         <div class="li-header"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt=""><div class="li-company"><h2>Omnyzo Agency</h2>2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>billings@omnyzo.com · +6018-201 8001</div></div>
         <div class="li-title">INVOICE</div>
-        <div class="li-meta"><div class="li-meta-l"><table><tr><td>Invoice:</td><td id="li-inv-no"></td></tr><tr><td>Date:</td><td id="li-inv-date"></td></tr><tr><td>Due:</td><td id="li-inv-due"></td></tr></table></div><div class="li-meta-r"><p style="font-weight:800;margin-bottom:6px;">TO:</p><h3 id="li-inv-client" style="font-size:15px;font-weight:800;"></h3><p id="li-inv-address" style="line-height:1.7;"></p></div></div>
+        <div class="li-meta"><div class="li-meta-l"><table><tr><td>Invoice:</td><td id="li-inv-no"></td></tr><tr><td>Date:</td><td id="li-inv-date"></td></tr><tr><td>Due:</td><td id="li-inv-due"></td></tr></table></div><div class="li-meta-r">
+          <p style="font-weight:800;margin-bottom:6px;">TO:</p>
+          <h3 id="li-inv-client" style="font-size:15px;font-weight:800;margin-bottom:2px;"></h3>
+          <div id="li-inv-pic" style="font-size:12px;font-weight:700;color:#e84c68;margin-bottom:6px;"></div>
+          <p id="li-inv-address" style="line-height:1.6;"></p>
+        </div></div>
         <table class="li-table"><thead><tr><th>Description</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead><tbody id="li-inv-items"></tbody></table>
         <div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-inv-sub"></span></div><div class="li-summary-row" id="li-inv-disc-row" style="display:none;"><span>Discount</span><span id="li-inv-disc"></span></div><div class="li-summary-row"><span id="li-inv-tax-lbl">Tax</span><span id="li-inv-tax"></span></div><div class="li-summary-row total"><span>TOTAL</span><span id="li-inv-total"></span></div></div></div>
-        <div id="li-inv-notes-wrap" style="display:none;padding:0 40px 14px;"><h4 style="font-size:10px;text-transform:uppercase;">Notes</h4><p id="li-inv-notes" style="font-size:11px;color:#86868b;white-space:pre-line;"></p></div>
-        <div class="li-bottom"><div class="li-box"><h4>Payment</h4><div style="border:1px solid #eef0f2;padding:12px;border-radius:10px;font-size:11px;"><table style="width:100%;border-collapse:collapse;"><tr><td style="color:#86868b;">Payee</td><td style="font-weight:700;">OMNYZO AGENCY</td></tr><tr><td style="color:#86868b;">Bank</td><td style="font-weight:700;">MAYBANK BERHAD</td></tr><tr><td style="color:#86868b;">Account</td><td style="font-weight:700;">5144-0481-2701</td></tr></table></div></div><div class="li-box"><h4>Terms</h4><p id="li-inv-terms" style="white-space:pre-line;font-size:11px;color:#86868b;"></p></div></div>
+        
+        <div class="li-bottom">
+          <div class="li-box">
+            <h4>Payment</h4>
+            <div style="border:1px solid #eef0f2;padding:12px;border-radius:10px;font-size:11px;">
+              <table style="width:100%;border-collapse:collapse;"><tr><td style="color:#86868b;">Payee</td><td style="font-weight:700;">OMNYZO AGENCY</td></tr><tr><td style="color:#86868b;">Bank</td><td style="font-weight:700;">MAYBANK BERHAD</td></tr><tr><td style="color:#86868b;">Account</td><td style="font-weight:700;">5144-0481-2701</td></tr></table>
+            </div>
+            <div style="margin-top:12px;">
+              <h4>Notes</h4>
+              <p id="li-inv-notes" style="white-space:pre-line;font-size:10px;color:#555;line-height:1.6;"></p>
+            </div>
+          </div>
+          <div class="li-box"><h4>Terms</h4><p id="li-inv-terms"></p></div>
+        </div>
+        
         <div class="li-payment-advice-page" id="li-pa-page"><div class="li-payment-advice"><div style="text-align:center;color:#a1a1aa;margin-top:-40px;">✂️</div><h3 style="font-size:13px;font-weight:800;margin-bottom:12px;">PAYMENT ADVICE</h3><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;"><div><p style="color:#86868b;">To:</p><p style="font-weight:800;">Omnyzo Agency</p></div><table style="border-collapse:collapse;"><tr><td style="color:#86868b;padding-right:10px;">Customer:</td><td style="font-weight:700;" id="pa-client"></td></tr><tr><td style="color:#86868b;">Invoice:</td><td style="font-weight:700;" id="pa-inv-no"></td></tr><tr><td style="color:#86868b;">Due:</td><td style="font-weight:700;" id="pa-due"></td></tr><tr><td style="color:#86868b;">Amount:</td><td style="font-weight:800;" id="pa-amt"></td></tr></table></div></div></div>
       </div></div>
     </div>
@@ -1505,13 +1540,13 @@ function updateTerms(){
   const dueLine=t===0?'Payment is due immediately.':'Please adhere to the due date stated.';
   let text='';
   if(tmpl==='standard'){
-    text='1. GENERAL: "Omnyzo Agency" provides services as described in this invoice.\n2. PAYMENT: Fees '+payStr+'. '+dueLine+'\n3. METHOD: Payment via bank transfer to the account stated on this document.\n4. LATE PAYMENT: We reserve the right to suspend work or apply late fees for overdue accounts.\n5. DELIVERABLES: Deemed accepted unless notified in writing within 7 days.\n6. LIABILITY: Limited to the fees paid for this specific engagement.';
+    text='1. GENERAL: "Omnyzo Agency" provides services as described in this invoice.\n\n2. PAYMENT: Fees '+payStr+'. '+dueLine+'\n\n3. METHOD: Payment via bank transfer to the account stated on this document.\n\n4. LATE PAYMENT: We reserve the right to suspend work or apply late fees for overdue accounts.\n\n5. DELIVERABLES: Deemed accepted unless notified in writing within 7 days.\n\n6. LIABILITY: Limited to the fees paid for this specific engagement.';
   }else if(tmpl==='retainer'){
-    text='1. RETAINER: This invoice covers the agreed monthly retainer period.\n2. PAYMENT: Fees '+payStr+'. '+dueLine+'\n3. CONTINUATION: Work for the next month commences only after cleared payment of this invoice.\n4. UNUSED HOURS: Do not automatically roll over unless explicitly agreed.\n5. CANCELLATION: Subject to the notice period in your master agreement (default 30 days).';
+    text='1. RETAINER: This invoice covers the agreed monthly retainer period.\n\n2. PAYMENT: Fees '+payStr+'. '+dueLine+'\n\n3. CONTINUATION: Work for the next month commences only after cleared payment of this invoice.\n\n4. UNUSED HOURS: Do not automatically roll over unless explicitly agreed.\n\n5. CANCELLATION: Subject to the notice period in your master agreement (default 30 days).';
   }else if(tmpl==='deposit'){
-    text='1. DEPOSIT: A non-refundable 50% deposit is required before work commences.\n2. BALANCE: Remaining balance '+payStr+'. '+dueLine+'\n3. CANCELLATION: Deposit secures capacity and is forfeited if project is cancelled after work starts.\n4. RELEASE: Final deliverables are released only after full cleared payment.\n5. LIABILITY: Limited to the fees paid for this specific engagement.';
+    text='1. DEPOSIT: A non-refundable 50% deposit is required before work commences.\n\n2. BALANCE: Remaining balance '+payStr+'. '+dueLine+'\n\n3. CANCELLATION: Deposit secures capacity and is forfeited if project is cancelled after work starts.\n\n4. RELEASE: Final deliverables are released only after full cleared payment.\n\n5. LIABILITY: Limited to the fees paid for this specific engagement.';
   }else if(tmpl==='rush'){
-    text='1. RUSH ENGAGEMENT: Expedited delivery charges '+payStr+'. '+dueLine+'\n2. TIMELINES: Rush delivery depends on prompt feedback/assets from your team.\n3. LATE PAYMENT: Overdue amounts subject to 5% weekly late fee, capped by law.\n4. SUSPENSION: Rush work may be paused if invoices are overdue.\n5. ACCEPTANCE: Deliverables deemed accepted within 7 days of delivery.';
+    text='1. RUSH ENGAGEMENT: Expedited delivery charges '+payStr+'. '+dueLine+'\n\n2. TIMELINES: Rush delivery depends on prompt feedback/assets from your team.\n\n3. LATE PAYMENT: Overdue amounts subject to 5% weekly late fee, capped by law.\n\n4. SUSPENSION: Rush work may be paused if invoices are overdue.\n\n5. ACCEPTANCE: Deliverables deemed accepted within 7 days of delivery.';
   }
   document.getElementById('invTerms').value=text;
 }
@@ -1562,6 +1597,10 @@ function viewInvDetail(no){
   let pa=document.getElementById('li-pa-page'); if(inv.hasPaymentAdvice===false) pa.style.display='none'; else pa.style.display='flex';
   let c=appData.customers.find(x=>x.company===inv.client);
   let addr=c?fcleanAddr(c)+'<br>'+(c.phone||'')+'<br>'+(c.email||''):'-';
+  
+  let picNameInv = (inv.fullData && inv.fullData.pic) ? inv.fullData.pic : (c ? c.pic : '');
+  document.getElementById('li-inv-pic').innerText = picNameInv ? 'Attn: ' + picNameInv : '';
+  
   document.getElementById('li-inv-address').innerHTML=(inv.fullData&&inv.fullData.address)?(inv.fullData.address+'<br>'+(inv.fullData.phone||'')+'<br>'+(inv.fullData.email||'')):addr;
   let iHtml='', calcSub=0;
   if(inv.sheetItems&&inv.sheetItems.length){
@@ -1593,7 +1632,7 @@ function revertToPending(no){ showConfirm('Revert','Revert '+no+'?',function(){
 function downloadInvPDF(){
   const el=document.getElementById('invoiceCaptureArea'), no=document.getElementById('li-inv-no').innerText;
   showToast('Generating PDF…'); el.style.boxShadow='none'; el.style.border='none';
-  html2pdf().set({margin:[0.4,0,0.4,0],filename:'Invoice_'+no+'.pdf',image:{type:'jpeg',quality:1},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['tr','.li-summary-wrap','.li-bottom']}}).from(el).save().then(()=>{ el.style.boxShadow=''; el.style.border='1px solid #eee'; showToast('Saved'); });
+  html2pdf().set({margin:[0.4,0,0.4,0],filename:'Invoice_'+no+'.pdf',image:{type:'jpeg',quality:1},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['tr','.li-summary-wrap','.li-bottom']}}).from(el).save().then(()=>{ el.style.boxShadow=''; el.style.border='1px solid #ddd'; showToast('Saved'); });
 }
 function copyDetailLink(){ navigator.clipboard.writeText(window.location.href).then(()=>showToast('Copied')); }
 function openPayTransModal(idx){ document.getElementById('payTransIdx').value=idx; document.getElementById('pay-trans-modal').classList.add('show'); }
@@ -1663,9 +1702,9 @@ function updateQtnTerms(){
   const tmpl=document.getElementById('qtnTcTemplate').value;
   let text='';
   if(tmpl==='standard'){
-    text='1. VALIDITY: This quotation is valid until the "Valid Until" date shown above.\n2. PRICING: Prices are in MYR and exclude applicable taxes/third-party fees unless stated.\n3. SCOPE: Limited to the description herein. Changes may require a revised quotation.\n4. ACCEPTANCE: Confirm via email or signed PO to commence scheduling.\n5. TIMELINES: Dependent on timely provision of feedback and assets from your side.\n6. IP RIGHTS: Final usage rights pass to you upon full payment, as agreed in writing.';
+    text='1. VALIDITY: This quotation is valid until the "Valid Until" date shown above.\n\n2. PRICING: Prices are in MYR and exclude applicable taxes/third-party fees unless stated.\n\n3. SCOPE: Limited to the description herein. Changes may require a revised quotation.\n\n4. ACCEPTANCE: Confirm via email or signed PO to commence scheduling.\n\n5. TIMELINES: Dependent on timely provision of feedback and assets from your side.\n\n6. IP RIGHTS: Final usage rights pass to you upon full payment, as agreed in writing.';
   }else{
-    text='1. VALIDITY: This quotation is valid until the "Valid Until" date shown above.\n2. DEPOSIT: A non-refundable 50% deposit is payable before work begins.\n3. BALANCE: Due upon completion of milestones or final invoice.\n4. CANCELLATION: Deposit is forfeited to cover costs if cancelled after work starts.\n5. DELIVERABLES: Released only after cleared payment of all outstanding amounts.\n6. SCOPE: Limited to this quote; additional work requires a written change order.';
+    text='1. VALIDITY: This quotation is valid until the "Valid Until" date shown above.\n\n2. DEPOSIT: A non-refundable 50% deposit is payable before work begins.\n\n3. BALANCE: Due upon completion of milestones or final invoice.\n\n4. CANCELLATION: Deposit is forfeited to cover costs if cancelled after work starts.\n\n5. DELIVERABLES: Released only after cleared payment of all outstanding amounts.\n\n6. SCOPE: Limited to this quote; additional work requires a written change order.';
   }
   document.getElementById('qtnTerms').value=text;
 }
@@ -1712,6 +1751,10 @@ function viewQtnDetail(no){
   document.getElementById('li-qtn-no').innerText=qtn.quotationNo; document.getElementById('li-qtn-date').innerText=fdate(qtn.date); document.getElementById('li-qtn-due').innerText=fdate(qtn.validDate); document.getElementById('li-qtn-client').innerText=qtn.client;
   let c=appData.customers.find(x=>x.company===qtn.client);
   let addr=c?fcleanAddr(c)+'<br>'+(c.phone||'')+'<br>'+(c.email||''):'-';
+  
+  let picNameQtn = (qtn.fullData && qtn.fullData.pic) ? qtn.fullData.pic : (c ? c.pic : '');
+  document.getElementById('li-qtn-pic').innerText = picNameQtn ? 'Attn: ' + picNameQtn : '';
+  
   document.getElementById('li-qtn-address').innerHTML=(qtn.fullData&&qtn.fullData.address)?(qtn.fullData.address+'<br>'+(qtn.fullData.phone||'')):addr;
   let iHtml='', calcSub=0;
   if(qtn.sheetItems&&qtn.sheetItems.length){
@@ -1752,7 +1795,7 @@ function convertQtnToInv(no){
 function downloadQtnPDF(){
   const el=document.getElementById('quotationCaptureArea'), no=document.getElementById('li-qtn-no').innerText;
   showToast('Generating…'); el.style.boxShadow='none'; el.style.border='none';
-  html2pdf().set({margin:[0.4,0,0.4,0],filename:no+'.pdf',image:{type:'jpeg',quality:1},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['tr','.li-summary-wrap','.li-bottom']}}).from(el).save().then(()=>{ el.style.boxShadow=''; el.style.border='1px solid #eee'; showToast('Saved'); });
+  html2pdf().set({margin:[0.4,0,0.4,0],filename:no+'.pdf',image:{type:'jpeg',quality:1},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['tr','.li-summary-wrap','.li-bottom']}}).from(el).save().then(()=>{ el.style.boxShadow=''; el.style.border='1px solid #ddd'; showToast('Saved'); });
 }
 
 /* Cashflow */
