@@ -6,6 +6,7 @@
 <title>Omnyzo — Admin</title>
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#080910">
@@ -500,7 +501,6 @@ textarea.form-control { resize:vertical; min-height:88px; }
   border: 1px solid #ddd;
   position: relative;
   text-align: left;
-  /* FIX: Flex column untuk tolak Note & Terms ke bawah, dan set tinggi muat 1 page (A4) */
   display: flex;
   flex-direction: column;
   min-height: 1040px; 
@@ -527,7 +527,6 @@ textarea.form-control { resize:vertical; min-height:88px; }
 .li-box { flex:1; min-width:200px; }
 .li-box h4 { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; color:#1d1d1f; }
 
-/* FIX: Kemaskan Terms & Note dengan font lebih kecil dan ada line height */
 #li-qtn-terms, #li-inv-terms, #li-inv-notes, #li-qtn-notes {
   white-space: pre-line; font-size: 10px; color: #555; line-height: 1.6; text-align: justify;
 }
@@ -957,7 +956,7 @@ html.low-motion * { scroll-behavior: auto !important; }
       <div class="detail-bar"><div class="detail-bar-left"><button type="button" class="back-btn" onclick="switchView('quotations-view')">←</button><div><h1 id="detail-qtn-no" style="font-family:var(--font);font-size:20px;">QTN</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-qtn-client"></span> · <span id="detail-qtn-status" class="tag"></span></p></div></div>
         <div class="detail-actions"><div id="qtn-convert-btn-wrap"></div><button type="button" class="a-btn a-btn-ghost" onclick="downloadQtnPDF()">PDF</button><a id="btn-qtn-email" class="a-btn a-btn-blue" href="#">Email</a></div></div>
       <div class="invoice-preview-wrap"><div class="live-invoice" id="quotationCaptureArea">
-        <div class="loading-overlay" id="qtnLoadingOverlay" style="display:none;"><div class="spinner"></div><div style="font-weight:600;">Loading…</div></div>
+        <div class="loading-overlay" id="qtnLoadingOverlay" style="display:none;"><div class="spinner"></div><div style="font-weight:600;">Loading...</div></div>
         <div class="li-header"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt=""><div class="li-company"><h2>Omnyzo Agency</h2>2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>billings@omnyzo.com · +6018-201 8001<br>Reg: (202503336982) (MA0340342-V)</div></div>
         <div class="li-title">QUOTATION</div>
         <div class="li-meta"><div class="li-meta-l"><table><tr><td>Quote No:</td><td id="li-qtn-no"></td></tr><tr><td>Date:</td><td id="li-qtn-date"></td></tr><tr><td>Valid:</td><td id="li-qtn-due"></td></tr></table></div><div class="li-meta-r">
@@ -970,7 +969,12 @@ html.low-motion * { scroll-behavior: auto !important; }
         <div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-qtn-sub"></span></div><div class="li-summary-row" id="li-qtn-disc-row" style="display:none;color:#ff375f;"><span>Discount</span><span id="li-qtn-disc"></span></div><div class="li-summary-row"><span id="li-qtn-tax-lbl">Tax</span><span id="li-qtn-tax"></span></div><div class="li-summary-row total" style="background:#3b5fe4;"><span>TOTAL</span><span id="li-qtn-total"></span></div></div></div>
         
         <div class="li-bottom">
-          <div class="li-box"><h4>Note</h4><p id="li-qtn-notes" style="white-space:pre-line;font-size:10px;color:#555;line-height:1.6;"></p></div>
+          <div class="li-box">
+            <div id="li-qtn-notes-wrap">
+              <h4>Notes</h4>
+              <p id="li-qtn-notes" style="white-space:pre-line;font-size:10px;color:#555;line-height:1.6;"></p>
+            </div>
+          </div>
           <div class="li-box"><h4>Terms</h4><p id="li-qtn-terms"></p></div>
         </div>
       </div></div>
@@ -1035,14 +1039,14 @@ html.low-motion * { scroll-behavior: auto !important; }
       <div class="detail-bar"><div class="detail-bar-left"><button type="button" class="back-btn" onclick="switchView('invoices-view')">←</button><div><h1 id="detail-inv-no" style="font-family:var(--font);font-size:20px;">OMN</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-inv-client"></span> · <span id="detail-inv-status" class="tag"></span></p></div></div>
         <div class="detail-actions"><button type="button" class="a-btn a-btn-ghost" onclick="downloadInvPDF()">PDF</button><button type="button" class="a-btn a-btn-ghost" onclick="copyDetailLink()">Share</button><a id="btn-inv-email" class="a-btn a-btn-pink" href="#">Email</a></div></div>
       <div class="invoice-preview-wrap"><div class="live-invoice" id="invoiceCaptureArea">
-        <div class="loading-overlay" id="invLoadingOverlay" style="display:none;"><div class="spinner"></div><div style="font-weight:600;">Loading…</div></div>
+        <div class="loading-overlay" id="invLoadingOverlay" style="display:none;"><div class="spinner"></div><div style="font-weight:600;">Loading...</div></div>
         <div class="li-header"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt=""><div class="li-company"><h2>Omnyzo Agency</h2>2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>billings@omnyzo.com · +6018-201 8001</div></div>
         <div class="li-title">INVOICE</div>
         <div class="li-meta"><div class="li-meta-l"><table><tr><td>Invoice:</td><td id="li-inv-no"></td></tr><tr><td>Date:</td><td id="li-inv-date"></td></tr><tr><td>Due:</td><td id="li-inv-due"></td></tr></table></div><div class="li-meta-r">
           <p style="font-weight:800;margin-bottom:6px;">TO:</p>
           <h3 id="li-inv-client" style="font-size:15px;font-weight:800;margin-bottom:2px;"></h3>
           <div id="li-inv-pic" style="font-size:12px;font-weight:700;color:#e84c68;margin-bottom:6px;"></div>
-          <p id="li-inv-address" style="line-height:1.6;"></p>
+          <p id="li-inv-address" style="line-height:1.7;"></p>
         </div></div>
         <table class="li-table"><thead><tr><th>Description</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead><tbody id="li-inv-items"></tbody></table>
         <div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-inv-sub"></span></div><div class="li-summary-row" id="li-inv-disc-row" style="display:none;"><span>Discount</span><span id="li-inv-disc"></span></div><div class="li-summary-row"><span id="li-inv-tax-lbl">Tax</span><span id="li-inv-tax"></span></div><div class="li-summary-row total"><span>TOTAL</span><span id="li-inv-total"></span></div></div></div>
@@ -1053,7 +1057,7 @@ html.low-motion * { scroll-behavior: auto !important; }
             <div style="border:1px solid #eef0f2;padding:12px;border-radius:10px;font-size:11px;">
               <table style="width:100%;border-collapse:collapse;"><tr><td style="color:#86868b;">Payee</td><td style="font-weight:700;">OMNYZO AGENCY</td></tr><tr><td style="color:#86868b;">Bank</td><td style="font-weight:700;">MAYBANK BERHAD</td></tr><tr><td style="color:#86868b;">Account</td><td style="font-weight:700;">5144-0481-2701</td></tr></table>
             </div>
-            <div style="margin-top:12px;">
+            <div style="margin-top:12px;" id="li-inv-notes-wrap">
               <h4>Notes</h4>
               <p id="li-inv-notes" style="white-space:pre-line;font-size:10px;color:#555;line-height:1.6;"></p>
             </div>
@@ -1616,8 +1620,16 @@ function viewInvDetail(no){
   let tType=inv.taxType&&inv.taxType!=='None'?inv.taxType:'Tax', tSign=inv.taxType==='WHT'?'- ':'';
   document.getElementById('li-inv-tax-lbl').innerText=tType; document.getElementById('li-inv-tax').innerText=tSign+fc(inv.taxAmount||0);
   document.getElementById('li-inv-total').innerText='RM '+fc(inv.amount); document.getElementById('li-inv-terms').innerText=inv.tc||'';
-  if(inv.notes&&inv.notes.trim()){ document.getElementById('li-inv-notes-wrap').style.display='block'; document.getElementById('li-inv-notes').innerText=inv.notes; }
-  else document.getElementById('li-inv-notes-wrap').style.display='none';
+  
+  // FIX: Make sure the ID exists before changing style
+  let notesWrap = document.getElementById('li-inv-notes-wrap');
+  if(inv.notes&&inv.notes.trim()){ 
+      if(notesWrap) notesWrap.style.display='block'; 
+      document.getElementById('li-inv-notes').innerText=inv.notes; 
+  } else {
+      if(notesWrap) notesWrap.style.display='none';
+  }
+  
   document.getElementById('pa-client').innerText=inv.client; document.getElementById('pa-inv-no').innerText=inv.invoiceNo; document.getElementById('pa-due').innerText=dueStr; document.getElementById('pa-amt').innerText='RM '+fc(inv.amount);
   switchView('invoice-detail-view');
 }
@@ -1770,8 +1782,16 @@ function viewQtnDetail(no){
   let tType=qtn.taxType&&qtn.taxType!=='None'?qtn.taxType:'Tax', tSign=qtn.taxType==='WHT'?'- ':'';
   document.getElementById('li-qtn-tax-lbl').innerText=tType; document.getElementById('li-qtn-tax').innerText=tSign+fc(qtn.taxAmount||0);
   document.getElementById('li-qtn-total').innerText='RM '+fc(qtn.amount); document.getElementById('li-qtn-terms').innerText=qtn.tc||'';
-  if(qtn.notes&&qtn.notes.trim()){ document.getElementById('li-qtn-notes-wrap').style.display='block'; document.getElementById('li-qtn-notes').innerText=qtn.notes; }
-  else document.getElementById('li-qtn-notes-wrap').style.display='none';
+  
+  // FIX: Make sure the ID exists before changing style
+  let notesWrap = document.getElementById('li-qtn-notes-wrap');
+  if(qtn.notes&&qtn.notes.trim()){ 
+      if(notesWrap) notesWrap.style.display='block'; 
+      document.getElementById('li-qtn-notes').innerText=qtn.notes; 
+  } else {
+      if(notesWrap) notesWrap.style.display='none';
+  }
+  
   let cv=document.getElementById('qtn-convert-btn-wrap');
   if(qtn.status==='Approved') cv.innerHTML='<button type="button" class="a-btn a-btn-ghost" onclick="convertQtnToInv(\''+qtn.quotationNo+'\')">Convert to invoice</button>';
   else cv.innerHTML='';
