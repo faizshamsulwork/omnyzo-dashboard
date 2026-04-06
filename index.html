@@ -32,14 +32,11 @@
         #intro-page { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, #1a1b23 0%, #000000 100%); transition: 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
         .intro-content { text-align: center; animation: sciFiFadeIn 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         @keyframes sciFiFadeIn { 0% { opacity: 0; transform: scale(0.9); filter: blur(15px); } 100% { opacity: 1; transform: scale(1); filter: blur(0); } }
-        #introLogoGraphic { width: 100px; filter: invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.3)); margin-bottom: 20px; animation: pulseGlow 3s infinite alternate; }
-        .intro-title { color: #fff; font-size: 38px; font-weight: 800; letter-spacing: 8px; text-transform: uppercase; text-shadow: 0 0 15px rgba(255,255,255,0.5); margin-bottom: 40px;}
         .btn-enter { background: linear-gradient(135deg, #e14e65, #f43f5e); color: #fff; padding: 18px 55px; border-radius: 50px; font-size: 16px; font-weight: 800; letter-spacing: 3px; border: none; cursor: pointer; transition: 0.4s; box-shadow: 0 0 15px rgba(225, 78, 101, 0.4); text-transform: uppercase; }
         .btn-enter:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(225, 78, 101, 0.8); }
         
         .sync-text { display: none; color: var(--accent-pink); font-size: 14px; font-weight: 800; letter-spacing: 4px; margin-top: 20px; animation: pulseText 1.5s infinite alternate; text-transform: uppercase; }
         @keyframes pulseText { 0% { opacity: 0.5; text-shadow: 0 0 5px rgba(225,78,101,0.2); } 100% { opacity: 1; text-shadow: 0 0 20px rgba(225,78,101,0.8); } }
-        @keyframes pulseGlow { 0% { filter: invert(1) drop-shadow(0 0 5px rgba(255,255,255,0.1)); } 100% { filter: invert(1) drop-shadow(0 0 15px rgba(255,255,255,0.6)); } }
         .zoom-out-exit { transform: scale(1.3); opacity: 0; filter: blur(10px); pointer-events: none; }
 
         #app-container { display: flex; width: 100%; height: 100%; opacity: 0; transform: scale(0.98); transition: 1s cubic-bezier(0.25, 1, 0.5, 1); display:none;}
@@ -79,7 +76,9 @@
         .notif-item { padding: 15px; border-bottom: 1px solid var(--border-color); font-size: 13px; line-height:1.5; color:var(--text-main);}
         .notif-item:last-child { border-bottom:none; }
         .notif-time { font-size:11px; color:var(--text-muted); margin-bottom:5px; font-weight:600;}
-        
+        .ringing { animation: ringBell 0.5s ease-in-out 3; color: var(--accent-pink) !important; border-color: var(--accent-pink) !important; }
+        @keyframes ringBell { 0% { transform: rotate(0); } 25% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 75% { transform: rotate(10deg); } 100% { transform: rotate(0); } }
+
         .main-content { flex: 1; padding: 40px 50px; overflow-y: auto; overflow-x: hidden; position:relative;}
         .view-section { display: none; animation: slideUpFade 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         .view-section.active-view { display: block; }
@@ -1099,7 +1098,7 @@
     </template>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDLsxt8-zEh-Egmdnz8YStDCYt9POg06MUeJwzf9WPGGbCKfuNck78fey343NTMliP/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxeXTKydAxRX3fMaY80VknJnXY_Aq2uy1NFYHTDcJI7F8K8IXtdB27rhoIHQsesHmg/exec';
         
         let appData = { invoices: [], quotations: [], customers: [], freelancers: [], logs: [], cashflow: [] };
         
@@ -1109,7 +1108,7 @@
         let previousLogsCount = 0;
         
         let currentUserRole = 'Superadmin'; 
-        let currentUsername = 'Admin';
+        let currentUsername = 'Boss';
 
         function unformatCurrency(val) { return parseFloat(val.toString().replace(/,/g, '')) || 0; }
         function formatCurrency(val) { return parseFloat(val || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
@@ -1133,22 +1132,10 @@
         function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('show'); pendingConfirmAction = null; }
         document.getElementById('confirm-btn-yes').addEventListener('click', function() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); });
 
-        // FUNGSI BYPASS LOGIN BARU
+        // FUNGSI BYPASS LOGIN BARU (BUNUH ERROR APPLYROLEPERMISSIONS)
         function enterDashboard() {
             document.getElementById('startBtn').style.display = 'none';
             document.getElementById('introLoading').style.display = 'block';
-            
-            document.getElementById('sidebar-username').innerText = "Boss";
-            document.getElementById('sidebar-role').innerText = "Superadmin";
-            document.getElementById('sidebar-avatar').innerText = "B";
-            
-           function applyRolePermissions() {
-    // Semua sentiasa terbuka sebab Superadmin
-    document.getElementById('nav-cashflow').style.display = 'flex'; 
-    document.getElementById('card-netcash').style.display = 'block'; 
-    document.getElementById('card-thismonth').style.display = 'block'; 
-    document.getElementById('qa-expense').style.display = 'flex';
-}
             
             fetchAppData().then(() => {
                 const introPage = document.getElementById('intro-page');
@@ -1161,20 +1148,11 @@
             }).catch(err => {
                 document.getElementById('startBtn').style.display = 'inline-block';
                 document.getElementById('introLoading').style.display = 'none';
-                showToast("Connection Error. Please try again.", true);
+                showToast("Connection Error. Please check Web App URL.", true);
             });
-        }
-
-        function applyRolePermissions() {
-            // Semua sentiasa terbuka sebab Superadmin
-            document.getElementById('nav-cashflow').style.display = 'flex'; 
-            document.getElementById('card-netcash').style.display = 'block'; 
-            document.getElementById('card-thismonth').style.display = 'block'; 
-            document.getElementById('qa-expense').style.display = 'flex';
         }
         
         function logoutApp() {
-            // Reload page sebab tiada login session lagi
             window.location.reload();
         }
 
