@@ -9,10 +9,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#080910">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 :root {
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --bg: #07080c;
   --surface-1: rgba(18,19,26,0.82);
   --surface-2: rgba(24,26,34,0.94);
@@ -57,7 +58,7 @@ body {
   background: var(--bg);
   background-image: radial-gradient(1200px 600px at 80% -10%, rgba(255,55,95,0.08), transparent), radial-gradient(800px 400px at -10% 100%, rgba(10,132,255,0.06), transparent);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'DM Sans', 'Segoe UI', sans-serif;
+  font-family: var(--font);
   min-height:100vh; min-height:100dvh;
   display:flex; overflow:hidden;
   -webkit-font-smoothing:antialiased;
@@ -90,7 +91,8 @@ body {
 .login-logo { width:64px; height:64px; margin:0 auto 20px; border-radius:18px; overflow:hidden;
   background: linear-gradient(145deg, var(--pink), #c41e3a); box-shadow: 0 12px 40px var(--pink-glow); }
 .login-logo img { width:100%; height:100%; object-fit:cover; }
-.login-card h1 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; text-align:center; letter-spacing:-0.5px; margin-bottom:6px; }
+.login-card h1 { font-family:var(--font); font-size:22px; font-weight:800; text-align:center; letter-spacing:-0.5px; margin-bottom:6px; }
+button, input, select, textarea { font-family: var(--font); }
 .login-card p { text-align:center; color:var(--text-3); font-size:13px; margin-bottom:24px; }
 .login-field { margin-bottom:14px; }
 .login-field label { display:block; font-size:12px; font-weight:600; color:var(--text-2); margin-bottom:6px; }
@@ -104,7 +106,7 @@ body {
 .btn-login {
   width:100%; min-height: var(--tap-min); margin-top:8px;
   border:none; border-radius: 100px; cursor:pointer;
-  font-family:'Syne',sans-serif; font-weight:700; font-size:15px; letter-spacing:0.3px;
+  font-family:var(--font); font-weight:700; font-size:15px; letter-spacing:0.3px;
   color:#fff; background: linear-gradient(180deg, #ff4d6a 0%, #e02d4f 100%);
   box-shadow: 0 8px 24px var(--pink-glow);
   transition: transform 0.2s var(--ease), opacity 0.2s;
@@ -139,8 +141,8 @@ body {
 }
 @keyframes logoFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 .intro-logo-wrap img { width:52px; height:52px; border-radius:12px; }
-.intro-eyebrow { font-family:'Syne',sans-serif; font-size:10px; letter-spacing:4px; color:var(--pink); text-transform:uppercase; margin-bottom:8px; opacity:0.85; }
-.intro-title { font-family:'Syne',sans-serif; font-size:clamp(32px,8vw,44px); font-weight:800; letter-spacing:-1px; line-height:1.05; margin-bottom:6px; }
+.intro-eyebrow { font-family:var(--font); font-size:10px; letter-spacing:4px; color:var(--pink); text-transform:uppercase; margin-bottom:8px; opacity:0.85; }
+.intro-title { font-family:var(--font); font-size:clamp(32px,8vw,44px); font-weight:800; letter-spacing:-1px; line-height:1.05; margin-bottom:6px; }
 .intro-sub { color: var(--text-3); font-size:14px; margin-bottom:8px; }
 .intro-user { font-size:13px; color:var(--text-2); margin-bottom:32px; }
 .intro-user strong { color: var(--pink); }
@@ -148,13 +150,13 @@ body {
   min-height: var(--tap-min); padding: 0 44px;
   background: linear-gradient(180deg, #fff 0%, #f2f2f7 100%);
   color:#1c1c1e; border: none; border-radius: 100px;
-  font-family:'Syne',sans-serif; font-size:14px; font-weight:700; letter-spacing:0.5px;
+  font-family:var(--font); font-size:14px; font-weight:700; letter-spacing:0.5px;
   cursor:pointer; box-shadow: 0 10px 40px rgba(0,0,0,0.25);
   transition: transform 0.25s var(--ease-spring), box-shadow 0.25s;
 }
 .btn-enter:hover { transform: translateY(-2px); box-shadow: 0 14px 48px rgba(0,0,0,0.3); }
 .btn-enter:active { transform: translateY(0); }
-.intro-loading { display:none; margin-top:20px; color:var(--pink); font-size:12px; letter-spacing:2px; font-family:'Syne',sans-serif; }
+.intro-loading { display:none; margin-top:20px; color:var(--pink); font-size:12px; letter-spacing:2px; font-family:var(--font); }
 .intro-orbs { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
 .orb { position:absolute; border-radius:50%; filter:blur(72px); opacity:0.18; animation: orbFloat 22s linear infinite; }
 .orb-1 { width:420px; height:420px; background:var(--pink); top:-160px; left:-120px; }
@@ -165,21 +167,27 @@ body {
 #app-container.visible { display:flex; }
 #app-container.shown { opacity:1; }
 
-/* Sidebar */
+/* Sidebar — fixed width (no flex shrink) */
 .sidebar {
-  width:min(280px,86vw); flex-shrink:0;
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+  flex: 0 0 260px;
   background: var(--surface-1);
   border-right:1px solid var(--border);
   display:flex; flex-direction:column;
   padding:16px 12px;
   z-index:100;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
   transition: background 0.4s;
 }
 .brand { display:flex; align-items:center; gap:10px; padding:10px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:16px; }
 .brand-icon { width:36px; height:36px; border-radius:10px; background: linear-gradient(145deg, var(--pink), #c41e3a); display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 20px var(--pink-glow); }
 .brand-icon img { width:22px; height:22px; border-radius:4px; }
-.brand-name { font-family:'Syne',sans-serif; font-weight:800; font-size:15px; }
+.brand-name { font-family:var(--font); font-weight:800; font-size:15px; }
 .brand-tag { font-size:10px; color:var(--text-3); }
 .nav-section-label { font-size:10px; font-weight:700; letter-spacing:1.2px; color:var(--text-3); text-transform:uppercase; padding:0 10px; margin-bottom:6px; }
 .nav-item {
@@ -222,7 +230,7 @@ body {
 .reload-btn { background:none; border:none; color:var(--text-3); cursor:pointer; padding:8px; border-radius:10px; min-width:var(--tap-min); min-height:var(--tap-min); display:flex; align-items:center; justify-content:center; }
 .reload-btn:hover { color:var(--pink); background:var(--pink-dim); }
 
-.main { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; position:relative; }
+.main { flex:1; min-width:0; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; position:relative; }
 .main-inner { padding: clamp(16px,4vw,40px); padding-bottom: calc(24px + env(safe-area-inset-bottom)); min-height:100%; }
 
 .view-section { display:none; animation: viewIn 0.45s var(--ease-spring) forwards; }
@@ -230,7 +238,7 @@ body {
 @keyframes viewIn { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform:none; } }
 
 .page-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; gap:16px; flex-wrap:wrap; }
-.page-header h1 { font-family:'Syne',sans-serif; font-size:clamp(22px,5vw,30px); font-weight:800; letter-spacing:-0.5px; line-height:1.15; }
+.page-header h1 { font-family:var(--font); font-size:clamp(22px,5vw,30px); font-weight:800; letter-spacing:-0.5px; line-height:1.15; }
 .page-header p { font-size:13px; color:var(--text-2); margin-top:4px; }
 .header-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
 
@@ -242,7 +250,7 @@ body {
   margin-bottom:16px;
   box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
 }
-.card h3 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:16px; }
+.card h3 { font-family:var(--font); font-size:15px; font-weight:700; margin-bottom:16px; }
 
 .stats-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin-bottom:20px; }
 .stat-card {
@@ -264,7 +272,7 @@ body {
 .hero-stat .stat-icon { background:rgba(255,255,255,0.2); color:#fff; }
 .stat-label { font-size:10px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:4px; }
 .hero-stat .stat-label { color:rgba(255,255,255,0.75); }
-.stat-val { font-family:'Syne',sans-serif; font-size:clamp(20px,4vw,26px); font-weight:800; }
+.stat-val { font-family:var(--font); font-size:clamp(20px,4vw,26px); font-weight:800; }
 .stat-sub { font-size:11px; color:var(--text-3); margin-top:4px; }
 .hero-stat .stat-sub { color:rgba(255,255,255,0.65); }
 
@@ -334,18 +342,26 @@ body {
 .tag-approved { background:rgba(48,209,88,0.14); color:var(--green); }
 .tag-rejected { background:var(--pink-dim); color:var(--pink); }
 
-.action-btns { display:flex; gap:6px; justify-content:flex-end; flex-wrap:wrap; }
+.action-btns { display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; align-items:center; }
 .action-btn {
-  min-height:36px; padding:6px 10px; border-radius:10px; font-size:11px; font-weight:600; cursor:pointer;
-  border:1px solid; display:inline-flex; align-items:center; gap:4px; transition:all 0.15s; white-space:nowrap;
+  min-height:32px; padding:7px 14px; border-radius:999px; font-size:12px; font-weight:500; letter-spacing:0.01em; cursor:pointer;
+  border:1px solid var(--border); display:inline-flex; align-items:center; justify-content:center; gap:5px;
+  transition: background 0.2s var(--ease), border-color 0.2s, color 0.2s, transform 0.15s;
+  white-space:nowrap; background:rgba(255,255,255,0.04); color:var(--text-2); font-family:var(--font);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
 }
-.btn-pay { color:var(--green); border-color:rgba(48,209,88,0.35); background:transparent; }
-.btn-pay:hover { background:rgba(48,209,88,0.1); }
-.btn-undo { color:var(--text-2); border-color:var(--border); background:transparent; }
-.btn-view { color:var(--text-2); border-color:var(--border); }
-.btn-edit { color:var(--blue); border-color:rgba(10,132,255,0.35); }
-.btn-delete { color:var(--pink); border-color:rgba(255,55,95,0.35); }
-.btn-convert { color:var(--blue); border-color:rgba(10,132,255,0.35); }
+.action-btn:hover { background:rgba(255,255,255,0.08); color:var(--text); border-color:var(--border-2); }
+.action-btn:active { transform: scale(0.98); }
+.btn-pay { color:var(--green); border-color:rgba(48,209,88,0.28); background:rgba(48,209,88,0.1); }
+.btn-pay:hover { background:rgba(48,209,88,0.16); color:#4ade80; border-color:rgba(48,209,88,0.4); }
+.btn-undo { color:var(--text-2); border-color:var(--border); background:rgba(255,255,255,0.03); }
+.btn-view { color:var(--text-2); border-color:var(--border); background:rgba(255,255,255,0.03); }
+.btn-edit { color:var(--blue); border-color:rgba(10,132,255,0.25); background:rgba(10,132,255,0.08); }
+.btn-edit:hover { background:rgba(10,132,255,0.14); border-color:rgba(10,132,255,0.4); color:#6ab7ff; }
+.btn-delete { color:#ff7a93; border-color:rgba(255,55,95,0.22); background:rgba(255,55,95,0.07); }
+.btn-delete:hover { background:rgba(255,55,95,0.14); border-color:rgba(255,55,95,0.35); color:#ffb3c0; }
+.btn-convert { color:var(--blue); border-color:rgba(10,132,255,0.25); background:rgba(10,132,255,0.08); }
+.btn-convert:hover { background:rgba(10,132,255,0.14); }
 
 .btn-solid {
   background:var(--pink); color:#fff; border:none; min-height: var(--tap-min);
@@ -387,13 +403,13 @@ textarea.form-control { resize:vertical; min-height:88px; }
   background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius); padding:22px;
   position:sticky; top:8px; backdrop-filter: var(--blur);
 }
-.summary-card h2 { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; margin-bottom:20px; }
+.summary-card h2 { font-family:var(--font); font-size:18px; font-weight:800; margin-bottom:20px; }
 .summary-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; font-size:13px; color:var(--text-2); }
 .summary-input {
   width:96px; padding:8px 10px; background:var(--surface-3); border:1px solid var(--border); border-radius:10px; text-align:center; font-size:14px;
 }
 .summary-total { margin-top:18px; padding-top:18px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
-.summary-total h2 { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; color:var(--text); margin:0; }
+.summary-total h2 { font-family:var(--font); font-size:24px; font-weight:800; color:var(--text); margin:0; }
 
 .item-header { display:grid; grid-template-columns:2fr 0.5fr 1fr 1fr 72px; gap:10px; font-size:10px; font-weight:700; color:var(--text-3); text-transform:uppercase; border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:10px; min-width:520px; }
 .item-row { display:grid; grid-template-columns:2fr 0.5fr 1fr 1fr 72px; gap:10px; margin-bottom:10px; align-items:start; min-width:520px; animation: slideIn 0.3s var(--ease-spring) forwards; }
@@ -464,14 +480,15 @@ textarea.form-control { resize:vertical; min-height:88px; }
   max-height:72vh; overflow-y:auto; display:flex; justify-content:center;
 }
 .live-invoice {
-  background:#fff; width:100%; max-width:800px; color:#1d1d1f; font-family:'DM Sans',sans-serif;
+  background:#fff; width:100%; max-width:800px; color:#1d1d1f; font-family:'Plus Jakarta Sans',system-ui,sans-serif !important;
   box-shadow: 0 8px 40px rgba(0,0,0,0.08); border:1px solid #eee; position:relative;
 }
+.live-invoice, .live-invoice * { font-family:'Plus Jakarta Sans',system-ui,sans-serif !important; }
 .li-header { padding:32px clamp(20px,4vw,40px); display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #1d1d1f; flex-wrap:wrap; gap:16px; }
 .li-logo-img { width:100px; height:auto; }
 .li-company { text-align:right; font-size:11px; line-height:1.65; color:#86868b; }
 .li-company h2 { font-size:17px; font-weight:800; color:#1d1d1f; margin-bottom:4px; }
-.li-title { text-align:center; font-size:clamp(22px,5vw,28px); font-weight:800; letter-spacing:2px; margin:24px 0 8px; text-transform:uppercase; font-family:'Syne',sans-serif; }
+.li-title { text-align:center; font-size:clamp(22px,5vw,28px); font-weight:800; letter-spacing:2px; margin:24px 0 8px; text-transform:uppercase; font-family:var(--font); }
 .li-meta { display:flex; justify-content:space-between; padding:0 clamp(20px,4vw,40px) 16px; font-size:12px; flex-wrap:wrap; gap:16px; }
 .li-meta-l td:first-child { font-weight:700; padding-right:12px; }
 .li-meta-r { max-width:280px; text-align:right; margin-left:auto; }
@@ -522,7 +539,7 @@ textarea.form-control { resize:vertical; min-height:88px; }
 }
 .settings-sheet.show .settings-panel { transform: translateY(0); }
 .settings-grab { width:40px; height:5px; background:var(--border-2); border-radius:3px; margin:0 auto 16px; }
-.settings-panel h2 { font-family:'Syne',sans-serif; font-size:18px; padding:0 20px 12px; }
+.settings-panel h2 { font-family:var(--font); font-size:18px; padding:0 20px 12px; }
 .settings-section { padding:16px 20px; border-top:1px solid var(--border); }
 .settings-section h3 { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-3); margin-bottom:12px; }
 .settings-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; min-height: var(--tap-min); }
@@ -609,13 +626,13 @@ html.low-motion * { scroll-behavior: auto !important; }
   <div class="login-card">
     <div class="login-logo"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" alt=""></div>
     <h1>Omnyzo</h1>
-    <p>Log masuk untuk meneruskan</p>
+    <p>Sign in to continue</p>
     <form id="loginForm" autocomplete="username">
       <div class="login-field"><label for="loginUser">Username</label><input type="text" id="loginUser" required autocomplete="username" autocapitalize="none"></div>
       <div class="login-field"><label for="loginPass">Password</label><input type="password" id="loginPass" required autocomplete="current-password"></div>
       <button type="submit" class="btn-login" id="loginSubmit">Continue</button>
     </form>
-    <p class="login-hint">Akaun diurus dalam Google Sheet <strong>Admins</strong>. Tambah <code style="font-size:10px;">type: login</code> dalam Apps Script (lihat nota dalam kod).</p>
+    <p class="login-hint">Users are managed in the Google Sheet <strong>Admins</strong>. Your Apps Script must handle POST <code style="font-size:10px;">type: login</code> (see script comment).</p>
   </div>
 </div>
 
@@ -766,7 +783,7 @@ html.low-motion * { scroll-behavior: auto !important; }
 
 <div id="app-container">
   <div class="bottom-actions"><div class="notif-btn" onclick="toggleNotif()"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-badge" id="notif-badge">0</span>
-    <div class="notif-panel" id="notif-panel"><div style="padding:12px 14px;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;">Activity</div><div id="notif-list"><div style="padding:18px;text-align:center;color:var(--text-3);font-size:12px;">No activity.</div></div></div>
+    <div class="notif-panel" id="notif-panel"><div style="padding:12px 14px;border-bottom:1px solid var(--border);font-family:var(--font);font-weight:700;font-size:13px;">Activity</div><div id="notif-list"><div style="padding:18px;text-align:center;color:var(--text-3);font-size:12px;">No activity.</div></div></div>
   </div></div>
 
   <aside class="sidebar">
@@ -829,7 +846,7 @@ html.low-motion * { scroll-behavior: auto !important; }
         <input type="hidden" id="editingQtnFlag">
         <div class="card" style="max-width:720px;margin:0 auto;padding:clamp(20px,4vw,32px);">
           <div style="display:flex;gap:6px;margin-bottom:24px;"><div class="wiz-bar done" id="qtn-wiz-1"></div><div class="wiz-bar" id="qtn-wiz-2"></div><div class="wiz-bar" id="qtn-wiz-3"></div><div class="wiz-bar" id="qtn-wiz-4"></div></div>
-          <div class="wizard-step active" id="qtn-step1"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">1 · Details</h3><p style="font-size:12px;color:var(--text-3);margin-bottom:18px;">Customer &amp; dates</p>
+          <div class="wizard-step active" id="qtn-step1"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">1 · Details</h3><p style="font-size:12px;color:var(--text-3);margin-bottom:18px;">Customer &amp; dates</p>
             <div class="form-grid"><div class="form-group" style="grid-column:span 2;"><label>Customer <a href="#" onclick="event.preventDefault();openCustModal();" style="color:var(--blue);float:right;font-size:11px;">+ New</a></label><select id="qtnCustomer" class="form-control" required onchange="autoFillCust('qtn')"><option value="">Select…</option></select></div>
             <div class="form-group"><label>Quote No.</label><input type="text" id="qtnNo" class="form-control" readonly style="font-weight:700;"></div>
             <div class="form-group"><label>Date</label><input type="date" id="qtnDate" class="form-control" required onchange="calcQtnDue()"></div>
@@ -842,18 +859,18 @@ html.low-motion * { scroll-behavior: auto !important; }
             <div class="form-group" style="grid-column:span 2;"><label>Address</label><input type="text" id="qtnAddress" class="form-control"></div></div></div>
             <div class="wiz-nav"><button type="button" class="btn-solid" onclick="qtnNext(2)">Next</button></div>
           </div>
-          <div class="wizard-step" id="qtn-step2"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">2 · Line items</h3><p style="font-size:12px;color:var(--text-3);margin-bottom:14px;">Add services</p>
+          <div class="wizard-step" id="qtn-step2"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">2 · Line items</h3><p style="font-size:12px;color:var(--text-3);margin-bottom:14px;">Add services</p>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;">Items</span><button type="button" onclick="addQtnItem()" class="btn-outline" style="width:auto;padding:8px 14px;min-height:40px;">+ Add line</button></div>
             <div class="item-header"><div>Description</div><div>Qty</div><div>Price</div><div>Total</div><div></div></div><div id="quotationItemsContainer"></div>
             <div class="wiz-nav"><button type="button" class="btn-outline" onclick="qtnNext(1)">Back</button><button type="button" class="btn-solid" onclick="qtnNext(3)">Next</button></div>
           </div>
-          <div class="wizard-step" id="qtn-step3"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">3 · Notes &amp; terms</h3>
+          <div class="wizard-step" id="qtn-step3"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">3 · Notes &amp; terms</h3>
             <div class="form-group" style="margin-bottom:12px;"><label>Notes</label><textarea id="qtnNotes" class="form-control" rows="3"></textarea></div>
             <div class="form-group" style="margin-bottom:12px;"><label>T&amp;C template</label><select id="qtnTcTemplate" class="form-control" onchange="updateQtnTerms()"><option value="standard">Standard</option><option value="deposit">50% deposit</option></select></div>
             <div class="form-group"><label>Terms</label><textarea id="qtnTerms" class="form-control" rows="4"></textarea></div>
             <div class="wiz-nav"><button type="button" class="btn-outline" onclick="qtnNext(2)">Back</button><button type="button" class="btn-solid" onclick="qtnNext(4)">Next</button></div>
           </div>
-          <div class="wizard-step" id="qtn-step4"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">4 · Summary</h3>
+          <div class="wizard-step" id="qtn-step4"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">4 · Summary</h3>
             <div class="summary-card" style="position:relative;top:0;margin-bottom:16px;">
               <div class="summary-row"><span>Subtotal</span><span id="qtnSubtotal">RM 0.00</span></div>
               <div class="summary-row"><span>Discount</span><input type="text" id="qtnDiscount" class="summary-input" value="0.00" oninput="calcQtnTotal()" inputmode="decimal"></div>
@@ -869,7 +886,7 @@ html.low-motion * { scroll-behavior: auto !important; }
     </div>
 
     <div id="quotation-detail-view" class="view-section">
-      <div class="detail-bar"><div class="detail-bar-left"><button type="button" class="back-btn" onclick="switchView('quotations-view')">←</button><div><h1 id="detail-qtn-no" style="font-family:'Syne',sans-serif;font-size:20px;">QTN</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-qtn-client"></span> · <span id="detail-qtn-status" class="tag"></span></p></div></div>
+      <div class="detail-bar"><div class="detail-bar-left"><button type="button" class="back-btn" onclick="switchView('quotations-view')">←</button><div><h1 id="detail-qtn-no" style="font-family:var(--font);font-size:20px;">QTN</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-qtn-client"></span> · <span id="detail-qtn-status" class="tag"></span></p></div></div>
         <div class="detail-actions"><div id="qtn-convert-btn-wrap"></div><button type="button" class="a-btn a-btn-ghost" onclick="downloadQtnPDF()">PDF</button><a id="btn-qtn-email" class="a-btn a-btn-blue" href="#">Email</a></div></div>
       <div class="invoice-preview-wrap"><div class="live-invoice" id="quotationCaptureArea">
         <div class="loading-overlay" id="qtnLoadingOverlay" style="display:none;"><div class="spinner"></div><div style="font-weight:600;">Loading…</div></div>
@@ -896,7 +913,7 @@ html.low-motion * { scroll-behavior: auto !important; }
         <input type="hidden" id="editingInvFlag">
         <div class="card" style="max-width:720px;margin:0 auto;padding:clamp(20px,4vw,32px);">
           <div style="display:flex;gap:6px;margin-bottom:24px;"><div class="wiz-bar done" id="inv-wiz-1"></div><div class="wiz-bar" id="inv-wiz-2"></div><div class="wiz-bar" id="inv-wiz-3"></div><div class="wiz-bar" id="inv-wiz-4"></div></div>
-          <div class="wizard-step active" id="inv-step1"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">1 · Details</h3>
+          <div class="wizard-step active" id="inv-step1"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">1 · Details</h3>
             <div class="form-grid"><div class="form-group" style="grid-column:span 2;"><label>Customer <a href="#" onclick="event.preventDefault();openCustModal();" style="color:var(--pink);float:right;font-size:11px;">+ New</a></label><select id="invCustomer" class="form-control" required onchange="autoFillCust('inv')"><option value="">Select…</option></select></div>
             <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" readonly style="font-weight:700;"></div>
             <div class="form-group"><label>Date</label><input type="date" id="invDate" class="form-control" required onchange="calcDueDate()"></div>
@@ -909,19 +926,19 @@ html.low-motion * { scroll-behavior: auto !important; }
             <div class="form-group" style="grid-column:span 2;"><label>Address</label><input type="text" id="invAddress" class="form-control"></div></div></div>
             <div class="wiz-nav"><button type="button" class="btn-solid" onclick="invNext(2)">Next</button></div>
           </div>
-          <div class="wizard-step" id="inv-step2"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">2 · Line items</h3>
+          <div class="wizard-step" id="inv-step2"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">2 · Line items</h3>
             <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;">Items</span><button type="button" onclick="addInvItem()" class="btn-outline" style="width:auto;padding:8px 14px;">+ Add</button></div>
             <div class="item-header"><div>Description</div><div>Qty</div><div>Price</div><div>Total</div><div></div></div><div id="invoiceItemsContainer"></div>
             <div class="wiz-nav"><button type="button" class="btn-outline" onclick="invNext(1)">Back</button><button type="button" class="btn-solid" onclick="invNext(3)">Next</button></div>
           </div>
-          <div class="wizard-step" id="inv-step3"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">3 · Notes &amp; terms</h3>
+          <div class="wizard-step" id="inv-step3"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">3 · Notes &amp; terms</h3>
             <div class="form-group" style="margin-bottom:12px;"><label>Notes</label><textarea id="invNotes" class="form-control" rows="3"></textarea></div>
             <div class="form-group" style="margin-bottom:12px;"><label>Template</label><select id="tcTemplate" class="form-control" onchange="updateTerms()"><option value="standard">Standard</option><option value="retainer">Retainer</option><option value="deposit">50% deposit</option><option value="rush">Rush</option></select></div>
             <div class="form-group" style="margin-bottom:12px;"><label>Terms</label><textarea id="invTerms" class="form-control" rows="4"></textarea></div>
             <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;min-height:var(--tap-min);"><input type="checkbox" id="invPaymentAdvice" checked style="width:20px;height:20px;accent-color:var(--pink);"> Include payment advice page</label>
             <div class="wiz-nav" style="margin-top:16px;"><button type="button" class="btn-outline" onclick="invNext(2)">Back</button><button type="button" class="btn-solid" onclick="invNext(4)">Next</button></div>
           </div>
-          <div class="wizard-step" id="inv-step4"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">4 · Summary</h3>
+          <div class="wizard-step" id="inv-step4"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">4 · Summary</h3>
             <div class="summary-card" style="position:relative;top:0;margin-bottom:16px;">
               <div class="summary-row"><span>Subtotal</span><span id="invSubtotal">RM 0.00</span></div>
               <div class="summary-row"><span>Discount</span><input type="text" id="invDiscount" class="summary-input" value="0.00" oninput="calcInvTotal()" inputmode="decimal"></div>
@@ -937,7 +954,7 @@ html.low-motion * { scroll-behavior: auto !important; }
     </div>
 
     <div id="invoice-detail-view" class="view-section">
-      <div class="detail-bar"><div class="detail-bar-left"><button type="button" class="back-btn" onclick="switchView('invoices-view')">←</button><div><h1 id="detail-inv-no" style="font-family:'Syne',sans-serif;font-size:20px;">OMN</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-inv-client"></span> · <span id="detail-inv-status" class="tag"></span></p></div></div>
+      <div class="detail-bar"><div class="detail-bar-left"><button type="button" class="back-btn" onclick="switchView('invoices-view')">←</button><div><h1 id="detail-inv-no" style="font-family:var(--font);font-size:20px;">OMN</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-inv-client"></span> · <span id="detail-inv-status" class="tag"></span></p></div></div>
         <div class="detail-actions"><button type="button" class="a-btn a-btn-ghost" onclick="downloadInvPDF()">PDF</button><button type="button" class="a-btn a-btn-ghost" onclick="copyDetailLink()">Share</button><a id="btn-inv-email" class="a-btn a-btn-pink" href="#">Email</a></div></div>
       <div class="invoice-preview-wrap"><div class="live-invoice" id="invoiceCaptureArea">
         <div class="loading-overlay" id="invLoadingOverlay" style="display:none;"><div class="spinner"></div><div style="font-weight:600;">Loading…</div></div>
@@ -963,10 +980,10 @@ html.low-motion * { scroll-behavior: auto !important; }
       <form id="transactionForm" onkeydown="return event.key!='Enter';">
         <div class="card" style="max-width:560px;margin:0 auto;padding:clamp(20px,4vw,36px);padding-top:44px;position:relative;">
           <div style="display:flex;gap:6px;position:absolute;top:20px;left:24px;right:24px;"><div class="wiz-bar done" id="wiz-bar-1"></div><div class="wiz-bar" id="wiz-bar-2"></div><div class="wiz-bar" id="wiz-bar-3"></div><div class="wiz-bar" id="wiz-bar-4"></div></div>
-          <div class="wizard-step active" id="step1"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">1 · Type</h3><div class="trans-toggle"><button type="button" id="btn-out" class="trans-btn out" onclick="setTransType('Out')">Money out</button><button type="button" id="btn-in" class="trans-btn" onclick="setTransType('In')">Money in</button></div><input type="hidden" id="transType" value="Out"><button type="button" class="btn-solid" onclick="nextWiz(2)">Next</button></div>
-          <div class="wizard-step" id="step2"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">2 · Details</h3><div class="form-grid"><div class="form-group"><label>Date</label><input type="date" id="transDate" class="form-control" required></div><div class="form-group"><label>Amount</label><input type="number" step="0.01" min="0" id="transAmount" class="form-control" required></div><div class="form-group" style="grid-column:span 2;"><label>Payee / From</label><input type="text" id="transMerchant" class="form-control" list="merchantList" required><datalist id="merchantList"></datalist></div></div><div style="display:flex;gap:10px;margin-top:8px;"><button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(1)">Back</button><button type="button" class="btn-solid" style="flex:2;" onclick="if(document.getElementById('transDate').value&&document.getElementById('transAmount').value&&document.getElementById('transMerchant').value){nextWiz(3);}else{showToast('Fill all fields',true);}">Next</button></div></div>
-          <div class="wizard-step" id="step3"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">3 · Category</h3><div class="form-grid"><div class="form-group" style="grid-column:span 2;"><label>Category</label><select id="transCategory" class="form-control"><optgroup label="In"><option>Project Sales / Services</option><option>Monthly Retainers</option><option>Deposit / Advance Payment</option><option>Refund / Rebate Received</option></optgroup><optgroup label="Out"><option>Freelancer / Outsourcing</option><option>Ads / Media Spend</option><option>Software / Subscriptions</option><option>Equipment / Hardware</option><option>Payroll &amp; Allowances</option><option>Office Utilities / Internet</option><option>Travel, Meetings &amp; Pitching</option><option>Miscellaneous</option></optgroup></select></div><div class="form-group" style="grid-column:span 2;"><label>Notes</label><input type="text" id="transDesc" class="form-control"></div></div><div style="display:flex;gap:10px;"><button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(2)">Back</button><button type="button" class="btn-solid" style="flex:2;" onclick="nextWiz(4)">Next</button></div></div>
-          <div class="wizard-step" id="step4"><h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;">4 · Payment</h3><div class="form-group" style="margin-bottom:12px;"><select id="transStatus" class="form-control" onchange="togglePayFields()"><option value="Paid">Paid</option><option value="Pending">Pending</option></select></div>
+          <div class="wizard-step active" id="step1"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">1 · Type</h3><div class="trans-toggle"><button type="button" id="btn-out" class="trans-btn out" onclick="setTransType('Out')">Money out</button><button type="button" id="btn-in" class="trans-btn" onclick="setTransType('In')">Money in</button></div><input type="hidden" id="transType" value="Out"><button type="button" class="btn-solid" onclick="nextWiz(2)">Next</button></div>
+          <div class="wizard-step" id="step2"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">2 · Details</h3><div class="form-grid"><div class="form-group"><label>Date</label><input type="date" id="transDate" class="form-control" required></div><div class="form-group"><label>Amount</label><input type="number" step="0.01" min="0" id="transAmount" class="form-control" required></div><div class="form-group" style="grid-column:span 2;"><label>Payee / From</label><input type="text" id="transMerchant" class="form-control" list="merchantList" required><datalist id="merchantList"></datalist></div></div><div style="display:flex;gap:10px;margin-top:8px;"><button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(1)">Back</button><button type="button" class="btn-solid" style="flex:2;" onclick="if(document.getElementById('transDate').value&&document.getElementById('transAmount').value&&document.getElementById('transMerchant').value){nextWiz(3);}else{showToast('Fill all fields',true);}">Next</button></div></div>
+          <div class="wizard-step" id="step3"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">3 · Category</h3><div class="form-grid"><div class="form-group" style="grid-column:span 2;"><label>Category</label><select id="transCategory" class="form-control"><optgroup label="In"><option>Project Sales / Services</option><option>Monthly Retainers</option><option>Deposit / Advance Payment</option><option>Refund / Rebate Received</option></optgroup><optgroup label="Out"><option>Freelancer / Outsourcing</option><option>Ads / Media Spend</option><option>Software / Subscriptions</option><option>Equipment / Hardware</option><option>Payroll &amp; Allowances</option><option>Office Utilities / Internet</option><option>Travel, Meetings &amp; Pitching</option><option>Miscellaneous</option></optgroup></select></div><div class="form-group" style="grid-column:span 2;"><label>Notes</label><input type="text" id="transDesc" class="form-control"></div></div><div style="display:flex;gap:10px;"><button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(2)">Back</button><button type="button" class="btn-solid" style="flex:2;" onclick="nextWiz(4)">Next</button></div></div>
+          <div class="wizard-step" id="step4"><h3 style="font-family:var(--font);font-size:18px;margin-bottom:6px;">4 · Payment</h3><div class="form-group" style="margin-bottom:12px;"><select id="transStatus" class="form-control" onchange="togglePayFields()"><option value="Paid">Paid</option><option value="Pending">Pending</option></select></div>
             <div id="payFields" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px;background:var(--surface-3);border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:16px;">
               <div class="form-group" style="grid-column:span 2;"><label>Slip (opt.)</label><input type="file" id="bankSlip" class="form-control" accept=".png,.jpg,.jpeg,.pdf"></div>
               <div class="form-group"><label>Pay date</label><input type="date" id="transPayDate" class="form-control"></div>
@@ -985,8 +1002,8 @@ html.low-motion * { scroll-behavior: auto !important; }
         <button type="button" class="btn-outline" style="width:auto;min-height:var(--tap-min);padding:10px 14px;" onclick="openFreeModal()">+ Freelancer</button>
         <button type="button" style="background:var(--pink);color:#fff;border:none;padding:10px 14px;border-radius:var(--radius-sm);font-weight:600;min-height:var(--tap-min);" onclick="openCustModal()">+ Customer</button>
       </div></div>
-      <div class="table-wrap" style="margin-bottom:20px;"><div style="padding:14px 16px;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif;font-weight:700;">Customers</div><div class="cust-header"><div>Name</div><div>Contact</div><div>Address</div><div style="text-align:right;">Edit</div></div><div id="customerListContainer"></div></div>
-      <div class="table-wrap"><div style="padding:14px 16px;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif;font-weight:700;">Freelancers</div><div class="freelance-header"><div>Name</div><div>Contact</div><div>Service</div><div>Bank</div><div style="text-align:right;">Edit</div></div><div id="freelancerListContainer"></div></div>
+      <div class="table-wrap" style="margin-bottom:20px;"><div style="padding:14px 16px;border-bottom:1px solid var(--border);font-family:var(--font);font-weight:700;">Customers</div><div class="cust-header"><div>Name</div><div>Contact</div><div>Address</div><div style="text-align:right;">Edit</div></div><div id="customerListContainer"></div></div>
+      <div class="table-wrap"><div style="padding:14px 16px;border-bottom:1px solid var(--border);font-family:var(--font);font-weight:700;">Freelancers</div><div class="freelance-header"><div>Name</div><div>Contact</div><div>Service</div><div>Bank</div><div style="text-align:right;">Edit</div></div><div id="freelancerListContainer"></div></div>
     </div>
 
   </div></main>
@@ -1017,17 +1034,14 @@ html.low-motion * { scroll-behavior: auto !important; }
 
 <script>
 /**
- * Google Apps Script — tambah handler POST:
- * if (data.type === 'login') {
- *   var sh = ss.getSheetByName('Admins');
- *   var rows = sh.getDataRange().getValues();
- *   for (var i = 1; i < rows.length; i++) {
- *     if (rows[i][0] === data.username && rows[i][1] === data.password)
- *       return json({ status:'success', role: rows[i][2], username: rows[i][0] });
- *   }
- *   return json({ status:'error', message:'Invalid' });
- * }
- * Optional: GET ?user= &role= untuk audit (filter data mengikut peranan).
+ * Google Apps Script — add POST handlers:
+ * - login: validate Admins sheet, return { status, role, username }
+ * - delete_doc: payload includes docType, docNo, username, and when docType==='quotation':
+ *     quotationNo (same as docNo), removeLinkedInvoice:true — delete the Quotation row
+ *     and optionally any Invoice row linked to that quote (your sheet must store sourceQuotationNo or similar).
+ *   When docType==='invoice': invoiceNo same as docNo.
+ *   When docType==='transaction': rowIdx same as docNo (sheet row id from your API).
+ *   Return JSON { status:'success' } or { status:'error', message:'...' }.
  */
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuID6MWvJs2kicaQyzYItJhfzzI1pQdqnNSKOaRetmMMj9ADi-L2aiTmxjuXV0Mkpm/exec';
 const SESSION_KEY = 'omnyzo_auth';
@@ -1330,15 +1344,27 @@ function openDeleteModal(no,type){
   document.getElementById('del-doc-no').value=no; document.getElementById('del-doc-type').value=type;
   document.getElementById('delete-modal').classList.add('show');
 }
+document.getElementById('app-container').addEventListener('click',function(e){
+  const delBtnEl=e.target.closest('.js-delete-doc');
+  if(!delBtnEl)return;
+  const typ=delBtnEl.getAttribute('data-type'), enc=delBtnEl.getAttribute('data-doc');
+  let no=enc;
+  try{no=decodeURIComponent(enc);}catch(x){no=enc;}
+  openDeleteModal(no,typ);
+});
 document.getElementById('delForm').addEventListener('submit',function(e){
   e.preventDefault();
   const btn=this.querySelector('button[type=submit]'), ot=btn.innerText; btn.innerText='…'; btn.disabled=true;
-  const p={type:'delete_doc',username:currentUser(),docNo:document.getElementById('del-doc-no').value,docType:document.getElementById('del-doc-type').value};
-  if(p.docType==='transaction') p.rowIdx=p.docNo;
+  const docNo=document.getElementById('del-doc-no').value, docType=document.getElementById('del-doc-type').value;
+  const p={type:'delete_doc',username:currentUser(),docNo:docNo,docType:docType};
+  if(docType==='transaction') p.rowIdx=String(docNo);
+  if(docType==='quotation'){ p.quotationNo=docNo; p.removeLinkedInvoice=true; }
+  if(docType==='invoice') p.invoiceNo=docNo;
   fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(p)}).then(r=>r.json()).then(r=>{
     btn.innerText=ot; btn.disabled=false;
-    if(r.status==='success'){ document.getElementById('delete-modal').classList.remove('show'); showToast('Deleted'); fetchAppData(); } else showToast('Failed',true);
-  }).catch(()=>{ btn.innerText=ot; btn.disabled=false; showToast('Error',true); });
+    if(r.status==='success'){ document.getElementById('delete-modal').classList.remove('show'); showToast('Deleted'); fetchAppData(); }
+    else showToast(r.message||'Delete failed — check Apps Script delete_doc handler.',true);
+  }).catch(()=>{ btn.innerText=ot; btn.disabled=false; showToast('Network error',true); });
 });
 
 function autoFillCust(prefix){
@@ -1389,6 +1415,7 @@ function editInvoiceData(no){
   (inv.sheetItems&&inv.sheetItems.length)?inv.sheetItems.forEach(i=>addInvItem(i.desc,i.qty,i.price)):addInvItem();
   document.getElementById('invNotes').value=inv.notes||'';
   document.getElementById('invTerms').value=inv.tc||'';
+  if(!((inv.tc||'').trim())) updateTerms();
   document.getElementById('invDiscount').value=inv.discount||'0.00';
   document.getElementById('invTaxType').value=inv.taxType||'None';
   document.getElementById('invTaxAmt').value=inv.taxAmount||'0.00';
@@ -1422,11 +1449,18 @@ function calcDueDate(){
 }
 function updateTerms(){
   const t=parseInt(document.getElementById('invCreditTerm').value,10), tmpl=document.getElementById('tcTemplate').value;
-  const tStr=t===0?'immediately upon receipt':`within ${t} days from invoice date`; let text='';
-  if(tmpl==='standard') text=`1. Agency Fee is payable ${tStr}.\n2. The Agency may suspend Services if payment is delayed.\n3. Quote invoice number as payment reference.\n4. Send advice to billings@omnyzo.com.`;
-  else if(tmpl==='retainer') text=`1. Monthly Retainer is payable ${tStr}.\n2. Next month’s work starts after payment clears.\n3. Send advice to billings@omnyzo.com.`;
-  else if(tmpl==='deposit') text=`1. 50% non-refundable deposit to start.\n2. Balance payable ${tStr} on final invoice.\n3. Send advice to billings@omnyzo.com.`;
-  else if(tmpl==='rush') text=`1. Rush fee payable ${tStr}.\n2. Late payment: 5% weekly penalty.\n3. Send advice to billings@omnyzo.com.`;
+  const payStr=t===0?'due immediately upon receipt of this invoice':`due within ${t} calendar days from the invoice date`;
+  const dueLine=t===0?'Payment is due immediately upon receipt.':'The due date is calculated from the invoice date unless otherwise agreed in writing.';
+  let text='';
+  if(tmpl==='standard'){
+    text='GENERAL\n1. "Omnyzo Agency" ("we", "us", "our") provides creative and marketing services as described in this invoice and any agreed statement of work.\n2. All amounts are quoted in Malaysian Ringgit (MYR) unless stated otherwise.\n\nPAYMENT\n3. Fees '+payStr+'. '+dueLine+'\n4. Payment must be made by bank transfer to the account stated on this document. You must quote our invoice number as the payment reference.\n5. Receipt of funds to our bank account constitutes payment. Bank charges borne by the payer unless otherwise agreed.\n6. If any amount remains unpaid after the due date, we may suspend or withhold delivery of further work until the account is brought current.\n7. Late payments may incur interest or administrative charges as permitted by applicable law; any such rate will be communicated in advance where required.\n\nSERVICE & DELIVERABLES\n8. Deliverables are deemed accepted unless you notify us in writing of material defects within seven (7) days of delivery.\n9. Changes outside the agreed scope may be quoted separately.\n\nLIABILITY\n10. To the maximum extent permitted by law, our total liability arising from this invoice and related services is limited to the fees paid by you for the specific engagement giving rise to the claim.\n\nDISPUTES & LAW\n11. For any dispute, parties agree to attempt good-faith negotiation before other remedies.\n12. These terms are governed by the laws of Malaysia. Courts of Malaysia shall have non-exclusive jurisdiction.\n\nCONTACT\n13. Payment advice and billing queries: billings@omnyzo.com.';
+  }else if(tmpl==='retainer'){
+    text='RETAINER AGREEMENT\n1. This invoice covers the monthly retainer period stated in our agreement or correspondence.\n2. Retainer fees '+payStr+'. '+dueLine+'\n3. Work for the subsequent calendar month may commence only after cleared payment of the current retainer invoice unless we agree otherwise in writing.\n4. Unused retainer hours or credits do not automatically roll over unless explicitly stated in your agreement.\n5. Either party may terminate the retainer in accordance with the notice period in your master agreement (or thirty (30) days written notice if none is specified).\n6. Payment must be by bank transfer using our invoice number as reference.\n7. Suspension: we may pause scheduled work if the retainer is overdue until payment is received.\n8. Liability is limited to the extent permitted by law and to fees paid for the period in question.\n9. Governing law: Malaysia.\n10. Contact: billings@omnyzo.com.';
+  }else if(tmpl==='deposit'){
+    text='DEPOSIT & BALANCE\n1. A non-refundable deposit of fifty percent (50%) of the agreed project fee is required before commencement of work, unless a different percentage is stated on this invoice.\n2. The remaining balance '+payStr+'. '+dueLine+'\n3. The deposit secures production capacity and initial creative work; it does not guarantee final delivery if the project is cancelled by the client after work has started, except where mandatory consumer laws apply.\n4. Final files or launch assets may be released only after cleared payment of all outstanding amounts unless otherwise agreed in writing.\n5. Bank transfer details appear on this invoice; reference must include our invoice number.\n6. Scope changes may incur additional fees quoted in writing.\n7. Deliverables: acceptance within seven (7) days of delivery unless otherwise agreed.\n8. Liability limited to fees paid, to the maximum extent permitted by law.\n9. Governing law: Malaysia.\n10. Contact: billings@omnyzo.com.';
+  }else if(tmpl==='rush'){
+    text='RUSH ENGAGEMENT\n1. Rush fees or expedited delivery charges '+payStr+'. '+dueLine+'\n2. Rush timelines depend on prompt feedback and asset delivery from your team; delays on your side may affect the delivery date without liability on our part.\n3. Late payment: overdue amounts may attract a late fee of up to five percent (5%) per week on the outstanding balance, capped where required by law, until paid in full.\n4. We may suspend rush or standard work if invoices are overdue.\n5. Payment by bank transfer only; use our invoice number as reference.\n6. Scope fixed as per this invoice; additional work is quoted separately.\n7. Acceptance of deliverables within seven (7) days of delivery.\n8. Limitation of liability to fees paid for this engagement, to the maximum extent permitted by law.\n9. Governing law: Malaysia.\n10. Contact: billings@omnyzo.com.';
+  }
   document.getElementById('invTerms').value=text;
 }
 document.getElementById('invoiceItemsContainer').addEventListener('keydown',function(e){
@@ -1537,6 +1571,7 @@ function editQuotationData(no){
   document.getElementById('quotationItemsContainer').innerHTML='';
   (qtn.sheetItems&&qtn.sheetItems.length)?qtn.sheetItems.forEach(i=>addQtnItem(i.desc,i.qty,i.price)):addQtnItem();
   document.getElementById('qtnNotes').value=qtn.notes||''; document.getElementById('qtnTerms').value=qtn.tc||'';
+  if(!((qtn.tc||'').trim())) updateQtnTerms();
   document.getElementById('qtnDiscount').value=qtn.discount||'0.00'; document.getElementById('qtnTaxType').value=qtn.taxType||'None'; document.getElementById('qtnTaxAmt').value=qtn.taxAmount||'0.00';
   calcQtnTotal(); qtnNext(1); switchView('new-quotation-view');
 }
@@ -1560,9 +1595,13 @@ function calcQtnTotal(){
 }
 function calcQtnDue(){ const d=document.getElementById('qtnDate').value, term=parseInt(document.getElementById('qtnValidTerm').value,10); if(d){ let dd=new Date(d); dd.setDate(dd.getDate()+term); document.getElementById('qtnValidDate').valueAsDate=dd; } updateQtnTerms(); }
 function updateQtnTerms(){
-  const tmpl=document.getElementById('qtnTcTemplate').value; let text='';
-  if(tmpl==='standard') text='1. Valid for the period stated.\n2. Prices may change if scope changes.\n3. Confirm by reply or PO.';
-  else text='1. Valid for the period stated.\n2. 50% deposit before work.\n3. Confirm by reply or PO.';
+  const tmpl=document.getElementById('qtnTcTemplate').value;
+  let text='';
+  if(tmpl==='standard'){
+    text='QUOTATION — GENERAL TERMS\n1. This quotation ("Quote") is issued by Omnyzo Agency and remains valid only until the "Valid Until" date shown above, unless withdrawn or superseded earlier in writing.\n2. All prices are in Malaysian Ringgit (MYR) and, unless explicitly stated, exclude applicable taxes, duties, or third-party licensing fees, which will be charged as incurred or as required by law.\n3. The scope of work, deliverables, and assumptions are limited to what is described in this Quote and any referenced briefs or annexes. Any change to scope, timeline, or specifications may require a revised quotation or change order.\n4. Acceptance: You may accept this Quote by written confirmation (including email), a signed purchase order, or any other method we agree in writing. Work will be scheduled after acceptance and, where applicable, receipt of any required deposit.\n5. Project schedule depends on timely provision of content, approvals, and feedback from your side. Delays on your part may affect delivery dates and may incur additional costs if resources must be reallocated.\n6. Intellectual property in pre-existing materials and tools remains with us or our licensors. Upon full payment of the agreed fees, ownership or license of final deliverables will be as stated in your project agreement or, if silent, a non-exclusive license to use the deliverables for the agreed purpose.\n7. Confidential information received from either party will be used only for the purpose of the project and protected with reasonable care.\n8. Either party may terminate before commencement if the other materially breaches these terms and fails to remedy within a reasonable period; fees for work completed to date remain payable.\n9. This Quote does not constitute a binding contract until accepted and any stated conditions (such as deposit) are met.\n10. Governing law: Malaysia. Disputes: parties will first attempt resolution in good faith.\n11. For questions, contact your Omnyzo representative or billings@omnyzo.com.';
+  }else{
+    text='QUOTATION — WITH DEPOSIT\n1. This Quote is valid until the "Valid Until" date above and is issued by Omnyzo Agency.\n2. Prices are in MYR unless stated otherwise; taxes and third-party costs may be additional.\n3. A non-refundable deposit of fifty percent (50%) of the quoted fee (or the percentage stated in the line items) is payable before work begins, unless we agree a different schedule in writing.\n4. The balance is due as stated in this Quote or, if not stated, according to the milestones or final invoice we issue on completion of the agreed scope.\n5. The deposit covers allocation of resources, initial planning, and creative work. If you cancel after work has started, the deposit may be forfeited to cover costs incurred, subject to applicable law.\n6. Scope is limited to this Quote; additional requests require a written change order and may incur extra fees.\n7. Deliverables are released after cleared payment unless otherwise agreed in writing.\n8. Timelines depend on your timely feedback and asset delivery.\n9. IP and confidentiality: as per our standard project terms; final usage rights pass as agreed in writing.\n10. Liability is limited to the extent permitted by law and typically to the fees paid under this engagement.\n11. Governing law: Malaysia.\n12. Acceptance: confirm by email, signed PO, or as agreed. Contact: billings@omnyzo.com.';
+  }
   document.getElementById('qtnTerms').value=text;
 }
 document.getElementById('quotationItemsContainer').addEventListener('keydown',function(e){
@@ -1712,7 +1751,7 @@ function renderAll(){
   document.getElementById('live-feed').innerHTML=lfHtml||'<div style="font-size:12px;color:var(--text-3);">No activity.</div>';
 
   let totalAmt=0, paidCount=0, pendingCount=0, invHtml='';
-  const delBtn = (id,t)=> isSuperAdmin() ? '<button type="button" onclick="openDeleteModal(\''+id+'\',\''+t+'\')" class="action-btn btn-delete">Del</button>' : '';
+  const delBtn = (id,t)=> isSuperAdmin() ? '<button type="button" class="action-btn btn-delete js-delete-doc" data-type="'+t+'" data-doc="'+encodeURIComponent(String(id))+'">Delete</button>' : '';
   appData.invoices.forEach(inv=>{
     let amt=uf(inv.amount); totalAmt+=amt;
     if(inv.status==='Paid') paidCount++; else if(inv.status==='Pending') pendingCount++;
@@ -1736,7 +1775,7 @@ function renderAll(){
     let act='<div class="action-btns">';
     if(!isPaid) act+='<button type="button" onclick="openPayTransModal('+c.rowIdx+')" class="action-btn" style="color:var(--orange);border-color:rgba(255,159,10,0.35);">Pay</button>';
     else act+='<span class="tag tag-paid" style="font-size:10px;">Paid</span>';
-    act+='<button type="button" onclick="editCashflow('+c.rowIdx+')" class="action-btn btn-edit">Edit</button>'+(isSuperAdmin()?'<button type="button" onclick="openDeleteModal('+c.rowIdx+',\'transaction\')" class="action-btn btn-delete">Del</button>':'')+'</div>';
+    act+='<button type="button" onclick="editCashflow('+c.rowIdx+')" class="action-btn btn-edit">Edit</button>'+(isSuperAdmin()?'<button type="button" class="action-btn btn-delete js-delete-doc" data-type="transaction" data-doc="'+encodeURIComponent(String(c.rowIdx))+'">Delete</button>':'')+'</div>';
     cfHtml+='<div class="cf-row"><div>'+fdate(c.date)+'</div><div style="font-weight:600;">'+c.merchant+'</div><div style="color:var(--text-2);font-size:12px;">'+c.category+'</div><div style="color:var(--text-2);font-size:12px;">'+(c.description||'—')+'</div><div style="text-align:right;font-weight:700;color:'+(c.type==='In'?'var(--green)':'var(--pink)')+';">'+(c.type==='In'?'+':'-')+' '+fmt(amt)+'</div><div style="text-align:center;">'+proofHtml+'</div>'+act+'</div>';
   });
   document.getElementById('cf-net').innerText=(net>=0?'+ ':'- ')+fmt(Math.abs(net)); document.getElementById('cf-income').innerText='+ '+fmt(income); document.getElementById('cf-expense').innerText='- '+fmt(expense);
