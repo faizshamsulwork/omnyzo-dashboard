@@ -14,57 +14,62 @@
 <style>
 :root {
   --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --bg: #07080c;
-  --surface-1: rgba(18,19,26,0.82);
-  --surface-2: rgba(24,26,34,0.94);
-  --surface-3: rgba(32,34,44,0.95);
+  --bg: #0f1014; 
+  --surface-1: #16181d;
+  --surface-2: #1c1e24;
+  --surface-3: #252830;
   --border: rgba(255,255,255,0.06);
   --border-2: rgba(255,255,255,0.12);
-  --text: #f5f5f7;
-  --text-2: #a1a1a6;
-  --text-3: #6e6e73;
-  --pink: #ff375f;
-  --pink-dim: rgba(255,55,95,0.14);
-  --pink-glow: rgba(255,55,95,0.35);
-  --blue: #0a84ff;
-  --blue-dim: rgba(10,132,255,0.14);
-  --green: #30d158;
-  --orange: #ff9f0a;
-  --nav-active: rgba(255,55,95,0.12);
-  --radius: 20px;
-  --radius-sm: 14px;
-  --shadow: 0 8px 32px rgba(0,0,0,0.45);
+  --text: #e2e2e5;
+  --text-2: #9ea1a7;
+  --text-3: #70737a;
+  --pink: #e84c68;
+  --pink-dim: rgba(232,76,104,0.12);
+  --pink-glow: transparent;
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --green: #22c55e;
+  --orange: #f59e0b;
+  --nav-active: rgba(232,76,104,0.08);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.15);
   --blur: saturate(180%) blur(20px);
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
   --tap-min: 44px;
 }
+
 [data-theme="light"] {
-  --bg: #f2f2f7;
-  --surface-1: rgba(255,255,255,0.85);
+  --bg: #f7f7f5;
+  --surface-1: #ffffff;
   --surface-2: #ffffff;
-  --surface-3: #f2f2f7;
+  --surface-3: #f0f0ed;
   --border: rgba(0,0,0,0.06);
   --border-2: rgba(0,0,0,0.1);
-  --text: #1c1c1e;
-  --text-2: #636366;
+  --text: #2c2c2e;
+  --text-2: #6b6b70;
   --text-3: #8e8e93;
-  --nav-active: rgba(255,55,95,0.1);
-  --shadow: 0 8px 30px rgba(0,0,0,0.08);
+  --nav-active: rgba(232,76,104,0.06);
+  --shadow: 0 4px 24px rgba(0,0,0,0.04);
 }
+
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html { height:100%; -webkit-tap-highlight-color:transparent; }
+
 body {
   background: var(--bg);
-  background-image: radial-gradient(1200px 600px at 80% -10%, rgba(255,55,95,0.08), transparent), radial-gradient(800px 400px at -10% 100%, rgba(10,132,255,0.06), transparent);
   color: var(--text);
   font-family: var(--font);
-  min-height:100vh; min-height:100dvh;
-  display:flex; overflow:hidden;
-  -webkit-font-smoothing:antialiased;
-  transition: background 0.5s var(--ease), color 0.5s var(--ease);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.4s var(--ease), color 0.4s var(--ease);
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
+
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
 }
@@ -167,40 +172,45 @@ button, input, select, textarea { font-family: var(--font); }
 #app-container.visible { display:flex; }
 #app-container.shown { opacity:1; }
 
-/* Sidebar — fixed width (no flex shrink) */
+/* Sidebar — fixed width & locked position */
 .sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
   width: 260px;
   min-width: 260px;
   max-width: 260px;
   flex: 0 0 260px;
   background: var(--surface-1);
-  border-right:1px solid var(--border);
-  display:flex; flex-direction:column;
-  padding:16px 12px;
-  z-index:100;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  z-index: 100;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
   transition: background 0.4s;
 }
+
 .brand { display:flex; align-items:center; gap:10px; padding:10px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:16px; }
 .brand-icon { width:36px; height:36px; border-radius:10px; background: linear-gradient(145deg, var(--pink), #c41e3a); display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 20px var(--pink-glow); }
 .brand-icon img { width:22px; height:22px; border-radius:4px; }
 .brand-name { font-family:var(--font); font-weight:800; font-size:15px; }
 .brand-tag { font-size:10px; color:var(--text-3); }
 .nav-section-label { font-size:10px; font-weight:700; letter-spacing:1.2px; color:var(--text-3); text-transform:uppercase; padding:0 10px; margin-bottom:6px; }
+
 .nav-item {
-  display:flex; align-items:center; gap:11px; min-height: var(--tap-min);
-  padding:10px 12px; border-radius: var(--radius-sm); color:var(--text-2); font-weight:500; font-size:14px;
-  cursor:pointer; margin-bottom:2px; transition: background 0.2s var(--ease), color 0.2s, transform 0.15s;
-  position:relative;
+  display: flex; align-items: center; gap: 14px; min-height: var(--tap-min);
+  padding: 10px 14px; border-radius: 8px; color: var(--text-2); font-weight: 500; font-size: 14px;
+  cursor: pointer; margin-bottom: 4px; transition: background 0.2s var(--ease), color 0.2s, transform 0.15s;
 }
-.nav-item svg { width:18px; height:18px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-.nav-item:hover { background: var(--surface-3); color:var(--text); }
+.nav-item svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.nav-item:hover { background: var(--surface-3); color: var(--text); }
 .nav-item:active { transform: scale(0.98); }
-.nav-item.active { background: var(--nav-active); color: var(--pink); font-weight:600; }
-.nav-item.active::before { content:''; position:absolute; left:0; top:22%; bottom:22%; width:3px; background:var(--pink); border-radius:0 3px 3px 0; }
+.nav-item.active { background: var(--nav-active); color: var(--pink); font-weight: 600; }
+.nav-item.active::before { display: none; }
+
 .sidebar-spacer { flex:1; }
 .theme-toggle {
   display:flex; align-items:center; gap:10px; min-height: var(--tap-min);
@@ -230,7 +240,16 @@ button, input, select, textarea { font-family: var(--font); }
 .reload-btn { background:none; border:none; color:var(--text-3); cursor:pointer; padding:8px; border-radius:10px; min-width:var(--tap-min); min-height:var(--tap-min); display:flex; align-items:center; justify-content:center; }
 .reload-btn:hover { color:var(--pink); background:var(--pink-dim); }
 
-.main { flex:1; min-width:0; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; position:relative; }
+.main { 
+  flex: 1; 
+  min-width: 0; 
+  height: 100vh; 
+  overflow-y: auto; 
+  overflow-x: hidden; 
+  -webkit-overflow-scrolling: touch; 
+  position: relative; 
+}
+
 .main-inner { padding: clamp(16px,4vw,40px); padding-bottom: calc(24px + env(safe-area-inset-bottom)); min-height:100%; }
 
 .view-section { display:none; animation: viewIn 0.45s var(--ease-spring) forwards; }
@@ -621,7 +640,6 @@ html.low-motion * { scroll-behavior: auto !important; }
 
 <div id="toast"><span id="toast-icon">✓</span><span id="toast-msg">Done</span></div>
 
-<!-- LOGIN -->
 <div id="login-page">
   <div class="login-card">
     <div class="login-logo"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" alt=""></div>
@@ -636,7 +654,6 @@ html.low-motion * { scroll-behavior: auto !important; }
   </div>
 </div>
 
-<!-- INTRO -->
 <div id="intro-page">
   <div class="intro-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
   <div class="intro-grid"></div>
@@ -651,7 +668,6 @@ html.low-motion * { scroll-behavior: auto !important; }
   </div>
 </div>
 
-<!-- CONFIRM -->
 <div id="confirm-modal" class="modal-overlay"><div class="modal" style="position:relative;">
   <div class="modal-icon" style="background:var(--pink-dim);color:var(--pink);width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>
   <h2 id="confirm-title">Confirm</h2>
@@ -749,7 +765,6 @@ html.low-motion * { scroll-behavior: auto !important; }
   </form>
 </div></div>
 
-<!-- SETTINGS -->
 <div id="settings-sheet" class="settings-sheet" onclick="if(event.target===this)closeSettings()">
   <div class="settings-panel" onclick="event.stopPropagation()">
     <div class="settings-grab"></div>
@@ -839,7 +854,6 @@ html.low-motion * { scroll-behavior: auto !important; }
       <div class="table-wrap"><div class="tbl-header"><div>Quote No.</div><div>Client</div><div>Date</div><div>Valid</div><div>Amount</div><div>Status</div><div style="text-align:right;">Actions</div></div><div id="quotationListContainer"></div></div>
     </div>
 
-    <!-- Quotation wizard -->
     <div id="new-quotation-view" class="view-section">
       <div class="page-header"><div style="display:flex;align-items:center;gap:12px;"><button type="button" class="back-btn" onclick="switchView('quotations-view')">←</button><div><h1 id="qtn-form-title">New Quotation</h1><p>Step by step</p></div></div></div>
       <form id="quotationForm">
@@ -906,7 +920,6 @@ html.low-motion * { scroll-behavior: auto !important; }
       <div class="table-wrap"><div class="tbl-header"><div>Invoice</div><div>Client</div><div>Date</div><div>Due</div><div>Amount</div><div>Status</div><div style="text-align:right;">Actions</div></div><div id="invoiceListContainer"></div></div>
     </div>
 
-    <!-- Invoice wizard -->
     <div id="new-invoice-view" class="view-section">
       <div class="page-header"><div style="display:flex;align-items:center;gap:12px;"><button type="button" class="back-btn" onclick="switchView('invoices-view')">←</button><div><h1 id="inv-form-title">New Invoice</h1><p>Step by step</p></div></div></div>
       <form id="invoiceForm">
@@ -1037,11 +1050,11 @@ html.low-motion * { scroll-behavior: auto !important; }
  * Google Apps Script — add POST handlers:
  * - login: validate Admins sheet, return { status, role, username }
  * - delete_doc: payload includes docType, docNo, username, and when docType==='quotation':
- *     quotationNo (same as docNo), removeLinkedInvoice:true — delete the Quotation row
- *     and optionally any Invoice row linked to that quote (your sheet must store sourceQuotationNo or similar).
- *   When docType==='invoice': invoiceNo same as docNo.
- *   When docType==='transaction': rowIdx same as docNo (sheet row id from your API).
- *   Return JSON { status:'success' } or { status:'error', message:'...' }.
+ * quotationNo (same as docNo), removeLinkedInvoice:true — delete the Quotation row
+ * and optionally any Invoice row linked to that quote (your sheet must store sourceQuotationNo or similar).
+ * When docType==='invoice': invoiceNo same as docNo.
+ * When docType==='transaction': rowIdx same as docNo (sheet row id from your API).
+ * Return JSON { status:'success' } or { status:'error', message:'...' }.
  */
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuID6MWvJs2kicaQyzYItJhfzzI1pQdqnNSKOaRetmMMj9ADi-L2aiTmxjuXV0Mkpm/exec';
 const SESSION_KEY = 'omnyzo_auth';
