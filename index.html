@@ -7,7 +7,7 @@
     <title>Omnyzo: Admin</title>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#080910">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -148,602 +148,667 @@
             animation: orbFloat linear infinite;
         }
         .orb-1 { width: 500px; height: 500px; background: var(--pink); top: -200px; left: -200px; animation-duration: 20s; }
-        .orb-2 { width: 400px; height: 400px; background: #4f8ef7; bottom: -150px; right: -150px; animation-duration: 25s; animation-delay: -8s; }
-        @keyframes orbFloat { 0%,100%{transform:translate(0,0)} 33%{transform:translate(30px,-20px)} 66%{transform:translate(-20px,30px)} }
+        .orb-2 { width: 400px; height: 400px; background: #4f8ef7; bottom: -150px
+                <body>
 
-        /* ─── APP CONTAINER ─── */
-        #app-container {
-            display: none; width: 100%; height: 100%;
-            opacity: 0; transition: opacity 0.6s ease;
-        }
-        #app-container.visible { display: flex; }
-        #app-container.shown { opacity: 1; }
+<div id="toast">
+    <span id="toast-icon">✓</span>
+    <span id="toast-msg">Done!</span>
+</div>
 
-        /* ─── SIDEBAR ─── */
-        .sidebar {
-            width: 260px; flex-shrink: 0;
-            background: var(--surface-1);
-            border-right: 1px solid var(--border);
-            display: flex; flex-direction: column;
-            padding: 20px 12px;
-            z-index: 100;
-            transition: background 0.4s;
-        }
-        .brand {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 10px 20px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 20px;
-        }
-        .brand-icon {
-            width: 34px; height: 34px;
-            background: linear-gradient(135deg, var(--pink), #c0392b);
-            border-radius: 9px;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 4px 12px var(--pink-glow);
-        }
-        .brand-icon img { width: 22px; height: 22px; border-radius: 4px; }
-        .brand-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: -0.3px; }
-        .brand-tag { font-size: 10px; color: var(--text-3); font-weight: 500; }
+<div id="intro-page">
+    <div class="intro-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+    <div class="intro-grid"></div>
+    <div class="intro-content">
+        <div class="intro-logo-wrap">
+            <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" alt="Omnyzo">
+        </div>
+        <div class="intro-eyebrow">Admin Dashboard</div>
+        <h1 class="intro-title">Omnyzo</h1>
+        <p class="intro-sub">Your financial command center</p>
+        <button class="btn-enter" id="startBtn" onclick="enterDashboard()">Enter Dashboard</button>
+        <div class="intro-loading" id="introLoading">Connecting to database</div>
+    </div>
+</div>
 
-        .nav-section-label {
-            font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
-            color: var(--text-3); text-transform: uppercase;
-            padding: 0 10px; margin-bottom: 6px;
-        }
-        .nav-item {
-            display: flex; align-items: center; gap: 11px;
-            padding: 11px 12px; border-radius: var(--radius-sm);
-            color: var(--text-2); font-weight: 500; font-size: 14px;
-            cursor: pointer; margin-bottom: 2px;
-            transition: all 0.15s; position: relative;
-        }
-        .nav-item svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-        .nav-item:hover { background: var(--surface-3); color: var(--text); }
-        .nav-item.active {
-            background: var(--nav-active);
-            color: var(--pink); font-weight: 600;
-        }
-        .nav-item.active::before {
-            content: ''; position: absolute; left: 0; top: 25%; bottom: 25%;
-            width: 3px; background: var(--pink); border-radius: 0 3px 3px 0;
-        }
+<div id="confirm-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-icon" style="background:var(--pink-dim); color:var(--pink);">
+            <svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+        </div>
+        <h2 id="confirm-title">Confirm Action</h2>
+        <p style="color:var(--text-2); margin-bottom:24px; font-size:13px;" id="confirm-msg">Are you sure?</p>
+        <div style="display:flex; gap:12px;">
+            <button onclick="closeConfirm()" class="btn-outline" style="flex:1; padding:11px;">Cancel</button>
+            <button id="confirm-yes" class="btn-solid" style="flex:1; padding:11px;">Confirm</button>
+        </div>
+    </div>
+</div>
 
-        .sidebar-spacer { flex: 1; }
+<div id="delete-modal" class="modal-overlay">
+    <div class="modal" style="position:relative;">
+        <button class="modal-close" onclick="document.getElementById('delete-modal').classList.remove('show')">×</button>
+        <div class="modal-icon" style="background:var(--pink-dim); color:var(--pink);">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </div>
+        <h2>Delete Record</h2>
+        <p style="color:var(--text-2); margin-bottom:24px; font-size:13px;">Delete <strong id="del-doc-label"></strong>? This cannot be undone.</p>
+        <form id="delForm">
+            <input type="hidden" id="del-doc-no"><input type="hidden" id="del-doc-type">
+            <button type="submit" class="btn-solid" style="background:var(--pink);">Yes, Delete It</button>
+        </form>
+    </div>
+</div>
 
-        .theme-toggle {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 12px; border-radius: var(--radius-sm);
-            cursor: pointer; border: 1px solid var(--border);
-            margin-bottom: 10px; transition: all 0.15s;
-        }
-        .theme-toggle:hover { border-color: var(--border-2); }
-        .toggle-track {
-            width: 40px; height: 22px; border-radius: 11px;
-            background: var(--surface-3); border: 1px solid var(--border-2);
-            position: relative; transition: background 0.3s;
-        }
-        [data-theme="light"] .toggle-track { background: var(--pink); }
-        .toggle-thumb {
-            position: absolute; top: 2px; left: 2px;
-            width: 18px; height: 18px; border-radius: 50%;
-            background: #fff; transition: transform 0.3s cubic-bezier(0.68,-0.55,0.265,1.55);
-            display: flex; justify-content: center; align-items: center;
-            font-size: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-        [data-theme="light"] .toggle-thumb { transform: translateX(18px); }
-        .toggle-label { font-size: 13px; font-weight: 500; color: var(--text-2); }
+<div id="pay-trans-modal" class="modal-overlay">
+    <div class="modal" style="text-align:left; position:relative;">
+        <button class="modal-close" onclick="document.getElementById('pay-trans-modal').classList.remove('show')">×</button>
+        <h2>Confirm Payment</h2>
+        <form id="payTransForm" style="margin-top:16px;">
+            <input type="hidden" id="payTransIdx">
+            <div class="form-grid" style="gap:12px; margin-bottom:12px;">
+                <div class="form-group"><label>Payment Date</label><input type="date" id="payTransDate" class="form-control" required></div>
+                <div class="form-group"><label>Method</label><input type="text" id="payTransMethod" class="form-control" placeholder="e.g. Maybank" required></div>
+                <div class="form-group" style="grid-column:span 2;"><label>Ref / Trans No</label><input type="text" id="payTransRef" class="form-control"></div>
+                <div class="form-group" style="grid-column:span 2;"><label>Bank Slip (Optional)</label><input type="file" id="payTransReceipt" class="form-control" accept=".png,.jpg,.jpeg,.pdf"></div>
+            </div>
+            <button type="submit" class="btn-solid" style="margin-top:8px;">Confirm Payment</button>
+        </form>
+    </div>
+</div>
 
-        .user-area {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 12px; border-radius: var(--radius-sm);
-            border: 1px solid var(--border); transition: all 0.15s;
-        }
-        .user-avatar {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--pink), #c0392b);
-            display: flex; justify-content: center; align-items: center;
-            font-weight: 800; font-size: 13px; color: #fff; flex-shrink: 0;
-        }
-        .user-name { font-size: 13px; font-weight: 600; }
-        .user-role { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; }
-        .reload-btn {
-            margin-left: auto; background: none; border: none;
-            color: var(--text-3); cursor: pointer; padding: 5px;
-            border-radius: 6px; transition: all 0.15s;
-            display: flex; align-items: center;
-        }
-        .reload-btn:hover { color: var(--pink); background: var(--pink-dim); }
+<div id="edit-trans-modal" class="modal-overlay">
+    <div class="modal" style="text-align:left; position:relative; width:500px; max-width:95%;">
+        <button class="modal-close" onclick="document.getElementById('edit-trans-modal').classList.remove('show')">×</button>
+        <h2>Edit Transaction</h2>
+        <form id="editTransForm" style="margin-top:16px;">
+            <input type="hidden" id="editTransIdx"><input type="hidden" id="editTransType">
+            <div class="form-grid" style="gap:12px;">
+                <div class="form-group"><label>Date</label><input type="date" id="editTransDate" class="form-control" required></div>
+                <div class="form-group"><label>Amount (RM)</label><input type="number" step="0.01" id="editTransAmount" class="form-control" required></div>
+                <div class="form-group" style="grid-column:span 2;"><label>Merchant / Freelancer</label><input type="text" id="editTransMerchant" class="form-control" required></div>
+                <div class="form-group" style="grid-column:span 2;"><label>Category</label><select id="editTransCategory" class="form-control"><optgroup label="Money In"><option>Project Sales / Services</option><option>Monthly Retainers</option><option>Deposit / Advance Payment</option><option>Refund / Rebate Received</option></optgroup><optgroup label="Money Out"><option>Freelancer / Outsourcing</option><option>Ads / Media Spend</option><option>Software / Subscriptions</option><option>Equipment / Hardware</option><option>Payroll &amp; Allowances</option><option>Office Utilities / Internet</option><option>Travel, Meetings &amp; Pitching</option><option>Miscellaneous</option></optgroup></select></div>
+                <div class="form-group" style="grid-column:span 2;"><label>Notes</label><input type="text" id="editTransDesc" class="form-control"></div>
+                <div class="form-group" style="grid-column:span 2;"><label>Status</label><select id="editTransStatus" class="form-control"><option>Paid</option><option>Pending</option></select></div>
+            </div>
+            <button type="submit" class="btn-solid" style="margin-top:20px;">Update</button>
+        </form>
+    </div>
+</div>
 
-        /* ─── MAIN ─── */
-        .main { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; }
-        .main-inner { padding: 36px 40px; min-height: 100%; }
-        
-        .view-section { display: none; animation: viewIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .view-section.active-view { display: block; }
-        @keyframes viewIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+<div id="customer-modal" class="modal-overlay">
+    <div class="modal modal-customer" style="position:relative;">
+        <button class="modal-close" onclick="document.getElementById('customer-modal').classList.remove('show')">×</button>
+        <h2>Add Customer</h2>
+        <form id="customerForm" style="margin-top:20px;">
+            <div class="card" style="padding:16px; margin-bottom:14px;">
+                <div class="form-grid" style="gap:12px;">
+                    <div class="form-group"><label>Type</label><select id="custType" class="form-control"><option>Company</option><option>Individual</option></select></div>
+                    <div class="form-group"><label>Company Name *</label><input type="text" id="custCompany" class="form-control" required></div>
+                    <div class="form-group"><label>PIC Name *</label><input type="text" id="custPIC" class="form-control" required></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="custEmail" class="form-control"></div>
+                    <div class="form-group"><label>Phone *</label><input type="text" id="custPhone" class="form-control" value="+60" required></div>
+                    <div class="form-group"><label>TIN</label><input type="text" id="custTIN" class="form-control"></div>
+                    <div class="form-group"><label>SSM No.</label><input type="text" id="custSSM" class="form-control"></div>
+                </div>
+            </div>
+            <div class="card" style="padding:16px; margin-bottom:16px;">
+                <div class="form-grid" style="gap:12px;">
+                    <div class="form-group" style="grid-column:span 2;"><label>Address *</label><input type="text" id="custAddress" class="form-control" required></div>
+                    <div class="form-group"><label>Postcode *</label><input type="text" id="custPostcode" class="form-control" required oninput="autoFillPostcode(this.value)"></div>
+                    <div class="form-group"><label>City *</label><input type="text" id="custCity" class="form-control" required></div>
+                    <div class="form-group"><label>State *</label><input type="text" id="custState" class="form-control" required></div>
+                    <div class="form-group"><label>Country</label><input type="text" id="custCountry" class="form-control" value="Malaysia" readonly></div>
+                </div>
+            </div>
+            <button type="submit" id="saveCustBtn" class="btn-solid">Save Customer</button>
+        </form>
+    </div>
+</div>
 
-        /* ─── TOPBAR ─── */
-        .page-header {
-            display: flex; justify-content: space-between; align-items: flex-start;
-            margin-bottom: 28px; gap: 20px;
-        }
-        .page-header h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
-            line-height: 1.2;
-        }
-        .page-header p { font-size: 13px; color: var(--text-2); margin-top: 4px; }
-        .header-actions { display: flex; gap: 10px; align-items: center; }
+<div id="freelancer-modal" class="modal-overlay">
+    <div class="modal modal-customer" style="position:relative;">
+        <button class="modal-close" onclick="document.getElementById('freelancer-modal').classList.remove('show')">×</button>
+        <h2>Add Freelancer</h2>
+        <form id="freelancerForm" style="margin-top:20px;">
+            <div class="card" style="padding:16px; margin-bottom:16px;">
+                <div class="form-grid" style="gap:12px;">
+                    <div class="form-group" style="grid-column:span 2;"><label>Name / Company *</label><input type="text" id="freeName" class="form-control" required></div>
+                    <div class="form-group"><label>Phone *</label><input type="text" id="freePhone" class="form-control" value="+60" required></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="freeEmail" class="form-control"></div>
+                    <div class="form-group" style="grid-column:span 2;"><label>Service / Role</label><input type="text" id="freeService" class="form-control" required></div>
+                    <div class="form-group" style="grid-column:span 2;">
+                        <label>Bank Info *</label>
+                        <div style="display:flex; gap:8px;">
+                            <select id="freeBankName" class="form-control" style="flex:1;" required onchange="if(this.value==='Other'){document.getElementById('freeOtherBank').style.display='block';}else{document.getElementById('freeOtherBank').style.display='none';}">
+                                <option value="">Select Bank...</option>
+                                <optgroup label="Malaysia"><option>Maybank</option><option>CIMB Bank</option><option>Public Bank</option><option>RHB Bank</option><option>Hong Leong Bank</option><option>AmBank</option><option>Bank Islam</option></optgroup>
+                                <optgroup label="Indonesia"><option>Bank BCA</option><option>Bank Mandiri</option><option>Bank BRI</option><option>Bank BNI</option><option>BSI (Syariah)</option><option>GoPay</option><option>OVO</option><option>DANA</option></optgroup>
+                                <option value="Other">Other...</option>
+                            </select>
+                            <input type="text" id="freeOtherBank" class="form-control" placeholder="Specify" style="display:none; flex:1;">
+                            <input type="text" id="freeBankAcc" class="form-control" placeholder="Account No." style="flex:1.5;" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="saveFreeBtn" class="btn-solid">Save Freelancer</button>
+        </form>
+    </div>
+</div>
 
-        /* ─── CARDS ─── */
-        .card {
-            background: var(--surface-2);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 22px; margin-bottom: 20px;
-        }
-        .card h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 20px; }
+<div id="app-container">
 
-        /* ─── STAT CARDS ─── */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
-        .stat-card {
-            background: var(--surface-2);
-            border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 20px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            position: relative; overflow: hidden;
-        }
-        .stat-card::after {
-            content: ''; position: absolute;
-            top: 0; right: 0; left: 0; height: 2px;
-            opacity: 0; transition: opacity 0.2s;
-        }
-        .stat-card:hover { transform: translateY(-3px); }
-        .stat-card:hover::after { opacity: 1; }
-        .stat-card.pink::after { background: var(--pink); }
-        .stat-card.blue::after { background: var(--blue); }
-        .stat-card.orange::after { background: var(--orange); }
-        .stat-card.green::after { background: var(--green); }
-        .stat-card:hover.pink { box-shadow: 0 12px 30px rgba(225,78,101,0.2); border-color: rgba(225,78,101,0.2); }
-        .stat-card:hover.blue { box-shadow: 0 12px 30px rgba(79,142,247,0.2); border-color: rgba(79,142,247,0.2); }
-        .stat-card:hover.orange { box-shadow: 0 12px 30px rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.2); }
-        .stat-card:hover.green { box-shadow: 0 12px 30px rgba(34,211,165,0.2); border-color: rgba(34,211,165,0.2); }
-        .stat-icon {
-            width: 34px; height: 34px; border-radius: 9px;
-            display: flex; justify-content: center; align-items: center;
-            margin-bottom: 16px;
-        }
-        .stat-icon svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-        .stat-icon.pink { background: var(--pink-dim); color: var(--pink); }
-        .stat-icon.blue { background: var(--blue-dim); color: var(--blue); }
-        .stat-icon.orange { background: rgba(245,158,11,0.12); color: var(--orange); }
-        .stat-icon.green { background: rgba(34,211,165,0.12); color: var(--green); }
-        .stat-label { font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; }
-        .stat-val { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
-        .stat-sub { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+    <div class="bottom-actions">
+        <div class="notif-btn" onclick="toggleNotif()">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <span class="notif-badge" id="notif-badge">0</span>
+            <div class="notif-panel" id="notif-panel">
+                <div style="padding:14px 16px; border-bottom:1px solid var(--border); font-family:'Syne',sans-serif; font-size:13px; font-weight:700;">Activity</div>
+                <div id="notif-list"><div style="padding:20px; text-align:center; color:var(--text-3); font-size:12px;">No new activity.</div></div>
+            </div>
+        </div>
+    </div>
 
-        /* ─── HERO STAT (net cashflow) ─── */
-        .hero-stat {
-            grid-column: span 1;
-            background: linear-gradient(135deg, var(--pink) 0%, #c0392b 100%);
-            border: none; color: #fff;
-        }
-        .hero-stat .stat-icon { background: rgba(255,255,255,0.15); color: #fff; }
-        .hero-stat .stat-label { color: rgba(255,255,255,0.7); }
-        .hero-stat .stat-val { color: #fff; }
-        .hero-stat .stat-sub { color: rgba(255,255,255,0.6); }
-        .hero-stat:hover { box-shadow: 0 16px 40px rgba(225,78,101,0.5); }
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" alt=""></div>
+            <div>
+                <div class="brand-name">Omnyzo</div>
+                <div class="brand-tag">Agency Dashboard</div>
+            </div>
+        </div>
+        <div class="nav-section-label" style="margin-bottom:10px;">Main</div>
+        <nav>
+            <div class="nav-item active" onclick="switchView('dashboard-view',this)">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
+                <span class="nav-text">Dashboard</span>
+            </div>
+            <div class="nav-item" onclick="switchView('quotations-view',this)">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                <span class="nav-text">Quotations</span>
+            </div>
+            <div class="nav-item" onclick="switchView('invoices-view',this)">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span class="nav-text">Invoices</span>
+            </div>
+            <div class="nav-item" onclick="switchView('cashflow-view',this)">
+                <svg viewBox="0 0 24 24"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <span class="nav-text">Cashflow</span>
+            </div>
+            <div class="nav-item" onclick="switchView('customers-view',this)">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span class="nav-text">Contacts</span>
+            </div>
+            <div class="nav-item" onclick="switchView('logs-view',this)">
+                <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                <span class="nav-text">Activity Logs</span>
+            </div>
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <div class="toggle-track"><div class="toggle-thumb" id="toggle-thumb">🌙</div></div>
+            <span class="toggle-label" id="theme-label">Dark Mode</span>
+        </div>
+        <div class="user-area">
+            <div class="user-avatar">B</div>
+            <div>
+                <div class="user-name">Boss</div>
+                <div class="user-role">Superadmin</div>
+            </div>
+            <button class="reload-btn" onclick="logoutApp()" title="Reload">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+            </button>
+        </div>
+    </aside>
 
-        /* ─── BOTTOM GRID ─── */
-        .dash-bottom { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; }
+    <main class="main">
+        <div class="main-inner">
 
-        /* ─── QUICK ACTIONS ─── */
-        .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
-        .qa-card {
-            background: var(--surface-2);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm); padding: 16px;
-            display: flex; align-items: center; gap: 12px;
-            cursor: pointer; transition: all 0.2s;
-            text-align: left;
-        }
-        .qa-card:hover { border-color: var(--border-2); background: var(--surface-3); transform: translateY(-1px); }
-        .qa-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
-        .qa-icon svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-        .qa-label { font-size: 13px; font-weight: 600; }
-        .qa-sub { font-size: 11px; color: var(--text-3); }
+            <div id="dashboard-view" class="view-section active-view">
+                <div class="page-header">
+                    <div>
+                        <h1>Good morning, <span style="color:var(--pink);">Boss</span></h1>
+                        <p>Here's what's happening at Omnyzo Agency today.</p>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card hero-stat" onclick="switchView('cashflow-view',document.querySelectorAll('.nav-item')[3])">
+                        <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                        <div class="stat-label">Net Cash Flow</div>
+                        <div class="stat-val" id="dash-netcash">RM 0.00</div>
+                        <div class="stat-sub">This month</div>
+                    </div>
+                    <div class="stat-card blue" onclick="switchView('quotations-view',document.querySelectorAll('.nav-item')[1])">
+                        <div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+                        <div class="stat-label">Pipeline Value</div>
+                        <div class="stat-val" id="dash-pipeline" style="color:var(--blue);">RM 0.00</div>
+                        <div class="stat-sub">Pending quotes</div>
+                    </div>
+                    <div class="stat-card orange" onclick="switchView('invoices-view',document.querySelectorAll('.nav-item')[2])">
+                        <div class="stat-icon orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                        <div class="stat-label">Awaiting Payment</div>
+                        <div class="stat-val" id="dash-outstanding" style="color:var(--orange);">RM 0.00</div>
+                        <div class="stat-sub">Unpaid invoices</div>
+                    </div>
+                    <div class="stat-card pink" onclick="switchView('cashflow-view',document.querySelectorAll('.nav-item')[3])">
+                        <div class="stat-icon pink"><svg viewBox="0 0 24 24"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline><polyline points="16 17 22 17 22 11"></polyline></svg></div>
+                        <div class="stat-label">Total Expenses</div>
+                        <div class="stat-val" id="dash-expense" style="color:var(--pink);">RM 0.00</div>
+                        <div class="stat-sub">This month</div>
+                    </div>
+                </div>
+                <div style="font-size:12px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Quick Actions</div>
+                <div class="quick-actions">
+                    <div class="qa-card" onclick="openNewQuotation()">
+                        <div class="qa-icon" style="background:var(--blue-dim); color:var(--blue);"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg></div>
+                        <div><div class="qa-label">Create Quote</div><div class="qa-sub">Pitch a project</div></div>
+                    </div>
+                    <div class="qa-card" onclick="openNewInvoice()">
+                        <div class="qa-icon" style="background:var(--pink-dim); color:var(--pink);"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                        <div><div class="qa-label">New Invoice</div><div class="qa-sub">Bill a client</div></div>
+                    </div>
+                    <div class="qa-card" onclick="switchView('record-transaction-view'); document.getElementById('transDate').value=new Date().toISOString().split('T')[0]; nextWiz(1);">
+                        <div class="qa-icon" style="background:rgba(245,158,11,0.12); color:var(--orange);"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></div>
+                        <div><div class="qa-label">Record Expense</div><div class="qa-sub">Track spending</div></div>
+                    </div>
+                    <div class="qa-card" onclick="switchView('customers-view',document.querySelectorAll('.nav-item')[4])">
+                        <div class="qa-icon" style="background:rgba(34,211,165,0.1); color:var(--green);"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+                        <div><div class="qa-label">Contacts</div><div class="qa-sub">Clients & vendors</div></div>
+                    </div>
+                </div>
+                <div class="dash-bottom">
+                    <div class="card">
+                        <h3>Financial Overview</h3>
+                        <div class="progress-wrap">
+                            <div class="progress-labels">
+                                <span style="color:var(--green); font-size:12px; font-weight:600;">Income <span id="bar-income">RM 0.00</span></span>
+                                <span style="color:var(--pink); font-size:12px; font-weight:600;">Expenses <span id="bar-expense">RM 0.00</span></span>
+                            </div>
+                            <div class="progress-track"><div class="progress-fill" id="income-bar" style="width:50%;"></div></div>
+                        </div>
+                        <div style="font-size:12px; font-weight:700; color:var(--text-3); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">Needs Attention</div>
+                        <div id="needs-attention"></div>
+                    </div>
+                    <div class="card">
+                        <h3>Live Feed</h3>
+                        <div id="live-feed"></div>
+                    </div>
+                </div>
+            </div>
 
-        /* ─── PROGRESS BAR ─── */
-        .progress-wrap { margin-bottom: 24px; }
-        .progress-labels { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 8px; }
-        .progress-track { height: 6px; background: rgba(225,78,101,0.15); border-radius: 3px; overflow: hidden; display: flex; }
-        .progress-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 1s ease-out; }
+            <div id="logs-view" class="view-section">
+                <div class="page-header"><div><h1>Activity Logs</h1><p>Full system history.</p></div></div>
+                <div class="card" style="padding:0; overflow:hidden;"><div id="logs-container"></div></div>
+            </div>
 
-        /* ─── LIVE FEED ─── */
-        .feed-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-        .feed-item:last-child { border-bottom: none; }
-        .feed-dot { width: 8px; height: 8px; background: var(--pink); border-radius: 50%; margin-top: 5px; flex-shrink: 0; box-shadow: 0 0 8px var(--pink); }
-        .feed-text { font-size: 13px; font-weight: 500; line-height: 1.4; }
-        .feed-time { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+            <div id="quotations-view" class="view-section">
+                <div class="page-header">
+                    <div><h1>Quotations</h1><p>Send quotes, track approvals.</p></div>
+                    <div class="header-actions">
+                        <input type="text" class="search-box" placeholder="🔍 Search..." id="searchQtn" oninput="filterRows('quotationListContainer','searchQtn')">
+                        <button class="btn-add blue" onclick="openNewQuotation()">+</button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-val" id="qtn-total">0</div></div>
+                    <div class="stat-card blue"><div class="stat-label">Pipeline</div><div class="stat-val" id="qtn-pipeline" style="color:var(--blue);">RM 0.00</div></div>
+                    <div class="stat-card green"><div class="stat-label">Approved</div><div class="stat-val" id="qtn-approved" style="color:var(--green);">0</div></div>
+                    <div class="stat-card"><div class="stat-label">Draft / Sent</div><div class="stat-val" id="qtn-pending">0</div></div>
+                </div>
+                <div class="table-wrap">
+                    <div class="tbl-header"><div>Quote No.</div><div>Client</div><div>Date</div><div>Valid Until</div><div>Amount</div><div>Status</div><div style="text-align:right;">Actions</div></div>
+                    <div id="quotationListContainer"></div>
+                </div>
+            </div>
 
-        /* ─── NEEDS ATTENTION ─── */
-        .attention-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px; background: var(--surface-3);
-            border-radius: var(--radius-sm); margin-bottom: 8px;
-            border: 1px solid var(--border);
-        }
-        .attention-client { font-size: 13px; font-weight: 600; }
-        .attention-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
-        .attention-amt { font-size: 13px; font-weight: 700; color: var(--orange); }
+            <div id="new-quotation-view" class="view-section">
+                <div class="page-header">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <button class="back-btn" onclick="switchView('quotations-view')">←</button>
+                        <div><h1 id="qtn-form-title">New Quotation</h1><p>Prepare a professional quote.</p></div>
+                    </div>
+                </div>
+                <form id="quotationForm">
+                    <input type="hidden" id="editingQtnFlag">
+                    <div class="invoice-container">
+                        <div>
+                            <div class="card">
+                                <h3>Quotation Details</h3>
+                                <div class="form-grid" style="gap:14px;">
+                                    <div class="form-group" style="grid-column:span 2;"><label>Customer <span style="color:var(--blue);float:right;cursor:pointer;font-size:11px;" onclick="openCustModal()">+ Add New</span></label><select id="qtnCustomer" class="form-control" required onchange="autoFillCust('qtn')"><option value="">Select customer...</option></select></div>
+                                    <div class="form-group"><label>Quote No.</label><input type="text" id="qtnNo" class="form-control" readonly style="font-weight:700;"></div>
+                                    <div class="form-group"><label>Date</label><input type="date" id="qtnDate" class="form-control" required onchange="calcQtnDue()"></div>
+                                    <div class="form-group"><label>Validity</label><select id="qtnValidTerm" class="form-control" onchange="calcQtnDue()"><option value="14">14 Days</option><option value="30" selected>30 Days</option><option value="60">60 Days</option></select></div>
+                                    <div class="form-group"><label>Valid Until</label><input type="date" id="qtnValidDate" class="form-control" readonly></div>
+                                </div>
+                                <div style="margin-top:18px;padding-top:18px;border-top:1px dashed var(--border);">
+                                    <div style="font-size:11px;font-weight:700;color:var(--text-3);margin-bottom:12px;text-transform:uppercase;">Client Info</div>
+                                    <div class="form-grid" style="gap:12px;">
+                                        <div class="form-group"><label>PIC Name</label><input type="text" id="qtnPIC" class="form-control" required></div>
+                                        <div class="form-group"><label>Phone</label><input type="text" id="qtnPhone" class="form-control"></div>
+                                        <div class="form-group"><label>Email</label><input type="email" id="qtnEmail" class="form-control"></div>
+                                        <div class="form-group" style="grid-column:span 2;"><label>Address</label><input type="text" id="qtnAddress" class="form-control"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><h3 style="margin:0;">Items</h3><button type="button" onclick="addQtnItem()" style="background:var(--surface-3);border:1px solid var(--border);padding:7px 14px;border-radius:8px;font-weight:600;color:var(--text);cursor:pointer;font-size:13px;">+ Add</button></div>
+                                <div class="item-header"><div>Description</div><div>Qty</div><div>Price (RM)</div><div>Total (RM)</div><div></div></div>
+                                <div id="quotationItemsContainer"></div>
+                            </div>
+                            <div class="card">
+                                <h3>Notes & Terms</h3>
+                                <div class="form-group" style="margin-bottom:14px;"><label>Notes</label><textarea id="qtnNotes" class="form-control" rows="3"></textarea></div>
+                                <div class="form-group" style="margin-bottom:14px;"><label>T&C Template</label><select id="qtnTcTemplate" class="form-control" onchange="updateQtnTerms()"><option value="standard">Standard Quote Terms</option><option value="deposit">Requires 50% Deposit</option></select></div>
+                                <div class="form-group"><label>Terms & Conditions</label><textarea id="qtnTerms" class="form-control" rows="4"></textarea></div>
+                            </div>
+                            <button type="submit" id="saveQtnBtn" class="btn-solid" style="padding:16px;font-size:15px;background:var(--blue);box-shadow:0 4px 14px rgba(79,142,247,0.4);">Create Quotation</button>
+                        </div>
+                        <div>
+                            <div class="summary-card">
+                                <h2>Summary</h2>
+                                <div class="summary-row"><span>Subtotal</span><span id="qtnSubtotal">RM 0.00</span></div>
+                                <div class="summary-row"><span>Discount (RM)</span><input type="text" id="qtnDiscount" class="summary-input" value="0.00" oninput="calcQtnTotal()"></div>
+                                <div class="summary-row"><span>Tax Type</span><select id="qtnTaxType" class="summary-input" style="width:110px;" onchange="calcQtnTotal()"><option value="None">None</option><option>SST</option><option>WHT</option><option>Tax on Sales</option></select></div>
+                                <div class="summary-row"><span>Tax Amount (RM)</span><input type="text" id="qtnTaxAmt" class="summary-input" value="0.00" oninput="calcQtnTotal()"></div>
+                                <div class="summary-row" style="border-top:1px solid var(--border);padding-top:12px;"><span id="qtnTaxLabel" style="color:var(--blue);">Tax</span><span id="qtnTaxDisplay" style="color:var(--blue);">RM 0.00</span></div>
+                                <div class="summary-total"><h3>Total</h3><h2 id="qtnGrandTotal">RM 0.00</h2></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-        /* ─── TABLES ─── */
-        .table-wrap { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; }
-        .tbl-header, .tbl-row { min-width: 800px; }
-        .tbl-header { display: grid; grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.8fr 1.5fr; padding: 12px 20px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
-        .tbl-row { display: grid; grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.8fr 1.5fr; padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.15s; }
-        .tbl-row:last-child { border-bottom: none; }
-        .tbl-row:hover { background: var(--surface-3); }
-        .cf-header, .cf-row { min-width: 900px; }
-        .cf-header { display: grid; grid-template-columns: 1fr 1.5fr 1fr 1.5fr 1fr 80px 120px; padding: 12px 20px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
-        .cf-row { display: grid; grid-template-columns: 1fr 1.5fr 1fr 1.5fr 1fr 80px 120px; padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.15s; }
-        .cf-row:last-child { border-bottom: none; }
-        .cf-row:hover { background: var(--surface-3); }
-        .cust-header, .cust-row { min-width: 700px; }
-        .cust-header { display: grid; grid-template-columns: 2fr 2fr 3fr 80px; padding: 12px 20px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
-        .cust-row { display: grid; grid-template-columns: 2fr 2fr 3fr 80px; padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border); align-items: center; }
-        .cust-row:hover { background: var(--surface-3); }
-        .freelance-header, .freelance-row { min-width: 700px; }
-        .freelance-header { display: grid; grid-template-columns: 2.5fr 2fr 2fr 2.5fr 50px; padding: 12px 20px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
-        .freelance-row { display: grid; grid-template-columns: 2.5fr 2fr 2fr 2.5fr 50px; padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border); align-items: center; }
-        .freelance-row:hover { background: var(--surface-3); }
+            <div id="quotation-detail-view" class="view-section">
+                <div class="detail-bar">
+                    <div class="detail-bar-left">
+                        <button class="back-btn" onclick="switchView('quotations-view')">←</button>
+                        <div>
+                            <h1 id="detail-qtn-no" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">QTN-XXXX</h1>
+                            <p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-qtn-client" style="color:var(--text);font-weight:600;"></span> &nbsp;•&nbsp; <span id="detail-qtn-status" class="tag">Status</span></p>
+                        </div>
+                    </div>
+                    <div class="detail-actions">
+                        <div id="qtn-convert-btn-wrap"></div>
+                        <button class="a-btn a-btn-ghost" onclick="downloadQtnPDF()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download PDF</button>
+                        <a id="btn-qtn-email" href="#" class="a-btn a-btn-blue"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Send Email</a>
+                    </div>
+                </div>
+                <div class="invoice-preview-wrap">
+                    <div class="live-invoice" id="quotationCaptureArea">
+                        <div class="loading-overlay" id="qtnLoadingOverlay"><div class="spinner"></div><div style="font-size:14px;font-weight:600;">Generating Document...</div></div>
+                        <div class="li-header">
+                            <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo">
+                            <div class="li-company"><h2>Omnyzo Agency</h2>2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>billings@omnyzo.com • +6018-201 8001<br>Reg: (202503336982) (MA0340342-V)</div>
+                        </div>
+                        <div class="li-title">QUOTATION</div>
+                        <div class="li-meta">
+                            <div class="li-meta-l"><table><tr><td>Quote No:</td><td id="li-qtn-no"></td></tr><tr><td>Date:</td><td id="li-qtn-date"></td></tr><tr><td>Valid Until:</td><td id="li-qtn-due"></td></tr></table></div>
+                            <div class="li-meta-r"><p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p><h3 id="li-qtn-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3><p id="li-qtn-address" style="line-height:1.8;"></p></div>
+                        </div>
+                        <table class="li-table"><thead><tr><th>Description</th><th>Price (RM)</th><th>Qty</th><th>Total (RM)</th></tr></thead><tbody id="li-qtn-items"></tbody></table>
+                        <div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-qtn-sub"></span></div><div class="li-summary-row" id="li-qtn-disc-row" style="display:none;color:#e14e65;"><span>Discount</span><span id="li-qtn-disc"></span></div><div class="li-summary-row"><span id="li-qtn-tax-lbl">Tax</span><span id="li-qtn-tax"></span></div><div class="li-summary-row total" style="background:#3b5fe4;"><span>TOTAL</span><span id="li-qtn-total"></span></div></div></div>
+                        <div id="li-qtn-notes-wrap" style="display:none;padding:0 40px 16px;"><h4 style="font-size:10px;font-weight:800;text-transform:uppercase;margin-bottom:8px;color:#1d1d1f;">Notes</h4><p id="li-qtn-notes" style="font-size:11px;color:#86868b;line-height:1.6;white-space:pre-line;"></p></div>
+                        <div class="li-bottom">
+                            <div class="li-box"><h4>Note</h4><div style="border:1px solid #eef0f2;padding:14px;border-radius:10px;font-size:11px;line-height:1.6;color:#86868b;">Upon your approval, this quotation will be converted into a formal invoice.</div></div>
+                            <div class="li-box"><h4>Terms & Conditions</h4><p id="li-qtn-terms" style="white-space:pre-line;font-size:11px;color:#86868b;line-height:1.6;"></p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        .cust-avatar {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: var(--pink-dim); color: var(--pink);
-            display: flex; justify-content: center; align-items: center;
-            font-weight: 800; font-size: 12px; flex-shrink: 0;
-        }
+            <div id="invoices-view" class="view-section">
+                <div class="page-header">
+                    <div><h1>Invoices</h1><p>Manage and track payments.</p></div>
+                    <div class="header-actions">
+                        <input type="text" class="search-box" placeholder="🔍 Search..." id="searchInv" oninput="filterRows('invoiceListContainer','searchInv')">
+                        <button class="btn-add" onclick="openNewInvoice()">+</button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-val" id="inv-total">0</div></div>
+                    <div class="stat-card pink"><div class="stat-label">Total Amount</div><div class="stat-val" id="inv-total-amt" style="color:var(--pink);">RM 0.00</div></div>
+                    <div class="stat-card green"><div class="stat-label">Paid</div><div class="stat-val" id="inv-paid" style="color:var(--green);">0</div></div>
+                    <div class="stat-card orange"><div class="stat-label">Pending</div><div class="stat-val" id="inv-pending" style="color:var(--orange);">0</div></div>
+                </div>
+                <div class="table-wrap">
+                    <div class="tbl-header"><div>Invoice No.</div><div>Client</div><div>Date</div><div>Due Date</div><div>Amount</div><div>Status</div><div style="text-align:right;">Actions</div></div>
+                    <div id="invoiceListContainer"></div>
+                </div>
+            </div>
 
-        /* ─── STATUS TAGS ─── */
-        .tag {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 4px 10px; border-radius: 6px;
-            font-size: 11px; font-weight: 700;
-        }
-        .tag::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-        .tag-pending { background: rgba(245,158,11,0.12); color: var(--orange); }
-        .tag-paid { background: rgba(34,211,165,0.12); color: var(--green); }
-        .tag-draft { background: rgba(148,148,168,0.1); color: var(--text-2); }
-        .tag-sent { background: var(--blue-dim); color: var(--blue); }
-        .tag-approved { background: rgba(34,211,165,0.12); color: var(--green); }
-        .tag-rejected { background: var(--pink-dim); color: var(--pink); }
+            <div id="new-invoice-view" class="view-section">
+                <div class="page-header">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <button class="back-btn" onclick="switchView('invoices-view')">←</button>
+                        <div><h1 id="inv-form-title">New Invoice</h1><p>Create and issue an invoice.</p></div>
+                    </div>
+                </div>
+                <form id="invoiceForm">
+                    <input type="hidden" id="editingInvFlag">
+                    <div class="invoice-container">
+                        <div>
+                            <div class="card">
+                                <h3>Invoice Details</h3>
+                                <div class="form-grid" style="gap:14px;">
+                                    <div class="form-group" style="grid-column:span 2;"><label>Customer <span style="color:var(--pink);float:right;cursor:pointer;font-size:11px;" onclick="openCustModal()">+ Add New</span></label><select id="invCustomer" class="form-control" required onchange="autoFillCust('inv')"><option value="">Select customer...</option></select></div>
+                                    <div class="form-group"><label>Invoice No.</label><input type="text" id="invNo" class="form-control" readonly style="font-weight:700;"></div>
+                                    <div class="form-group"><label>Invoice Date</label><input type="date" id="invDate" class="form-control" required onchange="calcDueDate()"></div>
+                                    <div class="form-group"><label>Credit Term</label><select id="invCreditTerm" class="form-control" onchange="calcDueDate()"><option value="0">Due on Receipt</option><option value="7">7 Days</option><option value="14">14 Days</option><option value="30" selected>30 Days</option><option value="45">45 Days</option><option value="60">60 Days</option></select></div>
+                                    <div class="form-group"><label>Due Date</label><input type="date" id="invDueDate" class="form-control" readonly></div>
+                                </div>
+                                <div style="margin-top:18px;padding-top:18px;border-top:1px dashed var(--border);">
+                                    <div style="font-size:11px;font-weight:700;color:var(--text-3);margin-bottom:12px;text-transform:uppercase;">Client Info</div>
+                                    <div class="form-grid" style="gap:12px;">
+                                        <div class="form-group"><label>PIC Name</label><input type="text" id="invPIC" class="form-control" required></div>
+                                        <div class="form-group"><label>Phone</label><input type="text" id="invPhone" class="form-control"></div>
+                                        <div class="form-group"><label>Email</label><input type="email" id="invEmail" class="form-control"></div>
+                                        <div class="form-group" style="grid-column:span 2;"><label>Address</label><input type="text" id="invAddress" class="form-control"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><h3 style="margin:0;">Items</h3><button type="button" onclick="addInvItem()" style="background:var(--surface-3);border:1px solid var(--border);padding:7px 14px;border-radius:8px;font-weight:600;color:var(--text);cursor:pointer;font-size:13px;">+ Add</button></div>
+                                <div class="item-header"><div>Description</div><div>Qty</div><div>Price (RM)</div><div>Total (RM)</div><div></div></div>
+                                <div id="invoiceItemsContainer"></div>
+                            </div>
+                            <div class="card">
+                                <h3>Notes & Terms</h3>
+                                <div class="form-group" style="margin-bottom:14px;"><label>Notes</label><textarea id="invNotes" class="form-control" rows="3"></textarea></div>
+                                <div class="form-group" style="margin-bottom:14px;"><label>T&C Template</label><select id="tcTemplate" class="form-control" onchange="updateTerms()"><option value="standard">Template A – Standard</option><option value="retainer">Template B – Monthly Retainer</option><option value="deposit">Template C – 50% Deposit</option><option value="rush">Template D – Rush Job</option></select></div>
+                                <div class="form-group" style="margin-bottom:14px;"><label>Terms & Conditions</label><textarea id="invTerms" class="form-control" rows="4"></textarea></div>
+                                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;font-weight:500;">
+                                    <input type="checkbox" id="invPaymentAdvice" checked style="width:16px;height:16px;accent-color:var(--pink);">
+                                    Include Payment Advice Page
+                                </label>
+                            </div>
+                            <button type="submit" id="saveInvBtn" class="btn-solid" style="padding:16px;font-size:15px;">Create Invoice</button>
+                        </div>
+                        <div>
+                            <div class="summary-card">
+                                <h2>Summary</h2>
+                                <div class="summary-row"><span>Subtotal</span><span id="invSubtotal">RM 0.00</span></div>
+                                <div class="summary-row"><span>Discount (RM)</span><input type="text" id="invDiscount" class="summary-input" value="0.00" oninput="calcInvTotal()"></div>
+                                <div class="summary-row"><span>Tax Type</span><select id="invTaxType" class="summary-input" style="width:110px;" onchange="calcInvTotal()"><option value="None">None</option><option>SST</option><option>WHT</option><option>Tax on Sales</option></select></div>
+                                <div class="summary-row"><span>Tax Amount (RM)</span><input type="text" id="invTaxAmt" class="summary-input" value="0.00" oninput="calcInvTotal()"></div>
+                                <div class="summary-row" style="border-top:1px solid var(--border);padding-top:12px;"><span id="invTaxLabel" style="color:var(--pink);">Tax</span><span id="invTaxDisplay" style="color:var(--pink);">RM 0.00</span></div>
+                                <div class="summary-total"><h3>Total</h3><h2 id="invGrandTotal">RM 0.00</h2></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-        /* ─── BUTTONS ─── */
-        .action-btns { display: flex; gap: 6px; justify-content: flex-end; }
-        .action-btn {
-            padding: 6px 10px; border-radius: 6px;
-            font-size: 11px; font-weight: 600; cursor: pointer;
-            border: 1px solid; display: inline-flex; align-items: center; gap: 4px;
-            transition: all 0.15s; white-space: nowrap;
-        }
-        .btn-pay { color: var(--green); border-color: rgba(34,211,165,0.3); background: transparent; }
-        .btn-pay:hover { background: rgba(34,211,165,0.1); }
-        .btn-undo { color: var(--text-2); border-color: var(--border); background: transparent; }
-        .btn-undo:hover { background: var(--surface-3); color: var(--text); }
-        .btn-view { color: var(--text-2); border-color: var(--border); background: transparent; }
-        .btn-view:hover { background: var(--surface-3); }
-        .btn-edit { color: var(--blue); border-color: rgba(79,142,247,0.3); background: transparent; }
-        .btn-edit:hover { background: var(--blue-dim); }
-        .btn-delete { color: var(--pink); border-color: rgba(225,78,101,0.3); background: transparent; }
-        .btn-delete:hover { background: var(--pink-dim); }
-        .btn-convert { color: var(--blue); border-color: rgba(79,142,247,0.3); background: transparent; }
-        .btn-convert:hover { background: var(--blue-dim); }
+            <div id="invoice-detail-view" class="view-section">
+                <div class="detail-bar">
+                    <div class="detail-bar-left">
+                        <button class="back-btn" onclick="switchView('invoices-view')">←</button>
+                        <div>
+                            <h1 id="detail-inv-no" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">OMN-XXXX</h1>
+                            <p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-inv-client" style="color:var(--text);font-weight:600;"></span> &nbsp;•&nbsp; <span id="detail-inv-status" class="tag">Status</span></p>
+                        </div>
+                    </div>
+                    <div class="detail-actions">
+                        <button class="a-btn a-btn-ghost" onclick="downloadInvPDF()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> PDF</button>
+                        <button class="a-btn a-btn-ghost" onclick="copyDetailLink()" style="color:var(--blue);border-color:rgba(79,142,247,0.3);"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share</button>
+                        <a id="btn-inv-email" href="#" class="a-btn a-btn-pink"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Email</a>
+                    </div>
+                </div>
+                <div class="invoice-preview-wrap">
+                    <div class="live-invoice" id="invoiceCaptureArea">
+                        <div class="loading-overlay" id="invLoadingOverlay" style="display:none;flex-direction:column;justify-content:center;align-items:center;"><div class="spinner"></div><div style="font-size:14px;font-weight:600;">Generating Document...</div></div>
+                        <div class="li-header">
+                            <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo">
+                            <div class="li-company">
+                                <h2>Omnyzo Agency</h2>
+                                2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>
+                                billings@omnyzo.com • +6018-201 8001<br>
+                                Reg: (202503336982) (MA0340342-V)
+                            </div>
+                        </div>
+                        <div class="li-title">INVOICE</div>
+                        <div class="li-meta">
+                            <div class="li-meta-l"><table><tr><td>Invoice No:</td><td id="li-inv-no"></td></tr><tr><td>Date:</td><td id="li-inv-date"></td></tr><tr><td>Due Date:</td><td id="li-inv-due"></td></tr></table></div>
+                            <div class="li-meta-r"><p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p><h3 id="li-inv-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3><p id="li-inv-address" style="line-height:1.8;"></p></div>
+                        </div>
+                        <table class="li-table"><thead><tr><th>Description</th><th>Price (RM)</th><th>Qty</th><th>Total (RM)</th></tr></thead><tbody id="li-inv-items"></tbody></table>
+                        <div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-inv-sub"></span></div><div class="li-summary-row" id="li-inv-disc-row" style="display:none;color:#e14e65;"><span>Discount</span><span id="li-inv-disc"></span></div><div class="li-summary-row"><span id="li-inv-tax-lbl">Tax</span><span id="li-inv-tax"></span></div><div class="li-summary-row total"><span>TOTAL</span><span id="li-inv-total"></span></div></div></div>
+                        <div id="li-inv-notes-wrap" style="display:none;padding:0 40px 16px;"><h4 style="font-size:10px;font-weight:800;text-transform:uppercase;margin-bottom:8px;color:#1d1d1f;">Notes</h4><p id="li-inv-notes" style="font-size:11px;color:#86868b;line-height:1.6;white-space:pre-line;"></p></div>
+                        <div class="li-bottom">
+                            <div class="li-box"><h4>Payment Method</h4><div style="border:1px solid #eef0f2;padding:14px;border-radius:10px;font-size:11px;line-height:1.8;"><table style="border-collapse:collapse;border:none;width:100%;"><tr><td style="color:#86868b;border:none;padding-right:12px;">Payee</td><td style="font-weight:700;color:#1d1d1f;border:none;">: OMNYZO AGENCY</td></tr><tr><td style="color:#86868b;border:none;">Bank</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MAYBANK BERHAD</td></tr><tr><td style="color:#86868b;border:none;">Account</td><td style="font-weight:700;color:#1d1d1f;border:none;">: 5144-0481-2701</td></tr><tr><td style="color:#86868b;border:none;">Swift</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MBBEMYKL</td></tr></table></div></div>
+                            <div class="li-box"><h4>Terms & Conditions</h4><p id="li-inv-terms" style="white-space:pre-line;font-size:11px;color:#86868b;line-height:1.6;"></p></div>
+                        </div>
+                        <div class="li-payment-advice-page" id="li-pa-page">
+                            <div class="li-payment-advice">
+                                <div style="text-align:center;color:#a1a1aa;margin-top:-48px;background:#fff;width:36px;margin-left:auto;margin-right:auto;font-size:14px;">✂️</div>
+                                <h3 style="font-size:13px;font-weight:800;color:#1d1d1f;margin-bottom:14px;letter-spacing:1px;">PAYMENT ADVICE</h3>
+                                <div style="display:flex;justify-content:space-between;font-size:12px;">
+                                    <div><p style="color:#86868b;margin-bottom:4px;">To:</p><p style="font-weight:800;color:#1d1d1f;margin-bottom:2px;">Omnyzo Agency</p><p style="color:#86868b;">2003, The Sky Residensi Jalan 6/91<br>Taman Shamelin Perkasa, 56100 KL</p></div>
+                                    <table style="border-collapse:collapse;text-align:left;"><tr><td style="padding:3px 14px 3px 0;color:#86868b;">Customer:</td><td style="font-weight:700;color:#1d1d1f;" id="pa-client"></td></tr><tr><td style="color:#86868b;">Invoice No:</td><td style="font-weight:700;" id="pa-inv-no"></td></tr><tr><td style="color:#86868b;">Due Date:</td><td style="font-weight:700;" id="pa-due"></td></tr><tr><td style="color:#86868b;">Amount:</td><td style="font-weight:800;font-size:13px;" id="pa-amt"></td></tr></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        .btn-solid {
-            background: var(--pink); color: #fff; border: none;
-            padding: 13px 20px; border-radius: var(--radius-sm);
-            font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
-            cursor: pointer; width: 100%; transition: all 0.2s;
-            box-shadow: 0 4px 14px var(--pink-glow);
-        }
-        .btn-solid:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-solid:active { transform: translateY(0); }
-        .btn-outline {
-            background: transparent; color: var(--text);
-            border: 1px solid var(--border-2);
-            padding: 13px 20px; border-radius: var(--radius-sm);
-            font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
-            cursor: pointer; width: 100%; transition: all 0.2s;
-        }
-        .btn-outline:hover { background: var(--surface-3); border-color: var(--border-2); }
+            <div id="cashflow-view" class="view-section">
+                <div class="page-header">
+                    <div><h1>Cashflow</h1><p>Track business income and expenses.</p></div>
+                    <div class="header-actions">
+                        <input type="text" class="search-box" placeholder="🔍 Search..." id="searchCf" oninput="filterRows('cashflowListContainer','searchCf')">
+                        <button class="btn-add" onclick="switchView('record-transaction-view'); document.getElementById('transDate').value=new Date().toISOString().split('T')[0]; nextWiz(1);">+</button>
+                    </div>
+                </div>
+                <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+                    <div class="stat-card"><div class="stat-label">Net Balance</div><div class="stat-val" id="cf-net" style="color:var(--green);">RM 0.00</div></div>
+                    <div class="stat-card green"><div class="stat-label">Total Income</div><div class="stat-val" id="cf-income" style="color:var(--green);">RM 0.00</div></div>
+                    <div class="stat-card pink"><div class="stat-label">Total Expenses</div><div class="stat-val" id="cf-expense" style="color:var(--pink);">RM 0.00</div></div>
+                </div>
+                <div class="table-wrap">
+                    <div class="cf-header"><div>Date</div><div>Merchant / Payee</div><div>Category</div><div>Description</div><div style="text-align:right;">Amount</div><div style="text-align:center;">Proof</div><div style="text-align:right;">Actions</div></div>
+                    <div id="cashflowListContainer"></div>
+                </div>
+            </div>
 
-        .btn-add {
-            width: 40px; height: 40px; border-radius: 50%;
-            background: var(--pink); color: #fff; border: none;
-            font-size: 22px; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; flex-shrink: 0;
-            box-shadow: 0 4px 14px var(--pink-glow); transition: all 0.2s;
-        }
-        .btn-add:hover { transform: rotate(90deg) scale(1.1); }
-        .btn-add.blue { background: var(--blue); box-shadow: 0 4px 14px rgba(79,142,247,0.4); }
+            <div id="record-transaction-view" class="view-section">
+                <div class="page-header">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <button class="back-btn" onclick="switchView('cashflow-view')">←</button>
+                        <div><h1>Record Transaction</h1><p>Step-by-step entry.</p></div>
+                    </div>
+                </div>
+                <form id="transactionForm" onkeydown="return event.key!='Enter';">
+                    <div class="card" style="max-width:560px; margin:0 auto; padding:32px; padding-top:48px; position:relative;">
+                        <div style="display:flex; gap:6px; position:absolute; top:24px; left:32px; right:32px;">
+                            <div class="wiz-bar done" id="wiz-bar-1"></div>
+                            <div class="wiz-bar" id="wiz-bar-2"></div>
+                            <div class="wiz-bar" id="wiz-bar-3"></div>
+                            <div class="wiz-bar" id="wiz-bar-4"></div>
+                        </div>
+                        <div class="wizard-step active" id="step1">
+                            <h3 style="font-family:'Syne',sans-serif; font-size:18px; margin-bottom:4px;">Step 1: Type</h3>
+                            <p style="font-size:12px;color:var(--text-3);margin-bottom:22px;">Select transaction type.</p>
+                            <div class="trans-toggle">
+                                <button type="button" id="btn-out" class="trans-btn out" onclick="setTransType('Out')">💸 Money Out</button>
+                                <button type="button" id="btn-in" class="trans-btn" onclick="setTransType('In')">💰 Money In</button>
+                            </div>
+                            <input type="hidden" id="transType" value="Out">
+                            <button type="button" class="btn-solid" onclick="nextWiz(2)">Next →</button>
+                        </div>
+                        <div class="wizard-step" id="step2">
+                            <h3 style="font-family:'Syne',sans-serif; font-size:18px; margin-bottom:4px;">Step 2: Details</h3>
+                            <p style="font-size:12px;color:var(--text-3);margin-bottom:22px;">Date, amount, and payee.</p>
+                            <div class="form-grid" style="gap:14px; margin-bottom:20px;">
+                                <div class="form-group"><label>Date</label><input type="date" id="transDate" class="form-control" required></div>
+                                <div class="form-group"><label>Amount (RM)</label><input type="number" step="0.01" min="0" id="transAmount" class="form-control" required></div>
+                                <div class="form-group" style="grid-column:span 2;"><label>Paid To / Received From</label><input type="text" id="transMerchant" class="form-control" list="merchantList" required><datalist id="merchantList"></datalist></div>
+                            </div>
+                            <div style="display:flex;gap:12px;">
+                                <button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(1)">← Back</button>
+                                <button type="button" class="btn-solid" style="flex:2;" onclick="if(document.getElementById('transDate').value&&document.getElementById('transAmount').value&&document.getElementById('transMerchant').value){nextWiz(3);}else{showToast('Fill all fields',true);}">Next →</button>
+                            </div>
+                        </div>
+                        <div class="wizard-step" id="step3">
+                            <h3 style="font-family:'Syne',sans-serif; font-size:18px; margin-bottom:4px;">Step 3: Category</h3>
+                            <p style="font-size:12px;color:var(--text-3);margin-bottom:22px;">Where to record this?</p>
+                            <div class="form-grid" style="gap:14px; margin-bottom:20px;">
+                                <div class="form-group" style="grid-column:span 2;"><label>Category</label><select id="transCategory" class="form-control"><optgroup label="Money In"><option>Project Sales / Services</option><option>Monthly Retainers</option><option>Deposit / Advance Payment</option><option>Refund / Rebate Received</option></optgroup><optgroup label="Money Out"><option>Freelancer / Outsourcing</option><option>Ads / Media Spend</option><option>Software / Subscriptions</option><option>Equipment / Hardware</option><option>Payroll &amp; Allowances</option><option>Office Utilities / Internet</option><option>Travel, Meetings &amp; Pitching</option><option>Miscellaneous</option></optgroup></select></div>
+                                <div class="form-group" style="grid-column:span 2;"><label>Notes</label><input type="text" id="transDesc" class="form-control" placeholder="Optional details..."></div>
+                            </div>
+                            <div style="display:flex;gap:12px;">
+                                <button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(2)">← Back</button>
+                                <button type="button" class="btn-solid" style="flex:2;" onclick="nextWiz(4)">Next →</button>
+                            </div>
+                        </div>
+                        <div class="wizard-step" id="step4">
+                            <h3 style="font-family:'Syne',sans-serif; font-size:18px; margin-bottom:4px;">Step 4: Payment</h3>
+                            <p style="font-size:12px;color:var(--text-3);margin-bottom:22px;">Confirm payment status.</p>
+                            <div class="form-group" style="margin-bottom:16px;"><select id="transStatus" class="form-control" onchange="togglePayFields()"><option value="Paid">Paid ✓</option><option value="Pending">Pending (pay later)</option></select></div>
+                            <div id="payFields" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;background:var(--surface-3);border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:20px;">
+                                <div class="form-group" style="grid-column:span 2;"><label>Bank Slip (Optional)</label><input type="file" id="bankSlip" class="form-control" accept=".png,.jpg,.jpeg,.pdf"></div>
+                                <div class="form-group"><label>Payment Date</label><input type="date" id="transPayDate" class="form-control"></div>
+                                <div class="form-group"><label>Method</label><input type="text" id="transPayMethod" class="form-control" placeholder="e.g. Maybank"></div>
+                                <div class="form-group" style="grid-column:span 2;"><label>Ref / Trans No.</label><input type="text" id="transRefId" class="form-control"></div>
+                            </div>
+                            <div style="display:flex;gap:12px;">
+                                <button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(3)">← Back</button>
+                                <button type="submit" id="saveTransBtn" class="btn-solid" style="flex:2;">Save ✔</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-        /* ─── FORMS ─── */
-        .search-box {
-            background: var(--surface-3); border: 1px solid var(--border);
-            color: var(--text); padding: 10px 16px;
-            border-radius: 100px; font-size: 13px;
-            font-family: 'DM Sans', sans-serif; width: 240px; outline: none;
-            transition: all 0.2s;
-        }
-        .search-box:focus { border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-dim); }
-        .form-group { margin-bottom: 0; }
-        .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 7px; }
-        .form-control {
-            width: 100%; padding: 11px 14px; border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: var(--surface-3); color: var(--text);
-            font-family: 'DM Sans', sans-serif; font-size: 13px;
-            transition: all 0.2s; outline: none;
-        }
-        .form-control:focus { border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-dim); }
-        textarea.form-control { resize: vertical; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+            <div id="customers-view" class="view-section">
+                <div class="page-header">
+                    <div><h1>Contacts</h1><p>Manage clients and vendors.</p></div>
+                    <div class="header-actions">
+                        <input type="text" class="search-box" placeholder="🔍 Search..." id="searchContacts" oninput="filterContacts()" style="width:200px;">
+                        <button class="btn-outline" style="background:var(--surface-3);border:1px solid var(--border);padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;font-weight:600;color:var(--text);width:auto;" onclick="openFreeModal()">+ Freelancer</button>
+                        <button style="background:var(--pink);color:#fff;border:none;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 4px 14px var(--pink-glow);" onclick="openCustModal()">+ Customer</button>
+                    </div>
+                </div>
+                <div class="table-wrap" style="margin-bottom:24px;">
+                    <div style="padding:16px 20px;border-bottom:1px solid var(--border);"><span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;">Customers</span></div>
+                    <div class="cust-header"><div>Name</div><div>Contact</div><div>Address</div><div style="text-align:right;">Edit</div></div>
+                    <div id="customerListContainer"></div>
+                </div>
+                <div class="table-wrap">
+                    <div style="padding:16px 20px;border-bottom:1px solid var(--border);"><span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;">Freelancers & Vendors</span></div>
+                    <div class="freelance-header"><div>Name</div><div>Contact</div><div>Service</div><div>Bank Info</div><div style="text-align:right;">Edit</div></div>
+                    <div id="freelancerListContainer"></div>
+                </div>
+            </div>
 
-        /* ─── INVOICE LAYOUT ─── */
-        .invoice-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 24px; align-items: start; }
-        
-        .summary-card {
-            background: var(--surface-1); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 24px;
-            position: sticky; top: 0;
-        }
-        .summary-card h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 24px; }
-        .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 13px; color: var(--text-2); }
-        .summary-input {
-            width: 90px; padding: 6px 10px;
-            background: var(--surface-3); border: 1px solid var(--border);
-            color: var(--text); border-radius: 8px; text-align: center;
-            font-size: 13px;
-        }
-        .summary-total { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .summary-total h3 { font-size: 14px; color: var(--text-2); }
-        .summary-total h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--text); }
-
-        .item-header { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 12px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; min-width: 560px; }
-        .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 12px; margin-bottom: 10px; align-items: start; min-width: 560px; animation: slideIn 0.25s forwards; }
-        @keyframes slideIn { from { opacity:0; transform: translateX(10px); } to { opacity:1; transform: translateX(0); } }
-
-        /* ─── WIZARD ─── */
-        .wizard-step { display: none; }
-        .wizard-step.active { display: block; animation: viewIn 0.3s forwards; }
-        .wiz-bar { height: 3px; flex: 1; border-radius: 2px; background: var(--border); transition: background 0.3s; }
-        .wiz-bar.done { background: var(--pink); }
-        .trans-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .trans-btn {
-            padding: 14px; border-radius: var(--radius-sm);
-            border: 1px solid var(--border); background: transparent;
-            color: var(--text-2); font-weight: 600; font-size: 14px;
-            font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s;
-        }
-        .trans-btn.out { border-color: rgba(225,78,101,0.4); color: var(--pink); background: var(--pink-dim); }
-        .trans-btn.in { border-color: rgba(34,211,165,0.4); color: var(--green); background: rgba(34,211,165,0.08); }
-
-        /* ─── MODALS ─── */
-        .modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 2000; opacity: 0; transition: opacity 0.3s;
-        }
-        .modal-overlay.show { display: flex; opacity: 1; }
-        .modal {
-            background: var(--surface-2); border: 1px solid var(--border-2);
-            border-radius: 20px; padding: 32px;
-            text-align: center; width: 400px; max-width: 90%;
-            max-height: 90vh; overflow-y: auto;
-            transform: scale(0.92) translateY(16px);
-            transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        .modal-overlay.show .modal { transform: scale(1) translateY(0); }
-        .modal-customer { width: 620px; text-align: left; padding: 28px; }
-        .modal-close {
-            position: absolute; top: 16px; right: 16px;
-            background: var(--surface-3); border: none;
-            width: 28px; height: 28px; border-radius: 50%;
-            color: var(--text-2); cursor: pointer; font-size: 16px;
-            display: flex; justify-content: center; align-items: center;
-            transition: all 0.15s; z-index: 5;
-        }
-        .modal-close:hover { background: var(--pink-dim); color: var(--pink); }
-        .modal h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 8px; }
-
-        /* ─── TOAST ─── */
-        #toast {
-            position: fixed; top: 20px; left: 50%;
-            transform: translateX(-50%) translateY(-80px);
-            background: var(--green); color: #fff;
-            padding: 12px 24px; border-radius: 100px;
-            font-size: 13px; font-weight: 600; z-index: 9999;
-            box-shadow: 0 8px 24px rgba(34,211,165,0.4);
-            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s;
-            opacity: 0; display: flex; align-items: center; gap: 8px;
-            white-space: nowrap;
-        }
-        #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        #toast.error { background: var(--pink); box-shadow: 0 8px 24px var(--pink-glow); }
-
-        /* ─── DETAIL PAGE ─── */
-        .detail-bar {
-            display: flex; justify-content: space-between; align-items: flex-start;
-            margin-bottom: 20px; gap: 15px;
-        }
-        .detail-bar-left { display: flex; align-items: center; gap: 16px; }
-        .back-btn {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: var(--surface-2); border: 1px solid var(--border);
-            color: var(--text); font-size: 18px; cursor: pointer;
-            display: flex; justify-content: center; align-items: center;
-            transition: all 0.15s; flex-shrink: 0;
-        }
-        .back-btn:hover { border-color: var(--pink); color: var(--pink); }
-
-        /* ─── INVOICE PREVIEW ─── */
-        .invoice-preview-wrap {
-            background: #e8e9ef; padding: 30px 20px;
-            border-radius: var(--radius); border: 1px solid var(--border);
-            max-height: 75vh; overflow-y: auto;
-            display: flex; justify-content: center;
-        }
-        .live-invoice {
-            background: #fff; width: 100%; max-width: 800px;
-            color: #1d1d1f; font-family: 'DM Sans', sans-serif;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-            border: 1px solid #eee; position: relative;
-        }
-        .li-header { background: #fff; color: #1d1d1f; padding: 36px 40px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #1d1d1f; }
-        .li-logo-img { width: 110px; height: auto; }
-        .li-company { text-align: right; font-size: 11px; line-height: 1.7; color: #86868b; }
-        .li-company h2 { font-size: 18px; font-weight: 800; margin-bottom: 5px; color: #1d1d1f; text-transform: uppercase; letter-spacing: 1px; }
-        .li-title { text-align: center; color: #1d1d1f; font-size: 28px; font-weight: 800; letter-spacing: 2px; margin: 28px 0 10px; text-transform: uppercase; font-family: 'Syne', sans-serif; }
-        .li-meta { display: flex; justify-content: space-between; padding: 0 40px 20px; font-size: 12px; }
-        .li-meta-l table { border-collapse: collapse; }
-        .li-meta-l td { padding-bottom: 7px; }
-        .li-meta-l td:first-child { font-weight: 700; padding-right: 14px; }
-        .li-meta-r { max-width: 280px; text-align: right; margin-left: auto; }
-        .li-meta-r p { margin-bottom: 4px; line-height: 1.8; color: #86868b; }
-        .li-table { width: calc(100% - 80px); margin: 0 40px; border-collapse: collapse; }
-        .li-table th, .li-table td { border: 1px solid #eef0f2; border-left: none; border-right: none; padding: 11px 14px; font-size: 12px; }
-        .li-table th { background: #1d1d1f; color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; border-color: #333; }
-        .li-table th:first-child, .li-table td:first-child { text-align: left; }
-        .li-table th:nth-child(2), .li-table td:nth-child(2), .li-table th:nth-child(3), .li-table td:nth-child(3) { text-align: center; }
-        .li-table th:last-child, .li-table td:last-child { text-align: right; }
-        .li-table td:last-child { font-weight: 700; }
-        .li-summary-wrap { display: flex; justify-content: flex-end; padding: 20px 40px; }
-        .li-summary { width: 300px; }
-        .li-summary-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 12px; }
-        .li-summary-row.total { background: #1d1d1f; color: #fff; padding: 13px 16px; font-weight: 800; font-size: 14px; margin-top: 8px; border-radius: 8px; }
-        .li-bottom { display: flex; gap: 30px; padding: 24px 40px 40px; border-top: 1px solid #eef0f2; }
-        .li-box { flex: 1; }
-        .li-box h4 { font-size: 10px; font-weight: 800; color: #1d1d1f; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .li-box p { font-size: 11px; color: #86868b; line-height: 1.7; }
-        .li-payment-advice-page { page-break-before: always; min-height: 280mm; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 40px; background: #fff; }
-        .li-payment-advice { border-top: 2px dashed #a1a1aa; padding: 36px 40px; }
-        .loading-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.95); z-index: 50; display: none; flex-direction: column; justify-content: center; align-items: center; color: #1d1d1f; }
-        .spinner { border: 3px solid #f0f0f0; border-top: 3px solid var(--pink); border-radius: 50%; width: 36px; height: 36px; animation: spin 0.8s linear infinite; margin-bottom: 14px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ─── NOTIF ─── */
-        .bottom-actions { position: fixed; bottom: 24px; right: 24px; z-index: 1000; }
-        .notif-btn {
-            background: var(--surface-2); border: 1px solid var(--border);
-            width: 44px; height: 44px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; color: var(--text); position: relative;
-            box-shadow: var(--shadow); transition: all 0.2s;
-        }
-        .notif-btn:hover { border-color: var(--pink); color: var(--pink); }
-        .notif-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-        .notif-badge { position: absolute; top: -3px; right: -3px; background: var(--pink); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 5px; border-radius: 10px; display: none; }
-        .notif-panel { position: absolute; bottom: 56px; right: 0; width: 320px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.4); display: none; max-height: 380px; overflow-y: auto; }
-        .notif-panel.show { display: block; animation: viewIn 0.3s forwards; }
-        .notif-item { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text); }
-        .notif-item:last-child { border-bottom: none; }
-        .notif-time { font-size: 10px; color: var(--text-3); margin-bottom: 4px; font-weight: 600; }
-
-        /* ─── LOGS ─── */
-        .log-item { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .log-item:last-child { border-bottom: none; }
-        .log-action { font-size: 13px; font-weight: 500; }
-        .log-time { font-size: 11px; color: var(--text-3); margin-top: 3px; }
-        .log-user { background: var(--pink-dim); color: var(--pink); padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; }
-
-        /* ─── MOBILE RESPONSIVE TUNING ─── */
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            
-            .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; flex-direction: row; padding: 10px; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); border-right: none; border-radius: 20px 20px 0 0; z-index: 200; background: var(--surface-1); box-shadow: 0 -5px 20px rgba(0,0,0,0.2); }
-            .brand, .nav-text, .theme-toggle, .user-area, .nav-section-label, .sidebar-spacer { display: none; }
-            .nav-item { margin: 0; padding: 10px; justify-content: center; flex: 1; border-radius: 12px; }
-            .nav-item::before { display: none; }
-            .nav-item svg { width: 24px; height: 24px; }
-            
-            .main-inner { padding: 20px; padding-top: 30px; padding-bottom: 100px; }
-            .page-header { flex-direction: column; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
-            .page-header h1 { font-size: 24px; }
-            .header-actions { width: 100%; justify-content: space-between; }
-            .search-box { width: 100%; flex: 1; }
-            
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .stat-card { padding: 16px; }
-            .stat-val { font-size: 20px; }
-            
-            .quick-actions { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .qa-card { flex-direction: column; text-align: center; justify-content: center; padding: 16px; }
-            .qa-icon { margin: 0 auto 8px; }
-            .dash-bottom { grid-template-columns: 1fr; gap: 20px; }
-            
-            .invoice-container { grid-template-columns: 1fr; }
-            .form-grid { grid-template-columns: 1fr !important; }
-            .form-group[style] { grid-column: span 1 !important; }
-            
-            .detail-bar { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .detail-actions { width: 100%; justify-content: flex-start; }
-            .detail-actions .a-btn { flex: 1; justify-content: center; }
-            
-            .modal { width: 95%; padding: 24px 20px; }
-            .modal-customer { width: 95%; padding: 24px 20px; }
-            .modal-close { top: 12px; right: 12px; }
-            
-            .invoice-preview-wrap { padding: 15px 10px; }
-            .li-header { padding: 20px; flex-direction: column; align-items: center; text-align: center; gap: 15px; }
-            .li-company { text-align: center; }
-            .li-title { font-size: 24px; margin: 20px 0 10px; }
-            .li-meta { flex-direction: column; padding: 0 20px 15px; gap: 15px; }
-            .li-meta-r { text-align: left; max-width: 100%; margin-left: 0; }
-            .li-table { margin: 0 15px; width: calc(100% - 30px); font-size: 10px; }
-            .li-table th, .li-table td { padding: 10px; font-size: 11px; }
-            .li-summary-wrap { padding: 15px; justify-content: center; }
-            .li-summary { width: 100%; }
-            .li-bottom { flex-direction: column; padding: 20px 15px; gap: 20px; }
-            .li-pa-grid { flex-direction: column; gap: 16px; }
-            .li-payment-advice { padding: 20px; }
-            
-            .bottom-actions { bottom: 95px; right: 20px; }
-            .notif-panel { right: -10px; width: 300px; bottom: 60px; }
-            
-            .intro-title { font-size: 28px; letter-spacing: 4px; }
-            .btn-enter { padding: 16px 40px; font-size: 14px; }
-        }
-
-        /* ─── detail header actions ─── */
-        .detail-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .detail-actions .a-btn {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 9px 16px; border-radius: var(--radius-sm);
-            font-size: 13px; font-weight: 600; cursor: pointer;
-            transition: all 0.15s; text-decoration: none; border: 1px solid;
-            font-family: 'DM Sans', sans-serif;
-        }
-        .detail-actions .a-btn svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-        .a-btn-ghost { background: transparent; color: var(--text); border-color: var(--border-2); }
-        .a-btn-ghost:hover { background: var(--surface-3); }
-        .a-btn-pink { background: var(--pink); color: #fff; border-color: var(--pink); box-shadow: 0 4px 14px var(--pink-glow); }
-        .a-btn-pink:hover { opacity: 0.9; transform: translateY(-1px); }
-        .a-btn-blue { background: var(--blue); color: #fff; border-color: var(--blue); }
-        .a-btn-blue:hover { opacity: 0.9; }
-
-        /* ─── CONFIRM MODAL ─── */
-        .modal-icon { width: 52px; height: 52px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 16px; }
-        .modal-icon svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-    </style>
-</head>
-<body data-theme="dark">
-    <template id="invItemTpl">
+        </div>
+    </main>
+</div>
+        <template id="invItemTpl">
     <div class="item-row">
         <textarea class="form-control item-desc" placeholder="Description" style="resize:vertical;min-height:44px;padding:10px;font-family:'DM Sans',sans-serif;font-size:13px;" required></textarea>
         <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this,'inv')">
@@ -776,15 +841,18 @@
 </template>
 
 <script>
-// URL BARU OMZNYZO V3
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJfjYPpvef5fgcJd1fWYL8eXR2rHjQGiqhlSnrvxeiCnoocqlX1GEBYGQakM8vnORO/exec';
+// URL BARU OMZNYZO V3 (DIKEMASKINI)
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxz9wBbi975zj1qljEbRWhDK3ZmAs1DcSWpamizCMXrmp8EVxvWLX0EWjAts97wfZC/exec';
 
 let appData = { invoices:[], quotations:[], customers:[], freelancers:[], logs:[], cashflow:[] };
 let pendingConfirm = null;
 let editingCustomer = null, editingFreelancer = null;
 const currentUser = 'Boss';
 
+// ==========================================
 // VAKSIN ANTI-CORS (HELPER FUNCTION)
+// Menipu Google supaya fikir ini adalah Teks biasa, bukan data kompleks JSON
+// ==========================================
 function apiPost(payload) {
     return fetch(SCRIPT_URL, {
         method: 'POST',
@@ -830,7 +898,7 @@ function enterDashboard(){
     }).catch(()=>{
         document.getElementById('startBtn').style.display='inline-block';
         document.getElementById('introLoading').style.display='none';
-        showToast('Connection error. Check Script URL.',true);
+        showToast('Connection error. Please check Web App URL.',true);
     });
 }
 function logoutApp(){ window.location.reload(); }
@@ -1013,7 +1081,7 @@ document.getElementById('invoiceForm').addEventListener('submit',function(e){
         let tempInv={date:p.invoiceDate,dueDate:p.dueDate,amount:p.grandTotal,invoiceNo:p.invoiceNo,client:p.client,status:'Pending',pdfLink:existPdf,tc:p.terms,hasPaymentAdvice:p.hasPaymentAdvice,sheetItems:p.items.map(i=>({desc:i.desc,price:i.price,qty:i.qty,total:i.total})),fullData:p};
         if(isUpd){let idx=appData.invoices.findIndex(i=>i.invoiceNo===p.invoiceNo);if(idx!==-1)appData.invoices[idx]=tempInv;}else appData.invoices.unshift(tempInv);
         viewInvDetail(p.invoiceNo); switchView('invoice-detail-view'); document.getElementById('invLoadingOverlay').style.display='flex';
-        apiPost(p).then(r=>{btn.innerText=isUpd?'Update Invoice':'Create Invoice';btn.disabled=false;if(r.status==='success'){document.getElementById('invLoadingOverlay').style.display='none';fetchAppData().then(()=>{showToast(isUpd?'Invoice Updated!':'Invoice Created!');viewInvDetail(p.invoiceNo);});}}).catch(()=>{document.getElementById('invLoadingOverlay').style.display='none';btn.innerText=isUpd?'Update Invoice':'Create Invoice';btn.disabled=false;});
+        apiPost(p).then(r=>{btn.innerText=isUpd?'Update Invoice':'Create Invoice';btn.disabled=false;if(r.status==='success'){document.getElementById('invLoadingOverlay').style.display='none';fetchAppData().then(()=>{showToast(isUpd?'Invoice Updated!':'Invoice Created!');viewInvDetail(p.invoiceNo);});}}).catch(()=>{document.getElementById('invLoadingOverlay').style.display='none';btn.innerText=isUpd?'Update Invoice':'Create Invoice';btn.disabled=false;showToast('Failed to connect', true);});
     });
 });
 function viewInvDetail(no){
@@ -1105,7 +1173,7 @@ document.getElementById('quotationForm').addEventListener('submit',function(e){
         let tempQtn={date:p.qtnDate,validDate:p.validDate,amount:p.grandTotal,quotationNo:p.quotationNo,client:p.client,status:'Draft',pdfLink:existPdf,tc:p.terms,sheetItems:p.items.map(i=>({desc:i.desc,price:i.price,qty:i.qty,total:i.total})),fullData:p};
         if(isUpd){let idx=appData.quotations.findIndex(q=>q.quotationNo===p.quotationNo);if(idx!==-1)appData.quotations[idx]=tempQtn;}else appData.quotations.unshift(tempQtn);
         viewQtnDetail(p.quotationNo); switchView('quotation-detail-view'); document.getElementById('qtnLoadingOverlay').style.display='flex';
-        apiPost(p).then(r=>{btn.innerText=isUpd?'Update Quotation':'Create Quotation';btn.disabled=false;if(r.status==='success'){document.getElementById('qtnLoadingOverlay').style.display='none';fetchAppData().then(()=>{showToast(isUpd?'Quotation Updated!':'Quotation Created!');viewQtnDetail(p.quotationNo);});}}).catch(()=>{document.getElementById('qtnLoadingOverlay').style.display='none';btn.innerText=isUpd?'Update Quotation':'Create Quotation';btn.disabled=false;});
+        apiPost(p).then(r=>{btn.innerText=isUpd?'Update Quotation':'Create Quotation';btn.disabled=false;if(r.status==='success'){document.getElementById('qtnLoadingOverlay').style.display='none';fetchAppData().then(()=>{showToast(isUpd?'Quotation Updated!':'Quotation Created!');viewQtnDetail(p.quotationNo);});}}).catch(()=>{document.getElementById('qtnLoadingOverlay').style.display='none';btn.innerText=isUpd?'Update Quotation':'Create Quotation';btn.disabled=false;showToast('Failed to connect', true);});
     });
 });
 function viewQtnDetail(no){
@@ -1158,7 +1226,7 @@ document.getElementById('transactionForm').addEventListener('submit',function(e)
     if(file){ const fr=new FileReader(); fr.onload=function(ev){p.bankSlipBase64=ev.target.result.split(',')[1];p.bankSlipMimeType=file.type;p.bankSlipFileName=file.name;sendTrans(p,btn,ot);}; fr.readAsDataURL(file); }
     else sendTrans(p,btn,ot);
 });
-function sendTrans(p,btn,ot){ apiPost(p).then(r=>{btn.innerText=ot;btn.disabled=false;if(r.status==='success'){document.getElementById('transactionForm').reset();togglePayFields();showToast('Transaction Saved!');switchView('cashflow-view');nextWiz(1);fetchAppData();}}); }
+function sendTrans(p,btn,ot){ apiPost(p).then(r=>{btn.innerText=ot;btn.disabled=false;if(r.status==='success'){document.getElementById('transactionForm').reset();togglePayFields();showToast('Transaction Saved!');switchView('cashflow-view');nextWiz(1);fetchAppData();}}).catch(()=>{btn.innerText=ot;btn.disabled=false;showToast('Error.',true);}); }
 function editCashflow(idx){
     let cf=appData.cashflow.find(c=>c.rowIdx===idx); if(!cf)return;
     document.getElementById('editTransIdx').value=idx; document.getElementById('editTransType').value=cf.type; document.getElementById('editTransDate').value=(cf.date||'').split('T')[0]; document.getElementById('editTransAmount').value=cf.amount; document.getElementById('editTransMerchant').value=cf.merchant; document.getElementById('editTransCategory').value=cf.category; document.getElementById('editTransDesc').value=cf.description; document.getElementById('editTransStatus').value=cf.status;
