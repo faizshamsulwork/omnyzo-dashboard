@@ -110,10 +110,6 @@
         .stat-card:hover { transform: translateY(-3px); }
         .stat-card:hover::after { opacity: 1; }
         .stat-card.pink::after { background: var(--pink); } .stat-card.blue::after { background: var(--blue); } .stat-card.orange::after { background: var(--orange); } .stat-card.green::after { background: var(--green); }
-        .stat-card:hover.pink { box-shadow: 0 12px 30px rgba(225,78,101,0.2); border-color: rgba(225,78,101,0.2); }
-        .stat-card:hover.blue { box-shadow: 0 12px 30px rgba(79,142,247,0.2); border-color: rgba(79,142,247,0.2); }
-        .stat-card:hover.orange { box-shadow: 0 12px 30px rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.2); }
-        .stat-card:hover.green { box-shadow: 0 12px 30px rgba(34,211,165,0.2); border-color: rgba(34,211,165,0.2); }
         .stat-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; justify-content: center; align-items: center; margin-bottom: 16px; }
         .stat-icon svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
         .stat-icon.pink { background: var(--pink-dim); color: var(--pink); } .stat-icon.blue { background: var(--blue-dim); color: var(--blue); } .stat-icon.orange { background: rgba(245,158,11,0.12); color: var(--orange); } .stat-icon.green { background: rgba(34,211,165,0.12); color: var(--green); }
@@ -238,7 +234,8 @@
         .a-btn-pink { background: var(--pink); color: #fff; border-color: var(--pink); box-shadow: 0 4px 14px var(--pink-glow); } .a-btn-pink:hover { opacity: 0.9; transform: translateY(-1px); }
         .a-btn-blue { background: var(--blue); color: #fff; border-color: var(--blue); } .a-btn-blue:hover { opacity: 0.9; }
 
-        /* ─── KOD KHAS PDF INVOICE / RESIT (MENYERUPAI EMPERIKAL) ─── */
+        /* ─── KOD KHAS PDF INVOICE / RESIT DENGAN TABLE ─── */
+        /* Table ini digunakan supaya html2pdf tak rosakkan design (elak flexbox) */
         .invoice-preview-wrap { background: #e8e9ef; padding: 30px 20px; border-radius: var(--radius); border: 1px solid var(--border); max-height: 75vh; overflow-y: auto; display: flex; justify-content: center; }
         
         .live-invoice { background: #fff; width: 100%; max-width: 800px; color: #1d1d1f; font-family: 'DM Sans', sans-serif; box-shadow: 0 4px 30px rgba(0,0,0,0.1); border: 1px solid #eee; position: relative; }
@@ -249,8 +246,6 @@
 
         /* PENYELESAIAN PAYMENT ADVICE & A4 PAGE BREAK */
         .html2pdf__page-break { page-break-before: always !important; display: block; height: 0; clear: both; }
-        .li-page { padding: 40px; min-height: 1050px; display: flex; flex-direction: column; position: relative; box-sizing: border-box; }
-        .li-pa-page { padding: 40px; height: 1050px; position: relative; box-sizing: border-box; background: #fff; }
 
         .notif-btn { background: var(--surface-2); border: 1px solid var(--border); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text); position: relative; box-shadow: var(--shadow); transition: all 0.2s; }
         .notif-btn:hover { border-color: var(--pink); color: var(--pink); }
@@ -298,8 +293,6 @@
             .modal-customer { width: 95%; padding: 24px 20px; }
             .modal-close { top: 12px; right: 12px; }
             .invoice-preview-wrap { padding: 15px 10px; }
-            .li-page { padding: 20px; min-height: auto; }
-            .li-pa-page { padding: 20px; height: auto; }
             .bottom-actions { bottom: 95px; right: 20px; }
             .notif-panel { right: -10px; width: 300px; bottom: 60px; }
             .intro-title { font-size: 28px; letter-spacing: 4px; }
@@ -342,10 +335,7 @@
         <div class="modal-icon" style="background:var(--pink-dim); color:var(--pink);"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></div>
         <h2>Delete Record</h2>
         <p style="color:var(--text-2); margin-bottom:24px; font-size:13px;">Delete <strong id="del-doc-label"></strong>? This cannot be undone.</p>
-        <form id="delForm">
-            <input type="hidden" id="del-doc-no"><input type="hidden" id="del-doc-type">
-            <button type="submit" class="btn-solid" style="background:var(--pink);">Yes, Delete It</button>
-        </form>
+        <form id="delForm"><input type="hidden" id="del-doc-no"><input type="hidden" id="del-doc-type"><button type="submit" class="btn-solid" style="background:var(--pink);">Yes, Delete It</button></form>
     </div>
 </div>
 
@@ -392,7 +382,7 @@
                 <div class="form-group"><label>Date</label><input type="date" id="editTransDate" class="form-control" required></div>
                 <div class="form-group"><label>Amount (RM)</label><input type="number" step="0.01" id="editTransAmount" class="form-control" required></div>
                 <div class="form-group" style="grid-column:span 2;"><label>Merchant / Freelancer</label><input type="text" id="editTransMerchant" class="form-control" required></div>
-                <div class="form-group" style="grid-column:span 2;"><label>Category</label><select id="editTransCategory" class="form-control"><optgroup label="Money In"><option>Project Sales / Services</option><option>Monthly Retainers</option><option>Deposit / Advance Payment</option><option>Refund / Rebate Received</option></optgroup><optgroup label="Money Out"><option>Freelancer / Outsourcing</option><option>Ads / Media Spend</option><option>Software / Subscriptions</option><option>Equipment / Hardware</option><option>Payroll &amp; Allowances</option><option>Office Utilities / Internet</option><option>Travel, Meetings &amp; Pitching</option><option>Miscellaneous</option></optgroup></select></div>
+                <div class="form-group" style="grid-column:span 2;"><label>Category</label><select id="editTransCategory" class="form-control"><optgroup label="Money In"><option>Project Sales / Services</option><option>Monthly Retainers</option><option>Deposit / Advance Payment</option><option>Refund / Rebate Received</option></optgroup><optgroup label="Money Out"><option>Freelancer / Outsourcing</option><option>Ads / Media Spend</option><option>Software / Subscriptions</option><option>Equipment / Hardware</option><option>Payroll & Allowances</option><option>Office Utilities / Internet</option><option>Travel, Meetings & Pitching</option><option>Miscellaneous</option></optgroup></select></div>
                 <div class="form-group" style="grid-column:span 2;"><label>Notes</label><input type="text" id="editTransDesc" class="form-control"></div>
                 <div class="form-group" style="grid-column:span 2;"><label>Status</label><select id="editTransStatus" class="form-control"><option>Paid</option><option>Pending</option></select></div>
             </div>
@@ -406,26 +396,8 @@
         <button class="modal-close" onclick="document.getElementById('customer-modal').classList.remove('show')">×</button>
         <h2>Add Customer</h2>
         <form id="customerForm" style="margin-top:20px;">
-            <div class="card" style="padding:16px; margin-bottom:14px;">
-                <div class="form-grid" style="gap:12px;">
-                    <div class="form-group"><label>Type</label><select id="custType" class="form-control"><option>Company</option><option>Individual</option></select></div>
-                    <div class="form-group"><label>Company Name *</label><input type="text" id="custCompany" class="form-control" required></div>
-                    <div class="form-group"><label>PIC Name *</label><input type="text" id="custPIC" class="form-control" required></div>
-                    <div class="form-group"><label>Email</label><input type="email" id="custEmail" class="form-control"></div>
-                    <div class="form-group"><label>Phone *</label><input type="text" id="custPhone" class="form-control" value="+60" required></div>
-                    <div class="form-group"><label>TIN</label><input type="text" id="custTIN" class="form-control"></div>
-                    <div class="form-group"><label>SSM No.</label><input type="text" id="custSSM" class="form-control"></div>
-                </div>
-            </div>
-            <div class="card" style="padding:16px; margin-bottom:16px;">
-                <div class="form-grid" style="gap:12px;">
-                    <div class="form-group" style="grid-column:span 2;"><label>Address *</label><input type="text" id="custAddress" class="form-control" required></div>
-                    <div class="form-group"><label>Postcode *</label><input type="text" id="custPostcode" class="form-control" required oninput="autoFillPostcode(this.value)"></div>
-                    <div class="form-group"><label>City *</label><input type="text" id="custCity" class="form-control" required></div>
-                    <div class="form-group"><label>State *</label><input type="text" id="custState" class="form-control" required></div>
-                    <div class="form-group"><label>Country</label><input type="text" id="custCountry" class="form-control" value="Malaysia" readonly></div>
-                </div>
-            </div>
+            <div class="card" style="padding:16px; margin-bottom:14px;"><div class="form-grid" style="gap:12px;"><div class="form-group"><label>Type</label><select id="custType" class="form-control"><option>Company</option><option>Individual</option></select></div><div class="form-group"><label>Company Name *</label><input type="text" id="custCompany" class="form-control" required></div><div class="form-group"><label>PIC Name *</label><input type="text" id="custPIC" class="form-control" required></div><div class="form-group"><label>Email</label><input type="email" id="custEmail" class="form-control"></div><div class="form-group"><label>Phone *</label><input type="text" id="custPhone" class="form-control" value="+60" required></div><div class="form-group"><label>TIN</label><input type="text" id="custTIN" class="form-control"></div><div class="form-group"><label>SSM No.</label><input type="text" id="custSSM" class="form-control"></div></div></div>
+            <div class="card" style="padding:16px; margin-bottom:16px;"><div class="form-grid" style="gap:12px;"><div class="form-group" style="grid-column:span 2;"><label>Address *</label><input type="text" id="custAddress" class="form-control" required></div><div class="form-group"><label>Postcode *</label><input type="text" id="custPostcode" class="form-control" required oninput="autoFillPostcode(this.value)"></div><div class="form-group"><label>City *</label><input type="text" id="custCity" class="form-control" required></div><div class="form-group"><label>State *</label><input type="text" id="custState" class="form-control" required></div><div class="form-group"><label>Country</label><input type="text" id="custCountry" class="form-control" value="Malaysia" readonly></div></div></div>
             <button type="submit" id="saveCustBtn" class="btn-solid">Save Customer</button>
         </form>
     </div>
@@ -446,10 +418,7 @@
                         <label>Bank Info *</label>
                         <div style="display:flex; gap:8px;">
                             <select id="freeBankName" class="form-control" style="flex:1;" required onchange="if(this.value==='Other'){document.getElementById('freeOtherBank').style.display='block';}else{document.getElementById('freeOtherBank').style.display='none';}">
-                                <option value="">Select Bank...</option>
-                                <optgroup label="Malaysia"><option>Maybank</option><option>CIMB Bank</option><option>Public Bank</option><option>RHB Bank</option><option>Hong Leong Bank</option><option>AmBank</option><option>Bank Islam</option></optgroup>
-                                <optgroup label="Indonesia"><option>Bank BCA</option><option>Bank Mandiri</option><option>Bank BRI</option><option>Bank BNI</option><option>BSI (Syariah)</option><option>GoPay</option><option>OVO</option><option>DANA</option></optgroup>
-                                <option value="Other">Other...</option>
+                                <option value="">Select Bank...</option><optgroup label="Malaysia"><option>Maybank</option><option>CIMB Bank</option><option>Public Bank</option><option>RHB Bank</option><option>Hong Leong Bank</option><option>AmBank</option><option>Bank Islam</option></optgroup><option value="Other">Other...</option>
                             </select>
                             <input type="text" id="freeOtherBank" class="form-control" placeholder="Specify" style="display:none; flex:1;">
                             <input type="text" id="freeBankAcc" class="form-control" placeholder="Account No." style="flex:1.5;" required>
@@ -463,23 +432,14 @@
 </div>
 
 <div id="app-container">
-
     <div class="bottom-actions">
-        <div class="notif-btn" onclick="toggleNotif()">
-            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-            <span class="notif-badge" id="notif-badge">0</span>
-            <div class="notif-panel" id="notif-panel">
-                <div style="padding:14px 16px; border-bottom:1px solid var(--border); font-family:'Syne',sans-serif; font-size:13px; font-weight:700;">Activity</div>
-                <div id="notif-list"><div style="padding:20px; text-align:center; color:var(--text-3); font-size:12px;">No new activity.</div></div>
-            </div>
+        <div class="notif-btn" onclick="toggleNotif()"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="notif-badge" id="notif-badge">0</span>
+            <div class="notif-panel" id="notif-panel"><div style="padding:14px 16px; border-bottom:1px solid var(--border); font-weight:700;">Activity</div><div id="notif-list"><div style="padding:20px; text-align:center; color:var(--text-3); font-size:12px;">No new activity.</div></div></div>
         </div>
     </div>
 
     <aside class="sidebar">
-        <div class="brand">
-            <div class="brand-icon"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" alt=""></div>
-            <div><div class="brand-name">Omnyzo</div><div class="brand-tag">Agency Dashboard</div></div>
-        </div>
+        <div class="brand"><div class="brand-icon"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-pink01.png" alt=""></div><div><div class="brand-name">Omnyzo</div><div class="brand-tag">Agency Dashboard</div></div></div>
         <div class="nav-section-label" style="margin-bottom:10px;">Main</div>
         <nav>
             <div class="nav-item active" onclick="switchView('dashboard-view',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg><span class="nav-text">Dashboard</span></div>
@@ -505,7 +465,7 @@
                     <div class="stat-card orange" onclick="switchView('invoices-view',document.querySelectorAll('.nav-item')[2])"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div><div class="stat-label">Awaiting Payment</div><div class="stat-val" id="dash-outstanding" style="color:var(--orange);">RM 0.00</div><div class="stat-sub">Unpaid invoices</div></div>
                     <div class="stat-card pink" onclick="switchView('cashflow-view',document.querySelectorAll('.nav-item')[3])"><div class="stat-icon pink"><svg viewBox="0 0 24 24"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline><polyline points="16 17 22 17 22 11"></polyline></svg></div><div class="stat-label">Total Expenses</div><div class="stat-val" id="dash-expense" style="color:var(--pink);">RM 0.00</div><div class="stat-sub">This month</div></div>
                 </div>
-                <div style="font-size:12px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Quick Actions</div>
+                <div style="font-size:12px; font-weight:700; color:var(--text-3); text-transform:uppercase; margin-bottom:10px;">Quick Actions</div>
                 <div class="quick-actions">
                     <div class="qa-card" onclick="openNewQuotation()"><div class="qa-icon" style="background:var(--blue-dim); color:var(--blue);"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg></div><div><div class="qa-label">Create Quote</div><div class="qa-sub">Pitch a project</div></div></div>
                     <div class="qa-card" onclick="openNewInvoice()"><div class="qa-icon" style="background:var(--pink-dim); color:var(--pink);"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div><div><div class="qa-label">New Invoice</div><div class="qa-sub">Bill a client</div></div></div>
@@ -513,12 +473,7 @@
                     <div class="qa-card" onclick="switchView('customers-view',document.querySelectorAll('.nav-item')[4])"><div class="qa-icon" style="background:rgba(34,211,165,0.1); color:var(--green);"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div><div><div class="qa-label">Contacts</div><div class="qa-sub">Clients & vendors</div></div></div>
                 </div>
                 <div class="dash-bottom">
-                    <div class="card">
-                        <h3>Financial Overview</h3>
-                        <div class="progress-wrap"><div class="progress-labels"><span style="color:var(--green); font-size:12px; font-weight:600;">Income <span id="bar-income">RM 0.00</span></span><span style="color:var(--pink); font-size:12px; font-weight:600;">Expenses <span id="bar-expense">RM 0.00</span></span></div><div class="progress-track"><div class="progress-fill" id="income-bar" style="width:50%;"></div></div></div>
-                        <div style="font-size:12px; font-weight:700; color:var(--text-3); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">Needs Attention</div>
-                        <div id="needs-attention"></div>
-                    </div>
+                    <div class="card"><h3>Financial Overview</h3><div class="progress-wrap"><div class="progress-labels"><span style="color:var(--green); font-size:12px; font-weight:600;">Income <span id="bar-income">RM 0.00</span></span><span style="color:var(--pink); font-size:12px; font-weight:600;">Expenses <span id="bar-expense">RM 0.00</span></span></div><div class="progress-track"><div class="progress-fill" id="income-bar" style="width:50%;"></div></div></div><div style="font-size:12px; font-weight:700; color:var(--text-3); margin-bottom:12px; text-transform:uppercase;">Needs Attention</div><div id="needs-attention"></div></div>
                     <div class="card"><h3>Live Feed</h3><div id="live-feed"></div></div>
                 </div>
             </div>
@@ -538,7 +493,20 @@
 
             <div id="quotation-detail-view" class="view-section">
                 <div class="detail-bar"><div class="detail-bar-left"><button class="back-btn" onclick="switchView('quotations-view')">←</button><div><h1 id="detail-qtn-no" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">QTN-XXXX</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-qtn-client" style="color:var(--text);font-weight:600;"></span> &nbsp;•&nbsp; <span id="detail-qtn-status" class="tag">Status</span></p></div></div><div class="detail-actions"><div id="qtn-convert-btn-wrap"></div><button class="a-btn a-btn-ghost" onclick="downloadQtnPDF()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download PDF</button><a id="btn-qtn-email" href="#" class="a-btn a-btn-blue"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Send Email</a></div></div>
-                <div class="invoice-preview-wrap"><div class="live-invoice" id="quotationCaptureArea"><div class="loading-overlay" id="qtnLoadingOverlay"><div class="spinner"></div><div style="font-size:14px;font-weight:600;">Generating Document...</div></div><div class="li-header"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo"><div class="li-company"><h2>Omnyzo Agency</h2>2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>billings@omnyzo.com • +6018-201 8001<br>Reg: (202503336982) (MA0340342-V)</div></div><div class="li-title">QUOTATION</div><div class="li-meta"><div class="li-meta-l"><table><tr><td>Quote No:</td><td id="li-qtn-no"></td></tr><tr><td>Date:</td><td id="li-qtn-date"></td></tr><tr><td>Valid Until:</td><td id="li-qtn-due"></td></tr></table></div><div class="li-meta-r"><p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p><h3 id="li-qtn-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3><p id="li-qtn-address" style="line-height:1.8;"></p></div></div><table class="li-table"><thead><tr><th>Description</th><th>Price (RM)</th><th>Qty</th><th>Total (RM)</th></tr></thead><tbody id="li-qtn-items"></tbody></table><div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-qtn-sub"></span></div><div class="li-summary-row" id="li-qtn-disc-row" style="display:none;color:#e14e65;"><span>Discount</span><span id="li-qtn-disc"></span></div><div class="li-summary-row"><span id="li-qtn-tax-lbl">Tax</span><span id="li-qtn-tax"></span></div><div class="li-summary-row total" style="background:#3b5fe4;"><span>TOTAL</span><span id="li-qtn-total"></span></div></div></div><div id="li-qtn-notes-wrap" style="display:none;padding:0 40px 16px;"><h4 style="font-size:10px;font-weight:800;text-transform:uppercase;margin-bottom:8px;color:#1d1d1f;">Notes</h4><p id="li-qtn-notes" style="font-size:11px;color:#86868b;line-height:1.6;white-space:pre-line;"></p></div><div class="li-bottom"><div class="li-box"><h4>Note</h4><div style="border:1px solid #eef0f2;padding:14px;border-radius:10px;font-size:11px;line-height:1.6;color:#86868b;">Upon your approval, this quotation will be converted into a formal invoice.</div></div><div class="li-box"><h4>Terms & Conditions</h4><p id="li-qtn-terms" style="white-space:pre-line;font-size:11px;color:#86868b;line-height:1.6;"></p></div></div></div></div>
+                <div class="invoice-preview-wrap">
+                    <div class="live-invoice" id="quotationCaptureArea">
+                        <div class="loading-overlay" id="qtnLoadingOverlay"><div class="spinner"></div><div style="font-size:14px;font-weight:600;">Generating Document...</div></div>
+                        <div class="li-page">
+                            <div class="li-header"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo"><div class="li-company"><h2>Omnyzo Agency</h2>2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>billings@omnyzo.com • +6018-201 8001<br>Reg: (202503336982) (MA0340342-V)</div></div>
+                            <div class="li-title">QUOTATION</div>
+                            <div class="li-meta"><div class="li-meta-l"><table><tr><td>Quote No:</td><td id="li-qtn-no"></td></tr><tr><td>Date:</td><td id="li-qtn-date"></td></tr><tr><td>Valid Until:</td><td id="li-qtn-due"></td></tr></table></div><div class="li-meta-r"><p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p><h3 id="li-qtn-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3><p id="li-qtn-address" style="line-height:1.8;"></p></div></div>
+                            <table class="li-table"><thead><tr><th>Description</th><th>Price (RM)</th><th>Qty</th><th>Total (RM)</th></tr></thead><tbody id="li-qtn-items"></tbody></table>
+                            <div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-qtn-sub"></span></div><div class="li-summary-row" id="li-qtn-disc-row" style="display:none;color:#e14e65;"><span>Discount</span><span id="li-qtn-disc"></span></div><div class="li-summary-row"><span id="li-qtn-tax-lbl">Tax</span><span id="li-qtn-tax"></span></div><div class="li-summary-row total" style="background:#3b5fe4;"><span>TOTAL</span><span id="li-qtn-total"></span></div></div></div>
+                            <div id="li-qtn-notes-wrap" style="display:none;padding:0 40px 16px;"><h4 style="font-size:10px;font-weight:800;text-transform:uppercase;margin-bottom:8px;color:#1d1d1f;">Notes</h4><p id="li-qtn-notes" style="font-size:11px;color:#86868b;line-height:1.6;white-space:pre-line;"></p></div>
+                            <div class="li-bottom"><div class="li-box"><h4>Note</h4><div style="border:1px solid #eef0f2;padding:14px;border-radius:10px;font-size:11px;line-height:1.6;color:#86868b;">Upon your approval, this quotation will be converted into a formal invoice.</div></div><div class="li-box"><h4>Terms & Conditions</h4><p id="li-qtn-terms" style="white-space:pre-line;font-size:11px;color:#86868b;line-height:1.6;"></p></div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="invoices-view" class="view-section">
@@ -571,31 +539,34 @@
                 
                 <div class="invoice-preview-wrap">
                     <div class="live-invoice" id="invoiceCaptureArea">
-                        <div class="loading-overlay" id="invLoadingOverlay" style="display:none;flex-direction:column;justify-content:center;align-items:center;"><div class="spinner"></div><div style="font-size:14px;font-weight:600;">Generating Document...</div></div>
-                        <div class="li-header">
-                            <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo">
-                            <div class="li-company">
-                                <h2>Omnyzo Agency</h2>
-                                2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>
-                                billings@omnyzo.com • +6018-201 8001<br>
-                                Reg: (202503336982) (MA0340342-V)
+                        <div class="loading-overlay" id="invLoadingOverlay"><div class="spinner"></div><div style="font-size:14px;font-weight:600;">Generating Document...</div></div>
+                        
+                        <div class="li-page">
+                            <div class="li-header">
+                                <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo">
+                                <div class="li-company">
+                                    <h2>Omnyzo Agency</h2>
+                                    2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>
+                                    billings@omnyzo.com • +6018-201 8001<br>
+                                    Reg: (202503336982) (MA0340342-V)
+                                </div>
                             </div>
-                        </div>
-                        <div class="li-title">INVOICE</div>
-                        <div class="li-meta">
-                            <div class="li-meta-l"><table><tr><td>Invoice No:</td><td id="li-inv-no"></td></tr><tr><td>Date:</td><td id="li-inv-date"></td></tr><tr><td>Due Date:</td><td id="li-inv-due"></td></tr></table></div>
-                            <div class="li-meta-r"><p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p><h3 id="li-inv-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3><p id="li-inv-address" style="line-height:1.8;"></p></div>
-                        </div>
-                        <table class="li-table"><thead><tr><th>Description</th><th>Price (RM)</th><th>Qty</th><th>Total (RM)</th></tr></thead><tbody id="li-inv-items"></tbody></table>
-                        <div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-inv-sub"></span></div><div class="li-summary-row" id="li-inv-disc-row" style="display:none;color:#e14e65;"><span>Discount</span><span id="li-inv-disc"></span></div><div class="li-summary-row"><span id="li-inv-tax-lbl">Tax</span><span id="li-inv-tax"></span></div><div class="li-summary-row total"><span>TOTAL</span><span id="li-inv-total"></span></div></div></div>
-                        <div id="li-inv-notes-wrap" style="display:none;padding:0 40px 16px;"><h4 style="font-size:10px;font-weight:800;text-transform:uppercase;margin-bottom:8px;color:#1d1d1f;">Notes</h4><p id="li-inv-notes" style="font-size:11px;color:#86868b;line-height:1.6;white-space:pre-line;"></p></div>
-                        <div class="li-bottom">
-                            <div class="li-box"><h4>Payment Method</h4><div style="border:1px solid #eef0f2;padding:14px;border-radius:10px;font-size:11px;line-height:1.8;"><table style="border-collapse:collapse;border:none;width:100%;"><tr><td style="color:#86868b;border:none;padding-right:12px;">Payee</td><td style="font-weight:700;color:#1d1d1f;border:none;">: OMNYZO AGENCY</td></tr><tr><td style="color:#86868b;border:none;">Bank</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MAYBANK BERHAD</td></tr><tr><td style="color:#86868b;border:none;">Account</td><td style="font-weight:700;color:#1d1d1f;border:none;">: 5144-0481-2701</td></tr><tr><td style="color:#86868b;border:none;">Swift</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MBBEMYKL</td></tr></table></div></div>
-                            <div class="li-box"><h4>Terms & Conditions</h4><p id="li-inv-terms" style="white-space:pre-line;font-size:11px;color:#86868b;line-height:1.6;"></p></div>
+                            <div class="li-title">INVOICE</div>
+                            <div class="li-meta">
+                                <div class="li-meta-l"><table><tr><td>Invoice No:</td><td id="li-inv-no"></td></tr><tr><td>Date:</td><td id="li-inv-date"></td></tr><tr><td>Due Date:</td><td id="li-inv-due"></td></tr></table></div>
+                                <div class="li-meta-r"><p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p><h3 id="li-inv-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3><p id="li-inv-address" style="line-height:1.8;"></p></div>
+                            </div>
+                            <table class="li-table"><thead><tr><th>Description</th><th>Price (RM)</th><th>Qty</th><th>Total (RM)</th></tr></thead><tbody id="li-inv-items"></tbody></table>
+                            <div class="li-summary-wrap"><div class="li-summary"><div class="li-summary-row"><span>Subtotal</span><span id="li-inv-sub"></span></div><div class="li-summary-row" id="li-inv-disc-row" style="display:none;color:#e14e65;"><span>Discount</span><span id="li-inv-disc"></span></div><div class="li-summary-row"><span id="li-inv-tax-lbl">Tax</span><span id="li-inv-tax"></span></div><div class="li-summary-row total"><span>TOTAL</span><span id="li-inv-total"></span></div></div></div>
+                            <div id="li-inv-notes-wrap" style="display:none;padding:0 40px 16px;"><h4 style="font-size:10px;font-weight:800;text-transform:uppercase;margin-bottom:8px;color:#1d1d1f;">Notes</h4><p id="li-inv-notes" style="font-size:11px;color:#86868b;line-height:1.6;white-space:pre-line;"></p></div>
+                            <div class="li-bottom">
+                                <div class="li-box"><h4>Payment Method</h4><div style="border:1px solid #eef0f2;padding:14px;border-radius:10px;font-size:11px;line-height:1.8;"><table style="border-collapse:collapse;border:none;width:100%;"><tr><td style="color:#86868b;border:none;padding-right:12px;">Payee</td><td style="font-weight:700;color:#1d1d1f;border:none;">: OMNYZO AGENCY</td></tr><tr><td style="color:#86868b;border:none;">Bank</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MAYBANK BERHAD</td></tr><tr><td style="color:#86868b;border:none;">Account</td><td style="font-weight:700;color:#1d1d1f;border:none;">: 5144-0481-2701</td></tr><tr><td style="color:#86868b;border:none;">Swift</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MBBEMYKL</td></tr></table></div></div>
+                                <div class="li-box"><h4>Terms & Conditions</h4><p id="li-inv-terms" style="white-space:pre-line;font-size:11px;color:#86868b;line-height:1.6;"></p></div>
+                            </div>
                         </div>
                         
                         <div class="html2pdf__page-break" id="li-pa-page">
-                            <div class="li-payment-advice-page">
+                            <div class="li-pa-page" style="display:flex; flex-direction:column; justify-content:flex-end;">
                                 <div class="li-payment-advice">
                                     <div style="text-align:center;color:#a1a1aa;margin-top:-48px;background:#fff;width:36px;margin-left:auto;margin-right:auto;font-size:14px;">✂️</div>
                                     <h3 style="font-size:13px;font-weight:800;color:#1d1d1f;margin-bottom:14px;letter-spacing:1px;">PAYMENT ADVICE</h3>
@@ -606,6 +577,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -637,13 +609,11 @@
                             <p id="rec-address" style="line-height:1.8;"></p>
                         </div>
                     </div>
-                    
                     <div style="padding:40px; text-align:center;">
                         <p style="font-size:14px; color:#86868b; margin-bottom:10px;">Amount Received</p>
                         <h1 id="rec-amount" style="font-size:48px; font-weight:800; color:var(--green); font-family:'Syne', sans-serif;">RM 0.00</h1>
                         <div style="margin-top:30px; display:inline-block; border:2px solid var(--green); color:var(--green); font-weight:800; padding:10px 20px; border-radius:8px; font-size:18px; transform:rotate(-5deg);">PAID IN FULL</div>
                     </div>
-                    
                     <div style="text-align:center; padding:30px 40px 0; color:#86868b; font-size:11px;">
                         Thank you for your business. This is a computer-generated document. No signature is required.
                     </div>
@@ -663,7 +633,7 @@
                         <div style="display:flex; gap:6px; position:absolute; top:24px; left:32px; right:32px;"><div class="wiz-bar done" id="wiz-bar-1"></div><div class="wiz-bar" id="wiz-bar-2"></div><div class="wiz-bar" id="wiz-bar-3"></div><div class="wiz-bar" id="wiz-bar-4"></div></div>
                         <div class="wizard-step active" id="step1"><h3 style="font-family:'Syne',sans-serif; font-size:18px; margin-bottom:4px;">Step 1: Type</h3><p style="font-size:12px;color:var(--text-3);margin-bottom:22px;">Select transaction type.</p><div class="trans-toggle"><button type="button" id="btn-out" class="trans-btn out" onclick="setTransType('Out')">💸 Money Out</button><button type="button" id="btn-in" class="trans-btn" onclick="setTransType('In')">💰 Money In</button></div><input type="hidden" id="transType" value="Out"><button type="button" class="btn-solid" onclick="nextWiz(2)">Next →</button></div>
                         <div class="wizard-step" id="step2"><h3 style="font-family:'Syne',sans-serif; font-size:18px; margin-bottom:4px;">Step 2: Details</h3><p style="font-size:12px;color:var(--text-3);margin-bottom:22px;">Date, amount, and payee.</p><div class="form-grid" style="gap:14px; margin-bottom:20px;"><div class="form-group"><label>Date</label><input type="date" id="transDate" class="form-control" required></div><div class="form-group"><label>Amount (RM)</label><input type="number" step="0.01" min="0" id="transAmount" class="form-control" required></div><div class="form-group" style="grid-column:span 2;"><label>Paid To / Received From</label><input type="text" id="transMerchant" class="form-control" list="merchantList" required><datalist id="merchantList"></datalist></div></div><div style="display:flex;gap:12px;"><button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(1)">← Back</button><button type="button" class="btn-solid" style="flex:2;" onclick="if(document.getElementById('transDate').value&&document.getElementById('transAmount').value&&document.getElementById('transMerchant').value){nextWiz(3);}else{showToast('Fill all fields',true);}">Next →</button></div></div>
-                        <div class="wizard-step" id="step3"><h3 style="font-family:'Syne',sans-serif; font-size:18px; margin-bottom:4px;">Step 3: Category</h3><p style="font-size:12px;color:var(--text-3);margin-bottom:22px;">Where to record this?</p><div class="form-grid" style="gap:14px; margin-bottom:20px;"><div class="form-group" style="grid-column:span 2;"><label>Category</label><select id="transCategory" class="form-control"><optgroup label="Money In"><option>Project Sales / Services</option><option>Monthly Retainers</option><option>Deposit / Advance Payment</option><option>Refund / Rebate Received</option></optgroup><optgroup label="Money Out"><option>Freelancer / Outsourcing</option><option>Ads / Media Spend</option><option>Software / Subscriptions</option><option>Equipment / Hardware</option><option>Payroll &amp; Allowances</option><option>Office Utilities / Internet</option><option>Travel, Meetings &amp; Pitching</option><option>Miscellaneous</option></optgroup></select></div><div class="form-group" style="grid-column:span 2;"><label>Notes</label><input type="text" id="transDesc" class="form-control" placeholder="Optional details..."></div></div><div style="display:flex;gap:12px;"><button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(2)">← Back</button><button type="button" class="btn-solid" style="flex:2;" onclick="nextWiz(4)">Next →</button></div></div>
+                        <div class="wizard-step" id="step3"><h3 style="font-family:'Syne',sans-serif; font-size:18px; margin-bottom:4px;">Step 3: Category</h3><p style="font-size:12px;color:var(--text-3);margin-bottom:22px;">Where to record this?</p><div class="form-grid" style="gap:14px; margin-bottom:20px;"><div class="form-group" style="grid-column:span 2;"><label>Category</label><select id="transCategory" class="form-control"><optgroup label="Money In"><option>Project Sales / Services</option><option>Monthly Retainers</option><option>Deposit / Advance Payment</option><option>Refund / Rebate Received</option></optgroup><optgroup label="Money Out"><option>Freelancer / Outsourcing</option><option>Ads / Media Spend</option><option>Software / Subscriptions</option><option>Equipment / Hardware</option><option>Payroll & Allowances</option><option>Office Utilities / Internet</option><option>Travel, Meetings & Pitching</option><option>Miscellaneous</option></optgroup></select></div><div class="form-group" style="grid-column:span 2;"><label>Notes</label><input type="text" id="transDesc" class="form-control" placeholder="Optional details..."></div></div><div style="display:flex;gap:12px;"><button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(2)">← Back</button><button type="button" class="btn-solid" style="flex:2;" onclick="nextWiz(4)">Next →</button></div></div>
                         <div class="wizard-step" id="step4"><h3 style="font-family:'Syne',sans-serif; font-size:18px; margin-bottom:4px;">Step 4: Payment</h3><p style="font-size:12px;color:var(--text-3);margin-bottom:22px;">Confirm payment status.</p><div class="form-group" style="margin-bottom:16px;"><select id="transStatus" class="form-control" onchange="togglePayFields()"><option value="Paid">Paid ✓</option><option value="Pending">Pending (pay later)</option></select></div><div id="payFields" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;background:var(--surface-3);border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:20px;"><div class="form-group" style="grid-column:span 2;"><label>Bank Slip (Optional)</label><input type="file" id="bankSlip" class="form-control" accept=".png,.jpg,.jpeg,.pdf"></div><div class="form-group"><label>Payment Date</label><input type="date" id="transPayDate" class="form-control"></div><div class="form-group"><label>Method</label><input type="text" id="transPayMethod" class="form-control" placeholder="e.g. Maybank"></div><div class="form-group" style="grid-column:span 2;"><label>Ref / Trans No.</label><input type="text" id="transRefId" class="form-control"></div></div><div style="display:flex;gap:12px;"><button type="button" class="btn-outline" style="flex:1;" onclick="nextWiz(3)">← Back</button><button type="submit" id="saveTransBtn" class="btn-solid" style="flex:2;">Save ✔</button></div></div>
                     </div>
                 </form>
@@ -678,6 +648,7 @@
         </div>
     </main>
 </div>
+
 <template id="invItemTpl">
     <div class="item-row">
         <textarea class="form-control item-desc" placeholder="Description" style="resize:vertical;min-height:44px;padding:10px;font-family:'DM Sans',sans-serif;font-size:13px;" required></textarea>
@@ -685,10 +656,7 @@
         <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this);updateRowTotal(this,'inv')">
         <div class="item-total" style="font-weight:700;font-size:13px;padding-top:10px;">0.00</div>
         <div style="display:flex;gap:3px;align-items:flex-start;padding-top:8px;">
-            <div style="display:flex;flex-direction:column;gap:2px;">
-                <button type="button" onclick="moveUp(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▲</button>
-                <button type="button" onclick="moveDown(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▼</button>
-            </div>
+            <div style="display:flex;flex-direction:column;gap:2px;"><button type="button" onclick="moveUp(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▲</button><button type="button" onclick="moveDown(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▼</button></div>
             <button type="button" onclick="removeRow(this)" style="background:none;border:none;color:var(--pink);cursor:pointer;padding:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
         </div>
     </div>
@@ -701,26 +669,46 @@
         <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this);updateRowTotal(this,'qtn')">
         <div class="item-total" style="font-weight:700;font-size:13px;padding-top:10px;">0.00</div>
         <div style="display:flex;gap:3px;align-items:flex-start;padding-top:8px;">
-            <div style="display:flex;flex-direction:column;gap:2px;">
-                <button type="button" onclick="moveUp(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▲</button>
-                <button type="button" onclick="moveDown(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▼</button>
-            </div>
+            <div style="display:flex;flex-direction:column;gap:2px;"><button type="button" onclick="moveUp(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▲</button><button type="button" onclick="moveDown(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▼</button></div>
+            <button type="button" onclick="removeRow(this)" style="background:none;border:none;color:var(--blue);cursor:pointer;padding:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+        </div>
+    </div>
+</template>
+<template id="invItemTpl">
+    <div class="item-row">
+        <textarea class="form-control item-desc" placeholder="Description" style="resize:vertical;min-height:44px;padding:10px;font-family:'DM Sans',sans-serif;font-size:13px;" required></textarea>
+        <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this,'inv')">
+        <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this);updateRowTotal(this,'inv')">
+        <div class="item-total" style="font-weight:700;font-size:13px;padding-top:10px;">0.00</div>
+        <div style="display:flex;gap:3px;align-items:flex-start;padding-top:8px;">
+            <div style="display:flex;flex-direction:column;gap:2px;"><button type="button" onclick="moveUp(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▲</button><button type="button" onclick="moveDown(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▼</button></div>
+            <button type="button" onclick="removeRow(this)" style="background:none;border:none;color:var(--pink);cursor:pointer;padding:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+        </div>
+    </div>
+</template>
+
+<template id="qtnItemTpl">
+    <div class="item-row">
+        <textarea class="form-control item-desc" placeholder="Description" style="resize:vertical;min-height:44px;padding:10px;font-family:'DM Sans',sans-serif;font-size:13px;" required></textarea>
+        <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this,'qtn')">
+        <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this);updateRowTotal(this,'qtn')">
+        <div class="item-total" style="font-weight:700;font-size:13px;padding-top:10px;">0.00</div>
+        <div style="display:flex;gap:3px;align-items:flex-start;padding-top:8px;">
+            <div style="display:flex;flex-direction:column;gap:2px;"><button type="button" onclick="moveUp(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▲</button><button type="button" onclick="moveDown(this)" style="background:var(--surface-3);border:1px solid var(--border);color:var(--text-2);cursor:pointer;border-radius:4px;padding:2px 5px;font-size:9px;">▼</button></div>
             <button type="button" onclick="removeRow(this)" style="background:none;border:none;color:var(--blue);cursor:pointer;padding:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
         </div>
     </div>
 </template>
 
 <script>
-// URL BARU OMNYZO V3 (DENGAN FUNGSI RESIT RASMI)
+// URL BARU OMNYZO V3
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWv1drj99imW8DDkYaXnaJxpE3zK-XcBsciqb6Dn5Z__J3hLm99uG-DHoNycSqXxe9/exec';
 
 let appData = { invoices:[], quotations:[], customers:[], freelancers:[], logs:[], cashflow:[] };
 let pendingConfirm = null; let editingCustomer = null, editingFreelancer = null;
 const currentUser = 'Boss';
 
-// ==========================================
-// VAKSIN ANTI-CORS (Menyamar sebagai teks biasa)
-// ==========================================
+// VAKSIN ANTI-CORS
 function apiPost(payload) {
     return fetch(SCRIPT_URL, {
         method: 'POST',
@@ -832,7 +820,34 @@ function viewInvDetail(no){
     let paPage=document.getElementById('li-pa-page'); 
     if(inv.status === 'Paid' || inv.hasPaymentAdvice===false){paPage.style.display='none';}else{paPage.style.display='block';} 
     
-    let c=appData.customers.find(x=>x.company===inv.client); let addr=c?fcleanAddr(c)+'<br>'+(c.phone||'')+'<br>'+(c.email||''):'-'; document.getElementById('li-inv-address').innerHTML=(inv.fullData&&inv.fullData.address)?`${inv.fullData.address}<br>${inv.fullData.phone||''}<br>${inv.fullData.email||''}`:addr; let iHtml=''; let calcSub=0; if(inv.sheetItems&&inv.sheetItems.length>0){inv.sheetItems.forEach(i=>{let isHdr=!i.price||parseFloat(i.price)===0||isNaN(parseFloat(i.price));if(isHdr){iHtml+=`<tr><td style="font-weight:800;white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`;}else{iHtml+=`<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${fc(i.price)}</td><td>${i.qty}</td><td>${fc(i.total)}</td></tr>`;calcSub+=parseFloat(i.total);}});}else{iHtml=`<tr><td>Professional Services</td><td>${fc(inv.amount)}</td><td>1</td><td>${fc(inv.amount)}</td></tr>`;calcSub=parseFloat(inv.amount);} document.getElementById('li-inv-items').innerHTML=iHtml; document.getElementById('li-inv-sub').innerText=fc(inv.subtotal||calcSub); if(inv.discount&&parseFloat(inv.discount)>0){document.getElementById('li-inv-disc-row').style.display='flex';document.getElementById('li-inv-disc').innerText='- '+fc(inv.discount);}else document.getElementById('li-inv-disc-row').style.display='none'; let tType=inv.taxType&&inv.taxType!=='None'?inv.taxType:'Tax'; let tSign=inv.taxType==='WHT'?'- ':''; document.getElementById('li-inv-tax-lbl').innerText=tType; document.getElementById('li-inv-tax').innerText=tSign+fc(inv.taxAmount||0); document.getElementById('li-inv-total').innerText='RM '+fc(inv.amount); document.getElementById('li-inv-terms').innerText=inv.tc||'Standard terms apply.'; if(inv.notes&&inv.notes.trim()){document.getElementById('li-inv-notes-wrap').style.display='block';document.getElementById('li-inv-notes').innerText=inv.notes;}else document.getElementById('li-inv-notes-wrap').style.display='none'; document.getElementById('pa-client').innerText=inv.client; document.getElementById('pa-inv-no').innerText=inv.invoiceNo; document.getElementById('pa-due').innerText=dueStr; document.getElementById('pa-amt').innerText='RM '+fc(inv.amount); switchView('invoice-detail-view'); 
+    let c=appData.customers.find(x=>x.company===inv.client); let addr=c?fcleanAddr(c)+'<br>'+(c.phone||'')+'<br>'+(c.email||''):'-'; 
+    document.getElementById('li-inv-address').innerHTML=(inv.fullData&&inv.fullData.address)?`${inv.fullData.address}<br>${inv.fullData.phone||''}<br>${inv.fullData.email||''}`:addr; 
+    
+    // PEMBINAAN TABLE UNTUK ITEM (DIKEMASKINI)
+    let iHtml=''; let calcSub=0; 
+    if(inv.sheetItems&&inv.sheetItems.length>0){
+        inv.sheetItems.forEach(i=>{
+            let isHdr=!i.price||parseFloat(i.price)===0||isNaN(parseFloat(i.price));
+            if(isHdr){
+                iHtml+=`<tr><td style="font-weight:800;white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`;
+            }else{
+                iHtml+=`<tr><td style="white-space:pre-wrap;">${i.desc}</td><td style="text-align:center;">${fc(i.price)}</td><td style="text-align:center;">${i.qty}</td><td style="text-align:right;">${fc(i.total)}</td></tr>`;
+                calcSub+=parseFloat(i.total);
+            }
+        });
+    }else{
+        iHtml=`<tr><td>Professional Services</td><td style="text-align:center;">${fc(inv.amount)}</td><td style="text-align:center;">1</td><td style="text-align:right;">${fc(inv.amount)}</td></tr>`;calcSub=parseFloat(inv.amount);
+    } 
+    document.getElementById('li-inv-items').innerHTML=iHtml; 
+    document.getElementById('li-inv-sub').innerText=fc(inv.subtotal||calcSub); 
+    
+    if(inv.discount&&parseFloat(inv.discount)>0){document.getElementById('li-inv-disc-row').style.display='flex';document.getElementById('li-inv-disc').innerText='- '+fc(inv.discount);}else document.getElementById('li-inv-disc-row').style.display='none'; 
+    let tType=inv.taxType&&inv.taxType!=='None'?inv.taxType:'Tax'; let tSign=inv.taxType==='WHT'?'- ':''; 
+    document.getElementById('li-inv-tax-lbl').innerText=tType; document.getElementById('li-inv-tax').innerText=tSign+fc(inv.taxAmount||0); document.getElementById('li-inv-total').innerText='RM '+fc(inv.amount); document.getElementById('li-inv-terms').innerText=inv.tc||'Standard terms apply.'; 
+    if(inv.notes&&inv.notes.trim()){document.getElementById('li-inv-notes-wrap').style.display='block';document.getElementById('li-inv-notes').innerText=inv.notes;}else document.getElementById('li-inv-notes-wrap').style.display='none'; 
+    document.getElementById('pa-client').innerText=inv.client; document.getElementById('pa-inv-no').innerText=inv.invoiceNo; document.getElementById('pa-due').innerText=dueStr; document.getElementById('pa-amt').innerText='RM '+fc(inv.amount); 
+    
+    switchView('invoice-detail-view'); 
 }
 
 // ── LOGIK RESIT RASMI ──────────────────────────────────
@@ -859,7 +874,21 @@ document.getElementById('payInvoiceForm').addEventListener('submit', function(e)
 
 function revertToPending(no){ showConfirm('Revert to Pending',`Revert ${no} back to Pending? This deletes the receipt.`,function(){let inv=appData.invoices.find(i=>i.invoiceNo===no);if(inv)inv.status='Pending';renderAll();apiPost({type:'revert_invoice_pending',username:currentUser,invoiceNo:no}).then(()=>{showToast(`${no} reverted!`);fetchAppData();});}); }
 
-function downloadInvPDF(){ const el=document.getElementById('invoiceCaptureArea'); const no=document.getElementById('li-inv-no').innerText; showToast('Generating Invoice PDF...'); el.style.boxShadow='none'; el.style.border='none'; html2pdf().set({margin:[0.4,0,0.4,0],filename:`Invoice_${no}.pdf`,image:{type:'jpeg',quality:1},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(el).save().then(()=>{el.style.boxShadow='';el.style.border='1px solid #eee';showToast('Invoice Downloaded!');}); }
+// PDF GENERATOR (FIXED PAGE BREAKS)
+function downloadInvPDF(){ 
+    const el=document.getElementById('invoiceCaptureArea'); const no=document.getElementById('li-inv-no').innerText; 
+    showToast('Generating Invoice PDF...'); el.style.boxShadow='none'; el.style.border='none'; 
+    html2pdf().set({
+        margin: 0,
+        filename: `Invoice_${no}.pdf`,
+        image: {type:'jpeg',quality:1},
+        html2canvas: {scale:2,useCORS:true},
+        jsPDF: {unit:'in',format:'a4',orientation:'portrait'},
+        pagebreak: { mode: ['css', 'legacy'] }
+    }).from(el).save().then(()=>{
+        el.style.boxShadow=''; el.style.border='1px solid #eee'; showToast('Invoice Downloaded!');
+    }); 
+}
 
 function downloadReceiptPDF(){ 
     const el = document.getElementById('receiptCaptureArea'); 
@@ -867,11 +896,11 @@ function downloadReceiptPDF(){
     const recNo = document.getElementById('rec-no').innerText; 
     showToast('Generating Receipt PDF...'); 
     html2pdf().set({
-        margin:[0.4,0,0.4,0],
-        filename:`Receipt_${recNo}.pdf`,
-        image:{type:'jpeg',quality:1},
-        html2canvas:{scale:2,useCORS:true},
-        jsPDF:{unit:'in',format:'a4',orientation:'portrait'}
+        margin: [0.4, 0, 0.4, 0],
+        filename: `Receipt_${recNo}.pdf`,
+        image: {type:'jpeg',quality:1},
+        html2canvas: {scale:2,useCORS:true},
+        jsPDF: {unit:'in',format:'a4',orientation:'portrait'}
     }).from(el).save().then(()=>{
         el.parentElement.style.display = 'none'; // Hide again
         showToast('Receipt Downloaded!');
@@ -889,10 +918,54 @@ function calcQtnDue(){ const d=document.getElementById('qtnDate').value; const t
 function updateQtnTerms(){ const tmpl=document.getElementById('qtnTcTemplate').value; let text=''; if(tmpl==='standard')text=`1. This quotation is valid for the period stated above.\n2. Prices are subject to change upon revision of project scope.\n3. To proceed, please reply with your confirmation or a signed Purchase Order (PO).`; else if(tmpl==='deposit')text=`1. This quotation is valid for the period stated above.\n2. A 50% non-refundable deposit is required before commencement of work.\n3. To proceed, please reply with your confirmation or a signed Purchase Order (PO).`; document.getElementById('qtnTerms').value=text; }
 document.getElementById('quotationItemsContainer').addEventListener('keydown',function(e){ if(e.key==='Enter'&&(e.target.classList.contains('item-price')||e.target.classList.contains('item-qty'))){e.preventDefault();addQtnItem();const rows=document.querySelectorAll('#quotationItemsContainer .item-row');if(rows.length)rows[rows.length-1].querySelector('.item-desc').focus();} });
 document.getElementById('quotationForm').addEventListener('submit',function(e){ e.preventDefault(); showConfirm(document.getElementById('editingQtnFlag').value?'Update Quotation':'Create Quotation','Confirm all details before saving.',function(){ const isUpd=document.getElementById('editingQtnFlag').value==='true'; const btn=document.getElementById('saveQtnBtn'); btn.innerText='Processing...'; btn.disabled=true; let ctr=1; const items=Array.from(document.querySelectorAll('#quotationItemsContainer .item-row')).map(r=>{ let rawDesc=r.querySelector('.item-desc').value.trim(); let qty=r.querySelector('.item-qty').value; let price=uf(r.querySelector('.item-price').value); let isHdr=!price||isNaN(price); let desc=isHdr?rawDesc:ctr+++'. '+rawDesc; return{desc,qty:isHdr?'':qty,price:isHdr?'':price.toFixed(2),total:isHdr?'':uf(r.querySelector('.item-total').innerText).toFixed(2)}; }); const sel=document.getElementById('qtnCustomer'); const client=sel.options[sel.selectedIndex].text; let existPdf=''; if(isUpd){let o=appData.quotations.find(q=>q.quotationNo===document.getElementById('qtnNo').value);if(o)existPdf=o.pdfLink||'';} const p={type:isUpd?'update_quotation':'quotation',username:currentUser,client,pic:document.getElementById('qtnPIC').value,phone:document.getElementById('qtnPhone').value,email:document.getElementById('qtnEmail').value,address:document.getElementById('qtnAddress').value,quotationNo:document.getElementById('qtnNo').value,qtnDate:document.getElementById('qtnDate').value,validDate:document.getElementById('qtnValidDate').value,terms:document.getElementById('qtnTerms').value,notes:document.getElementById('qtnNotes').value,items,discount:uf(document.getElementById('qtnDiscount').value).toFixed(2),taxType:document.getElementById('qtnTaxType').value,taxAmount:uf(document.getElementById('qtnTaxAmt').value).toFixed(2),subtotal:uf(document.getElementById('qtnSubtotal').innerText.replace('RM ','')).toFixed(2),grandTotal:uf(document.getElementById('qtnGrandTotal').innerText.replace('RM ','')).toFixed(2),pdfLink:existPdf}; let tempQtn={date:p.qtnDate,validDate:p.validDate,amount:p.grandTotal,quotationNo:p.quotationNo,client:p.client,status:'Draft',pdfLink:existPdf,tc:p.terms,sheetItems:p.items.map(i=>({desc:i.desc,price:i.price,qty:i.qty,total:i.total})),fullData:p}; if(isUpd){let idx=appData.quotations.findIndex(q=>q.quotationNo===p.quotationNo);if(idx!==-1)appData.quotations[idx]=tempQtn;}else appData.quotations.unshift(tempQtn); viewQtnDetail(p.quotationNo); switchView('quotation-detail-view'); document.getElementById('qtnLoadingOverlay').style.display='flex'; apiPost(p).then(r=>{btn.innerText=isUpd?'Update Quotation':'Create Quotation';btn.disabled=false;if(r.status==='success'){document.getElementById('qtnLoadingOverlay').style.display='none';fetchAppData().then(()=>{showToast(isUpd?'Quotation Updated!':'Quotation Created!');viewQtnDetail(p.quotationNo);});}}).catch(()=>{document.getElementById('qtnLoadingOverlay').style.display='none';btn.innerText=isUpd?'Update Quotation':'Create Quotation';btn.disabled=false;showToast('Failed to connect', true);}); }); });
-function viewQtnDetail(no){ let qtn=appData.quotations.find(q=>q.quotationNo===no); if(!qtn)return; document.getElementById('detail-qtn-no').innerText=qtn.quotationNo; document.getElementById('detail-qtn-client').innerText=qtn.client; document.getElementById('detail-qtn-status').innerText=qtn.status; document.getElementById('detail-qtn-status').className='tag tag-'+qtn.status.toLowerCase(); const mailto=`mailto:?subject=Quotation ${qtn.quotationNo} from Omnyzo Agency&body=Hi ${qtn.client},%0D%0A%0D%0AYour quotation PDF:%0D%0A${qtn.pdfLink||''}%0D%0A%0D%0AThank you!`; document.getElementById('btn-qtn-email').href=mailto; document.getElementById('li-qtn-no').innerText=qtn.quotationNo; document.getElementById('li-qtn-date').innerText=fdate(qtn.date); document.getElementById('li-qtn-due').innerText=fdate(qtn.validDate); document.getElementById('li-qtn-client').innerText=qtn.client; let c=appData.customers.find(x=>x.company===qtn.client); let addr=c?fcleanAddr(c)+'<br>'+(c.phone||'')+'<br>'+(c.email||''):'-'; document.getElementById('li-qtn-address').innerHTML=(qtn.fullData&&qtn.fullData.address)?`${qtn.fullData.address}<br>${qtn.fullData.phone||''}<br>${qtn.fullData.email||''}`:addr; let iHtml=''; let calcSub=0; if(qtn.sheetItems&&qtn.sheetItems.length>0){qtn.sheetItems.forEach(i=>{let isHdr=!i.price||parseFloat(i.price)===0||isNaN(parseFloat(i.price));if(isHdr){iHtml+=`<tr><td style="font-weight:800;white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`;}else{iHtml+=`<tr><td style="white-space:pre-wrap;">${i.desc}</td><td>${fc(i.price)}</td><td>${i.qty}</td><td>${fc(i.total)}</td></tr>`;calcSub+=parseFloat(i.total);}});}else{iHtml=`<tr><td>Project Services</td><td>${fc(qtn.amount)}</td><td>1</td><td>${fc(qtn.amount)}</td></tr>`;calcSub=parseFloat(qtn.amount);} document.getElementById('li-qtn-items').innerHTML=iHtml; document.getElementById('li-qtn-sub').innerText=fc(qtn.subtotal||calcSub); if(qtn.discount&&parseFloat(qtn.discount)>0){document.getElementById('li-qtn-disc-row').style.display='flex';document.getElementById('li-qtn-disc').innerText='- '+fc(qtn.discount);}else document.getElementById('li-qtn-disc-row').style.display='none'; let tType=qtn.taxType&&qtn.taxType!=='None'?qtn.taxType:'Tax'; let tSign=qtn.taxType==='WHT'?'- ':''; document.getElementById('li-qtn-tax-lbl').innerText=tType; document.getElementById('li-qtn-tax').innerText=tSign+fc(qtn.taxAmount||0); document.getElementById('li-qtn-total').innerText='RM '+fc(qtn.amount); document.getElementById('li-qtn-terms').innerText=qtn.tc||'Standard quote terms apply.'; if(qtn.notes&&qtn.notes.trim()){document.getElementById('li-qtn-notes-wrap').style.display='block';document.getElementById('li-qtn-notes').innerText=qtn.notes;}else document.getElementById('li-qtn-notes-wrap').style.display='none'; let cvWrap=document.getElementById('qtn-convert-btn-wrap'); if(qtn.status==='Approved'){ cvWrap.innerHTML=`<button class="a-btn a-btn-ghost" style="color:var(--blue);border-color:rgba(79,142,247,0.3);" onclick="convertQtnToInv('${qtn.quotationNo}')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Convert to Invoice</button>`; }else cvWrap.innerHTML=''; switchView('quotation-detail-view'); }
+
+function viewQtnDetail(no){ 
+    let qtn=appData.quotations.find(q=>q.quotationNo===no); if(!qtn)return; 
+    document.getElementById('detail-qtn-no').innerText=qtn.quotationNo; document.getElementById('detail-qtn-client').innerText=qtn.client; document.getElementById('detail-qtn-status').innerText=qtn.status; document.getElementById('detail-qtn-status').className='tag tag-'+qtn.status.toLowerCase(); 
+    const mailto=`mailto:?subject=Quotation ${qtn.quotationNo} from Omnyzo Agency&body=Hi ${qtn.client},%0D%0A%0D%0AYour quotation PDF:%0D%0A${qtn.pdfLink||''}%0D%0A%0D%0AThank you!`; document.getElementById('btn-qtn-email').href=mailto; 
+    document.getElementById('li-qtn-no').innerText=qtn.quotationNo; document.getElementById('li-qtn-date').innerText=fdate(qtn.date); document.getElementById('li-qtn-due').innerText=fdate(qtn.validDate); document.getElementById('li-qtn-client').innerText=qtn.client; 
+    
+    let c=appData.customers.find(x=>x.company===qtn.client); let addr=c?fcleanAddr(c)+'<br>'+(c.phone||'')+'<br>'+(c.email||''):'-'; document.getElementById('li-qtn-address').innerHTML=(qtn.fullData&&qtn.fullData.address)?`${qtn.fullData.address}<br>${qtn.fullData.phone||''}<br>${qtn.fullData.email||''}`:addr; 
+    
+    let iHtml=''; let calcSub=0; 
+    if(qtn.sheetItems&&qtn.sheetItems.length>0){
+        qtn.sheetItems.forEach(i=>{
+            let isHdr=!i.price||parseFloat(i.price)===0||isNaN(parseFloat(i.price));
+            if(isHdr){
+                iHtml+=`<tr><td style="font-weight:800;white-space:pre-wrap;">${i.desc}</td><td></td><td></td><td></td></tr>`;
+            }else{
+                iHtml+=`<tr><td style="white-space:pre-wrap;">${i.desc}</td><td style="text-align:center;">${fc(i.price)}</td><td style="text-align:center;">${i.qty}</td><td style="text-align:right;">${fc(i.total)}</td></tr>`;
+                calcSub+=parseFloat(i.total);
+            }
+        });
+    }else{
+        iHtml=`<tr><td>Project Services</td><td style="text-align:center;">${fc(qtn.amount)}</td><td style="text-align:center;">1</td><td style="text-align:right;">${fc(qtn.amount)}</td></tr>`;calcSub=parseFloat(qtn.amount);
+    } 
+    document.getElementById('li-qtn-items').innerHTML=iHtml; document.getElementById('li-qtn-sub').innerText=fc(qtn.subtotal||calcSub); 
+    
+    if(qtn.discount&&parseFloat(qtn.discount)>0){document.getElementById('li-qtn-disc-row').style.display='flex';document.getElementById('li-qtn-disc').innerText='- '+fc(qtn.discount);}else document.getElementById('li-qtn-disc-row').style.display='none'; 
+    let tType=qtn.taxType&&qtn.taxType!=='None'?qtn.taxType:'Tax'; let tSign=qtn.taxType==='WHT'?'- ':''; document.getElementById('li-qtn-tax-lbl').innerText=tType; document.getElementById('li-qtn-tax').innerText=tSign+fc(qtn.taxAmount||0); document.getElementById('li-qtn-total').innerText='RM '+fc(qtn.amount); document.getElementById('li-qtn-terms').innerText=qtn.tc||'Standard quote terms apply.'; 
+    if(qtn.notes&&qtn.notes.trim()){document.getElementById('li-qtn-notes-wrap').style.display='block';document.getElementById('li-qtn-notes').innerText=qtn.notes;}else document.getElementById('li-qtn-notes-wrap').style.display='none'; 
+    let cvWrap=document.getElementById('qtn-convert-btn-wrap'); if(qtn.status==='Approved'){ cvWrap.innerHTML=`<button class="a-btn a-btn-ghost" style="color:var(--blue);border-color:rgba(79,142,247,0.3);" onclick="convertQtnToInv('${qtn.quotationNo}')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Convert to Invoice</button>`; }else cvWrap.innerHTML=''; 
+    switchView('quotation-detail-view'); 
+}
+
 function updateQtnStatus(no,s){ showConfirm('Update Status',`Mark ${no} as ${s}?`,function(){let q=appData.quotations.find(x=>x.quotationNo===no);if(q)q.status=s;renderAll();apiPost({type:'update_quotation_status',username:currentUser,quotationNo:no,newStatus:s}).then(()=>{showToast(`${no} → ${s}!`);fetchAppData();});}); }
 function convertQtnToInv(no){ let qtn=appData.quotations.find(q=>q.quotationNo===no); if(!qtn)return; openNewInvoice(); let c=appData.customers.find(x=>x.company===qtn.client); if(c){document.getElementById('invCustomer').value=c.company;autoFillCust('inv');} document.getElementById('invoiceItemsContainer').innerHTML=''; if(qtn.sheetItems&&qtn.sheetItems.length>0){qtn.sheetItems.forEach(i=>{addInvItem(i.desc.replace(/^\d+\.\s*/,''),i.qty,i.price);});}else addInvItem(); document.getElementById('invNotes').value=qtn.notes||''; document.getElementById('invDiscount').value=qtn.discount||'0.00'; document.getElementById('invTaxType').value=qtn.taxType||'None'; document.getElementById('invTaxAmt').value=qtn.taxAmount||'0.00'; calcInvTotal(); showToast('Quote data copied to invoice!'); }
-function downloadQtnPDF(){ const el=document.getElementById('quotationCaptureArea'); const no=document.getElementById('li-qtn-no').innerText; showToast('Generating PDF...'); el.style.boxShadow='none'; el.style.border='none'; html2pdf().set({margin:[0.4,0,0.4,0],filename:`${no}.pdf`,image:{type:'jpeg',quality:1},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['tr','.li-summary-wrap','.li-bottom']}}).from(el).save().then(()=>{el.style.boxShadow='';el.style.border='1px solid #eee';showToast('PDF Downloaded!');}); }
+
+function downloadQtnPDF(){ 
+    const el=document.getElementById('quotationCaptureArea'); const no=document.getElementById('li-qtn-no').innerText; 
+    showToast('Generating PDF...'); el.style.boxShadow='none'; el.style.border='none'; 
+    html2pdf().set({
+        margin:0,
+        filename:`${no}.pdf`,
+        image:{type:'jpeg',quality:1},
+        html2canvas:{scale:2,useCORS:true},
+        jsPDF:{unit:'in',format:'a4',orientation:'portrait'}
+    }).from(el).save().then(()=>{
+        el.style.boxShadow='';el.style.border='1px solid #eee';showToast('PDF Downloaded!');
+    }); 
+}
 
 // ── LOGIK CASHFLOW / TRANSACTION ───────────────────────
 function setTransType(t){ document.getElementById('transType').value=t; document.getElementById('btn-out').className='trans-btn'+(t==='Out'?' out':''); document.getElementById('btn-in').className='trans-btn'+(t==='In'?' in':''); }
