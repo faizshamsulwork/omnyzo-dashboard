@@ -298,6 +298,329 @@
             .intro-title { font-size: 28px; letter-spacing: 4px; }
             .btn-enter { padding: 16px 40px; font-size: 14px; }
         }
+        /*
+ ╔══════════════════════════════════════════════════════════════╗
+ ║   OMNYZO — DOCUMENT STYLES FIX                              ║
+ ║   Paste this BEFORE the closing </style> tag in your HTML   ║
+ ║   Covers: Invoice, Quotation, Receipt preview + PDF output  ║
+ ╚══════════════════════════════════════════════════════════════╝
+*/
+
+/* ── PAGE WRAPPER ── */
+.li-page {
+    background: #fff;
+}
+
+/* ── HEADER: Logo + Company (float-based for html2pdf compat) ── */
+.li-header {
+    overflow: hidden;
+    padding: 36px 48px 24px;
+    border-bottom: 3px solid #1d1d1f;
+    margin-bottom: 0;
+}
+.li-logo-img {
+    float: left;
+    width: 72px;
+    height: auto;
+    border-radius: 8px;
+    margin-right: 18px;
+}
+.li-company {
+    overflow: hidden;
+    font-size: 11.5px;
+    color: #555;
+    line-height: 1.8;
+    padding-top: 2px;
+}
+.li-company h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: #1d1d1f;
+    margin-bottom: 3px;
+}
+
+/* ── DOCUMENT TITLE ── */
+.li-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #1d1d1f;
+    padding: 18px 48px;
+    background: #f5f5f7;
+    border-bottom: 1px solid #e8e8ed;
+}
+
+/* ── META SECTION: Invoice info + Client info (float layout) ── */
+.li-meta {
+    overflow: hidden;
+    padding: 28px 48px 24px;
+    border-bottom: 1px solid #e8e8ed;
+}
+.li-meta-l {
+    float: left;
+    width: 50%;
+}
+.li-meta-r {
+    float: right;
+    width: 46%;
+    text-align: right;
+}
+.li-meta-l table {
+    border-collapse: collapse;
+    font-size: 12px;
+}
+.li-meta-l table td {
+    padding: 5px 14px 5px 0;
+    vertical-align: top;
+}
+.li-meta-l table td:first-child {
+    color: #86868b;
+    white-space: nowrap;
+    min-width: 88px;
+}
+.li-meta-l table td:last-child {
+    font-weight: 700;
+    color: #1d1d1f;
+}
+
+/* ── ITEMS TABLE ── */
+.li-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+.li-table thead tr {
+    background: #1d1d1f;
+}
+.li-table thead th {
+    padding: 11px 16px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: left;
+}
+.li-table thead th:nth-child(2),
+.li-table thead th:nth-child(3) {
+    text-align: center;
+    width: 80px;
+}
+.li-table thead th:last-child {
+    text-align: right;
+    width: 110px;
+}
+.li-table tbody tr {
+    border-bottom: 1px solid #e8e8ed;
+}
+.li-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+.li-table tbody td {
+    padding: 13px 16px;
+    color: #1d1d1f;
+    vertical-align: top;
+    line-height: 1.6;
+    font-size: 12px;
+}
+.li-table tbody td:nth-child(2),
+.li-table tbody td:nth-child(3) {
+    text-align: center;
+    color: #555;
+}
+.li-table tbody td:last-child {
+    text-align: right;
+    font-weight: 700;
+}
+
+/* ── SUMMARY SECTION ── */
+.li-summary-wrap {
+    background: #f5f5f7;
+    border-top: 1px solid #e8e8ed;
+    padding: 20px 48px 28px;
+}
+.li-summary {
+    max-width: 290px;
+    margin-left: auto;
+}
+/* Using display:table for each row — ensures PDF compat, no flexbox */
+.li-summary-row {
+    display: table;
+    width: 100%;
+    padding: 9px 0;
+    border-bottom: 1px solid #e8e8ed;
+    font-size: 12px;
+}
+.li-summary-row:last-child {
+    border-bottom: none;
+}
+.li-summary-row > span:first-child {
+    display: table-cell;
+    color: #86868b;
+}
+.li-summary-row > span:last-child {
+    display: table-cell;
+    text-align: right;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+/* Total row — uses inline style for colour (blue=quotation, pink=invoice) */
+.li-summary-row.total {
+    border-radius: 8px;
+    padding: 13px 16px;
+    margin-top: 10px;
+    border: none !important;
+    background: #1d1d1f; /* default: dark. Quotation overrides inline: #3b5fe4 */
+}
+.li-summary-row.total > span:first-child {
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-size: 11px;
+}
+.li-summary-row.total > span:last-child {
+    color: #fff !important;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+/* ── NOTES SECTION ── */
+#li-inv-notes-wrap,
+#li-qtn-notes-wrap {
+    padding: 0 48px 16px;
+}
+
+/* ── BOTTOM SECTION: Payment info + T&C (float layout) ── */
+.li-bottom {
+    overflow: hidden;
+    border-top: 2px solid #e8e8ed;
+    padding: 28px 48px 36px;
+}
+.li-box {
+    float: left;
+    width: 50%;
+    padding-right: 28px;
+    box-sizing: border-box;
+}
+.li-box:last-child {
+    padding-right: 0;
+    padding-left: 28px;
+    border-left: 1px solid #e8e8ed;
+}
+.li-box h4 {
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #1d1d1f;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e8e8ed;
+}
+
+/* ── PAYMENT ADVICE (2nd page) ── */
+.li-pa-page {
+    background: #fff;
+    min-height: 160mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.li-payment-advice {
+    border-top: 2px dashed #c0c0cc;
+    padding: 28px 48px 48px;
+}
+.li-payment-advice h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: #1d1d1f;
+    margin-bottom: 20px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* ── LOADING OVERLAY (spinner while saving) ── */
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.95);
+    z-index: 50;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #1d1d1f;
+}
+.spinner {
+    border: 3px solid #f0f0f0;
+    border-top: 3px solid #e14e65;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── DASHBOARD LIVE FEED (was also missing) ── */
+.feed-item {
+    overflow: hidden;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+.feed-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.feed-dot {
+    float: left;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--pink);
+    margin-top: 5px;
+    margin-right: 10px;
+}
+.feed-text {
+    overflow: hidden;
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.5;
+}
+.feed-time {
+    font-size: 10.5px;
+    color: var(--text-3);
+    margin-top: 3px;
+}
+
+/* ── FLOATING NOTIF BUTTON POSITION (was undefined) ── */
+.bottom-actions {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 150;
+}
+
+/* ── MOBILE OVERRIDES ── */
+@media (max-width: 768px) {
+    .li-header { padding: 20px 20px 16px; }
+    .li-logo-img { width: 54px; }
+    .li-title { font-size: 14px; letter-spacing: 3px; padding: 14px 20px; }
+    .li-meta { padding: 18px 20px; }
+    .li-meta-l, .li-meta-r { float: none; width: 100%; }
+    .li-meta-r { text-align: left; margin-top: 16px; }
+    .li-summary-wrap { padding: 16px 20px 22px; }
+    #li-inv-notes-wrap, #li-qtn-notes-wrap { padding: 0 20px 14px; }
+    .li-bottom { padding: 20px; }
+    .li-box { float: none; width: 100%; padding: 0 0 16px 0 !important; border: none !important; margin-bottom: 16px; }
+    .bottom-actions { bottom: 90px; right: 16px; }
+}
     </style>
 </head>
 <body data-theme="dark">
