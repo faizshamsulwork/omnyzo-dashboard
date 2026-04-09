@@ -10,7 +10,11 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#080910">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
@@ -34,7 +38,14 @@
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { height: 100%; }
-        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; height: 100vh; display: flex; overflow: hidden; -webkit-font-smoothing: antialiased; transition: background 0.4s, color 0.4s; }
+        
+        /* APPLY PLUS JAKARTA SANS KESELURUHAN SISTEM */
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            height: 100vh; display: flex; overflow: hidden; -webkit-font-smoothing: antialiased; transition: background 0.4s, color 0.4s; 
+        }
 
         /* ─── INTRO PAGE ─── */
         #intro-page { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #080910; transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -104,7 +115,6 @@
         .card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 20px; }
         .card h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 20px; }
 
-        /* STATS & GRID */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
         .stat-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; position: relative; overflow: hidden; }
         .stat-card::after { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 2px; opacity: 0; transition: opacity 0.2s; }
@@ -120,12 +130,9 @@
         .stat-icon.pink { background: var(--pink-dim); color: var(--pink); } .stat-icon.blue { background: var(--blue-dim); color: var(--blue); } .stat-icon.orange { background: rgba(245,158,11,0.12); color: var(--orange); } .stat-icon.green { background: rgba(34,211,165,0.12); color: var(--green); }
         .stat-label { font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; }
         .stat-val { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
-        .stat-sub { font-size: 11px; color: var(--text-3); margin-top: 4px; }
         .hero-stat { grid-column: span 1; background: linear-gradient(135deg, var(--pink) 0%, #c0392b 100%); border: none; color: #fff; }
         .hero-stat .stat-icon { background: rgba(255,255,255,0.15); color: #fff; }
         .hero-stat .stat-val, .hero-stat .stat-label { color: #fff; }
-        .hero-stat .stat-sub { color: rgba(255,255,255,0.6); }
-        .hero-stat:hover { box-shadow: 0 16px 40px rgba(225,78,101,0.5); }
 
         .dash-bottom { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; }
         .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
@@ -136,7 +143,6 @@
         .qa-label { font-size: 13px; font-weight: 600; }
         .qa-sub { font-size: 11px; color: var(--text-3); }
 
-        /* PROGRESS & FEED */
         .progress-wrap { margin-bottom: 24px; }
         .progress-labels { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 8px; }
         .progress-track { height: 6px; background: rgba(225,78,101,0.15); border-radius: 3px; overflow: hidden; display: flex; }
@@ -147,7 +153,6 @@
         .attention-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
         .attention-amt { font-size: 13px; font-weight: 700; color: var(--orange); }
 
-        /* TABLES */
         .table-wrap { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; }
         .tbl-header, .tbl-row { min-width: 800px; }
         .tbl-header { display: grid; grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.8fr 1.5fr; padding: 12px 20px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
@@ -172,10 +177,10 @@
         .tag-draft { background: rgba(148,148,168,0.1); color: var(--text-2); }
         .tag-sent { background: var(--blue-dim); color: var(--blue); }
         .tag-approved { background: rgba(34,211,165,0.12); color: var(--green); }
+        .tag-rejected { background: var(--pink-dim); color: var(--pink); }
 
-        /* BUTTONS & FORMS */
         .action-btns { display: flex; gap: 6px; justify-content: flex-end; }
-        .action-btn { padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid; display: inline-flex; align-items: center; gap: 4px; transition: all 0.15s; white-space: nowrap; background: transparent;}
+        .action-btn { padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid; display: inline-flex; align-items: center; gap: 4px; transition: all 0.15s; white-space: nowrap; background: transparent; font-family: 'Plus Jakarta Sans', sans-serif;}
         .btn-pay { color: var(--green); border-color: rgba(34,211,165,0.3); } .btn-pay:hover { background: rgba(34,211,165,0.1); }
         .btn-undo { color: var(--text-2); border-color: var(--border); } .btn-undo:hover { background: var(--surface-3); color: var(--text); }
         .btn-view { color: var(--text-2); border-color: var(--border); } .btn-view:hover { background: var(--surface-3); }
@@ -183,30 +188,41 @@
         .btn-delete { color: var(--pink); border-color: rgba(225,78,101,0.3); } .btn-delete:hover { background: var(--pink-dim); }
         .btn-convert { color: var(--blue); border-color: rgba(79,142,247,0.3); } .btn-convert:hover { background: var(--blue-dim); }
 
-        .btn-solid { background: var(--pink); color: #fff; border: none; padding: 13px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; width: 100%; transition: all 0.2s; box-shadow: 0 4px 14px var(--pink-glow); }
+        .btn-solid { background: var(--pink); color: #fff; border: none; padding: 13px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; width: 100%; transition: all 0.2s; box-shadow: 0 4px 14px var(--pink-glow); }
         .btn-solid:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border-2); padding: 13px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; width: 100%; transition: all 0.2s; }
+        .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border-2); padding: 13px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; width: 100%; transition: all 0.2s; }
         .btn-outline:hover { background: var(--surface-3); border-color: var(--border-2); }
         .btn-add { width: 40px; height: 40px; border-radius: 50%; background: var(--pink); color: #fff; border: none; font-size: 22px; display: flex; justify-content: center; align-items: center; cursor: pointer; flex-shrink: 0; box-shadow: 0 4px 14px var(--pink-glow); transition: all 0.2s; }
         .btn-add:hover { transform: rotate(90deg) scale(1.1); }
         .btn-add.blue { background: var(--blue); box-shadow: 0 4px 14px rgba(79,142,247,0.4); }
 
-        .search-box { background: var(--surface-3); border: 1px solid var(--border); color: var(--text); padding: 10px 16px; border-radius: 100px; font-size: 13px; font-family: 'DM Sans', sans-serif; width: 240px; outline: none; transition: all 0.2s; }
+        .search-box { background: var(--surface-3); border: 1px solid var(--border); color: var(--text); padding: 10px 16px; border-radius: 100px; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; width: 240px; outline: none; transition: all 0.2s; }
         .search-box:focus { border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-dim); }
         .form-group { margin-bottom: 0; }
         .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 7px; }
-        .form-control { width: 100%; padding: 11px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-3); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; transition: all 0.2s; outline: none; }
+        .form-control { width: 100%; padding: 11px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-3); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; transition: all 0.2s; outline: none; }
         .form-control:focus { border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-dim); }
         textarea.form-control { resize: vertical; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-        /* WIZARD & MODALS */
+        .invoice-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 24px; align-items: start; }
+        .summary-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; position: sticky; top: 0; }
+        .summary-card h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 24px; }
+        .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 13px; color: var(--text-2); }
+        .summary-input { width: 90px; padding: 6px 10px; background: var(--surface-3); border: 1px solid var(--border); color: var(--text); border-radius: 8px; text-align: center; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .summary-total { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .summary-total h3 { font-size: 14px; color: var(--text-2); }
+        .summary-total h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--text); }
+        .item-header { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 12px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; min-width: 560px; }
+        .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 12px; margin-bottom: 10px; align-items: start; min-width: 560px; animation: slideIn 0.25s forwards; }
+        @keyframes slideIn { from { opacity:0; transform: translateX(10px); } to { opacity:1; transform: translateX(0); } }
+
         .wizard-step { display: none; }
         .wizard-step.active { display: block; animation: viewIn 0.3s forwards; }
         .wiz-bar { height: 3px; flex: 1; border-radius: 2px; background: var(--border); transition: background 0.3s; }
         .wiz-bar.done { background: var(--pink); }
         .trans-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .trans-btn { padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; color: var(--text-2); font-weight: 600; font-size: 14px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+        .trans-btn { padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; color: var(--text-2); font-weight: 600; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
         .trans-btn.out { border-color: rgba(225,78,101,0.4); color: var(--pink); background: var(--pink-dim); }
         .trans-btn.in { border-color: rgba(34,211,165,0.4); color: var(--green); background: rgba(34,211,165,0.08); }
 
@@ -221,63 +237,43 @@
         .modal-icon { width: 52px; height: 52px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 16px; }
         .modal-icon svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* TOAST & NOTIF */
         #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px); background: var(--green); color: #fff; padding: 12px 24px; border-radius: 100px; font-size: 13px; font-weight: 600; z-index: 9999; box-shadow: 0 8px 24px rgba(34,211,165,0.4); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s; opacity: 0; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         #toast.error { background: var(--pink); box-shadow: 0 8px 24px var(--pink-glow); }
-        
-        .bottom-actions { position: fixed; bottom: 24px; right: 24px; z-index: 1000; }
-        .notif-btn { background: var(--surface-2); border: 1px solid var(--border); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text); position: relative; box-shadow: var(--shadow); transition: all 0.2s; }
-        .notif-btn:hover { border-color: var(--pink); color: var(--pink); }
-        .notif-badge { position: absolute; top: -3px; right: -3px; background: var(--pink); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 5px; border-radius: 10px; display: none; }
-        .notif-panel { position: absolute; bottom: 56px; right: 0; width: 320px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.4); display: none; max-height: 380px; overflow-y: auto; }
-        .notif-panel.show { display: block; animation: viewIn 0.3s forwards; }
-        .notif-item { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text); }
-        .notif-item:last-child { border-bottom: none; }
-        .notif-time { font-size: 10px; color: var(--text-3); margin-bottom: 4px; font-weight: 600; }
 
-        /* ── INVOICE CREATION FORM CSS ── */
-        .invoice-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 24px; align-items: start; }
-        .summary-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; position: sticky; top: 0; }
-        .summary-card h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 24px; }
-        .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 13px; color: var(--text-2); }
-        .summary-input { width: 90px; padding: 6px 10px; background: var(--surface-3); border: 1px solid var(--border); color: var(--text); border-radius: 8px; text-align: center; font-size: 13px; }
-        .summary-total { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .summary-total h3 { font-size: 14px; color: var(--text-2); }
-        .summary-total h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--text); }
-        .item-header { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 12px; font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; min-width: 560px; }
-        .item-row { display: grid; grid-template-columns: 2fr 0.5fr 1fr 1fr 80px; gap: 12px; margin-bottom: 10px; align-items: start; min-width: 560px; animation: slideIn 0.25s forwards; }
-        @keyframes slideIn { from { opacity:0; transform: translateX(10px); } to { opacity:1; transform: translateX(0); } }
-
-        /* ── DETAIL BAR & BUTTONS ── */
         .detail-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 15px; }
         .detail-bar-left { display: flex; align-items: center; gap: 16px; }
         .back-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); font-size: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.15s; flex-shrink: 0; }
         .back-btn:hover { border-color: var(--pink); color: var(--pink); }
         .detail-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .detail-actions .a-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; text-decoration: none; border: 1px solid; font-family: 'DM Sans', sans-serif; }
+        .detail-actions .a-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; text-decoration: none; border: 1px solid; font-family: 'Plus Jakarta Sans', sans-serif; }
         .detail-actions .a-btn svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
         .a-btn-ghost { background: transparent; color: var(--text); border-color: var(--border-2); } .a-btn-ghost:hover { background: var(--surface-3); }
         .a-btn-pink { background: var(--pink); color: #fff; border-color: var(--pink); box-shadow: 0 4px 14px var(--pink-glow); } .a-btn-pink:hover { opacity: 0.9; transform: translateY(-1px); }
         .a-btn-blue { background: var(--blue); color: #fff; border-color: var(--blue); } .a-btn-blue:hover { opacity: 0.9; }
 
-        /* ── PDF PREVIEW CONTAINER ── */
+        /* ─── KOD KHAS PDF INVOICE / RESIT (KEMAS A4) ─── */
         .invoice-preview-wrap { background: #e8e9ef; padding: 30px 20px; border-radius: var(--radius); border: 1px solid var(--border); max-height: 75vh; overflow-y: auto; display: flex; justify-content: center; }
-        .live-invoice { background: #fff; width: 100%; max-width: 800px; color: #1d1d1f; font-family: 'DM Sans', sans-serif; box-shadow: 0 4px 30px rgba(0,0,0,0.1); border: 1px solid #eee; position: relative; }
+        .live-invoice { background: #fff; width: 100%; max-width: 800px; color: #1d1d1f; font-family: 'Plus Jakarta Sans', sans-serif; box-shadow: 0 4px 30px rgba(0,0,0,0.1); border: 1px solid #eee; position: relative; }
         .loading-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.95); z-index: 50; display: none; flex-direction: column; justify-content: center; align-items: center; color: #1d1d1f; }
         
         /* ══════════════════════════════════════════════════════════════ */
-        /* OMNYZO — DOCUMENT STYLES FIX (PDF LAYOUT KALI NI PAKAI FLOAT) */
+        /* OMNYZO — DOCUMENT STYLES FIX (DIBEKALKAN OLEH BOSS)            */
         /* ══════════════════════════════════════════════════════════════ */
+        
+        /* ── PAGE WRAPPER ── */
         .li-page { background: #fff; }
 
+        /* ── HEADER: Logo + Company (float-based for html2pdf compat) ── */
         .li-header { overflow: hidden; padding: 36px 48px 24px; border-bottom: 3px solid #1d1d1f; margin-bottom: 0; }
         .li-logo-img { float: left; width: 72px; height: auto; border-radius: 8px; margin-right: 18px; }
         .li-company { overflow: hidden; font-size: 11.5px; color: #555; line-height: 1.8; padding-top: 2px; }
         .li-company h2 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: #1d1d1f; margin-bottom: 3px; }
 
+        /* ── DOCUMENT TITLE ── */
         .li-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: 6px; color: #1d1d1f; padding: 18px 48px; background: #f5f5f7; border-bottom: 1px solid #e8e8ed; }
 
+        /* ── META SECTION ── */
         .li-meta { overflow: hidden; padding: 28px 48px 24px; border-bottom: 1px solid #e8e8ed; }
         .li-meta-l { float: left; width: 50%; }
         .li-meta-r { float: right; width: 46%; text-align: right; }
@@ -286,6 +282,7 @@
         .li-meta-l table td:first-child { color: #86868b; white-space: nowrap; min-width: 88px; }
         .li-meta-l table td:last-child { font-weight: 700; color: #1d1d1f; }
 
+        /* ── ITEMS TABLE ── */
         .li-table { width: 100%; border-collapse: collapse; font-size: 12px; }
         .li-table thead tr { background: #1d1d1f; }
         .li-table thead th { padding: 11px 16px; color: #fff; font-weight: 700; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; text-align: left; }
@@ -297,6 +294,7 @@
         .li-table tbody td:nth-child(2), .li-table tbody td:nth-child(3) { text-align: center; color: #555; }
         .li-table tbody td:last-child { text-align: right; font-weight: 700; }
 
+        /* ── SUMMARY SECTION ── */
         .li-summary-wrap { background: #f5f5f7; border-top: 1px solid #e8e8ed; padding: 20px 48px 28px; }
         .li-summary { max-width: 290px; margin-left: auto; }
         .li-summary-row { display: table; width: 100%; padding: 9px 0; border-bottom: 1px solid #e8e8ed; font-size: 12px; }
@@ -307,18 +305,36 @@
         .li-summary-row.total > span:first-child { color: #fff; font-weight: 800; letter-spacing: 0.5px; font-size: 11px; }
         .li-summary-row.total > span:last-child { color: #fff !important; font-weight: 800; font-size: 15px; }
 
+        /* ── NOTES SECTION ── */
         #li-inv-notes-wrap, #li-qtn-notes-wrap { padding: 0 48px 16px; }
 
+        /* ── BOTTOM SECTION ── */
         .li-bottom { overflow: hidden; border-top: 2px solid #e8e8ed; padding: 28px 48px 36px; }
         .li-box { float: left; width: 50%; padding-right: 28px; box-sizing: border-box; }
         .li-box:last-child { padding-right: 0; padding-left: 28px; border-left: 1px solid #e8e8ed; }
         .li-box h4 { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #1d1d1f; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e8e8ed; }
 
-        /* PAYMENT ADVICE (Diperbaiki dgn Page Break CSS) */
-        .html2pdf__page-break { page-break-before: always !important; display: block; height: 0; clear: both; }
-        .li-pa-page { background: #fff; min-height: 160mm; display: flex; flex-direction: column; justify-content: flex-end; }
+        /* ── PAYMENT ADVICE (FIX) ── */
+        .html2pdf__page-break { page-break-before: always !important; display: block; height: 0; clear: both; width: 100%; }
+        .li-pa-page { background: #fff; margin-top: 50px; }
         .li-payment-advice { border-top: 2px dashed #c0c0cc; padding: 28px 48px 48px; }
         .li-payment-advice h3 { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; color: #1d1d1f; margin-bottom: 20px; letter-spacing: 1.5px; text-transform: uppercase; }
+
+        .notif-btn { background: var(--surface-2); border: 1px solid var(--border); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text); position: relative; box-shadow: var(--shadow); transition: all 0.2s; }
+        .notif-btn:hover { border-color: var(--pink); color: var(--pink); }
+        .notif-badge { position: absolute; top: -3px; right: -3px; background: var(--pink); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 5px; border-radius: 10px; display: none; }
+        .notif-panel { position: absolute; bottom: 56px; right: 0; width: 320px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.4); display: none; max-height: 380px; overflow-y: auto; }
+        .notif-panel.show { display: block; animation: viewIn 0.3s forwards; }
+        .notif-item { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text); }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-time { font-size: 10px; color: var(--text-3); margin-bottom: 4px; font-weight: 600; }
+        .log-item { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .log-item:last-child { border-bottom: none; }
+        .log-action { font-size: 13px; font-weight: 500; }
+        .log-time { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+        .log-user { background: var(--pink-dim); color: var(--pink); padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+        .modal-icon { width: 52px; height: 52px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 16px; }
+        .modal-icon svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
         /* ── MOBILE OVERRIDES ── */
         @media (max-width: 768px) {
@@ -354,6 +370,7 @@
             .notif-panel { right: -10px; width: 300px; bottom: 60px; }
             .intro-title { font-size: 28px; letter-spacing: 4px; }
             .btn-enter { padding: 16px 40px; font-size: 14px; }
+            
             /* PDF Mobile Overrides */
             .li-header { padding: 20px 20px 16px; }
             .li-logo-img { width: 54px; }
@@ -365,6 +382,7 @@
             #li-inv-notes-wrap, #li-qtn-notes-wrap { padding: 0 20px 14px; }
             .li-bottom { padding: 20px; }
             .li-box { float: none; width: 100%; padding: 0 0 16px 0 !important; border: none !important; margin-bottom: 16px; }
+            .li-payment-advice { padding: 20px; }
         }
     </style>
 </head>
@@ -500,9 +518,15 @@
 </div>
 
 <div id="app-container">
+
     <div class="bottom-actions">
-        <div class="notif-btn" onclick="toggleNotif()"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="notif-badge" id="notif-badge">0</span>
-            <div class="notif-panel" id="notif-panel"><div style="padding:14px 16px; border-bottom:1px solid var(--border); font-weight:700;">Activity</div><div id="notif-list"><div style="padding:20px; text-align:center; color:var(--text-3); font-size:12px;">No new activity.</div></div></div>
+        <div class="notif-btn" onclick="toggleNotif()">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <span class="notif-badge" id="notif-badge">0</span>
+            <div class="notif-panel" id="notif-panel">
+                <div style="padding:14px 16px; border-bottom:1px solid var(--border); font-family:'Syne',sans-serif; font-size:13px; font-weight:700;">Activity</div>
+                <div id="notif-list"><div style="padding:20px; text-align:center; color:var(--text-3); font-size:12px;">No new activity.</div></div>
+            </div>
         </div>
     </div>
 
@@ -565,10 +589,14 @@
             </div>
 
             <div id="quotation-detail-view" class="view-section">
-                <div class="detail-bar"><div class="detail-bar-left"><button class="back-btn" onclick="switchView('quotations-view')">←</button><div><h1 id="detail-qtn-no" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">QTN-XXXX</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-qtn-client" style="color:var(--text);font-weight:600;"></span> &nbsp;•&nbsp; <span id="detail-qtn-status" class="tag">Status</span></p></div></div><div class="detail-actions"><div id="qtn-convert-btn-wrap"></div><button class="a-btn a-btn-ghost" onclick="downloadQtnPDF()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download PDF</button><a id="btn-qtn-email" href="#" class="a-btn a-btn-blue"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Send Email</a></div></div>
+                <div class="detail-bar">
+                    <div class="detail-bar-left"><button class="back-btn" onclick="switchView('quotations-view')">←</button><div><h1 id="detail-qtn-no" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">QTN-XXXX</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-qtn-client" style="color:var(--text);font-weight:600;"></span> &nbsp;•&nbsp; <span id="detail-qtn-status" class="tag">Status</span></p></div></div>
+                    <div class="detail-actions"><div id="qtn-convert-btn-wrap"></div><button class="a-btn a-btn-ghost" onclick="downloadQtnPDF()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download PDF</button><a id="btn-qtn-email" href="#" class="a-btn a-btn-blue"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Send Email</a></div>
+                </div>
                 <div class="invoice-preview-wrap">
                     <div class="live-invoice" id="quotationCaptureArea">
                         <div class="loading-overlay" id="qtnLoadingOverlay"><div class="spinner"></div><div style="font-size:14px;font-weight:600;">Generating Document...</div></div>
+                        
                         <div class="li-page">
                             <div class="li-header">
                                 <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo">
@@ -581,10 +609,23 @@
                             </div>
                             <div class="li-title">QUOTATION</div>
                             <div class="li-meta">
-                                <div class="li-meta-l"><table><tr><td>Quote No:</td><td id="li-qtn-no"></td></tr><tr><td>Date:</td><td id="li-qtn-date"></td></tr><tr><td>Valid Until:</td><td id="li-qtn-due"></td></tr></table></div>
-                                <div class="li-meta-r"><p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p><h3 id="li-qtn-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3><p id="li-qtn-address" style="line-height:1.8;"></p></div>
+                                <div class="li-meta-l">
+                                    <table>
+                                        <tr><td>Quote No:</td><td id="li-qtn-no"></td></tr>
+                                        <tr><td>Date:</td><td id="li-qtn-date"></td></tr>
+                                        <tr><td>Valid Until:</td><td id="li-qtn-due"></td></tr>
+                                    </table>
+                                </div>
+                                <div class="li-meta-r">
+                                    <p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p>
+                                    <h3 id="li-qtn-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3>
+                                    <p id="li-qtn-address" style="line-height:1.8;"></p>
+                                </div>
                             </div>
-                            <table class="li-table"><thead><tr><th>Description</th><th>Qty</th><th>Price (RM)</th><th>Total (RM)</th></tr></thead><tbody id="li-qtn-items"></tbody></table>
+                            <table class="li-table">
+                                <thead><tr><th>Description</th><th>Qty</th><th>Price (RM)</th><th>Total (RM)</th></tr></thead>
+                                <tbody id="li-qtn-items"></tbody>
+                            </table>
                             <div class="li-summary-wrap">
                                 <div class="li-summary">
                                     <div class="li-summary-row"><span>Subtotal</span><span id="li-qtn-sub"></span></div>
@@ -616,7 +657,13 @@
 
             <div id="invoice-detail-view" class="view-section">
                 <div class="detail-bar">
-                    <div class="detail-bar-left"><button class="back-btn" onclick="switchView('invoices-view')">←</button><div><h1 id="detail-inv-no" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">OMN-XXXX</h1><p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-inv-client" style="color:var(--text);font-weight:600;"></span> &nbsp;•&nbsp; <span id="detail-inv-status" class="tag">Status</span></p></div></div>
+                    <div class="detail-bar-left">
+                        <button class="back-btn" onclick="switchView('invoices-view')">←</button>
+                        <div>
+                            <h1 id="detail-inv-no" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">OMN-XXXX</h1>
+                            <p style="font-size:13px;color:var(--text-2);margin-top:4px;">To: <span id="detail-inv-client" style="color:var(--text);font-weight:600;"></span> &nbsp;•&nbsp; <span id="detail-inv-status" class="tag">Status</span></p>
+                        </div>
+                    </div>
                     <div class="detail-actions">
                         <button id="btn-download-receipt" class="a-btn a-btn-ghost" style="display:none; color:var(--green); border-color:rgba(34,211,165,0.3);" onclick="downloadReceiptPDF()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Official Receipt</button>
                         <button id="btn-download-inv" class="a-btn a-btn-ghost" onclick="downloadInvPDF()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Invoice PDF</button>
@@ -641,10 +688,23 @@
                             </div>
                             <div class="li-title">INVOICE</div>
                             <div class="li-meta">
-                                <div class="li-meta-l"><table><tr><td>Invoice No:</td><td id="li-inv-no"></td></tr><tr><td>Date:</td><td id="li-inv-date"></td></tr><tr><td>Due Date:</td><td id="li-inv-due"></td></tr></table></div>
-                                <div class="li-meta-r"><p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p><h3 id="li-inv-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3><p id="li-inv-address" style="line-height:1.8;"></p></div>
+                                <div class="li-meta-l">
+                                    <table>
+                                        <tr><td>Invoice No:</td><td id="li-inv-no"></td></tr>
+                                        <tr><td>Date:</td><td id="li-inv-date"></td></tr>
+                                        <tr><td>Due Date:</td><td id="li-inv-due"></td></tr>
+                                    </table>
+                                </div>
+                                <div class="li-meta-r">
+                                    <p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">TO:</p>
+                                    <h3 id="li-inv-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3>
+                                    <p id="li-inv-address" style="line-height:1.8;"></p>
+                                </div>
                             </div>
-                            <table class="li-table"><thead><tr><th>Description</th><th>Qty</th><th>Price (RM)</th><th>Total (RM)</th></tr></thead><tbody id="li-inv-items"></tbody></table>
+                            <table class="li-table">
+                                <thead><tr><th>Description</th><th>Qty</th><th>Price (RM)</th><th>Total (RM)</th></tr></thead>
+                                <tbody id="li-inv-items"></tbody>
+                            </table>
                             <div class="li-summary-wrap">
                                 <div class="li-summary">
                                     <div class="li-summary-row"><span>Subtotal</span><span id="li-inv-sub"></span></div>
@@ -655,8 +715,21 @@
                             </div>
                             <div id="li-inv-notes-wrap" style="display:none;"><h4 style="font-size:10px;font-weight:800;text-transform:uppercase;margin-bottom:8px;color:#1d1d1f;">Notes</h4><p id="li-inv-notes" style="font-size:11px;color:#86868b;line-height:1.6;white-space:pre-line;"></p></div>
                             <div class="li-bottom">
-                                <div class="li-box"><h4>Payment Method</h4><div style="border:1px solid #eef0f2;padding:14px;border-radius:10px;font-size:11px;line-height:1.8;"><table style="border-collapse:collapse;border:none;width:100%;"><tr><td style="color:#86868b;border:none;padding-right:12px;">Payee</td><td style="font-weight:700;color:#1d1d1f;border:none;">: OMNYZO AGENCY</td></tr><tr><td style="color:#86868b;border:none;">Bank</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MAYBANK BERHAD</td></tr><tr><td style="color:#86868b;border:none;">Account</td><td style="font-weight:700;color:#1d1d1f;border:none;">: 5144-0481-2701</td></tr><tr><td style="color:#86868b;border:none;">Swift</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MBBEMYKL</td></tr></table></div></div>
-                                <div class="li-box"><h4>Terms & Conditions</h4><p id="li-inv-terms" style="white-space:pre-line;font-size:11px;color:#86868b;line-height:1.6;"></p></div>
+                                <div class="li-box">
+                                    <h4>Payment Method</h4>
+                                    <div style="border:1px solid #eef0f2;padding:14px;border-radius:10px;font-size:11px;line-height:1.8;">
+                                        <table style="border-collapse:collapse;border:none;width:100%;">
+                                            <tr><td style="color:#86868b;border:none;padding-right:12px;">Payee</td><td style="font-weight:700;color:#1d1d1f;border:none;">: OMNYZO AGENCY</td></tr>
+                                            <tr><td style="color:#86868b;border:none;">Bank</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MAYBANK BERHAD</td></tr>
+                                            <tr><td style="color:#86868b;border:none;">Account</td><td style="font-weight:700;color:#1d1d1f;border:none;">: 5144-0481-2701</td></tr>
+                                            <tr><td style="color:#86868b;border:none;">Swift</td><td style="font-weight:700;color:#1d1d1f;border:none;">: MBBEMYKL</td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="li-box">
+                                    <h4>Terms & Conditions</h4>
+                                    <p id="li-inv-terms" style="white-space:pre-line;font-size:11px;color:#86868b;line-height:1.6;"></p>
+                                </div>
                             </div>
                         </div>
                         
@@ -691,18 +764,39 @@
             <div style="display:none;">
                 <div class="live-invoice" id="receiptCaptureArea" style="width:800px; padding-bottom:50px;">
                     <div class="li-page">
-                        <div class="li-header"><img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo"><div class="li-company"><h2>Omnyzo Agency</h2>2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>billings@omnyzo.com • +6018-201 8001<br>Reg: (202503336982) (MA0340342-V)</div></div>
+                        <div class="li-header">
+                            <img src="https://raw.githubusercontent.com/faizshamsulwork/omnyzo-dashboard/main/OMNYZO-Black.png" class="li-logo-img" alt="Omnyzo">
+                            <div class="li-company">
+                                <h2>Omnyzo Agency</h2>
+                                2003, The Sky Residensi Jalan 6/91 Taman Shamelin Perkasa<br>
+                                billings@omnyzo.com • +6018-201 8001<br>
+                                Reg: (202503336982) (MA0340342-V)
+                            </div>
+                        </div>
                         <div class="li-title" style="color:var(--green); border-bottom:1px solid #e8e8ed;">OFFICIAL RECEIPT</div>
                         <div class="li-meta" style="margin-top:0; border-bottom:1px solid #e8e8ed; padding-bottom:30px;">
-                            <div class="li-meta-l"><table><tr><td>Receipt No:</td><td id="rec-no"></td></tr><tr><td>Payment Date:</td><td id="rec-date"></td></tr><tr><td>Payment Method:</td><td id="rec-method"></td></tr><tr><td>Ref. Invoice:</td><td id="rec-inv-ref"></td></tr></table></div>
-                            <div class="li-meta-r"><p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">RECEIVED FROM:</p><h3 id="rec-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3><p id="rec-address" style="line-height:1.8;"></p></div>
+                            <div class="li-meta-l">
+                                <table>
+                                    <tr><td>Receipt No:</td><td id="rec-no"></td></tr>
+                                    <tr><td>Payment Date:</td><td id="rec-date"></td></tr>
+                                    <tr><td>Payment Method:</td><td id="rec-method"></td></tr>
+                                    <tr><td>Ref. Invoice:</td><td id="rec-inv-ref"></td></tr>
+                                </table>
+                            </div>
+                            <div class="li-meta-r">
+                                <p style="font-weight:800;color:#1d1d1f;margin-bottom:8px;">RECEIVED FROM:</p>
+                                <h3 id="rec-client" style="font-size:15px;font-weight:800;color:#1d1d1f;margin-bottom:4px;"></h3>
+                                <p id="rec-address" style="line-height:1.8;"></p>
+                            </div>
                         </div>
                         <div style="padding:40px; text-align:center;">
                             <p style="font-size:14px; color:#86868b; margin-bottom:10px;">Amount Received</p>
                             <h1 id="rec-amount" style="font-size:48px; font-weight:800; color:var(--green); font-family:'Syne', sans-serif;">RM 0.00</h1>
                             <div style="margin-top:30px; display:inline-block; border:2px solid var(--green); color:var(--green); font-weight:800; padding:10px 20px; border-radius:8px; font-size:18px; transform:rotate(-5deg);">PAID IN FULL</div>
                         </div>
-                        <div style="text-align:center; padding:30px 40px 0; color:#86868b; font-size:11px;">Thank you for your business. This is a computer-generated document. No signature is required.</div>
+                        <div style="text-align:center; padding:30px 40px 0; color:#86868b; font-size:11px;">
+                            Thank you for your business. This is a computer-generated document. No signature is required.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -737,7 +831,7 @@
 </div>
 <template id="invItemTpl">
     <div class="item-row">
-        <textarea class="form-control item-desc" placeholder="Description" style="resize:vertical;min-height:44px;padding:10px;font-family:'DM Sans',sans-serif;font-size:13px;" required></textarea>
+        <textarea class="form-control item-desc" placeholder="Description" style="resize:vertical;min-height:44px;padding:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;" required></textarea>
         <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this,'inv')">
         <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this);updateRowTotal(this,'inv')">
         <div class="item-total" style="font-weight:700;font-size:13px;padding-top:10px;">0.00</div>
@@ -750,7 +844,7 @@
 
 <template id="qtnItemTpl">
     <div class="item-row">
-        <textarea class="form-control item-desc" placeholder="Description" style="resize:vertical;min-height:44px;padding:10px;font-family:'DM Sans',sans-serif;font-size:13px;" required></textarea>
+        <textarea class="form-control item-desc" placeholder="Description" style="resize:vertical;min-height:44px;padding:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;" required></textarea>
         <input type="number" class="form-control item-qty" placeholder="Qty" oninput="updateRowTotal(this,'qtn')">
         <input type="text" class="form-control item-price" placeholder="Price" oninput="formatInput(this);updateRowTotal(this,'qtn')">
         <div class="item-total" style="font-weight:700;font-size:13px;padding-top:10px;">0.00</div>
@@ -762,7 +856,7 @@
 </template>
 
 <script>
-// URL BARU OMNYZO V3
+// URL BARU OMNYZO V3 (DENGAN FUNGSI RESIT RASMI)
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWv1drj99imW8DDkYaXnaJxpE3zK-XcBsciqb6Dn5Z__J3hLm99uG-DHoNycSqXxe9/exec';
 
 let appData = { invoices:[], quotations:[], customers:[], freelancers:[], logs:[], cashflow:[] };
@@ -828,6 +922,7 @@ document.getElementById('freelancerForm').addEventListener('submit',function(e){
 function openDeleteModal(no,type){ document.getElementById('del-doc-label').innerText=no; document.getElementById('del-doc-no').value=no; document.getElementById('del-doc-type').value=type; document.getElementById('delete-modal').classList.add('show'); }
 document.getElementById('delForm').addEventListener('submit',function(e){ e.preventDefault(); const btn=this.querySelector('button[type=submit]'); const ot=btn.innerText; btn.innerText='Deleting...'; btn.disabled=true; const p={type:'delete_doc',username:currentUser,docNo:document.getElementById('del-doc-no').value,docType:document.getElementById('del-doc-type').value}; if(p.docType==='transaction')p.rowIdx=p.docNo; apiPost(p).then(r=>{btn.innerText=ot;btn.disabled=false;if(r.status==='success'){document.getElementById('delete-modal').classList.remove('show');showToast('Deleted!');fetchAppData();}else showToast('Delete failed.',true);}).catch(()=>{btn.innerText=ot;btn.disabled=false;showToast('Error.',true);}); });
 
+// ── BANTUAN BORANG (AUTO-FILL & KALKULATOR) ────────────
 function autoFillCust(prefix){ const comp=document.getElementById(prefix+'Customer').value; if(!comp)return; const c=appData.customers.find(x=>x.company===comp); if(!c)return; document.getElementById(prefix+'PIC').value=c.pic||''; document.getElementById(prefix+'Phone').value=c.phone||''; document.getElementById(prefix+'Email').value=c.email||''; document.getElementById(prefix+'Address').value=fcleanAddr(c)||''; }
 function localDocNo(prefix,dataset,key){ let today=new Date(); let yy=today.getFullYear().toString().slice(-2); let mm=String(today.getMonth()+1).padStart(2,'0'); let cp=prefix+'-'+yy+mm+'-'; let max=0; dataset.forEach(item=>{ if(item[key]&&item[key].startsWith(cp)){let n=parseInt((item[key].split('-')[2])||0);if(n>max)max=n;} }); return cp+String(max+1).padStart(3,'0'); }
 function moveUp(btn){ let r=btn.closest('.item-row'); if(r.previousElementSibling?.classList.contains('item-row'))r.parentNode.insertBefore(r,r.previousElementSibling); }
@@ -854,6 +949,7 @@ function viewInvDetail(no){
     document.getElementById('detail-inv-status').innerText=inv.status; 
     document.getElementById('detail-inv-status').className='tag tag-'+inv.status.toLowerCase(); 
     
+    // BUTANG RESIT RASMI
     let btnDlReceipt = document.getElementById('btn-download-receipt');
     if (inv.status === 'Paid' && inv.receiptNo) {
         btnDlReceipt.style.display = 'inline-flex';
@@ -881,7 +977,7 @@ function viewInvDetail(no){
     let c=appData.customers.find(x=>x.company===inv.client); let addr=c?fcleanAddr(c)+'<br>'+(c.phone||'')+'<br>'+(c.email||''):'-'; 
     document.getElementById('li-inv-address').innerHTML=(inv.fullData&&inv.fullData.address)?`${inv.fullData.address}<br>${inv.fullData.phone||''}<br>${inv.fullData.email||''}`:addr; 
     
-    // PEMBINAAN TABLE ITEM
+    // PEMBINAAN TABLE ITEM UNTUK INVOICE
     let iHtml=''; let calcSub=0; 
     if(inv.sheetItems&&inv.sheetItems.length>0){
         inv.sheetItems.forEach(i=>{
@@ -899,7 +995,7 @@ function viewInvDetail(no){
     document.getElementById('li-inv-items').innerHTML=iHtml; 
     document.getElementById('li-inv-sub').innerText=fc(inv.subtotal||calcSub); 
     
-    if(inv.discount&&parseFloat(inv.discount)>0){document.getElementById('li-inv-disc-row').style.display='flex';document.getElementById('li-inv-disc').innerText='- '+fc(inv.discount);}else document.getElementById('li-inv-disc-row').style.display='none'; 
+    if(inv.discount&&parseFloat(inv.discount)>0){document.getElementById('li-inv-disc-row').style.display='table-row';document.getElementById('li-inv-disc').innerText='- '+fc(inv.discount);}else document.getElementById('li-inv-disc-row').style.display='none'; 
     let tType=inv.taxType&&inv.taxType!=='None'?inv.taxType:'Tax'; let tSign=inv.taxType==='WHT'?'- ':''; 
     document.getElementById('li-inv-tax-lbl').innerText=tType; document.getElementById('li-inv-tax').innerText=tSign+fc(inv.taxAmount||0); document.getElementById('li-inv-total').innerText='RM '+fc(inv.amount); document.getElementById('li-inv-terms').innerText=inv.tc||'Standard terms apply.'; 
     if(inv.notes&&inv.notes.trim()){document.getElementById('li-inv-notes-wrap').style.display='block';document.getElementById('li-inv-notes').innerText=inv.notes;}else document.getElementById('li-inv-notes-wrap').style.display='none'; 
@@ -908,6 +1004,7 @@ function viewInvDetail(no){
     switchView('invoice-detail-view'); 
 }
 
+// ── LOGIK RESIT RASMI ──────────────────────────────────
 function openPayInvoiceModal(invNo) {
     document.getElementById('payInvNo').value = invNo;
     document.getElementById('payInvDate').value = new Date().toISOString().split('T')[0];
@@ -931,18 +1028,22 @@ document.getElementById('payInvoiceForm').addEventListener('submit', function(e)
 
 function revertToPending(no){ showConfirm('Revert to Pending',`Revert ${no} back to Pending? This deletes the receipt.`,function(){let inv=appData.invoices.find(i=>i.invoiceNo===no);if(inv)inv.status='Pending';renderAll();apiPost({type:'revert_invoice_pending',username:currentUser,invoiceNo:no}).then(()=>{showToast(`${no} reverted!`);fetchAppData();});}); }
 
-// ── PDF GENERATOR (HTML2PDF DENGAN SETTING ZERO MARGIN/CSS PAGEBREAK) ──
+// ── PDF GENERATOR (DENGAN SETTING ZERO MARGIN/CSS PAGEBREAK) ──
 function downloadInvPDF(){ 
     const el=document.getElementById('invoiceCaptureArea'); const no=document.getElementById('li-inv-no').innerText; 
     showToast('Generating Invoice PDF...'); el.style.boxShadow='none'; el.style.border='none'; 
-    html2pdf().set({
-        margin: 0,
+    
+    // Setting html2pdf: margin nipis, css mode untuk baca page-break
+    var opt = {
+        margin: [0.2, 0, 0.2, 0],
         filename: `Invoice_${no}.pdf`,
-        image: {type:'jpeg',quality:1},
-        html2canvas: {scale:2,useCORS:true},
-        jsPDF: {unit:'in',format:'a4',orientation:'portrait'},
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['css', 'legacy'] }
-    }).from(el).save().then(()=>{
+    };
+    
+    html2pdf().set(opt).from(el).save().then(()=>{
         el.style.boxShadow=''; el.style.border='1px solid #eee'; showToast('Invoice Downloaded!');
     }); 
 }
@@ -952,13 +1053,16 @@ function downloadReceiptPDF(){
     el.parentElement.style.display = 'block'; // Unhide temporarily
     const recNo = document.getElementById('rec-no').innerText; 
     showToast('Generating Receipt PDF...'); 
-    html2pdf().set({
-        margin: 0,
+    
+    var opt = {
+        margin: [0.2, 0, 0.2, 0],
         filename: `Receipt_${recNo}.pdf`,
-        image: {type:'jpeg',quality:1},
-        html2canvas: {scale:2,useCORS:true},
-        jsPDF: {unit:'in',format:'a4',orientation:'portrait'}
-    }).from(el).save().then(()=>{
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    
+    html2pdf().set(opt).from(el).save().then(()=>{
         el.parentElement.style.display = 'none'; // Hide again
         showToast('Receipt Downloaded!');
     }); 
@@ -975,6 +1079,7 @@ function calcQtnDue(){ const d=document.getElementById('qtnDate').value; const t
 function updateQtnTerms(){ const tmpl=document.getElementById('qtnTcTemplate').value; let text=''; if(tmpl==='standard')text=`1. This quotation is valid for the period stated above.\n2. Prices are subject to change upon revision of project scope.\n3. To proceed, please reply with your confirmation or a signed Purchase Order (PO).`; else if(tmpl==='deposit')text=`1. This quotation is valid for the period stated above.\n2. A 50% non-refundable deposit is required before commencement of work.\n3. To proceed, please reply with your confirmation or a signed Purchase Order (PO).`; document.getElementById('qtnTerms').value=text; }
 document.getElementById('quotationItemsContainer').addEventListener('keydown',function(e){ if(e.key==='Enter'&&(e.target.classList.contains('item-price')||e.target.classList.contains('item-qty'))){e.preventDefault();addQtnItem();const rows=document.querySelectorAll('#quotationItemsContainer .item-row');if(rows.length)rows[rows.length-1].querySelector('.item-desc').focus();} });
 document.getElementById('quotationForm').addEventListener('submit',function(e){ e.preventDefault(); showConfirm(document.getElementById('editingQtnFlag').value?'Update Quotation':'Create Quotation','Confirm all details before saving.',function(){ const isUpd=document.getElementById('editingQtnFlag').value==='true'; const btn=document.getElementById('saveQtnBtn'); btn.innerText='Processing...'; btn.disabled=true; let ctr=1; const items=Array.from(document.querySelectorAll('#quotationItemsContainer .item-row')).map(r=>{ let rawDesc=r.querySelector('.item-desc').value.trim(); let qty=r.querySelector('.item-qty').value; let price=uf(r.querySelector('.item-price').value); let isHdr=!price||isNaN(price); let desc=isHdr?rawDesc:ctr+++'. '+rawDesc; return{desc,qty:isHdr?'':qty,price:isHdr?'':price.toFixed(2),total:isHdr?'':uf(r.querySelector('.item-total').innerText).toFixed(2)}; }); const sel=document.getElementById('qtnCustomer'); const client=sel.options[sel.selectedIndex].text; let existPdf=''; if(isUpd){let o=appData.quotations.find(q=>q.quotationNo===document.getElementById('qtnNo').value);if(o)existPdf=o.pdfLink||'';} const p={type:isUpd?'update_quotation':'quotation',username:currentUser,client,pic:document.getElementById('qtnPIC').value,phone:document.getElementById('qtnPhone').value,email:document.getElementById('qtnEmail').value,address:document.getElementById('qtnAddress').value,quotationNo:document.getElementById('qtnNo').value,qtnDate:document.getElementById('qtnDate').value,validDate:document.getElementById('qtnValidDate').value,terms:document.getElementById('qtnTerms').value,notes:document.getElementById('qtnNotes').value,items,discount:uf(document.getElementById('qtnDiscount').value).toFixed(2),taxType:document.getElementById('qtnTaxType').value,taxAmount:uf(document.getElementById('qtnTaxAmt').value).toFixed(2),subtotal:uf(document.getElementById('qtnSubtotal').innerText.replace('RM ','')).toFixed(2),grandTotal:uf(document.getElementById('qtnGrandTotal').innerText.replace('RM ','')).toFixed(2),pdfLink:existPdf}; let tempQtn={date:p.qtnDate,validDate:p.validDate,amount:p.grandTotal,quotationNo:p.quotationNo,client:p.client,status:'Draft',pdfLink:existPdf,tc:p.terms,sheetItems:p.items.map(i=>({desc:i.desc,price:i.price,qty:i.qty,total:i.total})),fullData:p}; if(isUpd){let idx=appData.quotations.findIndex(q=>q.quotationNo===p.quotationNo);if(idx!==-1)appData.quotations[idx]=tempQtn;}else appData.quotations.unshift(tempQtn); viewQtnDetail(p.quotationNo); switchView('quotation-detail-view'); document.getElementById('qtnLoadingOverlay').style.display='flex'; apiPost(p).then(r=>{btn.innerText=isUpd?'Update Quotation':'Create Quotation';btn.disabled=false;if(r.status==='success'){document.getElementById('qtnLoadingOverlay').style.display='none';fetchAppData().then(()=>{showToast(isUpd?'Quotation Updated!':'Quotation Created!');viewQtnDetail(p.quotationNo);});}}).catch(()=>{document.getElementById('qtnLoadingOverlay').style.display='none';btn.innerText=isUpd?'Update Quotation':'Create Quotation';btn.disabled=false;showToast('Failed to connect', true);}); }); });
+
 function viewQtnDetail(no){ 
     let qtn=appData.quotations.find(q=>q.quotationNo===no); if(!qtn)return; 
     document.getElementById('detail-qtn-no').innerText=qtn.quotationNo; document.getElementById('detail-qtn-client').innerText=qtn.client; document.getElementById('detail-qtn-status').innerText=qtn.status; document.getElementById('detail-qtn-status').className='tag tag-'+qtn.status.toLowerCase(); 
@@ -983,6 +1088,7 @@ function viewQtnDetail(no){
     
     let c=appData.customers.find(x=>x.company===qtn.client); let addr=c?fcleanAddr(c)+'<br>'+(c.phone||'')+'<br>'+(c.email||''):'-'; document.getElementById('li-qtn-address').innerHTML=(qtn.fullData&&qtn.fullData.address)?`${qtn.fullData.address}<br>${qtn.fullData.phone||''}<br>${qtn.fullData.email||''}`:addr; 
     
+    // PEMBINAAN TABLE ITEM UNTUK QUOTATION
     let iHtml=''; let calcSub=0; 
     if(qtn.sheetItems&&qtn.sheetItems.length>0){
         qtn.sheetItems.forEach(i=>{
@@ -999,7 +1105,7 @@ function viewQtnDetail(no){
     } 
     document.getElementById('li-qtn-items').innerHTML=iHtml; document.getElementById('li-qtn-sub').innerText=fc(qtn.subtotal||calcSub); 
     
-    if(qtn.discount&&parseFloat(qtn.discount)>0){document.getElementById('li-qtn-disc-row').style.display='flex';document.getElementById('li-qtn-disc').innerText='- '+fc(qtn.discount);}else document.getElementById('li-qtn-disc-row').style.display='none'; 
+    if(qtn.discount&&parseFloat(qtn.discount)>0){document.getElementById('li-qtn-disc-row').style.display='table-row';document.getElementById('li-qtn-disc').innerText='- '+fc(qtn.discount);}else document.getElementById('li-qtn-disc-row').style.display='none'; 
     let tType=qtn.taxType&&qtn.taxType!=='None'?qtn.taxType:'Tax'; let tSign=qtn.taxType==='WHT'?'- ':''; document.getElementById('li-qtn-tax-lbl').innerText=tType; document.getElementById('li-qtn-tax').innerText=tSign+fc(qtn.taxAmount||0); document.getElementById('li-qtn-total').innerText='RM '+fc(qtn.amount); document.getElementById('li-qtn-terms').innerText=qtn.tc||'Standard quote terms apply.'; 
     if(qtn.notes&&qtn.notes.trim()){document.getElementById('li-qtn-notes-wrap').style.display='block';document.getElementById('li-qtn-notes').innerText=qtn.notes;}else document.getElementById('li-qtn-notes-wrap').style.display='none'; 
     let cvWrap=document.getElementById('qtn-convert-btn-wrap'); if(qtn.status==='Approved'){ cvWrap.innerHTML=`<button class="a-btn a-btn-ghost" style="color:var(--blue);border-color:rgba(79,142,247,0.3);" onclick="convertQtnToInv('${qtn.quotationNo}')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Convert to Invoice</button>`; }else cvWrap.innerHTML=''; 
@@ -1012,13 +1118,15 @@ function convertQtnToInv(no){ let qtn=appData.quotations.find(q=>q.quotationNo==
 function downloadQtnPDF(){ 
     const el=document.getElementById('quotationCaptureArea'); const no=document.getElementById('li-qtn-no').innerText; 
     showToast('Generating PDF...'); el.style.boxShadow='none'; el.style.border='none'; 
-    html2pdf().set({
-        margin:0,
-        filename:`${no}.pdf`,
-        image:{type:'jpeg',quality:1},
-        html2canvas:{scale:2,useCORS:true},
-        jsPDF:{unit:'in',format:'a4',orientation:'portrait'}
-    }).from(el).save().then(()=>{
+    var opt = {
+        margin: [0.2, 0, 0.2, 0],
+        filename: `${no}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'] }
+    };
+    html2pdf().set(opt).from(el).save().then(()=>{
         el.style.boxShadow='';el.style.border='1px solid #eee';showToast('PDF Downloaded!');
     }); 
 }
@@ -1046,7 +1154,7 @@ function renderAll(){
     document.getElementById('dash-netcash').innerText=fmt(net); document.getElementById('dash-pipeline').innerText=fmt(pipeline); document.getElementById('dash-outstanding').innerText=fmt(outstanding); document.getElementById('dash-expense').innerText=fmt(expense);
     let totalIO=income+expense; let pct=totalIO===0?50:(income/totalIO)*100;
     document.getElementById('bar-income').innerText=fmt(income); document.getElementById('bar-expense').innerText=fmt(expense); document.getElementById('income-bar').style.width=pct+'%';
-    pendingInvs.sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate)); let naHtml=''; pendingInvs.slice(0,3).forEach(i=>{ naHtml+=`<div class="attention-item"><div><div class="attention-client">${i.client}</div><div class="attention-meta">Due: ${fdate(i.dueDate)} • ${i.invoiceNo}</div></div><div style="display:flex;align-items:center;gap:10px;"><div class="attention-amt">${fmt(i.amount)}</div><button onclick="viewInvDetail('${i.invoiceNo}')" style="background:rgba(245,158,11,0.12);color:var(--orange);border:none;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;">View</button></div></div>`; }); document.getElementById('needs-attention').innerHTML=naHtml||'<div style="font-size:12px;color:var(--text-3);">All good! No pending invoices. ✓</div>';
+    pendingInvs.sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate)); let naHtml=''; pendingInvs.slice(0,3).forEach(i=>{ naHtml+=`<div class="attention-item"><div><div class="attention-client">${i.client}</div><div class="attention-meta">Due: ${fdate(i.dueDate)} • ${i.invoiceNo}</div></div><div style="display:flex;align-items:center;gap:10px;"><div class="attention-amt">${fmt(i.amount)}</div><button onclick="viewInvDetail('${i.invoiceNo}')" style="background:rgba(245,158,11,0.12);color:var(--orange);border:none;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">View</button></div></div>`; }); document.getElementById('needs-attention').innerHTML=naHtml||'<div style="font-size:12px;color:var(--text-3);">All good! No pending invoices. ✓</div>';
     let lfHtml=''; appData.logs.slice(0,5).forEach(l=>{ let ts=new Date(l.time); let t=!isNaN(ts)?ts.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):l.time; lfHtml+=`<div class="feed-item"><div class="feed-dot"></div><div><div class="feed-text">${l.action}</div><div class="feed-time">${t} • ${l.user}</div></div></div>`; }); document.getElementById('live-feed').innerHTML=lfHtml||'<div style="font-size:12px;color:var(--text-3);">No recent activity.</div>';
 
     let totalAmt=0, paidCount=0, pendingCount=0; let invHtml='';
